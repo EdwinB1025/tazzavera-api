@@ -1,26 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+use App\Models\User;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-
-class UserTest extends TestCase
-{
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
-    /**
-     * Creating a new user
-     */
-
-    public function create_new_user(): void {}
-}
+test('create_new_user', function (?string $role = 'user') {
+    $password = fake()->password(6, 8);
+    $user = User::factory()->raw(['password' => $password]);
+    $user = array_merge($user, ['role' => $role, 'password_confirmation' => $password]);
+    $response = $this->postJson('/register', $user);
+    $response->assertStatus(201);
+})->with(['user', 'coffeeshop', 'specialist']);
