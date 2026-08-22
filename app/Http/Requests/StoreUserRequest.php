@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Roles;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -27,10 +29,8 @@ class StoreUserRequest extends FormRequest
             'name' => ['required', 'string'],
             'surname' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'confirmed', Password::min(8)
-                ->letters()
-                ->mixedCase()
-                ->numbers()],
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'role' => ['sometimes', Rule::enum(Roles::class)],
         ];
     }
 }

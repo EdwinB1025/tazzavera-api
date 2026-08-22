@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password as RulesPassword;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->passwordDefaults();
+    }
+
+    private function passwordDefaults(): void
+    {
+        RulesPassword::defaults(
+            function () {
+                return RulesPassword::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->uncompromised();
+            }
+        );
     }
 }
