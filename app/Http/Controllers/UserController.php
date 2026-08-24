@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\RoleAssigmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,8 @@ class UserController extends Controller
                 return $user;
             }
         );
+
+        return new ResourcesUser($user);
     }
 
     /**
