@@ -158,4 +158,13 @@ return [
     'uppercase'              => 'The :attribute field must be uppercase.',
     'url'                    => 'The :attribute field must be a valid URL.',
     'uuid'                   => 'The :attribute field must be a valid UUID.',
+
+    /** Attributes of Request Forms */
+    'attributes' => [
+        'name'     => 'name',
+        'surname'  => 'surname',
+        'email'    => 'email',
+        'password' => 'password',
+        'role'     => 'role',
+    ],
 ];
