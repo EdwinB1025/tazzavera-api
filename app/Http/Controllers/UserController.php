@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\RoleAssigmentExcpetion;
+use App\Exceptions\RoleAssignmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
@@ -32,7 +32,7 @@ class UserController extends Controller
                 try {
                     $user->assignRole($data['role']);
                 } catch (Throwable $e) {
-                    throw new RoleAssigmentExcpetion(
+                    throw new RoleAssignmentExcpetion(
                         $user->id,
                         $data['role'],
                         previous: $e
@@ -43,7 +43,7 @@ class UserController extends Controller
             }
         );
 
-        return new ResourcesUser($user);
+        return (new ResourcesUser($user))->response()->setStatusCode(201, 'User Created');
     }
 
     /**
