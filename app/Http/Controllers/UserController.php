@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RoleAssigmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -21,8 +24,23 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $request = $request->validated();
-        User::create();
+        $data = $request->validated();
+        $user = DB::transaction(
+            function () use ($data) {
+                $user = User::create($data);
+                try {
+                    $user->assignRole($data['role']);
+                } catch (Throwable $e) {
+                    throw new RoleAssigmentExcpetion(
+                        $user->id,
+                        $data['role'],
+                        previous: $e
+                    );
+                }
+
+                return $user;
+            }
+        );
     }
 
     /**
