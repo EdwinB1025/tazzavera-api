@@ -1,11 +1,15 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\RolesSeeder;
+
+beforeEach(function () {
+    $this->seed(RolesSeeder::class);
+});
 
 test('create_new_user', function (?string $role = 'user') {
-    $password = User::factory()->createPassword();
-    $user = User::factory()->raw(['password' => $password]);
-    $user = array_merge($user, ['role' => $role, 'password_confirmation' => $password]);
+    $user = User::factory()->registrationPayload($role);
     $response = $this->postJson('/register', $user);
+    $response->dump();
     $response->assertStatus(201);
 })->with(['user', 'coffeeshop', 'specialist']);

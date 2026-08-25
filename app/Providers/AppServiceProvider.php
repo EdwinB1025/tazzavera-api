@@ -30,11 +30,11 @@ class AppServiceProvider extends ServiceProvider
     {
         RulesPassword::defaults(
             function () {
-                return RulesPassword::min(8)
+                $rule = RulesPassword::min(8)
                     ->letters()
                     ->mixedCase()
-                    ->numbers()
-                    ->uncompromised();
+                    ->numbers();
+                return app()->isProduction() ? $rule->uncompromised() : $rule;
             }
         );
     }

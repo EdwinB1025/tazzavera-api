@@ -3,5 +3,5 @@
 declare(strict_types=1);
 
 return [
-    'role_assigment_failed' => ':role no se pudo assginar a :user_id.',
+    'role_assigment_failed' => 'uasario identificado con :user_idno se pudo assginar a :role.',
 ];

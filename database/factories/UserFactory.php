@@ -46,6 +46,20 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function registrationPayload(string $role = 'user'): array
+    {
+        $password = $this->createPassword();
+
+        return [
+            'name' => fake()->name(),
+            'surname' => fake()->lastName(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => $password,
+            'password_confirmation' => $password,
+            'role' => $role,
+        ];
+    }
+
     public function createPassword(): string
     {
         do {
