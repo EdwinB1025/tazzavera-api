@@ -1,9 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap");
 @import 'tailwindcss';
-
+@import '../../vendor/livewire/flux/dist/flux.css';
+@source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+/* ============================================================
+   VARIABLES DE TEMA
+   Solo las que usan las clases/estilos del login.
+   ============================================================ */
+@theme {
+    /* ─── SAGE ─── */
+    --color-sage-500: #85b5ad;
+    --color-sage-600: #6B9E95;
+
+    /* ─── OLIVE ─── */
+    --color-olive-500: #b5ba73;
+    --color-olive-800: #6b7a1a;
+
+    /* ─── BROWN / ACCENT ─── */
+    --color-brown-600: #8b2e2e;
+    --color-brown-800: #5d0404;
+    --color-brown-900: #4a2510;
+
+    /* ─── PINE ─── */
+    --color-pine-700: #2E5A52;
+    --color-pine-900: #1a2f35;
+
+    /* ─── NEUTRALS ─── */
+    --color-cream-100: #f2e8d9;
+    --color-warmgray-500: #6b7e83;
+    --color-neutral: color-mix(in srgb, var(--color-sage-500) 30%, white);
+}
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* FONT */
+    --font-headlines: "Nunito", sans-serif;
+    --font-body: "Lora", serif;
+}
+
+@theme {
+    /* ACENTO */
+    --color-primary: var(--color-brown-600);
+    --color-primary-hover: var(--color-brown-800);
+    --color-on-primary: var(--color-cream-100);
+}
+
+@theme {
+    /* SUPERFICIES (usadas por el formulario) */
+    --color-surface-form: var(--color-cream-100);
+}
+
+@theme {
+    /* TEXTO */
+    --color-text-primary: var(--color-pine-700);
+    --color-text-secondary: var(--color-warmgray-500);
+    --color-text-accent: var(--color-brown-600);
+    --color-text-filter-label: var(--color-olive-800);
+    --color-text-inverse: var(--color-cream-100);
+}
+
+@theme {
+    /* ELEMENTOS */
+    --color-ui-strong: var(--color-pine-900);
+    --color-ui-muted: var(--color-pine-700);
+    --color-nav-obscure: var(--color-pine-700);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+/* ============================================================
+   COMPONENTES DEL LOGIN
+   ============================================================ */
+@layer components {
+
+    /* ─── SUBTÍTULO (usado en login/register/forgot: tz-subtitle2) ─── */
+    .tz-subtitle2 {
+        @apply font-semibold text-lg tracking-[0.25em];
+        font-family: var(--font-headlines);
+        color: var(--color-text-filter-label);
+    }
+
+    /* ─── ENLACES FLUX ─── */
+    [data-flux-link] {
+        color: var(--color-ui-muted) !important;
+    }
+
+    [data-flux-link]:hover {
+        @apply !font-bold;
+        color: var(--color-ui-strong) !important;
+    }
+
+    /* ─── TARJETA DE LOGIN (tz-logincard) ─── */
+    .tz-logincard {
+        @apply rounded-2xl border-2 p-4;
+        background-color: var(--color-text-inverse);
+        border-color: var(--color-ui-strong);
+    }
+
+    /* ─── FONDO INVERSO (tz-bg-inverse, en el body del layout card) ─── */
+    .tz-bg-inverse {
+        background-color: var(--color-neutral);
+    }
+
+    /* ─── CONTENEDOR PRINCIPAL DEL FORM (tz-form-main) ─── */
+    .tz-form-main {
+        @apply rounded-2xl shadow-xl p-4 pb-5;
+        border: 2px solid var(--color-nav-obscure) !important;
+        background-color: color-mix(in srgb, var(--color-surface-form) 98%, rgb(0, 0, 0));
+    }
+
+    .tz-form-main input[data-flux-control],
+    .tz-form-main select[data-flux-control] option {
+        color: var(--color-ui-strong) !important;
+        background-color: color-mix(in srgb, var(--color-text-inverse) 40%, white) !important;
+    }
+
+    /* ─── CAMPOS FLUX (inputs, labels, checkbox) ─── */
+    [data-flux-field] [data-flux-label] {
+        @apply !mb-2;
+    }
+
+    [data-flux-input] {
+        @apply !border-2 !rounded-lg;
+        border-color: var(--color-ui-strong) !important;
+        background-color: color-mix(in srgb, var(--color-text-inverse) 40%, white) !important;
+    }
+
+    [data-flux-input] [data-flux-control]::placeholder {
+        color: var(--color-ui-muted) !important;
+        font-style: italic !important;
+        opacity: 1 !important;
+    }
+
+    [data-flux-input] [data-flux-icon] {
+        @apply !size-4;
+        color: white !important;
+    }
+
+    [data-flux-input] button:hover [data-flux-icon] {
+        color: var(--color-text-secondary) !important;
+    }
+
+    [data-flux-checkbox-indicator] {
+        @apply border-2 !rounded-sm !box-border;
+        border-color: var(--color-ui-strong) !important;
+    }
+
+    /* ─── BRAND / LOGO (tz-brand) ─── */
+    .tz-brand {
+        @apply font-bold text-base md:text-xs lg:text-base xl:text-lg uppercase tracking-[0.2em];
+        font-family: var(--font-headlines);
+        color: var(--color-ui-strong);
+    }
 }
