@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Passport\Client;
 use Carbon\CarbonInterval;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Password;
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         /** Enable Password Grant for Passport */
         Passport::enablePasswordGrant();
 
+        Passport::useClientModel(Client::class);
         /** Tokens lifecycle */
         Passport::tokensExpireIn(CarbonInterval::days(15));
         Passport::refreshTokensExpireIn(CarbonInterval::days(30));
