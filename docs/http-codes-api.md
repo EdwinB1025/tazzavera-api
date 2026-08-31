@@ -83,7 +83,9 @@ Laravel generates these on its own; you only customize the response format (JSON
 | Endpoint | Method | Success code | Possible errors | Message / i18n key | Notes |
 |----------|--------|--------------|-----------------|--------------------|-------|
 | `/register` | POST | 201 | 422 (validation) | `users.created` | creates user + assigns role |
-| `/login` | POST | 200 | 401 (credentials), 422 (validation) | `auth.logged_in` | returns token |
+| `/login` | POST | 200 | 401 (credentials), 422 (validation) | `auth.logged_in` | creates web session (Fortify, stateful); returns `{"two_factor": false}`; does NOT return token — auth step before `/oauth/authorize` |
+| `/oauth/authorize` | GET | 302 | 401 (no session), 400/`unauthorized_client`, `invalid_client` | — | requires active web session + PKCE params; with `skipsAuthorization` returns `code` in `Location` |
+| `/oauth/token` | POST | 200 | 400/`invalid_request`, 401/`invalid_client`, `invalid_grant` | — | exchanges `code` + `code_verifier` (or password grant) for `access_token` + `refresh_token` |
 | `/users` | GET | 200 | 401 | — | list (protected) |
 | `/users/{id}` | GET | 200 | 401, 404 | — | detail |
 | `/users/{id}` | PUT/PATCH | 200 | 401, 403, 404, 422 | `users.updated` | update |

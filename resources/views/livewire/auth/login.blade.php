@@ -31,18 +31,18 @@
                     autocomplete="current-password"
                     :placeholder="__('*************')"
                     viewable />
-                <!-- EDB - 08/31/2026: disabled to be build in wiht auth:api
+                {{-- EDB - 08/31/2026: disabled to be build in wiht auth:api
                 @if (Route::has('password.request'))
                 <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
                     {{ __('Olvidaste tu contraseña?') }}
                 </flux:link>
                 @endif
-                -->
+                --}}
             </div>
 
-            <!-- Remember Me, EDB 08/31/2026: disabled to be build wiht api:auth
+            {{-- Remember Me, EDB 08/31/2026: disabled to be build wiht api:auth
             <flux:checkbox name="remember" :label="__('Recuerdame')" :checked="old('remember')" />
-            -->
+            --}}
             <div class="flex items-center justify-end">
                 <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
                     {{ __('Log in') }}
@@ -50,11 +50,11 @@
             </div>
         </form>
 
-        <!-- EDB - 08/31/2026: disabled to be build in wiht auth:api
+        {{-- EDB - 08/31/2026: disabled to be build in wiht auth:api
         <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
             <span class="tz-subtitle2">{{ __('No tienes una cuenta?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Registrate') }}</flux:link>
-        </div>
-        -->
+        <flux:link :href="route('register')" wire:navigate>{{ __('Registrate') }}</flux:link>
+    </div>
+    --}}
     </div>
 </x-layouts::auth>
