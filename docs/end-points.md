@@ -37,7 +37,13 @@ Roles: `specialist`, `coffeeshop` (tabla `roles` separada; no existe rol `admin`
 | Método | Endpoint | Rol | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
 | POST | `/register` | — | Público | Body: `role`,`name`, `surname`, `email`, `password`, `password_confirmation` |
-| POST | `/login` | — | Público | Body: `email`, `password` |
+| POST | `/login` | — | Público (sesión web) | Body: `email`, `password` — crea sesión web (Fortify, guard stateful); respuesta `{"two_factor": false}`. Es el paso *authenticate* previo a `/oauth/authorize`, NO emite token |
+| GET | `/oauth/authorize` | — | Requiere sesión web activa | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. Con `skipsAuthorization` (first-party) responde `302` con `code` en el `Location` (redirect al `redirect_uri`) |
+| POST | `/oauth/token` | — | Público (cliente PKCE) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. Sin `client_secret` (cliente público). Devuelve `access_token` + `refresh_token` |
+| POST | `/oauth/token` | — | Público (cliente confidencial) | Body (form-urlencoded): `grant_type=password`, `client_id`, `client_secret`, `username` (email), `password`, `scope`. First-party de confianza. Devuelve `access_token` + `refresh_token` |
 | POST | `/logout` | specialist, coffeeshop | Autenticado | — |
 | GET | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | — (restringido a que `{id}` sea el propio usuario) |
 | PUT | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | Body: `name`, `surname`, `email`, `current_password`, `password`,  |
+| DELETE | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | — (restringido a que `{id}` sea el propio usuario) |
+
+El login es un flujo PKCE de tres pasos: `POST /login` (crea la sesión web de Fortify) → `GET /oauth/authorize` (con esa sesión, devuelve el `code`) → `POST /oauth/token` (intercambia `code` + `code_verifier` por el `access_token`). El `access_token` es el que autentica las rutas `auth:api` vía `Authorization: Bearer`. El `code_verifier` es del cliente y solo viaja en el paso token; en `/oauth/authorize` viaja únicamente su hash (`code_challenge`).

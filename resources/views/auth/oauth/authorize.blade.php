@@ -1,0 +1,1 @@
+<div>{{ __('Autorización de acceso') }}</div>
