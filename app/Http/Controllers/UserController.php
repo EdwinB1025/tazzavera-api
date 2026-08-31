@@ -8,6 +8,7 @@ use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Token;
 use Spatie\Permission\Models\Role;
 use Throwable;
 
@@ -69,5 +70,21 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**Revoke tokens: logging user out */
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        //Revoking all the tokens
+
+        $user->tokens()->each(function (Token $token) {
+            $token->revoke();
+            $token->refreshToken?->revoke();
+        });
+
+        return response()->json(['message' => __('auth.logged_out')], 200);
     }
 }
