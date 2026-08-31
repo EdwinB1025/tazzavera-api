@@ -23,8 +23,7 @@ test('autenticate_user', function () {
     $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
         'PKCE Test',
         ['http://localhost/callback'],
-        false,
-        $user
+        false
     );
 
     $this->actingAs($user, 'web');
@@ -49,6 +48,11 @@ test('autenticate_user', function () {
     ]);
 
     $codeRequest = $this->get('oauth/authorize?' . $query);
+
+    $found = app(\Laravel\Passport\ClientRepository::class)->find($client->id);
+    dump(get_class($found));
+    dump($found->skipsAuthorization($user, []));
+
     $codeRequest->assertStatus(302);
 
     $codeRequest->dumpHeaders();
