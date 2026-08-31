@@ -80,3 +80,35 @@ test('autenticate_user', function () {
         test()->fail('CodeVerifiers could not be retreived from Location attribute in the header, or state is different');
     }
 });
+
+test('logout_user', function () {
+    // Create User
+    $password = 'testFakeUser1234';
+    $user = User::factory()->create(['password' => $password]);
+
+    // Create a client
+    $client = app(ClientRepository::class)
+        ->createPasswordGrantClient('Test Password Client', 'users', false);
+
+    $tokenResponse = $this->post('/oauth/token', [
+        'grant_type' => 'password',
+        'client_id' => $client->id,
+        'username' => $user->email,
+        'password' => $password,
+        'scope' => '*'
+    ]);
+
+    //Validate token generation
+    $tokenResponse->assertOk();
+    $token = $tokenResponse->json('access_token');
+
+    //Validate logout route
+    $response = $this->withToken($token)->post('/logout');
+    $response->assertOk();
+
+    //Assert Token is revoked
+    $this->assertDatabaseHas('oauth_access_tokens', [
+        'user_id' => $user->id,
+        'revoked' => true,
+    ]);
+});
