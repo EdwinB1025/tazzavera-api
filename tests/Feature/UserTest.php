@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
@@ -82,21 +83,7 @@ test('autenticate_user', function () {
 });
 
 test('logout_user', function () {
-    // Create User
-    $password = 'testFakeUser1234';
-    $user = User::factory()->create(['password' => $password]);
-
-    // Create a client
-    $client = app(ClientRepository::class)
-        ->createPasswordGrantClient('Test Password Client', 'users', false);
-
-    $tokenResponse = $this->post('/oauth/token', [
-        'grant_type' => 'password',
-        'client_id' => $client->id,
-        'username' => $user->email,
-        'password' => $password,
-        'scope' => '*'
-    ]);
+    [$user, $tokenResponse] = authenticateUser();
 
     //Validate token generation
     $tokenResponse->assertOk();
@@ -111,4 +98,43 @@ test('logout_user', function () {
         'user_id' => $user->id,
         'revoked' => true,
     ]);
+});
+
+test('user_updates_field', function (string $field, string $value) {
+
+    [$user, $token] = authenticateUser();
+
+    //Updating field using the api route
+
+    $this->withToken($token)
+        ->putJson("/users/{$user->id}", [$field => $value])
+        ->assertOk();
+
+    //asserting the field value in DB
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        $field => $value,
+    ]);
+})->with([
+    'name'    => ['name', 'Nuevo Nombre'],
+    'surname' => ['surname', 'Nuevo Apellido'],
+    'email'   => ['email', 'nuevo@example.com'],
+]);
+
+test('user_updates_password', function () {
+
+    [$user, $token, $password] = authenticateUser();
+
+    //Updating password using the specific api route
+    $this->withToken($token)
+        ->putJson("/users/{$user->id}/password", [
+            'current_password' => $password,
+            'password' => 'nuevaClave1234',
+            'password_confirmation' => 'nuevaClave1234',
+        ])
+        ->assertOk();
+
+    // asserting the the password has been updated and hashed
+    expect(Hash::check('nuevaClave1234', $user->fresh()->password))->toBeTrue();
 });
