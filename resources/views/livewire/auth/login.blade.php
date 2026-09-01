@@ -9,6 +9,13 @@
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
+            @if ($errors->any())
+            <div style="color:red; padding:1rem;">
+                @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+                @endforeach
+            </div>
+            @endif
 
             <!-- Email Address -->
             <flux:input class="tz-input"

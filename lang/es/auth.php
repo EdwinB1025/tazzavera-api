@@ -7,4 +7,6 @@ return [
     'password' => 'La contraseña es incorrecta.',
     'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'logged_out' => 'Sesión cerrada correctamente.',
+    'web_not_directed_request' => 'authentificacion no dirigida por cliente',
+
 ];

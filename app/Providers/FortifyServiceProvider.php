@@ -54,7 +54,14 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn() => view('livewire.auth.login'));
+        Fortify::loginView(
+            function () {
+                if (! str_contains(session('url.intended', ''), 'oauth/authorize')) {
+                    abort(403, __('auth.web_not_directed_request'));
+                }
+                return view('livewire.auth.login');
+            }
+        );
         Fortify::verifyEmailView(fn() => view('livewire.auth.verify-email'));
         Fortify::twoFactorChallengeView(fn() => view('livewire.auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn() => view('livewire.auth.confirm-password'));

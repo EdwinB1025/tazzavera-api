@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->passwordDefaults();
-        FormRequest::failOnUnknownFields();
+        //FormRequest::failOnUnknownFields(); EDB 09/01/2026: This fields fails request with _token and _method fields embeded, discarded, not usefull.
+
         Blade::anonymousComponentNamespace('layouts', 'layouts');
 
         /** Enable Password Grant for Passport */
@@ -37,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::authorizationView('auth.oauth.authorize');
         /** Tokens lifecycle */
         Passport::tokensExpireIn(CarbonInterval::minutes(30));
-        Passport::refreshTokensExpireIn(CarbonInterval::minutes(30));
+        Passport::refreshTokensExpireIn(CarbonInterval::hour(1));
         Passport::personalAccessTokensExpireIn(CarbonInterval::day(6));
     }
 
