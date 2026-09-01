@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
-class UpdateUserRequest extends FormRequest
+class UpdatePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,9 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user')->id;
         return [
-            'name'    => ['sometimes', 'string'],
-            'surname' => ['sometimes', 'string'],
-            'email'   => ['sometimes', 'email', Rule::unique('users')->ignore($userId)],
+            'current_password' => ['required', 'current_password:api'],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 }
