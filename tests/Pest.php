@@ -62,7 +62,7 @@ function authenticateUser(): array
     $client = app(ClientRepository::class)
         ->createPasswordGrantClient('Test Password Client', 'users', false);
 
-    $tokenResponse = test()->post('/oauth/token', [
+    $response = test()->post('/oauth/token', [
         'grant_type' => 'password',
         'client_id' => $client->id,
         'username' => $user->email,
@@ -70,5 +70,7 @@ function authenticateUser(): array
         'scope' => '*'
     ]);
 
-    return [$user, $tokenResponse, $password];
+    $token = $response->json('access_token');
+
+    return [$user, $token, $password, $response];
 }

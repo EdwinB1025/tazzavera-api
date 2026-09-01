@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Exceptions\RoleAssignmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
@@ -65,6 +66,17 @@ class UserController extends Controller
     {
         $user->update($request->validated());
         return (new ResourcesUser($user))->response()->setStatusCode(200, 'User Updated');
+    }
+
+    /**
+     * Update password for user model
+     */
+    public function updatePassword(UpdatePasswordRequest $request, User $user)
+    {
+        $user->password = $request->password;
+        $user->save();
+
+        return response()->json(['message' => __('auth.password_updated')], 200);
     }
 
     /**

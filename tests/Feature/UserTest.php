@@ -83,11 +83,10 @@ test('autenticate_user', function () {
 });
 
 test('logout_user', function () {
-    [$user, $tokenResponse] = authenticateUser();
+    [$user, $token,, $response] = authenticateUser();
 
     //Validate token generation
-    $tokenResponse->assertOk();
-    $token = $tokenResponse->json('access_token');
+    $response->assertOk();
 
     //Validate logout route
     $response = $this->withToken($token)->post('/logout');
