@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\UpdateUserPassword;
 use App\Exceptions\RoleAssignmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,9 +61,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+        return (new ResourcesUser($user))->response()->setStatusCode(200, 'User Updated');
     }
 
     /**
