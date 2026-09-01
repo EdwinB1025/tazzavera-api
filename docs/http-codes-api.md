@@ -86,13 +86,12 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/login` | POST | 200 | 401 (credentials), 422 (validation) | `auth.logged_in` | creates web session (Fortify, stateful); returns `{"two_factor": false}`; does NOT return token — auth step before `/oauth/authorize` |
 | `/oauth/authorize` | GET | 302 | 401 (no session), 400/`unauthorized_client`, `invalid_client` | — | requires active web session + PKCE params; with `skipsAuthorization` returns `code` in `Location` |
 | `/oauth/token` | POST | 200 | 400/`invalid_request`, 401/`invalid_client`, `invalid_grant` | — | exchanges `code` + `code_verifier` (or password grant) for `access_token` + `refresh_token` |
-| `/users` | GET | 200 | 401 | — | list (protected) |
-| `/users/{id}` | GET | 200 | 401, 404 | — | detail |
-| `/users/{id}` | PUT/PATCH | 200 | 401, 403, 404, 422 | `users.updated` | update |
-| `/users/{id}` | DELETE | 204 | 401, 403, 404 | `users.deleted` | no body |
-| | | | | | |
-| | | | | | |
-| | | | | | |
+| `/logout` | POST | 200 | 401 | `auth.logged_out` | revokes request token (access + refresh) |
+| `/user` | GET | 200 | 401 | — | authenticated user's own data (no id) |
+| `/users/{user}` | GET | 200 | 401, 403, 404 | — | detail — **authorization pending** (own + role for others) |
+| `/users/{user}` | PUT | 200 | 401, 403, 404, 422 | `users.updated` | profile update (name, surname, email) |
+| `/users/{user}/password` | PUT | 200 | 401, 403, 404, 422 | `users.password_updated` | password change (current_password + confirmed) |
+| `/users/{user}` | DELETE | 204 | 401, 403, 404 | `users.deleted` | **pending** soft/hard + token revocation; no body |
 
 ---
 

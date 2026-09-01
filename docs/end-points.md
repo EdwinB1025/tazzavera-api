@@ -34,16 +34,19 @@ Roles: `specialist`, `coffeeshop` (tabla `roles` separada; no existe rol `admin`
 
 ## Users
 
-| Método | Endpoint | Rol | Auth | Query Parameters / Inputs |
+| Método | Endpoint | Autorización | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| POST | `/register` | — | Público | Body: `role`,`name`, `surname`, `email`, `password`, `password_confirmation` |
-| POST | `/login` | — | Público (sesión web) | Body: `email`, `password` — crea sesión web (Fortify, guard stateful); respuesta `{"two_factor": false}`. Es el paso *authenticate* previo a `/oauth/authorize`, NO emite token |
-| GET | `/oauth/authorize` | — | Requiere sesión web activa | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. Con `skipsAuthorization` (first-party) responde `302` con `code` en el `Location` (redirect al `redirect_uri`) |
-| POST | `/oauth/token` | — | Público (cliente PKCE) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. Sin `client_secret` (cliente público). Devuelve `access_token` + `refresh_token` |
-| POST | `/oauth/token` | — | Público (cliente confidencial) | Body (form-urlencoded): `grant_type=password`, `client_id`, `client_secret`, `username` (email), `password`, `scope`. First-party de confianza. Devuelve `access_token` + `refresh_token` |
-| POST | `/logout` | specialist, coffeeshop | Autenticado | — |
-| GET | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | — (restringido a que `{id}` sea el propio usuario) |
-| PUT | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | Body: `name`, `surname`, `email`, `current_password`, `password`,  |
-| DELETE | `/users/{id}` | specialist, coffeeshop (propio) | Autenticado | — (restringido a que `{id}` sea el propio usuario) |
+| POST | `/register` | — | Público | Body: `role`, `name`, `surname`, `email`, `password`, `password_confirmation` |
+| POST | `/login` | — | Público (sesión web) | Body: `email`, `password` — crea sesión web (Fortify, guard stateful); respuesta `{"two_factor": false}`. Paso *authenticate* previo a `/oauth/authorize`, NO emite token |
+| GET | `/oauth/authorize` | — | Requiere sesión web activa | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. Con `skipsAuthorization` (first-party) responde `302` con `code` en el `Location` |
+| POST | `/oauth/token` | — | Público (cliente PKCE) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. Sin `client_secret`. Devuelve `access_token` + `refresh_token` |
+| POST | `/oauth/token` | — | Público (cliente confidencial) | Body (form-urlencoded): `grant_type=password`, `client_id`, `client_secret`, `username` (email), `password`, `scope`. Devuelve `access_token` + `refresh_token` |
+| POST | `/logout` | Autenticado | `auth:api` | — Revoca el token del request |
+| GET | `/user` | Autenticado | `auth:api` | — Sin id. Devuelve los datos del usuario autenticado (el front obtiene aquí su id) |
+| PUT | `/users/{user}` | Propio (policy `update`) | `auth:api` | Body: `name`, `surname`, `email` (todos `sometimes`) |
+| PUT | `/users/{user}/password` | Propio (policy `update`) | `auth:api` | Body: `current_password`, `password`, `password_confirmation` |
+| DELETE | `/users/{user}` | Propio (policy `delete`) — **pendiente decidir soft/hard + revocación de tokens** | `auth:api` | — |
 
 El login es un flujo PKCE de tres pasos: `POST /login` (crea la sesión web de Fortify) → `GET /oauth/authorize` (con esa sesión, devuelve el `code`) → `POST /oauth/token` (intercambia `code` + `code_verifier` por el `access_token`). El `access_token` es el que autentica las rutas `auth:api` vía `Authorization: Bearer`. El `code_verifier` es del cliente y solo viaja en el paso token; en `/oauth/authorize` viaja únicamente su hash (`code_challenge`).
+
+**Pendiente:** confirmar si existe `GET /users/{id}` para consultar *otros* usuarios (perfiles ajenos); si no hay ese caso, solo `GET /user`. DELETE sin definir soft/hard ni revocación de tokens.
