@@ -83,7 +83,7 @@ test('user_authenticates_with_pkce', function () {
 });
 
 test('user_logs_out', function () {
-    [$user, $token,, $response] = authenticateUser();
+    [$user, $token,, $response] = authenticate();
 
     //Validate token generation
     $response->assertOk();
@@ -101,7 +101,7 @@ test('user_logs_out', function () {
 
 test('authenticated_user_updates_field', function (string $field, string $value) {
 
-    [$user, $token] = authenticateUser();
+    [$user, $token] = authenticateWithWriteScope();
 
     //Updating field using the api route
 
@@ -123,7 +123,7 @@ test('authenticated_user_updates_field', function (string $field, string $value)
 
 test('authenticated_user_updates_password', function () {
 
-    [$user, $token, $password] = authenticateUser();
+    [$user, $token, $password] = authenticateWithWriteScope();
 
     //Updating password using the specific api route
     $this->withToken($token)
@@ -139,10 +139,30 @@ test('authenticated_user_updates_password', function () {
 });
 
 test('authenticated_user_gets_profile_data', function () {
-    [$user, $token] = authenticateUser();
+    [$user, $token] = authenticate();
 
     $this->withToken($token)
         ->getJson('/user')
         ->assertOk()
         ->assertJsonPath('data.id', $user->id);
+});
+
+test('authenticated_user_deactivates_profile', function () {
+    [$user, $token] = authenticateWithWriteScope();
+
+    $this->withToken($token)
+        ->deleteJson("/users/{$user->id}/deactivate")
+        ->assertNoContent();
+
+    $this->assertSoftDeleted($user);
+});
+
+test('authenticated_user_deletes_profile', function () {
+    [$user, $token] = authenticateWithWriteScope();
+
+    $this->withToken($token)
+        ->deleteJson("/users/{$user->id}/deactivate")
+        ->assertNoContent();
+
+    $this->assertHardDeleted($user);
 });

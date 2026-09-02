@@ -51,7 +51,7 @@ function something()
     // ..
 }
 
-function authenticateUser(): array
+function authenticate(): array
 {
 
     // Create User
@@ -68,6 +68,30 @@ function authenticateUser(): array
         'username' => $user->email,
         'password' => $password,
         'scope' => '*'
+    ]);
+
+    $token = $response->json('access_token');
+
+    return [$user, $token, $password, $response];
+}
+
+function authenticateWithWriteScope(): array
+{
+
+    // Create User
+    $password = 'testFakeUser1234';
+    $user = User::factory()->create(['password' => $password]);
+
+    // Create a client
+    $client = app(ClientRepository::class)
+        ->createPasswordGrantClient('Test Password Client', 'users', false);
+
+    $response = test()->post('/oauth/token', [
+        'grant_type' => 'password',
+        'client_id' => $client->id,
+        'username' => $user->email,
+        'password' => $password,
+        'scope' => 'profile:write'
     ]);
 
     $token = $response->json('access_token');
