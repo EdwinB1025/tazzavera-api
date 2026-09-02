@@ -138,7 +138,7 @@ test('authenticated_user_updates_password', function () {
     expect(Hash::check('nuevaClave1234', $user->fresh()->password))->toBeTrue();
 });
 
-test('authenticated_user_gets_own_data', function () {
+test('authenticated_user_gets_profile_data', function () {
     [$user, $token] = authenticateUser();
 
     $this->withToken($token)
