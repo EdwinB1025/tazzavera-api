@@ -1,52 +1,58 @@
-# Tazavera — Diseño de Endpoints REST
+# Tazavera — REST Endpoint Design
 
-Roles: `specialist`, `coffeeshop` (tabla `roles` separada; no existe rol `admin`, cada usuario gestiona su propio perfil).
+Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` role, each user manages their own profile).
 
-**Specialist:** catador/cupper profesional autenticado. Su función es crear, editar y cerrar evaluaciones sobre offerings existentes — es quien aporta el juicio experto que alimenta el consenso de un offering. No crea ni edita offerings.
+**Specialist:** authenticated professional cupper/taster. Their role is to create, edit and close evaluations on existing offerings — they provide the expert judgment that feeds an offering's consensus. They do not create or edit offerings.
 
-**Coffeeshop:** cafetería autenticada, dueña de sus propias offerings. Crea y edita sus offerings (asociando un café y una ubicación), y crea/edita la evaluación técnica provisional (máximo una por offering) necesaria para publicarlo. No cierra evaluaciones ni evalúa offerings ajenas.
+**Coffeeshop:** authenticated coffee shop, owner of its own offerings. Creates and edits its offerings (associating a coffee and a location), and creates/edits the provisional technical evaluation (at most one per offering) required to publish it. Does not close evaluations or evaluate other shops' offerings.
 
-**Usuario (público):** visitante sin autenticación (o autenticado sin rol elevado) que solo consulta información — accede a los endpoints públicos de index/show de offerings y evaluations. No crea, edita, cierra ni elimina nada; es consumo de solo lectura.
+**User (public):** unauthenticated visitor (or authenticated without an elevated role) who only reads information — accesses the public index/show endpoints for offerings and evaluations. Does not create, edit, close or delete anything; read-only consumption.
 
 ## Offerings
 
-| Método | Endpoint | Rol | Auth | Query Parameters / Inputs |
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| GET | `/offerings` | — | Público | Query: `name`, `city`, `origin`, `process`, `score`, `main_tastes[]`, `specific_tastes[]` |
-| GET | `/offerings/{id}` | — | Público | — |
-| POST | `/offerings` | coffeeshop | Autenticado | Body: `location_id`, `coffee_id` |
-| PUT | `/offerings/{id}` | coffeeshop (dueño) | Autenticado | Body: `location_id`, `coffee_id` |
-| DELETE | `/offerings/{id}` | coffeeshop (dueño) | Autenticado | — |
+| GET | `/offerings` | — | Public | Query: `name`, `city`, `origin`, `process`, `score`, `main_tastes[]`, `specific_tastes[]` |
+| GET | `/offerings/{id}` | — | Public | — |
+| POST | `/offerings` | coffeeshop | Authenticated | Body: `location_id`, `coffee_id` |
+| PUT | `/offerings/{id}` | coffeeshop (owner) | Authenticated | Body: `location_id`, `coffee_id` |
+| DELETE | `/offerings/{id}` | coffeeshop (owner) | Authenticated | — |
 
-`location_id` y `coffee_id` referencian registros ya existentes (no se crean anidados en el mismo request). La pareja `(location_id, coffee_id)` es única.
+`location_id` and `coffee_id` reference existing records (they are not created nested in the same request). The pair `(location_id, coffee_id)` is unique.
 
 ## Evaluations
 
-| Método | Endpoint | Rol | Auth | Query Parameters / Inputs |
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| GET | `/evaluations` | — | Público | Query: `id` (evaluador), `coffee_id`, `city`, `location_id`, `process`, `score`, `status` |
-| GET | `/evaluations/{id}` | — | Público | — |
-| POST | `/evaluations` | specialist, coffeeshop | Autenticado | Body: `offering_id`, `extraction_method`, `status`, `descriptive`, `affective`, `note` |
-| PUT | `/evaluations/{id}` | specialist (propia, incluye cierre con `status: closed`), coffeeshop (propia, máx. 1 por offering) | Autenticado | Body: `extraction_method`, `status`, `descriptive`, `affective`, `note` |
-| DELETE | `/evaluations/{id}` | specialist (propia), coffeeshop (propia) | Autenticado | — |
+| GET | `/evaluations` | — | Public | Query: `id` (evaluator), `coffee_id`, `city`, `location_id`, `process`, `score`, `status` |
+| GET | `/evaluations/{id}` | — | Public | — |
+| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offering_id`, `extraction_method`, `status`, `descriptive`, `affective`, `note` |
+| PUT | `/evaluations/{id}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extraction_method`, `status`, `descriptive`, `affective`, `note` |
+| DELETE | `/evaluations/{id}` | specialist (own), coffeeshop (own) | Authenticated | — |
 
-`evaluator_id` y `evaluator_role` **no** son inputs del request: el backend los determina a partir del usuario autenticado (`evaluator_id` = usuario logueado; `evaluator_role` = rol de ese usuario). El cierre de una evaluación no tiene ruta propia — es el mismo `PATCH` cambiando `status` a `closed`.
+`evaluator_id` and `evaluator_role` are **not** request inputs: the backend derives them from the authenticated user (`evaluator_id` = logged-in user; `evaluator_role` = that user's role). Closing an evaluation has no dedicated route — it is the same `PATCH` changing `status` to `closed`.
 
 ## Users
 
-| Método | Endpoint | Autorización | Auth | Query Parameters / Inputs |
+| Method | Endpoint | Authorization | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| POST | `/register` | — | Público | Body: `role`, `name`, `surname`, `email`, `password`, `password_confirmation` |
-| POST | `/login` | — | Público (sesión web) | Body: `email`, `password` — crea sesión web (Fortify, guard stateful); respuesta `{"two_factor": false}`. Paso *authenticate* previo a `/oauth/authorize`, NO emite token |
-| GET | `/oauth/authorize` | — | Requiere sesión web activa | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. Con `skipsAuthorization` (first-party) responde `302` con `code` en el `Location` |
-| POST | `/oauth/token` | — | Público (cliente PKCE) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. Sin `client_secret`. Devuelve `access_token` + `refresh_token` |
-| POST | `/oauth/token` | — | Público (cliente confidencial) | Body (form-urlencoded): `grant_type=password`, `client_id`, `client_secret`, `username` (email), `password`, `scope`. Devuelve `access_token` + `refresh_token` |
-| POST | `/logout` | Autenticado | `auth:api` | — Revoca el token del request |
-| GET | `/user` | Autenticado | `auth:api` | — Sin id. Devuelve los datos del usuario autenticado (el front obtiene aquí su id) |
-| PUT | `/users/{user}` | Propio (policy `update`) | `auth:api` | Body: `name`, `surname`, `email` (todos `sometimes`) |
-| PUT | `/users/{user}/password` | Propio (policy `update`) | `auth:api` | Body: `current_password`, `password`, `password_confirmation` |
-| DELETE | `/users/{user}` | Propio (policy `delete`) — **pendiente decidir soft/hard + revocación de tokens** | `auth:api` | — |
+| POST | `/register` | — | Public | Body: `role`, `name`, `surname`, `email`, `password`, `password_confirmation` |
+| POST | `/login` | — | Public (web session) | Body: `email`, `password` — creates web session (Fortify, stateful guard); response `{"two_factor": false}`. Authenticate step before `/oauth/authorize`, does NOT issue a token |
+| GET | `/oauth/authorize` | — | Requires active web session | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. With `skipsAuthorization` (first-party) returns `302` with the `code` in the `Location` header |
+| POST | `/oauth/token` | — | Public (PKCE client) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. No `client_secret`. Returns `access_token` + `refresh_token` |
+| POST | `/oauth/token` | — | Public (confidential client) | Body (form-urlencoded): `grant_type=password`, `client_id`, `client_secret`, `username` (email), `password`, `scope`. Returns `access_token` + `refresh_token` |
+| POST | `/logout` | Authenticated | `auth:api` | — Revokes the request token (access + refresh) |
+| GET | `/user` | Authenticated | `auth:api` | — No id. Returns the authenticated user's data (the front-end gets its id here) |
+| PUT | `/users/{user}` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `name`, `surname`, `email` (all `sometimes`) |
+| PUT | `/users/{user}/password` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `current_password`, `password`, `password_confirmation` |
+| DELETE | `/users/{user}` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Soft delete (deactivate account, recoverable via `restore`). Sets `deleted_at`, keeps profile and related data |
+| DELETE | `/users/{user}/force` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Hard delete (permanent removal). `forceDelete`; removes the row and cascades to related data (`ON DELETE CASCADE`). Binding uses `withTrashed` |
 
-El login es un flujo PKCE de tres pasos: `POST /login` (crea la sesión web de Fortify) → `GET /oauth/authorize` (con esa sesión, devuelve el `code`) → `POST /oauth/token` (intercambia `code` + `code_verifier` por el `access_token`). El `access_token` es el que autentica las rutas `auth:api` vía `Authorization: Bearer`. El `code_verifier` es del cliente y solo viaja en el paso token; en `/oauth/authorize` viaja únicamente su hash (`code_challenge`).
+Login is a three-step PKCE flow: `POST /login` (creates the Fortify web session) → `GET /oauth/authorize` (with that session, returns the `code`) → `POST /oauth/token` (exchanges `code` + `code_verifier` for the `access_token`). The `access_token` authenticates `auth:api` routes via `Authorization: Bearer`. The `code_verifier` belongs to the client and only travels in the token step; only its hash (`code_challenge`) is sent to `/oauth/authorize`.
 
-**Pendiente:** confirmar si existe `GET /users/{id}` para consultar *otros* usuarios (perfiles ajenos); si no hay ese caso, solo `GET /user`. DELETE sin definir soft/hard ni revocación de tokens.
+**Step-up (scope `profile:write`):** sensitive actions (update profile, change password, deactivate and delete account) require a token carrying the `profile:write` scope, verified with `CheckTokenForAnyScope::using('profile:write')` (Passport 13). That token is obtained through the same authorization flow by requesting `scope=profile:write` at `/oauth/authorize` — a single login mechanism, re-authenticating to elevate the token. A token without that scope receives a `403`.
+
+**Pending:**
+- `GET /users/{id}` to fetch *other* users (third-party profiles): role allowed and exposed fields not yet defined.
+- Anonymization / policy for generated data (evaluations) on hard delete.
+- **User contact information as a separate entity:** define the model (likely relational, not JSON), its cardinality (one or several contacts per user?), which fields it holds, and its endpoints (own CRUD or nested under the user).

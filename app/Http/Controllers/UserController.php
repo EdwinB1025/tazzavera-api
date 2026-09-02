@@ -48,7 +48,10 @@ class UserController extends Controller
             }
         );
 
-        return (new ResourcesUser($user))->response()->setStatusCode(201, 'User Created');
+        return (new ResourcesUser($user))
+            ->additional(['message' => __('user.created')])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -66,7 +69,10 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
-        return (new ResourcesUser($user))->response()->setStatusCode(200, 'User Updated');
+        return (new ResourcesUser($user))
+            ->additional(['message' => __('user.updated')])
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -88,7 +94,7 @@ class UserController extends Controller
         $request->user()->tokens->each->revoke();
         $user->delete();
 
-        return response()->json(['message' => __('users.deactivated')], 200);
+        return response()->json(['message' => __('user.deactivated')], 200);
     }
 
     /**
@@ -99,7 +105,7 @@ class UserController extends Controller
         $request->user()->tokens->each->revoke();
         $user->forceDelete();
 
-        return response()->json(['message' => __('users.deleted')], 200);
+        return response()->json(['message' => __('user.deleted')], 200);
     }
 
     /**Revoke tokens: logging user out */
