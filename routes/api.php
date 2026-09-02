@@ -11,8 +11,14 @@ Route::middleware('auth:api')
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
 
-        Route::middleware('can:update,user')->group(function () {
-            Route::put('/users/{user}', [UserController::class, 'update']);
-            Route::put('/users/{user}/password', [UserController::class, 'updatePassword']);
+        Route::middleware('scope:profile:write')->group(function () {
+            Route::put('/users/{user}', [UserController::class, 'update'])
+                ->middleware('can:update,user');
+            Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
+                ->middleware('can:update,user');
+            Route::delete('/users/{user}', [UserController::class, 'destroy'])
+                ->middelware('can:delete,user');
+            Route::delete('/users/{user}/destroy', [UserController::class, 'destroy'])
+                ->middelware('can:delete,user');
         });
     });
