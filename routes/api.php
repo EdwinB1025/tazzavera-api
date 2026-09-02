@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
 Route::post('/register', [UserController::class, 'store']);
 
@@ -11,14 +12,14 @@ Route::middleware('auth:api')
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
 
-        Route::middleware('scope:profile:write')->group(function () {
+        Route::middleware(CheckTokenForAnyScope::using('profile:write'))->group(function () {
             Route::put('/users/{user}', [UserController::class, 'update'])
                 ->middleware('can:update,user');
             Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
                 ->middleware('can:update,user');
             Route::delete('/users/{user}', [UserController::class, 'destroy'])
                 ->middleware('can:delete,user');
-            Route::delete('/users/{user}/destroy', [UserController::class, 'forceDestroy'])
+            Route::delete('/users/{user}/force', [UserController::class, 'forceDestroy'])
                 ->middleware('can:delete,user')->withTrashed();
         });
     });

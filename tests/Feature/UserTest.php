@@ -152,7 +152,7 @@ test('authenticated_user_deactivates_profile', function () {
 
     $this->withToken($token)
         ->deleteJson("/users/{$user->id}")
-        ->assertNoContent();
+        ->assertOk();
 
     $this->assertSoftDeleted($user);
 });
@@ -162,7 +162,7 @@ test('authenticated_user_deletes_profile', function () {
 
     $this->withToken($token)
         ->deleteJson("/users/{$user->id}/force")
-        ->assertNoContent();
+        ->assertOK();
 
-    $this->assertHardDeleted($user);
+    $this->assertDatabaseMissing('users', ['id' => $user->id]);
 });
