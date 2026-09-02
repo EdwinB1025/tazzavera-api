@@ -83,8 +83,9 @@ class UserController extends Controller
     /**
      * SoftDelete the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
+        $request->user()->tokens->each->revoke();
         $user->delete();
 
         return response()->json(['message' => __('users.deactivated')], 200);
@@ -93,8 +94,9 @@ class UserController extends Controller
     /**
      * SoftDelete the specified resource from storage.
      */
-    public function forceDestroy(User $user)
+    public function forceDestroy(Request $request, User $user)
     {
+        $request->user()->tokens->each->revoke();
         $user->forceDelete();
 
         return response()->json(['message' => __('users.deleted')], 200);
