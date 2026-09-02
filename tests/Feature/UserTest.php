@@ -11,14 +11,14 @@ beforeEach(function () {
     $this->seed(RolesSeeder::class);
 });
 
-test('create_new_user', function (?string $role = 'user') {
+test('user_registers', function (?string $role = 'user') {
     $user = User::factory()->registrationPayload($role);
     $response = $this->postJson('/register', $user);
     $response->dump();
     $response->assertStatus(201);
 })->with(['user', 'coffeeshop', 'specialist']);
 
-test('autenticate_user', function () {
+test('user_authenticates_with_pkce', function () {
 
     $user = User::factory()->create();
     $client = app(ClientRepository::class)->createAuthorizationCodeGrantClient(
@@ -82,7 +82,7 @@ test('autenticate_user', function () {
     }
 });
 
-test('logout_user', function () {
+test('user_logs_out', function () {
     [$user, $token,, $response] = authenticateUser();
 
     //Validate token generation
@@ -99,7 +99,7 @@ test('logout_user', function () {
     ]);
 });
 
-test('user_updates_field', function (string $field, string $value) {
+test('authenticated_user_updates_field', function (string $field, string $value) {
 
     [$user, $token] = authenticateUser();
 
@@ -121,7 +121,7 @@ test('user_updates_field', function (string $field, string $value) {
     'email'   => ['email', 'nuevo@example.com'],
 ]);
 
-test('user_updates_password', function () {
+test('authenticated_user_updates_password', function () {
 
     [$user, $token, $password] = authenticateUser();
 
@@ -136,4 +136,13 @@ test('user_updates_password', function () {
 
     // asserting the the password has been updated and hashed
     expect(Hash::check('nuevaClave1234', $user->fresh()->password))->toBeTrue();
+});
+
+test('authenticated_user_gets_own_data', function () {
+    [$user, $token] = authenticateUser();
+
+    $this->withToken($token)
+        ->getJson('/user')
+        ->assertOk()
+        ->assertJsonPath('data.id', $user->id);
 });
