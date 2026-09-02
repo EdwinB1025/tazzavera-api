@@ -77,15 +77,27 @@ class UserController extends Controller
         $user->password = $request->password;
         $user->save();
 
-        return response()->json(['message' => __('auth.password_updated')], 200);
+        return response()->json(['message' => __('user.password_updated')], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * SoftDelete the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response()->json(['message' => __('users.deactivated')], 200);
+    }
+
+    /**
+     * SoftDelete the specified resource from storage.
+     */
+    public function forceDestroy(User $user)
+    {
+        $user->delete();
+
+        return response()->json(['message' => __('users.deleted')], 200);
     }
 
     /**Revoke tokens: logging user out */
