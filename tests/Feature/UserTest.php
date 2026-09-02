@@ -151,7 +151,7 @@ test('authenticated_user_deactivates_profile', function () {
     [$user, $token] = authenticateWithWriteScope();
 
     $this->withToken($token)
-        ->deleteJson("/users/{$user->id}/deactivate")
+        ->deleteJson("/users/{$user->id}")
         ->assertNoContent();
 
     $this->assertSoftDeleted($user);
@@ -161,7 +161,7 @@ test('authenticated_user_deletes_profile', function () {
     [$user, $token] = authenticateWithWriteScope();
 
     $this->withToken($token)
-        ->deleteJson("/users/{$user->id}/deactivate")
+        ->deleteJson("/users/{$user->id}/force")
         ->assertNoContent();
 
     $this->assertHardDeleted($user);

@@ -17,8 +17,8 @@ Route::middleware('auth:api')
             Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
                 ->middleware('can:update,user');
             Route::delete('/users/{user}', [UserController::class, 'destroy'])
-                ->middelware('can:delete,user');
-            Route::delete('/users/{user}/destroy', [UserController::class, 'destroy'])
-                ->middelware('can:delete,user');
+                ->middleware('can:delete,user');
+            Route::delete('/users/{user}/destroy', [UserController::class, 'forceDestroy'])
+                ->middleware('can:delete,user')->withTrashed();
         });
     });
