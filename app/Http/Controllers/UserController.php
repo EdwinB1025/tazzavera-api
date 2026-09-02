@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\UpdateUserPassword;
 use App\Exceptions\RoleAssignmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -51,25 +54,52 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        $user = $request->user();
+        return new ResourcesUser($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+        return (new ResourcesUser($user))->response()->setStatusCode(200, 'User Updated');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update password for user model
      */
-    public function destroy(string $id)
+    public function updatePassword(UpdatePasswordRequest $request, User $user)
     {
-        //
+        $user->password = $request->password;
+        $user->save();
+
+        return response()->json(['message' => __('user.password_updated')], 200);
+    }
+
+    /**
+     * SoftDelete the specified resource from storage.
+     */
+    public function destroy(Request $request, User $user)
+    {
+        $request->user()->tokens->each->revoke();
+        $user->delete();
+
+        return response()->json(['message' => __('users.deactivated')], 200);
+    }
+
+    /**
+     * SoftDelete the specified resource from storage.
+     */
+    public function forceDestroy(Request $request, User $user)
+    {
+        $request->user()->tokens->each->revoke();
+        $user->forceDelete();
+
+        return response()->json(['message' => __('users.deleted')], 200);
     }
 
     /**Revoke tokens: logging user out */
