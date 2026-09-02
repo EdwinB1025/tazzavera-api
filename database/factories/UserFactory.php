@@ -5,9 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\Password;
 
 /**
  * @extends Factory<User>
@@ -28,7 +26,6 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'surname' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -41,35 +38,8 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
-    }
-
-    public function registrationPayload(string $role = 'user'): array
-    {
-        $password = $this->createPassword();
-
-        return [
-            'name' => fake()->name(),
-            'surname' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => $password,
-            'password_confirmation' => $password,
-            'role' => $role,
-        ];
-    }
-
-    public function createPassword(): string
-    {
-        do {
-            $password = Str::password(8, true, true, false);
-        } while (
-            Validator::make(
-                ['password' => $password],
-                ['password' => Password::defaults()],
-            )->fails()
-        );
-        return $password;
     }
 }
