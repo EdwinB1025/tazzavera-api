@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->ulid('ulid')->unique()->after('id');
+            $table->ulid('ulid')->unique();
             $table->string('contactable_type', 60);
             $table->unsignedBigInteger('contactable_id');
             $table->boolean('is_primary')->default(false);

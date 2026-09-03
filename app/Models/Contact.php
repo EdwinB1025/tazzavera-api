@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasPublicUlid;
+use App\Traits\HasPublicUlid;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 class Contact extends Model
 {
     use HasPublicUlid;
+
     protected $casts = [
         'is_primary' => 'boolean',
     ];
