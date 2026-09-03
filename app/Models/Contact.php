@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasPublicUlid;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
 )]
 class Contact extends Model
 {
-    use HasPublicUlid;
+    use HasPublicUlid, HasFactory;
 
     protected $casts = [
         'is_primary' => 'boolean',

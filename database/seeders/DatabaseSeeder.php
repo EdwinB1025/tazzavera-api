@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
+    //use WithoutModelEvents; EDB 09/03/26: avoid the custom trait to generate ulid based on the event creating.
 
     /**
      * Seed the application's database.
@@ -16,7 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(
-            [RolesSeeder::class,]
+            [
+                RolesSeeder::class,
+                //UserSeeder::class,
+                //LocationSeeder::class,
+            ]
         );
     }
 }

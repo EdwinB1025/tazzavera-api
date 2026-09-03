@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->morphMany(Contact::class, 'contactable');
     }
 
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
     /** Prunning of unactive profiles */
     public function prunable(): Builder
     {

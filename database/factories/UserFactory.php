@@ -2,12 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\Contact;
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use Override;
 
 /**
  * @extends Factory<User>
@@ -34,6 +37,14 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    #[Override]
+    public function configure()
+    {
+        return $this->afterCreating(
+            fn($user) => $user->contacts()->save(Contact::factory()->make())
+        );
     }
 
     /**
@@ -71,5 +82,12 @@ class UserFactory extends Factory
             )->fails()
         );
         return $password;
+    }
+
+    /**Assigning the role 'coffeeshop' */
+    public function assignRole(string $role = 'user'): static
+    {
+        /**EDB 09/03/26: the model parameter is passed by laravel directly, it works for an array of models */
+        return $this->afterCreating(fn($user) => $user->assignRole($role));
     }
 }

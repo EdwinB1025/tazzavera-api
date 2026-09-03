@@ -55,7 +55,10 @@ class AppServiceProvider extends ServiceProvider
         /** Defining relations aliases for polomirphic relations */
 
         Relation::enforceMorphMap(
-            ['user' => User::class,]
+            [
+                'user' => User::class,
+                'location' => \App\Models\Location::class,
+            ]
         );
     }
 
