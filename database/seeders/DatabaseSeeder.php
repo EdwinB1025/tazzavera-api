@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
                 RolesSeeder::class,
                 //UserSeeder::class,
                 //LocationSeeder::class,
+                OlfactoryTaxonomySeeder::class,
             ]
         );
     }
