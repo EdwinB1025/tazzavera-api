@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ factoryImport }}
+use App\Traits\HasPublicUlid;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends Model
+{
+    use HasPublicUlid;
+    {{ factory }}
+}

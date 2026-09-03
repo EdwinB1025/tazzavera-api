@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Traits\HasPublicUlid;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -20,7 +23,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Prunable;
+    use HasApiTokens, HasFactory, HasRoles, HasPublicUlid, Notifiable, SoftDeletes, Prunable;
 
     protected $guard_name = ['web', 'api'];
 
@@ -37,10 +40,18 @@ class User extends Authenticatable
         ];
     }
 
+    /** Relationships */
+    public function contacts()
+    {
+        return $this->morphMany(Contact::class, 'contactable');
+    }
+
+    /** Prunning of unactive profiles */
     public function prunable(): Builder
     {
         return static::where('deleted_at', '<=', now()->minus(months: 6));
     }
 
+    /** Prunning logic for relationships */
     public function prunning(): void {}
 }

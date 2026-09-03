@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Passport\Client;
+use App\Models\User;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Password;
@@ -49,6 +51,12 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'profile:write' => 'Modify or delete profile',
         ]);
+
+        /** Defining relations aliases for polomirphic relations */
+
+        Relation::enforceMorphMap(
+            ['user' => User::class,]
+        );
     }
 
     private function passwordDefaults(): void
