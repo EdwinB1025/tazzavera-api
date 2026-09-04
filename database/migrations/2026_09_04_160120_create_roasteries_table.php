@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('roasteries', function (Blueprint $table) {
             $table->id();
             $table->ulid('ulid')->unique();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name', 150);
-            $table->string('description', 255);
-            $table->decimal('latitud', 10, 8);
-            $table->decimal('longitud', 11, 8);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('roasteries');
     }
 };

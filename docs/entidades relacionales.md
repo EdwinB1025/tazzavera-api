@@ -88,20 +88,20 @@ Sin JSON `extrinsics`: todos sus campos son columnas planas. Sin `roastery` (el 
 ### `certifications` (asociativa coffee ↔ certification_type, N-N)
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
-| `coffee_id` | BIGINT UNSIGNED | FK→coffees, NN |
-| `certification_type_id` | BIGINT UNSIGNED | FK→certification_types, NN |
+| `coffee_id` | BIGINT UNSIGNED | FK→coffees (ON DELETE CASCADE), NN |
+| `certification_type_id` | BIGINT UNSIGNED | FK→certification_types (ON DELETE CASCADE), NN |
 
-UNIQUE (`coffee_id`,`certification_type_id`) — un café no repite tipo. Solo conecta, sin datos propios. Según CVA (Standard 105), la certificación es un atributo del café/origen, por eso cuelga de `coffee`, no del lote de tostado.
+UNIQUE (`coffee_id`,`certification_type_id`) — un café no repite tipo. Solo conecta, sin datos propios. Según CVA (Standard 105), la certificación es un atributo del café/origen, por eso cuelga de `coffee`, no del lote de tostado. **ON DELETE CASCADE en ambas FK:** es una tabla puramente asociativa; una fila sin su café o sin su tipo no significa nada, así que al borrar cualquiera de los dos extremos la fila de vínculo muere (la entidad del otro lado sobrevive).
 
 ### `coffee_inventory` (asociativa roastery ↔ coffee; el lote de tostado)
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
-| `roastery_id` | BIGINT UNSIGNED | FK→roasteries, NN |
-| `coffee_id` | BIGINT UNSIGNED | FK→coffees, NN |
+| `roastery_id` | BIGINT UNSIGNED | FK→roasteries (ON DELETE RESTRICT), NN |
+| `coffee_id` | BIGINT UNSIGNED | FK→coffees (ON DELETE RESTRICT), NN |
 | `roast_lot` | VARCHAR(60) | NULL (lote de tostador; dato informativo) |
 | `production_date` | DATE | NN |
 
-UNIQUE (`roastery_id`,`coffee_id`,`production_date`) — una producción por café por día. El café genérico (`coffees`) tiene su propio lote de origen (`coffees.lot`), distinto del lote de tostado (`roast_lot`).
+UNIQUE (`roastery_id`,`coffee_id`,`production_date`) — una producción por café por día. El café genérico (`coffees`) tiene su propio lote de origen (`coffees.lot`), distinto del lote de tostado (`roast_lot`). **ON DELETE RESTRICT en ambas FK:** un lote sí tiene datos propios y lo referencia `offerings` con RESTRICT; RESTRICT aquí impide que borrar un café o una tostadora arrastre lotes por debajo y puentee ese escudo. Coffees y roasteries hoy son datos de seeder sin endpoint de borrado, así que el RESTRICT no se dispara en producción — solo protege ante borrados manuales.
 
 ---
 

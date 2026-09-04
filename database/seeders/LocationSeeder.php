@@ -21,7 +21,7 @@ class LocationSeeder extends Seeder
             ->has(
                 Location::factory()
                     ->count($locations)
-                    ->has(Contact::factory(), 'contacts'),
+                    ->has(Contact::factory()->state(['is_primary' => true]), 'contacts'),
                 'locations'
             )->create();
     }

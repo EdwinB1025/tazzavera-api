@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
                 OlfactoryTaxonomySeeder::class,
             ]
         );
+
+        $this->callWith(RoasterySeeder::class, ['count' => 25]);
     }
 }

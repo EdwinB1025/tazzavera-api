@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
             [
                 'user' => User::class,
                 'location' => \App\Models\Location::class,
+                'roastery' => \App\Models\Roastery::class,
             ]
         );
     }

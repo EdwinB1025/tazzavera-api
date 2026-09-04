@@ -43,7 +43,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(
-            fn($user) => $user->contacts()->save(Contact::factory()->make())
+            fn($user) => $user->contacts()->save(Contact::factory()->make(['is_primary' => true]))
         );
     }
 
