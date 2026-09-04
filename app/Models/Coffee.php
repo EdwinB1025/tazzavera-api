@@ -33,4 +33,13 @@ class Coffee extends Model
     {
         return $this->belongsToMany(CertificationType::class, 'certifications');
     }
+
+    public function rosteries(): BelongsToMany
+    {
+        return $this->belongsToMany(Roastery::class)
+            ->using(CoffeeInventory::class)
+            ->withPivot(['roast_lot', 'production_date'])
+            ->as('inventory')
+            ->withTimestamps();
+    }
 }
