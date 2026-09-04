@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->callWith(RoasterySeeder::class, ['count' => 25]);
+        $this->callWith(CoffeeSeeder::class, ['count' => 50]);
     }
 }

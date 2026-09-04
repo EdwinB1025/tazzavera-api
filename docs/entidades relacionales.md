@@ -246,6 +246,7 @@ Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de 
 - Contacto polimórfico para `roasteries` (la entidad `contacts` ya lo soporta; falta la relación)
 - Pipeline ETL para aplanar los JSON de `evaluations` a tablas analíticas (análisis intensivo de consumo)
 - Actualizar `computeCuppingScore` para usar el eje `fragrance` real en vez de duplicar `aroma`
+- Expiración de certificaciones: `certifications` pasaría de pivote puro a entidad con estado (`issued_at`, `expires_at`), con modelo pivote (`belongsToMany(...)->using(Certification::class)`) para consultar vigencia y filtrar certificaciones activas vs vencidas. Hoy es asociativa pura (solo conecta, sin fechas, sin modelo, sin ulid).
 
 ## Notas de estado (delta con el esquema real)
 

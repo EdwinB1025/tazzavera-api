@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('coffees', function (Blueprint $table) {
             $table->id();
+            $table->ulid('ulid')->unique();
+            $table->string('name', 150);
+            $table->enum('roast_level', ['light', 'medium_light', 'medium', 'medium_dark', 'dark'])->default('medium');
+            $table->string('process', 60);
+            $table->string('variety', 60);
+            $table->string('country', 60);
+            $table->string('region', 90)->nullable();
+            $table->unsignedInteger('altitude')->nullable();
+            $table->string('lot', 60)->nullable();
             $table->timestamps();
         });
     }

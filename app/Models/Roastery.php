@@ -14,8 +14,6 @@ class Roastery extends Model
 
     /** Relationships */
 
-
-
     public function contacts()
     {
         return $this->morphMany(Contact::class, 'contactable');

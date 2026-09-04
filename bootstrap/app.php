@@ -2,10 +2,12 @@
 
 use App\Exceptions\ApiCustomException;
 use App\Http\Middleware\SetLocale;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,4 +33,12 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         );
          */
-    })->create();
+    })
+    ->withSchedule(
+        function (Schedule $schedule) {
+            $schedule->command('certifications:purge')->daily(); //EDB 09/04/26: deleting expried certifications, pending cronjob.
+            $schedule->command('model:prune', [ //EDB 09/04/26: deleting not active profiles, pending cronjob.
+                '--model' => [User::class],
+            ])->weekly();
+        }
+    )->create();
