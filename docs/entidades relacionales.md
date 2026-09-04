@@ -83,7 +83,10 @@ Sin JSON `extrinsics`: todos sus campos son columnas planas. Sin `roastery` (el 
 ### `certification_types` (catálogo de certificaciones)
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
-| `description` | VARCHAR(150) | NN (orgánico, Fairtrade, …) |
+| `code` | VARCHAR(60) | UQ, NN (slug estable: `organic`, `fairtrade`, … — clave pública y de ruta) |
+| `description` | VARCHAR(150) | NN (etiqueta de display: orgánico, Fairtrade, …) |
+
+Sin `ulid`: `code` es el identificador público único, así que esta entidad es la excepción a la regla "ulid en todo el dominio" — tiene slug natural estable que el resto de entidades no tiene (dos cafés pueden llamarse igual; `organic` es único por definición). El modelo resuelve el route binding por `code` (`getRouteKeyName()` → `'code'`), no por id ni ulid. Fuente de verdad en un PHP enum (`App\Enums\CertificationType`): el seeder puebla la tabla desde `cases()` (`code` = `$case->value`, `description` = `$case->label()`), con `create()` en foreach para que no haga falta ulid ni ids fijos. El front consume la lista por API y la trata como enum en runtime (itera `code`, no lo hardcodea → valores nuevos sin desplegar front).
 
 ### `certifications` (asociativa coffee ↔ certification_type, N-N)
 | Columna | Tipo MySQL | Propiedades |
