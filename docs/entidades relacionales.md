@@ -75,6 +75,7 @@ Sin contacto por ahora; en el futuro vía `contacts` polimórfica.
 | `variety` | VARCHAR(60) | NN |
 | `country` | VARCHAR(60) | NN |
 | `region` | VARCHAR(90) | NULL |
+| `producer` | VARCHAR(150) | NULL |
 | `altitude` | INT UNSIGNED | NULL |
 | `lot` | VARCHAR(60) | NULL (lote de origen) |
 
@@ -93,8 +94,10 @@ Sin `ulid`: `code` es el identificador público único, así que esta entidad es
 |---|---|---|
 | `coffee_id` | BIGINT UNSIGNED | FK→coffees (ON DELETE CASCADE), NN |
 | `certification_type_id` | BIGINT UNSIGNED | FK→certification_types (ON DELETE CASCADE), NN |
+| `issued_at` | DATE | NN (fecha de emisión de la certificación) |
+| `expires_at` | DATE | NULL (fecha de caducidad; NULL = no vence — p. ej. Cup of Excellence, premio a un lote sin vencimiento) |
 
-UNIQUE (`coffee_id`,`certification_type_id`) — un café no repite tipo. Solo conecta, sin datos propios. Según CVA (Standard 105), la certificación es un atributo del café/origen, por eso cuelga de `coffee`, no del lote de tostado. **ON DELETE CASCADE en ambas FK:** es una tabla puramente asociativa; una fila sin su café o sin su tipo no significa nada, así que al borrar cualquiera de los dos extremos la fila de vínculo muere (la entidad del otro lado sobrevive).
+UNIQUE (`coffee_id`,`certification_type_id`) — un café no repite tipo. Según CVA (Standard 105), la certificación es un atributo del café/origen, por eso cuelga de `coffee`, no del lote de tostado. **ON DELETE CASCADE en ambas FK:** al borrar el café o el tipo, la fila de vínculo muere (la entidad del otro lado sobrevive). **Semántica de `expires_at` NULL = perpetua:** la lógica de vigencia futura trata el NULL como "siempre vigente", no como "vencida por falta de dato" — el filtro sería `whereNull('expires_at')->orWhere('expires_at','>',now())`. Sin modelo pivote todavía: `issued_at`/`expires_at` se escriben con `attach($id, [...])` y se leen vía `withPivot('issued_at','expires_at')` en la relación `belongsToMany`; `wherePivot` cubre el filtrado por vigencia sin necesitar modelo (el modelo pivote solo se añadiría para castear las fechas a Carbon o encapsular métodos de vigencia — ver backlog).
 
 ### `coffee_inventory` (asociativa roastery ↔ coffee; el lote de tostado)
 | Columna | Tipo MySQL | Propiedades |
@@ -104,7 +107,7 @@ UNIQUE (`coffee_id`,`certification_type_id`) — un café no repite tipo. Solo c
 | `roast_lot` | VARCHAR(60) | NULL (lote de tostador; dato informativo) |
 | `production_date` | DATE | NN |
 
-UNIQUE (`roastery_id`,`coffee_id`,`production_date`) — una producción por café por día. El café genérico (`coffees`) tiene su propio lote de origen (`coffees.lot`), distinto del lote de tostado (`roast_lot`). **ON DELETE RESTRICT en ambas FK:** un lote sí tiene datos propios y lo referencia `offerings` con RESTRICT; RESTRICT aquí impide que borrar un café o una tostadora arrastre lotes por debajo y puentee ese escudo. Coffees y roasteries hoy son datos de seeder sin endpoint de borrado, así que el RESTRICT no se dispara en producción — solo protege ante borrados manuales.
+Lleva `ulid` (entidad de dominio expuesta por API — el front referencia un lote concreto al crear una offering). Nombre de tabla en singular `coffee_inventory` (el modelo `CoffeeInventory` requiere `protected $table = 'coffee_inventory'`, porque Eloquent pluralizaría a `coffee_inventories`). UNIQUE (`roastery_id`,`coffee_id`,`production_date`) — una producción por café por día. El café genérico (`coffees`) tiene su propio lote de origen (`coffees.lot`), distinto del lote de tostado (`roast_lot`). **ON DELETE RESTRICT en ambas FK:** un lote sí tiene datos propios y lo referencia `offerings` con RESTRICT; RESTRICT aquí impide que borrar un café o una tostadora arrastre lotes por debajo y puentee ese escudo. Coffees y roasteries hoy son datos de seeder sin endpoint de borrado, así que el RESTRICT no se dispara en producción — solo protege ante borrados manuales.
 
 ---
 
@@ -129,19 +132,26 @@ UNIQUE (`roastery_id`,`coffee_id`,`production_date`) — una producción por caf
 | `concordance` | DECIMAL(4,3) | NULL, der (Kendall's W 0-1) |
 | `verification_status` | ENUM('provisional','verified') | NN, DEFAULT 'provisional', der |
 
-UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño anterior se descompuso: `cupping_avg` + los 8 ejes (`*_avg`, incl. `fragrance`) son columnas filtrables; los sabores (main_tastes + cata_freq) pasaron a `offering_tastes`. Ya no hay JSON en offerings. Derivados: `updateConsensus()` recalcula columnas + reescribe `offering_tastes` cuando la offering tiene >5 evaluaciones `closed` + `specialist`.
+UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño anterior se descompuso: `cupping_avg` + los 8 ejes (`*_avg`, incl. `fragrance`) son columnas filtrables; los sabores (main_tastes + cata) pasaron a `offering_tastes`. Ya no hay JSON en offerings. Derivados: `updateConsensus()` recalcula columnas + reescribe `offering_tastes` cuando la offering tiene >5 evaluaciones `closed` + `specialist`.
 
-### `offering_tastes` (sabores agregados del consenso; main_tastes + cata unificados)
+### `offering_tastes` (referencias taxonómicas agregadas del consenso; main_tastes + defects + cata por eje, unificados)
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
 | `offering_id` | BIGINT UNSIGNED | FK→offerings (ON DELETE CASCADE), NN |
 | `taxonomy_ref` | BIGINT UNSIGNED | FK→olfactory_taxonomies, NN (id del nodo) |
-| `type` | ENUM('main_taste','cata') | NN (discrimina origen) |
-| `level` | TINYINT | NN |
-| `parent_id` | BIGINT UNSIGNED | NULL (solo cata; main_taste sin jerarquía) |
+| `type` | ENUM('main_tastes','defects','fragrance','aroma','flavor','aftertaste','mouthfeel') | NN (origen + eje unificados; coincide con la clave de origen en el JSON de la evaluación) |
+| `level` | TINYINT | NN (nivel de la taxonomía: 0 raíz / 1 subcategoría / 2 hoja) |
+| `parent_id` | BIGINT UNSIGNED | NULL (padre en la jerarquía de la taxonomía) |
 | `count` | INT UNSIGNED | NN (frecuencia entre evaluaciones cerradas) |
 
-Índice sugerido en `taxonomy_ref` (filtro de sabores del buscador). Derivada: `updateConsensus()` borra y reinserta las filas de cada offering en el recálculo. `taxonomy_ref` como FK real da integridad (ref inválido rechazado por la BD).
+`type` fusiona origen y eje en una sola columna. `main_tastes` y `defects` son grupos **transversales** (sabores básicos y defectos, sin eje propio); `fragrance`, `aroma`, `flavor`, `aftertaste`, `mouthfeel` son los ejes que capturan cata. **NO** aparecen `acidity`, `sweetness` ni `overall`: esos ejes no llevan descriptores de cata (solo puntuación), así que nunca generan filas aquí. Cada valor del ENUM coincide con la clave de origen en el JSON de la evaluación → `updateConsensus()` mapea origen→type sin traducir. Todos los grupos (main_tastes, defects, cata, mouthfeel) referencian `olfactory_taxonomies` vía `taxonomy_ref` (la taxonomía se reestructuró con un campo `categories` JSON que incluye `aromatics`, `main_tastes`, `defects`, `mouthfeel`). `level` y `parent_id` **se conservan**: son los niveles de la taxonomía (permiten reconstruir la jerarquía sin re-consultar). Índice sugerido en `taxonomy_ref` (filtro de sabores del buscador) y en `offering_id`. Derivada: `updateConsensus()` borra y reinserta las filas de cada offering en el recálculo. `taxonomy_ref` como FK real da integridad (ref inválido rechazado por la BD).
+
+**Consultas sobre `offering_tastes`:**
+- **Búsqueda general por sabor** (¿el café tiene X?): `WHERE taxonomy_ref = X` — verifica existencia, ignora `type`.
+- **Búsqueda por sabor en eje** (query params `aromaCata`, `flavorCata`, `fragranceCata`, `aftertasteCata`): `WHERE taxonomy_ref = X AND type = 'aroma'` — el `type` da el eje directo.
+- **Representación gráfica** (perfil de consenso por eje / radar): vista general derivada de esta tabla que agrupa conservando el `type` (eje). La vista existe solo para la representación gráfica; la búsqueda corre como query directa sobre la tabla base indexada.
+
+> **PENDIENTE (`count`):** decidir si `count` cuenta **menciones** (`COUNT(*)`) o **evaluaciones distintas** (`COUNT(DISTINCT evaluation_id)`). Afecta la magnitud del ranking y del radar (si dos ejes de la misma evaluación mencionan el mismo sabor, menciones lo cuenta dos veces). Para la búsqueda por existencia da igual; para la gráfica/ranking importa. `offering_tastes` es agregado y hoy no guarda `evaluation_id`, así que contar evaluaciones distintas exige resolverlo en `updateConsensus()` al construir el agregado. Resolver antes de implementar `updateConsensus()`.
 
 ### `evaluations` (contenedor; descriptive y affective como JSON homólogo)
 | Columna | Tipo MySQL | Propiedades |
@@ -233,7 +243,7 @@ UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño an
 | `description_es` | VARCHAR(250) | NULL |
 | `color_base` | CHAR(7) | NULL (hex, solo raíces) |
 | `color` | CHAR(7) | NULL, der (hex; raíz=color_base, hijos=HSL) |
-| `categories` | JSON | NULL |
+| `categories` | JSON | NULL (`aromatics`, `main_tastes`, `defects`, `mouthfeel`) |
 
 Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de aquí los atributos del formulario por dimensión (existe en BD, no usada por el formulario actual — usa scopes de Eloquent directos).
 
@@ -246,13 +256,16 @@ Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de 
 - Contacto polimórfico para `roasteries` (la entidad `contacts` ya lo soporta; falta la relación)
 - Pipeline ETL para aplanar los JSON de `evaluations` a tablas analíticas (análisis intensivo de consumo)
 - Actualizar `computeCuppingScore` para usar el eje `fragrance` real en vez de duplicar `aroma`
-- Expiración de certificaciones: `certifications` pasaría de pivote puro a entidad con estado (`issued_at`, `expires_at`), con modelo pivote (`belongsToMany(...)->using(Certification::class)`) para consultar vigencia y filtrar certificaciones activas vs vencidas. Hoy es asociativa pura (solo conecta, sin fechas, sin modelo, sin ulid).
+- Modelo pivote para `certifications` (`belongsToMany(...)->using(Certification::class)`): las columnas `issued_at`/`expires_at` ya existen y se manejan con `attach` + `withPivot` + `wherePivot` (filtrado de vigencia) sin modelo. El modelo pivote solo se añadiría para castear las fechas a Carbon o encapsular lógica de vigencia (`isExpired()`, scopes `active()`/`expired()`) si el casting manual se vuelve recurrente.
+- Purga/vigencia de certificaciones (comando + scheduler): comando Artisan `certifications:purge` (`PurgeExpiredCertifications`) que actúa sobre las filas con `expires_at < now()` (NULL = perpetua, nunca se purga). Programado con `Schedule::command('certifications:purge')->daily()` en `routes/console.php`. Requiere disparador del SO (cron en Linux, Programador de tareas en Windows, `schedule:work` en local). Decisión abierta: **borrar** (destructivo, pierde histórico) vs **filtrar** por `wherePivot('expires_at','>',now())` en consultas (no destructivo, sin infraestructura) — el filtrado es preferible salvo que volumen o requisitos legales exijan borrar. Ver `deployment-notes.md`.
+- Vista de representación gráfica sobre `offering_tastes` (perfil de consenso por eje / radar): vista SQL que agrega conservando el `type`, para consumo del front. La búsqueda NO la usa (corre como query directa sobre la tabla base indexada).
 
 ## Notas de estado (delta con el esquema real)
 
 El SQL real actual (forward-engineering) aún refleja el diseño **anterior** en varias tablas — este documento es el diseño **objetivo**, a aplicar por migraciones cuando se trabaje cada capa:
 - `coffees` real: `roastery` VARCHAR + `extrinsics` JSON (aquí: columnas planas + sin roastery).
+- `roasteries` real: implementar rostearies como un tipo de usario con su respectivo permiso.
 - `locations` real: contacto en columnas planas propias (aquí: vía `contacts` polimórfica).
 - `offerings` real: `coffee_id` + `consensus` JSON (aquí: `coffee_inventory_id` + columnas descompuestas + `offering_tastes`).
 - `evaluations` real: `descriptive`/`affective` con mapas separados `axis`/`cata`/`note`, sin `fragrance` (aquí: mapa homólogo por eje + `fragrance` + columnas extraídas).
-- No existen aún: `contacts`, `roasteries` (como FK), `certification_types`, `certifications`, `coffee_inventory`, `offering_tastes`.
+- **Migrado en el API (sesión actual):** `roasteries`, `certification_types`, `coffees` (con `producer`), `certifications` (con `issued_at`/`expires_at`), `coffee_inventory` (con `ulid`, `$table` explícito). Pendientes de migrar: `offerings`, `offering_tastes`, `evaluations`.

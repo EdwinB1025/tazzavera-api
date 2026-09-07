@@ -4,7 +4,7 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 
 **Specialist:** authenticated professional cupper/taster. Their role is to create, edit and close evaluations on existing offerings — they provide the expert judgment that feeds an offering's consensus. They do not create or edit offerings.
 
-**Coffeeshop:** authenticated coffee shop, owner of its own offerings. Creates and edits its offerings (associating a coffee and a location), and creates/edits the provisional technical evaluation (at most one per offering) required to publish it. Does not close evaluations or evaluate other shops' offerings.
+**Coffeeshop:** authenticated coffee shop, owner of its own offerings. Creates and edits its offerings (associating a coffee inventory lot and one or more of its own locations), and creates/edits the provisional technical evaluation (at most one per offering) required to publish it. Does not close evaluations or evaluate other shops' offerings.
 
 **User (public):** unauthenticated visitor (or authenticated without an elevated role) who only reads information — accesses the public index/show endpoints for offerings and evaluations. Does not create, edit, close or delete anything; read-only consumption.
 
@@ -12,13 +12,52 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| GET | `/offerings` | — | Public | Query: `name`, `city`, `origin`, `process`, `score`, `main_tastes[]`, `specific_tastes[]` |
-| GET | `/offerings/{id}` | — | Public | — |
-| POST | `/offerings` | coffeeshop | Authenticated | Body: `location_id`, `coffee_id` |
-| PUT | `/offerings/{id}` | coffeeshop (owner) | Authenticated | Body: `location_id`, `coffee_id` |
-| DELETE | `/offerings/{id}` | coffeeshop (owner) | Authenticated | — |
+| GET | `/offerings` | — | Public | Query:  `evaluationCount`, `defectiveCount`, `cuppingAvgFrom`, `cuppingAvgTo`, `fragranceFrom`, `aromaFrom`, `flavorFrom`, `aftertasteFrom`, `acidityFrom`, `sweetnessFrom`, `mouthfeelFrom`, `overallFrom`, `fragranceTo`, `aromaTo`, `flavorTo`, `aftertasteTo`, `acidityTo`, `sweetnessTo`, `mouthfeelTo`, `overallTo`, `cataRef`, `fragranceCata`, `aromaCata`, `flavorCata`, `aftertasteCata`, `mouthfeelCata`, `coffeeshopUlid`, `locationUlid`, `city`, `coffeeName`, `originCountry`, `originRegion`, `process`, `producer` |
+| GET | `/offerings/{offeringUlid}` | — | Public | — |
+| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffee_inventory_ulid`, `location_ulids[]` (batch — one offering per location, all for the same inventory lot) |
+| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffee_inventory_ulid`, `location_ulid` (single) |
+| DELETE | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | — |
 
-`location_id` and `coffee_id` reference existing records (they are not created nested in the same request). The pair `(location_id, coffee_id)` is unique.
+**Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same `coffee_inventory_id`. The pair `(location_id, coffee_inventory_id)` is UNIQUE.
+
+- **Ownership (hard 403):** every `locatio n_ulid` in the batch is validated first against the authenticated coffeeshop. If any location is not owned by the caller → `403`, nothing is created. This is authorization, not a warning.
+- **Duplicates (partial, warning):** after ownership passes, offerings are created; any `(location, inventory)` pair that already exists is skipped (not a failure). Not transactional-all-or-nothing — the new ones persist, the colliding ones are reported.
+- **Response `201`** with a partial breakdown the front handles as a warning:
+
+```json
+{
+  "created": [ { "offeringUlid": "01J…", "locationUlid": "01J…" } ],
+  "skipped": [ { "locationUlid": "01J…", "reason": "already_offered" } ]
+}
+```
+
+`coffee_inventory_ulid` and `location_ulids` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
+
+## Coffee Inventory
+
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
+|---|---|---|---|---|
+| GET | `/coffeeInventory` | coffeeshop | Authenticated | Query: `coffeeName`, `originCountry`, `originRegion`, `process`, `producer`, `city` |
+
+Feeds the inventory selector when a coffeeshop creates an offering. Returns the available roast lots, each with its `roastery` and `coffee` nested as JSON (`CoffeeInventoryResource` embedding `RoasteryResource` + `CoffeeResource`). No individual inventory-lot profile endpoint for now (`/{inventoryUlid}` not exposed) — the list is only for offering creation. Closed to authenticated coffeeshops for now.
+
+Filters operate on the nested café (`whereHas('coffee', …)`) since `coffeeName`/`originCountry`/`originRegion`/`process`/`producer` are `coffees` columns, not inventory columns. **`city`** filters by the roastery's contact (`whereHas('roastery.contacts', …)`).
+
+## Locations
+
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
+|---|---|---|---|---|
+| GET | `/locations` | coffeeshop | `auth:api` | — Returns the authenticated coffeeshop's own locations (query scoped to `user()->locations`) |
+
+Two layers: role middleware (only coffeeshops enter the endpoint) + query scoping (only the owner's locations are returned — ownership lives in the query, not a policy). No ulid in the route: the "whose" comes from the token. Query-parameter filters to be added later.
+
+## Taxonomy
+
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
+|---|---|---|---|---|
+| GET | `/taxonomies` | — | Public | — Full olfactory taxonomy tree |
+
+Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root with its `children`, and each child with its `children` / grandchildren). Feeds the cata descriptor wheel in the evaluation form. Reference data — cacheable aggressively.
 
 ## Evaluations
 
@@ -30,7 +69,7 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 | PUT | `/evaluations/{id}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extraction_method`, `status`, `descriptive`, `affective`, `note` |
 | DELETE | `/evaluations/{id}` | specialist (own), coffeeshop (own) | Authenticated | — |
 
-`evaluator_id` and `evaluator_role` are **not** request inputs: the backend derives them from the authenticated user (`evaluator_id` = logged-in user; `evaluator_role` = that user's role). Closing an evaluation has no dedicated route — it is the same `PATCH` changing `status` to `closed`.
+`evaluator_id` and `evaluator_role` are **not** request inputs: the backend derives them from the authenticated user (`evaluator_id` = logged-in user; `evaluator_role` = that user's role). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
 
 ## Users
 
@@ -56,3 +95,21 @@ Login is a three-step PKCE flow: `POST /login` (creates the Fortify web session)
 - `GET /users/{id}` to fetch *other* users (third-party profiles): role allowed and exposed fields not yet defined.
 - Anonymization / policy for generated data (evaluations) on hard delete.
 - **User contact information as a separate entity:** define the model (likely relational, not JSON), its cardinality (one or several contacts per user?), which fields it holds, and its endpoints (own CRUD or nested under the user).
+- Query-parameter filters for `GET /locations`.
+- Public `GET /coffeeshops/{ulid}/locations` (locations of a given coffeeshop by ulid) — not yet decided whether it coexists with the private `GET /locations`.
+
+## Coffeeshops
+
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
+|---|---|---|---|---|
+| GET | `/coffeeshops` | — | Public | Query: `city` (coffeeshops with a location/contact in that city) |
+| GET | `/coffeeshops/{coffeeshopUlid}` | — | Public | — Returns the coffeeshop with its `offerings` and `locations` nested |
+
+## Coffees
+
+| Method | Endpoint | Role | Auth | Query Parameters / Inputs |
+|---|---|---|---|---|
+| GET | `/coffees` | — | Public | Query: `coffeeName`, `originCountry`, `originRegion`, `process`, `producer`, `city` |
+| GET | `/coffees/{coffeeUlid}` | — | Public | — |
+
+Public catalog browsing of coffees (informational). Distinct from `/coffeeInventory`, which is the lot-level resource used to create offerings.

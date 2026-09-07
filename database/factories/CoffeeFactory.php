@@ -26,6 +26,7 @@ class CoffeeFactory extends Factory
             'variety' => fake()->randomElement(['Caturra', 'Bourbon', 'Typica', 'Geisha', 'Catuai', 'SL28', 'Pacamara']),
             'country' => fake()->randomElement(['Etiopía', 'Colombia', 'Kenia', 'Brasil', 'Guatemala', 'Costa Rica', 'Panamá']),
             'region' => fake()->optional()->city(),
+            'producer' => fake()->optional()->name(),
             'altitude' => fake()->numberBetween(1000, 2200),
             'lot' => fake()->year() . '-' . str_pad(fake()->numberBetween(1, 12), 2, '0', STR_PAD_LEFT),
         ];
