@@ -106,7 +106,7 @@ test('authenticated_user_updates_field', function (string $field, string $value)
     //Updating field using the api route
 
     $this->withToken($token)
-        ->putJson("/users/{$user->id}", [$field => $value])
+        ->putJson("/users/{$user->ulid}", [$field => $value])
         ->assertOk();
 
     //asserting the field value in DB
@@ -127,7 +127,7 @@ test('authenticated_user_updates_password', function () {
 
     //Updating password using the specific api route
     $this->withToken($token)
-        ->putJson("/users/{$user->id}/password", [
+        ->putJson("/users/{$user->ulid}/password", [
             'current_password' => $password,
             'password' => 'nuevaClave1234',
             'password_confirmation' => 'nuevaClave1234',
@@ -151,7 +151,7 @@ test('authenticated_user_deactivates_profile', function () {
     [$user, $token] = authenticateWithWriteScope();
 
     $this->withToken($token)
-        ->deleteJson("/users/{$user->id}")
+        ->deleteJson("/users/{$user->ulid}")
         ->assertOk();
 
     $this->assertSoftDeleted($user);
@@ -161,7 +161,7 @@ test('authenticated_user_deletes_profile', function () {
     [$user, $token] = authenticateWithWriteScope();
 
     $this->withToken($token)
-        ->deleteJson("/users/{$user->id}/force")
+        ->deleteJson("/users/{$user->ulid}/force")
         ->assertOK();
 
     $this->assertDatabaseMissing('users', ['id' => $user->id]);

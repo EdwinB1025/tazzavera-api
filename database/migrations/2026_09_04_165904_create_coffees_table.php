@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('variety', 60);
             $table->string('country', 60);
             $table->string('region', 90)->nullable();
+            $table->string('producer', 150)->nullable();
             $table->unsignedInteger('altitude')->nullable();
             $table->string('lot', 60)->nullable();
             $table->timestamps();

@@ -27,7 +27,9 @@ class RoasteryFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(
-            fn($rostery) => $rostery->contacts()->save(Contact::factory()->make(['is_primary' => true]))
+            function ($rostery) {
+                $rostery->contacts()->save(Contact::factory()->make(['is_primary' => true]));
+            }
         );
     }
 }
