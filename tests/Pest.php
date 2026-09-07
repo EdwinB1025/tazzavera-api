@@ -51,12 +51,12 @@ function something()
     // ..
 }
 
-function authenticate(): array
+function authenticate($role = 'user'): array
 {
 
     // Create User
     $password = 'testFakeUser1234';
-    $user = User::factory()->create(['password' => $password]);
+    $user = User::factory()->assignRole($role)->create(['password' => $password]);
 
     // Create a client
     $client = app(ClientRepository::class)
@@ -75,12 +75,12 @@ function authenticate(): array
     return [$user, $token, $password, $response];
 }
 
-function authenticateWithWriteScope(): array
+function authenticateWithWriteScope($role = 'user'): array
 {
 
     // Create User
     $password = 'testFakeUser1234';
-    $user = User::factory()->create(['password' => $password]);
+    $user = User::factory()->assignRole($role)->create(['password' => $password]);
 
     // Create a client
     $client = app(ClientRepository::class)
