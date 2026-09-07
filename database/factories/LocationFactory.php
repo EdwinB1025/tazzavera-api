@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Contact;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,5 +26,14 @@ class LocationFactory extends Factory
             'latitud' => fake()->latitude(),
             'longitud' => fake()->longitude(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(
+            function ($location) {
+                $location->contacts()->save(Contact::factory()->make(['is_primary' => true]));
+            }
+        );
     }
 }

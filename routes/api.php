@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,7 @@ Route::middleware('auth:api')
     ->group(function () {
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
+        Route::get('/locations', [LocationController::class, 'index'])->middleware('role:coffeeshop');
 
         Route::middleware(CheckTokenForAnyScope::using('profile:write'))->group(function () {
             Route::put('/users/{user}', [UserController::class, 'update'])

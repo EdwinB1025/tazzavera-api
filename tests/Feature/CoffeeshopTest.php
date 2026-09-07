@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Location;
 use Database\Seeders\RolesSeeder;
 
 beforeEach(function () {
@@ -8,7 +9,9 @@ beforeEach(function () {
 
 test('coffeeshop_retrieves_locations', function () {
 
-    [, $token] = authenticate('coffeeshop');
+    [$user, $token] = authenticate('coffeeshop');
+
+    Location::factory()->count(3)->create(['user_id' => $user->id]);
 
     $structure = [
         'data' => [
@@ -38,6 +41,7 @@ test('coffeeshop_retrieves_locations', function () {
 
     $this->withToken($token)
         ->getJson('/locations')
+        ->dump()
         ->assertOk()
         ->assertJsonStructure($structure);
 });
