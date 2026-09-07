@@ -1,6 +1,6 @@
-# Installation conflicts log
+# Deployment notes
 
-> Log of significant conflicts encountered while installing packages/dependencies.
+> Log of significant conflicts encountered while installing packages/dependencies, plus deploy-time notes.
 > Only real conflicts are recorded (something that blocked or broke the installation), not routine steps.
 
 ---
@@ -26,9 +26,11 @@
 
 ---
 
-## Deploy note (not an installation conflict, but relevant)
+## Deploy notes (not installation conflicts, but relevant)
 
 - **`uncompromised()`** in `Password::defaults()` makes an HTTP call to pwnedpasswords.com. It must be **active only in production** (guard it with `app()->isProduction()`); in local/testing it is disabled to avoid the SSL failure and the network dependency. On the deploy server, ensure `ext-sodium` is enabled (Passport needs it at runtime) and that the CA certificate bundle (`cacert.pem`) is configured if production does use `uncompromised()`.
+
+- **Task scheduler trigger (`certifications:purge` and future scheduled tasks):** the schedule is declared in `routes/console.php` with `Schedule::command('certifications:purge')->daily()`, but that only defines the cadence — it does NOT create any cron. The trigger that runs `php artisan schedule:run` every minute is server infrastructure and depends on the deploy OS: Linux → a single crontab entry (`* * * * * cd /path && php artisan schedule:run >> /dev/null 2>&1`); Windows Server → Task Scheduler pointing at `schedule:run` every minute; managed platforms (Forge/Vapor/Laravel Cloud) → scheduler already wired, no manual cron. On **local native Windows** there is no cron: use `php artisan schedule:work` (a foreground process that simulates cron) to test, and `php artisan schedule:list` to verify tasks and next run time. The app is portable; only the trigger changes depending on where the server runs.
 
 ---
 
