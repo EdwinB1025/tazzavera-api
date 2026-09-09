@@ -20,13 +20,9 @@ class CoffeeInventoryFactory extends Factory
      */
     public function definition(): array
     {
-        $coffeeId = Coffee::inRandomOrder()->first()?->id;
-        $rosteryId = Roastery::inRandomOrder()->first()?->id;
-
-
         return [
-            'roastery_id' => $rosteryId,
-            'coffee_id' => $coffeeId,
+            'roastery_id' => Roastery::inRandomOrder()->first()?->id,
+            'coffee_id' => Coffee::inRandomOrder()->first()?->id,
             'production_date' => fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d'),
             //EDB 09/04/31: generate a new lot, if the combination exists already for the same day
             'roast_lot' => function (array $attributes) {

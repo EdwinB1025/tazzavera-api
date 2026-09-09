@@ -19,13 +19,23 @@ class CoffeeFactory extends Factory
      */
     public function definition(): array
     {
+        $regions = [
+            'Etiopía'     => ['Yirgacheffe', 'Sidamo', 'Guji', 'Harrar', 'Limu'],
+            'Colombia'    => ['Huila', 'Nariño', 'Tolima', 'Cauca', 'Antioquia'],
+            'Kenia'       => ['Nyeri', 'Kirinyaga', 'Kiambu', 'Murang\'a', 'Embu'],
+            'Brasil'      => ['Sul de Minas', 'Cerrado Mineiro', 'Mogiana', 'Chapada Diamantina', 'Espírito Santo'],
+            'Guatemala'   => ['Antigua', 'Huehuetenango', 'Atitlán', 'Cobán', 'Fraijanes'],
+            'Costa Rica'  => ['Tarrazú', 'Tres Ríos', 'Valle Central', 'Valle Occidental', 'Brunca'],
+            'Panamá'      => ['Boquete', 'Volcán', 'Chiriquí', 'Renacimiento'],
+        ];
+
         return [
             'name' => fake()->words(2, true),
             'roast_level' => fake()->randomElement(RoastLevel::cases()),
             'process' => fake()->randomElement(['washed', 'natural', 'honey', 'anaerobic', 'wet_hulled']),
             'variety' => fake()->randomElement(['Caturra', 'Bourbon', 'Typica', 'Geisha', 'Catuai', 'SL28', 'Pacamara']),
-            'country' => fake()->randomElement(['Etiopía', 'Colombia', 'Kenia', 'Brasil', 'Guatemala', 'Costa Rica', 'Panamá']),
-            'region' => fake()->optional()->city(),
+            'country' => fake()->randomElement(array_keys($regions)),
+            'region' => fn($attributes) => fake()->randomElement($regions[$attributes['country']]),
             'producer' => fake()->optional()->name(),
             'altitude' => fake()->numberBetween(1000, 2200),
             'lot' => fake()->year() . '-' . str_pad(fake()->numberBetween(1, 12), 2, '0', STR_PAD_LEFT),
