@@ -7,12 +7,14 @@ use App\Models\Contact;
 use App\Models\Location;
 use App\Models\Roastery;
 use Database\Seeders\CertificationTypeSeeder;
+use Database\Seeders\OlfactoryTaxonomySeeder;
 use Database\Seeders\RolesSeeder;
 
 beforeEach(
     function () {
         $this->seed(RolesSeeder::class);
         $this->seed(CertificationTypeSeeder::class);
+        $this->seed(OlfactoryTaxonomySeeder::class);
     }
 );
 
@@ -149,3 +151,32 @@ test('coffeeshop_filters_coffee_inventory_combined', function (array $filters) {
     'country + process'       => [['originCountry' => 'Colombia', 'process' => 'honey']],
     'name + country + process' => [['coffeeName' => 'Cafes los andes', 'originCountry' => 'Colombia', 'process' => 'honey']],
 ]);
+
+test('anyone_retrieves_taxonomy_tree', function () {
+
+    $structure = [
+        'data' => [
+            '*' => [
+                'level',
+                'name_en',
+                'name_es',
+                'description_en',
+                'description_es',
+                'color',
+                'categories',
+                'children' => [
+                    '*' => [
+                        'level',
+                        'name_en',
+                        'name_es',
+                        'children',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    $this->getJson('/taxonomies')
+        ->assertOk()
+        ->assertJsonStructure($structure);
+});
