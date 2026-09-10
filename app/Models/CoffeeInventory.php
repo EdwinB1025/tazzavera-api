@@ -22,6 +22,9 @@ class CoffeeInventory extends Pivot
 {
     use HasPublicUlid, HasFactory;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<static>
+     */
     #[Scope]
     protected function filter(Builder $query, array $validated): void
     {
