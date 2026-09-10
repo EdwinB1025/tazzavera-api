@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable('name', 'description')]
 class Roastery extends Model
@@ -27,5 +28,10 @@ class Roastery extends Model
             ->withPivot(['roast_lot', 'production_date'])
             ->as('inventory')
             ->withTimestamps();
+    }
+
+    public function coffeeInventory(): HasMany
+    {
+        return $this->hasMany(CoffeeInventory::class);
     }
 }

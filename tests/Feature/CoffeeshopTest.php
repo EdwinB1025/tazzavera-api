@@ -1,15 +1,20 @@
 <?php
 
+use App\Models\CertificationType;
 use App\Models\Coffee;
 use App\Models\CoffeeInventory;
 use App\Models\Contact;
 use App\Models\Location;
 use App\Models\Roastery;
+use Database\Seeders\CertificationTypeSeeder;
 use Database\Seeders\RolesSeeder;
 
-beforeEach(function () {
-    $this->seed(RolesSeeder::class);
-});
+beforeEach(
+    function () {
+        $this->seed(RolesSeeder::class);
+        $this->seed(CertificationTypeSeeder::class);
+    }
+);
 
 test('coffeeshop_retrieves_locations', function () {
 
@@ -50,16 +55,17 @@ test('coffeeshop_retrieves_locations', function () {
         ->assertJsonStructure($structure);
 });
 
-test('coffeeshop_retrieves_coffee_inventory', function ($model, $field, $value, $queryParm) {
+test('coffeeshop_filters_coffee_inventory', function ($model, $field, $value, $queryParm) {
 
     [, $token] = authenticate('coffeeshop');
 
     //Create coffeeInventory
 
-    $rawCoffee = ($model === 'coffee') ? [$field => $value] : null;
-    $rawRoastery = ($model === 'roastery') ? [$field => $value] : null;
+    $rawCoffee = ($model === 'coffee') ? [$field => $value] : [];
+    $rawRoastery = ($model === 'roastery') ? [$field => $value] : [];
 
     $coffee = Coffee::factory()->create($rawCoffee);
+
     $roastery = Roastery::factory()
         ->has(
             Contact::factory()->state($rawRoastery),

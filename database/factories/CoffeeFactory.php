@@ -48,6 +48,7 @@ class CoffeeFactory extends Factory
             $count = fake()->numberBetween(0, 3);
 
             if ($count === 0) {
+                dump("Coffee {$coffee->id}: 0 certificaciones");
                 return;
             }
 
@@ -61,6 +62,7 @@ class CoffeeFactory extends Factory
                             : (clone $issued)->modify('+3 years'),
                     ]);
                 });
+            dump("Coffee {$coffee->id}: {$count} certificaciones asociadas");
         });
     }
 }

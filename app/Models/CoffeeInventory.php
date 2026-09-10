@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(
     'roastery_id',
@@ -21,6 +22,8 @@ use Illuminate\Database\Query\Builder;
 class CoffeeInventory extends Pivot
 {
     use HasPublicUlid, HasFactory;
+
+    /**Modle Scopes */
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder<static>
@@ -105,5 +108,17 @@ class CoffeeInventory extends Pivot
                 fn($q) => $q->where('city', $v)
             )
         );
+    }
+
+    /**Relationships */
+
+    public function coffee(): BelongsTo
+    {
+        return $this->belongsTo(Coffee::class);
+    }
+
+    public function roastery(): BelongsTo
+    {
+        return $this->belongsTo(Roastery::class);
     }
 }

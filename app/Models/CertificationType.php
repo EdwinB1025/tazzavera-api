@@ -20,6 +20,7 @@ class CertificationType extends Model
 
     public function coffees(): BelongsToMany
     {
-        return $this->belongsToMany(Coffee::class, 'certifications');
+        return $this->belongsToMany(Coffee::class, 'certifications')
+            ->withPivot('issued_at', 'expires_at');
     }
 }

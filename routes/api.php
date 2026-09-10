@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoffeeInventoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -10,10 +11,19 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:api')
     ->group(function () {
+
+        /**EDB 09/10/26: Routes to collect user profile data and logs out */
+
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
-        Route::get('/locations', [LocationController::class, 'index'])->middleware('role:coffeeshop');
 
+        /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
+        Route::middleware('role:coffeeshop')->group(function () {
+            Route::get('/locations', [LocationController::class, 'index']);
+            Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
+        });
+
+        /**EDB 09/10/26: Routes for user to administer theri own profile*/
         Route::middleware(CheckTokenForAnyScope::using('profile:write'))->group(function () {
             Route::put('/users/{user}', [UserController::class, 'update'])
                 ->middleware('can:update,user');
