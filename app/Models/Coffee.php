@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(
     'name',
@@ -31,7 +32,8 @@ class Coffee extends Model
 
     public function certificationTypes(): BelongsToMany
     {
-        return $this->belongsToMany(CertificationType::class, 'certifications');
+        return $this->belongsToMany(CertificationType::class, 'certifications')
+            ->withPivot('issued_at', 'expires_at');
     }
 
     public function rosteries(): BelongsToMany
@@ -41,5 +43,10 @@ class Coffee extends Model
             ->withPivot(['roast_lot', 'production_date'])
             ->as('inventory')
             ->withTimestamps();
+    }
+
+    public function coffeeInventory(): HasMany
+    {
+        return $this->hasMany(CoffeeInventory::class);
     }
 }
