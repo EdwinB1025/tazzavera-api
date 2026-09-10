@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\CoffeeInventoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
+/**EDB 09/10/26: Public routes */
 Route::post('/register', [UserController::class, 'store']);
+Route::get('/taxonomies', [TaxonomyController::class, 'index']);
 
 Route::middleware('auth:api')
     ->group(function () {

@@ -177,6 +177,7 @@ test('anyone_retrieves_taxonomy_tree', function () {
     ];
 
     $this->getJson('/taxonomies')
+        //->dump()
         ->assertOk()
         ->assertJsonStructure($structure);
 });
