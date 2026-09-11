@@ -117,6 +117,11 @@ class CoffeeInventory extends Pivot
         return $this->belongsTo(Coffee::class);
     }
 
+    public function offerings()
+    {
+        return $this->hasMany(Offering::class);
+    }
+
     public function roastery(): BelongsTo
     {
         return $this->belongsTo(Roastery::class);

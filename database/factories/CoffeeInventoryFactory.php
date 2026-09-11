@@ -6,7 +6,6 @@ use App\Models\Coffee;
 use App\Models\CoffeeInventory;
 use App\Models\Roastery;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 /**
  * @extends Factory<CoffeeInventory>
