@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Location;
 use App\Models\Roastery;
 use Database\Seeders\CertificationTypeSeeder;
+use Database\Seeders\CreateOfferingSeeder;
 use Database\Seeders\OlfactoryTaxonomySeeder;
 use Database\Seeders\RolesSeeder;
 
@@ -22,7 +23,7 @@ test('coffeeshop_retrieves_locations', function () {
 
     [$user, $token] = authenticate('coffeeshop');
 
-    Location::factory()->count(3)->create(['user_id' => $user->id]);
+    createLocation(['user_id' => $user->id]);
 
     $structure = [
         'data' => [
@@ -52,7 +53,7 @@ test('coffeeshop_retrieves_locations', function () {
 
     $this->withToken($token)
         ->getJson('/locations')
-        ->dump()
+        //->dump()
         ->assertOk()
         ->assertJsonStructure($structure);
 });
@@ -64,15 +65,10 @@ test('coffeeshop_filters_coffee_inventory', function ($model, $field, $value, $q
     //Create coffeeInventory
 
     $rawCoffee = ($model === 'coffee') ? [$field => $value] : [];
-    $rawRoastery = ($model === 'roastery') ? [$field => $value] : [];
+    $contactRoastery = ($model === 'roastery') ? [$field => $value] : [];
 
-    $coffee = Coffee::factory()->create($rawCoffee);
-
-    $roastery = Roastery::factory()
-        ->has(
-            Contact::factory()->state($rawRoastery),
-            'contacts'
-        )->create();
+    $coffee = createCoffee($rawCoffee);
+    $roastery = createRoastery([], $contactRoastery);
 
     CoffeeInventory::factory()
         ->create([
@@ -112,7 +108,7 @@ test('coffeeshop_filters_coffee_inventory', function ($model, $field, $value, $q
     /**Request with filter */
     $this->withToken($token)
         ->getJson("/coffeeInventory?{$queryParm}={$value}")
-        ->dump()
+        //->dump()
         ->assertOk()
         ->assertJsonStructure($structure);
 })->with([
@@ -126,14 +122,15 @@ test('coffeeshop_filters_coffee_inventory', function ($model, $field, $value, $q
 ]);
 
 test('coffeeshop_filters_coffee_inventory_combined', function (array $filters) {
+
     [$user, $token] = authenticate('coffeeshop');
 
-    $coffee = Coffee::factory()->create([
+    $coffee = createCoffee([
         'name' => 'Cafes los andes',
         'country' => 'Colombia',
         'process' => 'honey',
     ]);
-    $roastery = Roastery::factory()->create();
+    $roastery = createRoastery();
     CoffeeInventory::factory()->create([
         'coffee_id' => $coffee->id,
         'roastery_id' => $roastery->id,
@@ -152,32 +149,26 @@ test('coffeeshop_filters_coffee_inventory_combined', function (array $filters) {
     'name + country + process' => [['coffeeName' => 'Cafes los andes', 'originCountry' => 'Colombia', 'process' => 'honey']],
 ]);
 
-test('anyone_retrieves_taxonomy_tree', function () {
+test('coffeeshop_creates_offering', function ($count) {
+    [$user, $token] = authenticate('coffeeshop');
 
-    $structure = [
-        'data' => [
-            '*' => [
-                'level',
-                'name_en',
-                'name_es',
-                'description_en',
-                'description_es',
-                'color',
-                'categories',
-                'children' => [
-                    '*' => [
-                        'level',
-                        'name_en',
-                        'name_es',
-                        'children',
-                    ],
-                ],
-            ],
-        ],
-    ];
+    $locations = createLocation(['user_id' => $user->id], [], 5)
+        ->random($count)
+        ->pluck('ulid')
+        ->all();
 
-    $this->getJson('/taxonomies')
-        //->dump()
-        ->assertOk()
-        ->assertJsonStructure($structure);
-});
+    $this->seed(CreateOfferingSeeder::class);
+
+    $coffeeInventory = CoffeeInventory::inRandomOrder()->first()->ulid;
+
+    $this->withToken($token)
+        ->putJson('/offerings', [
+            'coffeeInventoryId' => $coffeeInventory,
+            'locations' => $locations
+        ])->dump()->assertOk();
+})->with(
+    [
+        'Single Location' => 1,
+        'Multiple Locations' => 3
+    ]
+);

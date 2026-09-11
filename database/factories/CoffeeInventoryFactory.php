@@ -31,7 +31,7 @@ class CoffeeInventoryFactory extends Factory
                     ->where('production_date', $attributes['production_date'])
                     ->count() + 1;
 
-                return now()->format('Y-m-d') . '-' . $nextLot;
+                return $attributes['production_date'] . '-' . $nextLot;
             },
         ];
     }

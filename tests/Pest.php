@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\Coffee;
+use App\Models\Contact;
+use App\Models\Location;
+use App\Models\Roastery;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\ClientRepository;
 use Tests\TestCase;
@@ -97,4 +103,54 @@ function authenticateWithWriteScope($role = 'user'): array
     $token = $response->json('access_token');
 
     return [$user, $token, $password, $response];
+}
+
+function createCoffee(array $raw = [], int $count = 1): Coffee|Collection
+{
+    $coffee = Coffee::factory()->count($count)->create($raw);
+    return $count > 1 ? $coffee : $coffee->first();
+}
+
+function createRoastery(array $raw = [], array $contact = [], int $count = 1): Roastery|Collection
+{
+
+    $result = $count > 1 ?
+        Roastery::factory()->count($count)->create($raw) : Roastery::factory()->create($raw);
+
+    updateContact($contact, $result);
+
+    return $result;
+}
+
+function createLocation(array $raw = [], array $contact = [], int $count = 1): Location|Collection
+{
+
+    $result = $count > 1 ?
+        Location::factory()->count($count)->create($raw) : Location::factory()->create($raw);
+
+    updateContact($contact, $result);
+
+    return $result;
+}
+
+function updateContact(array $contact, Model|Collection $model): void
+{
+    if ($model instanceof Model && $contact) {
+        $contactData = Contact::factory()->make($contact)->only([
+            'is_primary',
+            'phone',
+            'email',
+            'web',
+            'social',
+            'address',
+            'country',
+            'city',
+            'postal_code',
+        ]);
+
+        $model->contacts()->updateOrCreate(
+            ['is_primary' => true],
+            $contactData
+        );
+    }
 }
