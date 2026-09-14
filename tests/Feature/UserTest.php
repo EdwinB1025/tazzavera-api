@@ -130,7 +130,7 @@ test('authenticated_user_updates_password', function () {
         ->putJson("/users/{$user->ulid}/password", [
             'current_password' => $password,
             'password' => 'nuevaClave1234',
-            'password_confirmation' => 'nuevaClave1234',
+            'passwordConfirmation' => 'nuevaClave1234',
         ])
         ->assertOk();
 

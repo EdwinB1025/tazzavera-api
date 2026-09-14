@@ -14,8 +14,8 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 |---|---|---|---|---|
 | GET | `/offerings` | — | Public | Query:  `evaluationCount`, `defectiveCount`, `cuppingAvgFrom`, `cuppingAvgTo`, `fragranceFrom`, `aromaFrom`, `flavorFrom`, `aftertasteFrom`, `acidityFrom`, `sweetnessFrom`, `mouthfeelFrom`, `overallFrom`, `fragranceTo`, `aromaTo`, `flavorTo`, `aftertasteTo`, `acidityTo`, `sweetnessTo`, `mouthfeelTo`, `overallTo`, `cataRef`, `fragranceCata`, `aromaCata`, `flavorCata`, `aftertasteCata`, `mouthfeelCata`, `coffeeshopUlid`, `locationUlid`, `city`, `coffeeName`, `originCountry`, `originRegion`, `process`, `producer` |
 | GET | `/offerings/{offeringUlid}` | — | Public | — |
-| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffee_inventory_ulid`, `location_ulids[]` (batch — one offering per location, all for the same inventory lot) |
-| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffee_inventory_ulid`, `location_ulid` (single) |
+| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffeeInventoryId`, `locations:[]` (batch — one offering per location, all for the same inventory lot) |
+| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffeeInventoryId`, `locations` (single) |
 | DELETE | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | — |
 
 **Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same `coffee_inventory_id`. The pair `(location_id, coffee_inventory_id)` is UNIQUE.
@@ -83,7 +83,7 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
 | POST | `/logout` | Authenticated | `auth:api` | — Revokes the request token (access + refresh) |
 | GET | `/user` | Authenticated | `auth:api` | — No id. Returns the authenticated user's data (the front-end gets its id here) |
 | PUT | `/users/{user}` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `name`, `surname`, `email` (all `sometimes`) |
-| PUT | `/users/{user}/password` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `current_password`, `password`, `password_confirmation` |
+| PUT | `/users/{user}/password` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `currentPassword`, `password`, `passwordConfirmation` |
 | DELETE | `/users/{user}` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Soft delete (deactivate account, recoverable via `restore`). Sets `deleted_at`, keeps profile and related data |
 | DELETE | `/users/{user}/force` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Hard delete (permanent removal). `forceDelete`; removes the row and cascades to related data (`ON DELETE CASCADE`). Binding uses `withTrashed` |
 
