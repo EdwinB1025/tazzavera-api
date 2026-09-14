@@ -162,10 +162,10 @@ test('coffeeshop_creates_offering', function ($count) {
     $coffeeInventory = CoffeeInventory::inRandomOrder()->first()->ulid;
 
     $this->withToken($token)
-        ->putJson('/offerings', [
+        ->postJson('/offerings', [
             'coffeeInventoryId' => $coffeeInventory,
             'locations' => $locations
-        ])->dump()->assertOk();
+        ])->assertStatus(201);
 })->with(
     [
         'Single Location' => 1,
