@@ -2,6 +2,8 @@
 
 Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` role, each user manages their own profile).
 
+> **API naming convention:** everything that enters or leaves through the API (request body, query params, JSON responses) uses **camelCase**. DB column names are snake_case (see `entidades_relacionales.md`) and are resolved internally. **Exception:** OAuth2/PKCE parameters (`grant_type`, `client_id`, `redirect_uri`, `code_verifier`, `code_challenge`, `client_secret`, etc.) stay snake_case because they are defined by the OAuth standard, not by this API.
+
 **Specialist:** authenticated professional cupper/taster. Their role is to create, edit and close evaluations on existing offerings — they provide the expert judgment that feeds an offering's consensus. They do not create or edit offerings.
 
 **Coffeeshop:** authenticated coffee shop, owner of its own offerings. Creates and edits its offerings (associating a coffee inventory lot and one or more of its own locations), and creates/edits the provisional technical evaluation (at most one per offering) required to publish it. Does not close evaluations or evaluate other shops' offerings.
@@ -14,14 +16,14 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 |---|---|---|---|---|
 | GET | `/offerings` | — | Public | Query:  `evaluationCount`, `defectiveCount`, `cuppingAvgFrom`, `cuppingAvgTo`, `fragranceFrom`, `aromaFrom`, `flavorFrom`, `aftertasteFrom`, `acidityFrom`, `sweetnessFrom`, `mouthfeelFrom`, `overallFrom`, `fragranceTo`, `aromaTo`, `flavorTo`, `aftertasteTo`, `acidityTo`, `sweetnessTo`, `mouthfeelTo`, `overallTo`, `cataRef`, `fragranceCata`, `aromaCata`, `flavorCata`, `aftertasteCata`, `mouthfeelCata`, `coffeeshopUlid`, `locationUlid`, `city`, `coffeeName`, `originCountry`, `originRegion`, `process`, `producer` |
 | GET | `/offerings/{offeringUlid}` | — | Public | — |
-| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffee_inventory_ulid`, `location_ulids[]` (batch — one offering per location, all for the same inventory lot) |
-| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffee_inventory_ulid`, `location_ulid` (single) |
+| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffeeInventoryId`, `locations: []` (batch — one offering per location, all for the same inventory lot) |
+| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffeeInventoryId`, `locations` (single) |
 | DELETE | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | — |
 
-**Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same `coffee_inventory_id`. The pair `(location_id, coffee_inventory_id)` is UNIQUE.
+**Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same inventory lot. The pair `(location, coffeeInventory)` is UNIQUE.
 
-- **Ownership (hard 403):** every `locatio n_ulid` in the batch is validated first against the authenticated coffeeshop. If any location is not owned by the caller → `403`, nothing is created. This is authorization, not a warning.
-- **Duplicates (partial, warning):** after ownership passes, offerings are created; any `(location, inventory)` pair that already exists is skipped (not a failure). Not transactional-all-or-nothing — the new ones persist, the colliding ones are reported.
+- **Ownership (hard 403):** every location in `locations` is validated first against the authenticated coffeeshop (middleware `owns.location:locations` + `LocationPolicy`). If any location is not owned by the caller → `403`, nothing is created. This is authorization, not a warning.
+- **Duplicates (partial, warning):** after ownership passes, offerings are created; any `(location, coffeeInventory)` pair that already exists is skipped (not a failure). Not transactional-all-or-nothing — the new ones persist, the colliding ones are reported.
 - **Response `201`** with a partial breakdown the front handles as a warning:
 
 ```json
@@ -31,7 +33,7 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 }
 ```
 
-`coffee_inventory_ulid` and `location_ulids` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
+`coffeeInventoryId` and `locations` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
 
 ## Coffee Inventory
 
@@ -63,19 +65,19 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| GET | `/evaluations` | — | Public | Query: `id` (evaluator), `coffee_id`, `city`, `location_id`, `process`, `score`, `status` |
-| GET | `/evaluations/{id}` | — | Public | — |
-| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offering_id`, `extraction_method`, `status`, `descriptive`, `affective`, `note` |
-| PUT | `/evaluations/{id}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extraction_method`, `status`, `descriptive`, `affective`, `note` |
-| DELETE | `/evaluations/{id}` | specialist (own), coffeeshop (own) | Authenticated | — |
+| GET | `/evaluations` | — | Public | Query: `evaluatorId`, `coffeeId`, `city`, `locationId`, `process`, `score`, `status` |
+| GET | `/evaluations/{evaluationId}` | — | Public | — |
+| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offeringId`, `extractionMethod`, `status`, `descriptive`, `affective`, `note` |
+| PUT | `/evaluations/{evaluationId}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extractionMethod`, `status`, `descriptive`, `affective`, `note` |
+| DELETE | `/evaluations/{evaluationId}` | specialist (own), coffeeshop (own) | Authenticated | — |
 
-`evaluator_id` and `evaluator_role` are **not** request inputs: the backend derives them from the authenticated user (`evaluator_id` = logged-in user; `evaluator_role` = that user's role). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
+`evaluatorId` and `evaluatorRole` are **not** request inputs: the backend derives them from the authenticated user (`evaluatorId` = logged-in user; `evaluatorRole` = that user's role). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
 
 ## Users
 
 | Method | Endpoint | Authorization | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| POST | `/register` | — | Public | Body: `role`, `name`, `surname`, `email`, `password`, `password_confirmation` |
+| POST | `/register` | — | Public | Body: `role`, `name`, `surname`, `email`, `password`, `passwordConfirmation` |
 | POST | `/login` | — | Public (web session) | Body: `email`, `password` — creates web session (Fortify, stateful guard); response `{"two_factor": false}`. Authenticate step before `/oauth/authorize`, does NOT issue a token |
 | GET | `/oauth/authorize` | — | Requires active web session | Query: `client_id`, `redirect_uri`, `response_type=code`, `scope`, `state`, `code_challenge`, `code_challenge_method=S256`. With `skipsAuthorization` (first-party) returns `302` with the `code` in the `Location` header |
 | POST | `/oauth/token` | — | Public (PKCE client) | Body (form-urlencoded): `grant_type=authorization_code`, `client_id`, `redirect_uri`, `code`, `code_verifier`. No `client_secret`. Returns `access_token` + `refresh_token` |
@@ -83,11 +85,13 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
 | POST | `/logout` | Authenticated | `auth:api` | — Revokes the request token (access + refresh) |
 | GET | `/user` | Authenticated | `auth:api` | — No id. Returns the authenticated user's data (the front-end gets its id here) |
 | PUT | `/users/{user}` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `name`, `surname`, `email` (all `sometimes`) |
-| PUT | `/users/{user}/password` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `current_password`, `password`, `password_confirmation` |
+| PUT | `/users/{user}/password` | Own (policy `update`) + scope `profile:write` | `auth:api` | Body: `currentPassword`, `password`, `passwordConfirmation` |
 | DELETE | `/users/{user}` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Soft delete (deactivate account, recoverable via `restore`). Sets `deleted_at`, keeps profile and related data |
 | DELETE | `/users/{user}/force` | Own (policy `delete`) + scope `profile:write` | `auth:api` | — Hard delete (permanent removal). `forceDelete`; removes the row and cascades to related data (`ON DELETE CASCADE`). Binding uses `withTrashed` |
 
 Login is a three-step PKCE flow: `POST /login` (creates the Fortify web session) → `GET /oauth/authorize` (with that session, returns the `code`) → `POST /oauth/token` (exchanges `code` + `code_verifier` for the `access_token`). The `access_token` authenticates `auth:api` routes via `Authorization: Bearer`. The `code_verifier` belongs to the client and only travels in the token step; only its hash (`code_challenge`) is sent to `/oauth/authorize`.
+
+> OAuth2/PKCE body params (`grant_type`, `client_id`, `code_verifier`, etc.) stay snake_case — they follow the OAuth standard, not this API's camelCase convention.
 
 **Step-up (scope `profile:write`):** sensitive actions (update profile, change password, deactivate and delete account) require a token carrying the `profile:write` scope, verified with `CheckTokenForAnyScope::using('profile:write')` (Passport 13). That token is obtained through the same authorization flow by requesting `scope=profile:write` at `/oauth/authorize` — a single login mechanism, re-authenticating to elevate the token. A token without that scope receives a `403`.
 

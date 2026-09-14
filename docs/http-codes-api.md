@@ -98,6 +98,59 @@ Laravel generates these on its own; you only customize the response format (JSON
 
 ---
 
+## Offerings
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/offerings` | GET | 200 | — | public list with filters; paginated |
+| `/offerings/{offeringUlid}` | GET | 200 | — | public; single offering |
+| `/offerings/{offeringUlid}` | GET | 404 | model not found | ulid does not resolve |
+| `/offerings` | POST | 201 | `offering.created` | batch create; body `{created, skipped}` — the created ones persist, duplicates are reported in `skipped` (partial success) |
+| `/offerings` | POST | 401 | `Unauthenticated.` | no/invalid token |
+| `/offerings` | POST | 403 | `locations.location_not_owned` | ownership: some location is not the coffeeshop's (middleware `owns.location:locations` + `LocationPolicy`); nothing created |
+| `/offerings` | POST | 422 | validation + `errors{}` | `locations` required/array, `coffeeInventoryId` exists, etc. |
+| `/offerings/{offeringUlid}` | PUT | 200 | `offering.updated` | own; body `coffeeInventoryId`, `locations` (single) — *not yet implemented* |
+| `/offerings/{offeringUlid}` | PUT | 401 | `Unauthenticated.` | no/invalid token |
+| `/offerings/{offeringUlid}` | PUT | 403 | `This action is unauthorized.` | not owner (`OfferingPolicy`) — *not yet implemented* |
+| `/offerings/{offeringUlid}` | PUT | 404 | model not found | ulid does not resolve — *not yet implemented* |
+| `/offerings/{offeringUlid}` | DELETE | 200 | `offering.deleted` | own — *not yet implemented* |
+| `/offerings/{offeringUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token — *not yet implemented* |
+| `/offerings/{offeringUlid}` | DELETE | 403 | `This action is unauthorized.` | not owner — *not yet implemented* |
+| `/offerings/{offeringUlid}` | DELETE | 404 | model not found | ulid does not resolve — *not yet implemented* |
+
+> **Batch create (`POST /offerings`):** returns **201** with `{created: [...], skipped: [...]}`. `offering.created` (`created`/`updated`/`deleted` keys in `lang/*/offering.php`; `updated`/`deleted` reserved for the future PUT/DELETE, not yet implemented). Ownership (403) is a hard stop before any creation; duplicates are a partial warning inside the 200-family response (skipped list), NOT an error code.
+
+---
+
+## Coffee Inventory
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/coffeeInventory` | GET | 200 | — | list of roast lots with `roastery` + `coffee` nested; filters (incl. `city` via roastery contact) |
+| `/coffeeInventory` | GET | 401 | `Unauthenticated.` | no/invalid token |
+| `/coffeeInventory` | GET | 403 | `This action is unauthorized.` | not a coffeeshop (`role:coffeeshop`) |
+| `/coffeeInventory` | GET | 422 | validation + `errors{}` | invalid filter values (Form Request) |
+
+---
+
+## Locations
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/locations` | GET | 200 | — | authenticated coffeeshop's own locations (query scoped to `user()->locations`), contacts nested |
+| `/locations` | GET | 401 | `Unauthenticated.` | no/invalid token |
+| `/locations` | GET | 403 | `This action is unauthorized.` | not a coffeeshop (`role:coffeeshop`) |
+
+---
+
+## Taxonomy
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/taxonomies` | GET | 200 | — | public; full olfactory taxonomy tree nested (3 levels). No auth → no 401/403 |
+
+---
+
 ## Table of custom definitions per endpoint
 
 > Fill in one row per API endpoint. "Success code" = the one you return in the `return`.

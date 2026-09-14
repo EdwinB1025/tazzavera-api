@@ -5,6 +5,7 @@
 > **Convención:** todas las tablas tienen `id` BIGINT UNSIGNED PK AI + `created_at`/`updated_at`. Se omiten abajo. Propiedades: PK · FK · UQ · NN · NULL · DEFAULT · der (derivado en backend).
 > **Roles:** gestionados por Spatie (tablas propias del paquete), NO como columna en `users`.
 > **Criterio relacional vs JSON:** relacional lo que se filtra / agrupa / ordena; JSON los datos crudos anidados que solo se leen enteros (para agregar o mostrar). El filtrado por sabores y ejes vive en el **agregado** (`offerings`), no en las evaluaciones individuales.
+> **Nombres de columna:** snake_case (convención BD). Lo que entra/sale por la API (body, query params, respuestas) usa camelCase — ver `endpoints.md`.
 
 ---
 
@@ -132,24 +133,28 @@ Lleva `ulid` (entidad de dominio expuesta por API — el front referencia un lot
 | `concordance` | DECIMAL(4,3) | NULL, der (Kendall's W 0-1) |
 | `verification_status` | ENUM('provisional','verified') | NN, DEFAULT 'provisional', der |
 
-UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño anterior se descompuso: `cupping_avg` + los 8 ejes (`*_avg`, incl. `fragrance`) son columnas filtrables; los sabores (main_tastes + cata) pasaron a `offering_tastes`. Ya no hay JSON en offerings. Derivados: `updateConsensus()` recalcula columnas + reescribe `offering_tastes` cuando la offering tiene >5 evaluaciones `closed` + `specialist`.
+UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño anterior se descompuso: `cupping_avg` + los 8 ejes (`*_avg`, incl. `fragrance`) son columnas filtrables; los sabores (main_tastes + cata) pasaron a `offering_tastes`. Ya no hay JSON en offerings. Derivados: `updateConsensus()` recalcula columnas + reescribe `offering_tastes` cuando la offering tiene >5 evaluaciones `closed` + `specialist`. **Modelo `Offering`:** `$fillable = ['location_id', 'coffee_inventory_id']` (los derivados los pone el backend, no el request); casts decimales con la precisión de cada columna (`decimal:N` — devuelven string, castear en `updateConsensus` si se opera numéricamente); `HasPublicUlid`. Al crear (`store`), los defaults de columna (verification_status='provisional', counts=0) NO se reflejan en el objeto en memoria — usar `refresh()` tras `create()` para que la respuesta traiga los defaults reales de BD.
 
 ### `offering_tastes` (referencias taxonómicas agregadas del consenso; main_tastes + defects + cata por eje, unificados)
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
 | `offering_id` | BIGINT UNSIGNED | FK→offerings (ON DELETE CASCADE), NN |
-| `taxonomy_ref` | BIGINT UNSIGNED | FK→olfactory_taxonomies, NN (id del nodo) |
+| `taxonomy_ref` | BIGINT UNSIGNED | FK→olfactory_taxonomies, NN (id del nodo de la taxonomía maestra) |
 | `type` | ENUM('main_tastes','defects','fragrance','aroma','flavor','aftertaste','mouthfeel') | NN (origen + eje unificados; coincide con la clave de origen en el JSON de la evaluación) |
-| `level` | TINYINT | NN (nivel de la taxonomía: 0 raíz / 1 subcategoría / 2 hoja) |
-| `parent_id` | BIGINT UNSIGNED | NULL (padre en la jerarquía de la taxonomía) |
+| `level` | ENUM('0','1','2') | NN (nivel de la taxonomía; cast a `integer` en el modelo `OfferingTaste` para leerlo como entero) |
+| `parent_id` | BIGINT UNSIGNED | NULL, FK→offering_tastes (ON DELETE SET NULL) — auto-referencial: padre en el árbol del consenso de ESTA offering |
 | `count` | INT UNSIGNED | NN (frecuencia entre evaluaciones cerradas) |
 
-`type` fusiona origen y eje en una sola columna. `main_tastes` y `defects` son grupos **transversales** (sabores básicos y defectos, sin eje propio); `fragrance`, `aroma`, `flavor`, `aftertaste`, `mouthfeel` son los ejes que capturan cata. **NO** aparecen `acidity`, `sweetness` ni `overall`: esos ejes no llevan descriptores de cata (solo puntuación), así que nunca generan filas aquí. Cada valor del ENUM coincide con la clave de origen en el JSON de la evaluación → `updateConsensus()` mapea origen→type sin traducir. Todos los grupos (main_tastes, defects, cata, mouthfeel) referencian `olfactory_taxonomies` vía `taxonomy_ref` (la taxonomía se reestructuró con un campo `categories` JSON que incluye `aromatics`, `main_tastes`, `defects`, `mouthfeel`). `level` y `parent_id` **se conservan**: son los niveles de la taxonomía (permiten reconstruir la jerarquía sin re-consultar). Índice sugerido en `taxonomy_ref` (filtro de sabores del buscador) y en `offering_id`. Derivada: `updateConsensus()` borra y reinserta las filas de cada offering en el recálculo. `taxonomy_ref` como FK real da integridad (ref inválido rechazado por la BD).
+`type` fusiona origen y eje en una sola columna. `main_tastes` y `defects` son grupos **transversales** (sabores básicos y defectos, sin eje propio); `fragrance`, `aroma`, `flavor`, `aftertaste`, `mouthfeel` son los ejes que capturan cata. **NO** aparecen `acidity`, `sweetness` ni `overall`: esos ejes no llevan descriptores de cata (solo puntuación), así que nunca generan filas aquí. Cada valor del ENUM coincide con la clave de origen en el JSON de la evaluación → `updateConsensus()` mapea origen→type sin traducir. Todos los grupos (main_tastes, defects, cata, mouthfeel) referencian `olfactory_taxonomies` vía `taxonomy_ref` (la taxonomía se reestructuró con un campo `categories` JSON que incluye `aromatics`, `main_tastes`, `defects`, `mouthfeel`).
+
+**Dos referencias con propósitos distintos:** `taxonomy_ref` → vínculo con la **taxonomía maestra** (qué sabor es: nombre, color, nodo). `parent_id` → **auto-referencial a `offering_tastes`**, reconstruye el árbol anidado del consenso DE ESTA offering (no la jerarquía de la taxonomía maestra) — mismo patrón que `olfactory_taxonomies` para presentación en árbol (children recursivos). `updateConsensus()` al poblar debe insertar padres antes que hijos y resolver el `parent_id` a la fila padre recién insertada de la misma offering.
+
+`level` ENUM('0','1','2') en BD, con cast `integer` en el modelo (evita el gotcha de comparar string vs int al leer). Índice en `taxonomy_ref` (filtro de sabores del buscador) y en `offering_id`. UNIQUE (`offering_id`,`taxonomy_ref`,`type`) — un mismo sabor, en el mismo eje, no se repite por offering. Derivada: `updateConsensus()` borra y reinserta las filas de cada offering en el recálculo. Modelo `OfferingTaste`: relaciones `offering()`, `taxonomy()` (belongsTo con FK `taxonomy_ref`), `parent()`/`children()` (self-referencial por `parent_id`); sin `HasPublicUlid` (tabla agregada interna, no expuesta individualmente).
 
 **Consultas sobre `offering_tastes`:**
 - **Búsqueda general por sabor** (¿el café tiene X?): `WHERE taxonomy_ref = X` — verifica existencia, ignora `type`.
 - **Búsqueda por sabor en eje** (query params `aromaCata`, `flavorCata`, `fragranceCata`, `aftertasteCata`): `WHERE taxonomy_ref = X AND type = 'aroma'` — el `type` da el eje directo.
-- **Representación gráfica** (perfil de consenso por eje / radar): vista general derivada de esta tabla que agrupa conservando el `type` (eje). La vista existe solo para la representación gráfica; la búsqueda corre como query directa sobre la tabla base indexada.
+- **Representación gráfica** (perfil de consenso por eje / radar): árbol anidado reconstruido por `parent_id` (children recursivos), reutilizando el patrón del resource de taxonomía. La búsqueda corre como query directa sobre la tabla base indexada.
 
 > **PENDIENTE (`count`):** decidir si `count` cuenta **menciones** (`COUNT(*)`) o **evaluaciones distintas** (`COUNT(DISTINCT evaluation_id)`). Afecta la magnitud del ranking y del radar (si dos ejes de la misma evaluación mencionan el mismo sabor, menciones lo cuenta dos veces). Para la búsqueda por existencia da igual; para la gráfica/ranking importa. `offering_tastes` es agregado y hoy no guarda `evaluation_id`, así que contar evaluaciones distintas exige resolverlo en `updateConsensus()` al construir el agregado. Resolver antes de implementar `updateConsensus()`.
 
@@ -245,7 +250,7 @@ UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño an
 | `color` | CHAR(7) | NULL, der (hex; raíz=color_base, hijos=HSL) |
 | `categories` | JSON | NULL (`aromatics`, `main_tastes`, `defects`, `mouthfeel`) |
 
-Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de aquí los atributos del formulario por dimensión (existe en BD, no usada por el formulario actual — usa scopes de Eloquent directos).
+Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de aquí los atributos del formulario por dimensión (existe en BD, no usada por el formulario actual — usa scopes de Eloquent directos). Endpoint `GET /taxonomies`: árbol completo anidado (raíces con `children` recursivos, 3 niveles), resource recursivo con `whenLoaded('children')`.
 
 ---
 
@@ -258,14 +263,13 @@ Semilla: `taxonomia-olfativa-semilla.csv`. La vista `cata_attributes` deriva de 
 - Actualizar `computeCuppingScore` para usar el eje `fragrance` real en vez de duplicar `aroma`
 - Modelo pivote para `certifications` (`belongsToMany(...)->using(Certification::class)`): las columnas `issued_at`/`expires_at` ya existen y se manejan con `attach` + `withPivot` + `wherePivot` (filtrado de vigencia) sin modelo. El modelo pivote solo se añadiría para castear las fechas a Carbon o encapsular lógica de vigencia (`isExpired()`, scopes `active()`/`expired()`) si el casting manual se vuelve recurrente.
 - Purga/vigencia de certificaciones (comando + scheduler): comando Artisan `certifications:purge` (`PurgeExpiredCertifications`) que actúa sobre las filas con `expires_at < now()` (NULL = perpetua, nunca se purga). Programado con `Schedule::command('certifications:purge')->daily()` en `routes/console.php`. Requiere disparador del SO (cron en Linux, Programador de tareas en Windows, `schedule:work` en local). Decisión abierta: **borrar** (destructivo, pierde histórico) vs **filtrar** por `wherePivot('expires_at','>',now())` en consultas (no destructivo, sin infraestructura) — el filtrado es preferible salvo que volumen o requisitos legales exijan borrar. Ver `deployment-notes.md`.
-- Vista de representación gráfica sobre `offering_tastes` (perfil de consenso por eje / radar): vista SQL que agrega conservando el `type`, para consumo del front. La búsqueda NO la usa (corre como query directa sobre la tabla base indexada).
+- Vista/árbol de representación gráfica sobre `offering_tastes` (perfil de consenso por eje / radar): árbol anidado reconstruido por `parent_id` (children recursivos), para consumo del front. La búsqueda NO lo usa (corre como query directa sobre la tabla base indexada).
 
 ## Notas de estado (delta con el esquema real)
 
-El SQL real actual (forward-engineering) aún refleja el diseño **anterior** en varias tablas — este documento es el diseño **objetivo**, a aplicar por migraciones cuando se trabaje cada capa:
-- `coffees` real: `roastery` VARCHAR + `extrinsics` JSON (aquí: columnas planas + sin roastery).
-- `roasteries` real: implementar rostearies como un tipo de usario con su respectivo permiso.
-- `locations` real: contacto en columnas planas propias (aquí: vía `contacts` polimórfica).
-- `offerings` real: `coffee_id` + `consensus` JSON (aquí: `coffee_inventory_id` + columnas descompuestas + `offering_tastes`).
-- `evaluations` real: `descriptive`/`affective` con mapas separados `axis`/`cata`/`note`, sin `fragrance` (aquí: mapa homólogo por eje + `fragrance` + columnas extraídas).
-- **Migrado en el API (sesión actual):** `roasteries`, `certification_types`, `coffees` (con `producer`), `certifications` (con `issued_at`/`expires_at`), `coffee_inventory` (con `ulid`, `$table` explícito). Pendientes de migrar: `offerings`, `offering_tastes`, `evaluations`.
+Este documento es el diseño **objetivo**. Estado de implementación en el API:
+- **Migrado (sesión actual):** `users`, `contacts`, `locations`, `olfactory_taxonomies`, `roasteries`, `certification_types`, `coffees` (con `producer`), `certifications` (con `issued_at`/`expires_at`), `coffee_inventory` (con `ulid`, `$table` explícito), `offerings`, `offering_tastes` (parent_id auto-referencial, level ENUM+cast, unique). Modelos y relaciones de la capa de evaluación cableados (Offering↔Location/CoffeeInventory, OfferingTaste con offering/taxonomy/parent/children).
+- **Pendiente de migrar:** `evaluations`.
+- **Endpoints implementados:** `GET /locations` (coffeeshop, scoped), `GET /coffeeInventory` (coffeeshop, roastery+coffee anidados, filtros), `GET /taxonomies` (árbol), `POST /offerings` (batch con ownership vía middleware `owns.location:campo` + policy, skip de duplicados). CRUD de users (register/login/logout/user/update/password/delete/force).
+- `roasteries` (objetivo futuro): implementar como un tipo de usuario con su respectivo permiso.
+- `evaluations` real (cuando se migre): `descriptive`/`affective` con `fragrance` añadido, columnas extraídas (cupping_score, is_defective, defects, main_tastes).
