@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoffeeInventoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OfferingController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -24,6 +25,10 @@ Route::middleware('auth:api')
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
+
+            Route::middleware('owns.location:locations')->group(function () {
+                Route::post('/offerings', [OfferingController::class, 'store']);
+            });
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/

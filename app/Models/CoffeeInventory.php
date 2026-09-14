@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(
     'roastery_id',
@@ -115,6 +116,11 @@ class CoffeeInventory extends Pivot
     public function coffee(): BelongsTo
     {
         return $this->belongsTo(Coffee::class);
+    }
+
+    public function offerings(): HasMany
+    {
+        return $this->hasMany(Offering::class);
     }
 
     public function roastery(): BelongsTo

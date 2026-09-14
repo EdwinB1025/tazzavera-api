@@ -14,7 +14,7 @@ beforeEach(function () {
 test('user_registers', function (?string $role = 'user') {
     $user = User::factory()->registrationPayload($role);
     $response = $this->postJson('/register', $user);
-    $response->dump();
+    //$response->dump();
     $response->assertStatus(201);
 })->with(['user', 'coffeeshop', 'specialist']);
 
@@ -51,13 +51,13 @@ test('user_authenticates_with_pkce', function () {
     $codeRequest = $this->get('oauth/authorize?' . $query);
 
     $found = app(\Laravel\Passport\ClientRepository::class)->find($client->id);
-    dump(get_class($found));
-    dump($found->skipsAuthorization($user, []));
+    //dump(get_class($found));
+    //dump($found->skipsAuthorization($user, []));
 
     $codeRequest->assertStatus(302);
 
-    $codeRequest->dumpHeaders();
-    $codeRequest->dump();
+    //$codeRequest->dumpHeaders();
+    //$codeRequest->dump();
 
     /** Retrieven the authentication code */
 
@@ -75,7 +75,7 @@ test('user_authenticates_with_pkce', function () {
             'code_verifier' => $codeVerifier,
         ]);
 
-        $tokenResponse->dump();
+        //$tokenResponse->dump();
         $tokenResponse->assertOk();
     } else {
         test()->fail('CodeVerifiers could not be retreived from Location attribute in the header, or state is different');
@@ -130,7 +130,7 @@ test('authenticated_user_updates_password', function () {
         ->putJson("/users/{$user->ulid}/password", [
             'current_password' => $password,
             'password' => 'nuevaClave1234',
-            'password_confirmation' => 'nuevaClave1234',
+            'passwordConfirmation' => 'nuevaClave1234',
         ])
         ->assertOk();
 
