@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\ApiCustomException;
+use App\Http\Middleware\OwnLocation;
 use App\Http\Middleware\SetLocale;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'owns.location' => OwnLocation::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
