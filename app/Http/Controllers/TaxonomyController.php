@@ -10,8 +10,8 @@ class TaxonomyController extends Controller
 {
     public function index()
     {
-        $TaxonomyTree = OlfactoryTaxonomy::whereNull('parent_id')   // solo raíces
-            ->with('children.children')                       // carga 3 niveles
+        $TaxonomyTree = OlfactoryTaxonomy::whereNull('parent_id')   // EDB 09/14/31: Loaded with parent level 0
+            ->with('children.children')                       // EDB 09/14/31: Loaded with 1st and 2nd children level
             ->get();
 
         return TaxonomyResource::collection($TaxonomyTree);

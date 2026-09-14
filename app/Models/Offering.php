@@ -26,7 +26,6 @@ class Offering extends Model
         'mouthfeel_avg' => 'decimal:1',
         'overall_avg' => 'decimal:1',
         'concordance' => 'decimal:3',
-        'verification_status' => 'string',
     ];
 
     /** Relationships */
