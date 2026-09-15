@@ -212,3 +212,17 @@ test('anyone_retrieves_an_offering', function () {
         ->assertJsonPath('data.ulid', $offeringId)
         ->assertJsonStructure($structure);
 });
+
+test('authenticated_coffeeshp_deletes_offering', function () {
+    [$user, $token] = authenticateWithWriteScope();
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $offering = Offering::inRandomOrder()->first();
+
+    $this->withToken($token)
+        ->deleteJson("/offerings/{$offering->ulid}")
+        ->assertOK();
+
+    $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+});
