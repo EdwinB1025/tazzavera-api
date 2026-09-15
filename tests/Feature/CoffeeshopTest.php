@@ -38,7 +38,7 @@ test('coffeeshop_retrieves_locations', function () {
                 'contacts' => [
                     '*' => [
                         'ulid',
-                        'is_primary',
+                        'isPrimary',
                         'phone',
                         'email',
                         'web',
@@ -46,7 +46,7 @@ test('coffeeshop_retrieves_locations', function () {
                         'address',
                         'country',
                         'city',
-                        'postal_code',
+                        'postalCode',
                     ],
                 ],
             ],
@@ -84,12 +84,12 @@ test('coffeeshop_filters_coffee_inventory', function ($model, $field, $value, $q
         'data' => [
             '*' => [
                 'ulid',
-                'roast_lot',
-                'production_date',
+                'roastLot',
+                'productionDate',
                 'coffee' => [
                     'ulid',
                     'name',
-                    'roast_level',
+                    'roastLevel',
                     'process',
                     'variety',
                     'producer',
@@ -167,7 +167,8 @@ test('coffeeshop_creates_offering', function ($count) {
         ->postJson('/offerings', [
             'coffeeInventoryId' => $coffeeInventory,
             'locations' => $locations
-        ])->assertStatus(201);
+        ])
+        ->assertStatus(201);
 })->with(
     [
         'Single Location' => 1,
@@ -181,8 +182,33 @@ test('anyone_retrieves_an_offering', function () {
 
     $offeringId = Offering::inRandomOrder()->first()->ulid;
 
+    $structure = [
+        'data' => [
+            'ulid',
+            'evaluationCount',
+            'defectiveEvaluationCount',
+            'verificationStatus',
+            'location' => [
+                'ulid',
+                'name',
+                'description',
+                'latitud',
+                'longitud',
+            ],
+            'coffeeInventory' => [
+                'ulid',
+                'roastLot',
+                'productionDate',
+                'coffee',
+                'roastery',
+            ],
+            'SensoryTaxonomy',
+        ],
+    ];
+
     $this->getJson("/offerings/{$offeringId}")
-        ->dump()
+        //->dump()
         ->assertOk()
-        ->assertJsonPath('data.ulid', $offeringId);
+        ->assertJsonPath('data.ulid', $offeringId)
+        ->assertJsonStructure($structure);
 });

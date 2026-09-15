@@ -53,9 +53,19 @@ class OfferingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Offering $offering)
     {
-        //
+        $offering->load([
+            'location',
+            'coffeeInventory.coffee',
+            'coffeeInventory.roastery',
+            'offeringTastes' => fn($q) => $q->whereNull('parent_id'),
+            'offeringTastes.taxonomy',
+            'offeringTastes.children.taxonomy',
+            'offeringTastes.children.children.taxonomy',
+        ]);
+
+        return new OfferingResource($offering);
     }
 
     /**

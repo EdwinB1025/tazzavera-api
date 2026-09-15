@@ -16,7 +16,7 @@ class ContactResource extends JsonResource
     {
         return [
             'ulid' => $this->ulid,
-            'is_primary' => $this->is_primary,
+            'isPrimary' => $this->is_primary,
             'phone' => $this->phone,
             'email' => $this->email,
             'web' => $this->web,
@@ -24,7 +24,7 @@ class ContactResource extends JsonResource
             'address' => $this->address,
             'country' => $this->country,
             'city' => $this->city,
-            'postal_code' => $this->postal_code,
+            'postalCode' => $this->postal_code,
         ];
     }
 }

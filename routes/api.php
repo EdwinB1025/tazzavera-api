@@ -12,6 +12,7 @@ use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 /**EDB 09/10/26: Public routes */
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/taxonomies', [TaxonomyController::class, 'index']);
+Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 
 Route::middleware('auth:api')
     ->group(function () {

@@ -128,7 +128,7 @@ test('authenticated_user_updates_password', function () {
     //Updating password using the specific api route
     $this->withToken($token)
         ->putJson("/users/{$user->ulid}/password", [
-            'current_password' => $password,
+            'currentPassword' => $password,
             'password' => 'nuevaClave1234',
             'passwordConfirmation' => 'nuevaClave1234',
         ])
