@@ -16,8 +16,8 @@ class CoffeeInventoryResource extends JsonResource
     {
         return [
             'ulid' => $this->ulid,
-            'roast_lot' => $this->roast_lot,
-            'production_date' => $this->production_date,
+            'roastLot' => $this->roast_lot,
+            'productionDate' => $this->production_date,
             'coffee' => new CoffeeResource($this->whenLoaded('coffee')),
             'roastery' => new RoasteryResource($this->whenLoaded('roastery')),
         ];

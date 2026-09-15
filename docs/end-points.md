@@ -17,7 +17,6 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 | GET | `/offerings` | — | Public | Query:  `evaluationCount`, `defectiveCount`, `cuppingAvgFrom`, `cuppingAvgTo`, `fragranceFrom`, `aromaFrom`, `flavorFrom`, `aftertasteFrom`, `acidityFrom`, `sweetnessFrom`, `mouthfeelFrom`, `overallFrom`, `fragranceTo`, `aromaTo`, `flavorTo`, `aftertasteTo`, `acidityTo`, `sweetnessTo`, `mouthfeelTo`, `overallTo`, `cataRef`, `fragranceCata`, `aromaCata`, `flavorCata`, `aftertasteCata`, `mouthfeelCata`, `coffeeshopUlid`, `locationUlid`, `city`, `coffeeName`, `originCountry`, `originRegion`, `process`, `producer` |
 | GET | `/offerings/{offeringUlid}` | — | Public | — |
 | POST | `/offerings` | coffeeshop | Authenticated | Body: `coffeeInventoryId`, `locations: []` (batch — one offering per location, all for the same inventory lot) |
-| PUT | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | Body: `coffeeInventoryId`, `locations` (single) |
 | DELETE | `/offerings/{offeringUlid}` | coffeeshop (owner) | Authenticated | — |
 
 **Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same inventory lot. The pair `(location, coffeeInventory)` is UNIQUE.

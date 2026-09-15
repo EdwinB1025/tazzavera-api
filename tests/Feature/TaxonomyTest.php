@@ -15,17 +15,17 @@ test('public_retrieves_taxonomy_tree', function () {
         'data' => [
             '*' => [
                 'level',
-                'name_en',
-                'name_es',
-                'description_en',
-                'description_es',
+                'nameEn',
+                'nameEs',
+                'descriptionEn',
+                'descriptionEs',
                 'color',
                 'categories',
                 'children' => [
                     '*' => [
                         'level',
-                        'name_en',
-                        'name_es',
+                        'nameEn',
+                        'nameEs',
                         'children',
                     ],
                 ],

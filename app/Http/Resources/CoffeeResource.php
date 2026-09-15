@@ -17,7 +17,7 @@ class CoffeeResource extends JsonResource
         return [
             'ulid' => $this->ulid,
             'name' => $this->name,
-            'roast_level' => $this->roast_level,
+            'roastLevel' => $this->roast_level,
             'process' => $this->process,
             'variety' => $this->variety,
             'producer' => $this->producer,

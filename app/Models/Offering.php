@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasPublicUlid;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable('location_id', 'coffee_inventory_id')]
 class Offering extends Model
 {
-    use HasPublicUlid;
+    use HasPublicUlid, HasFactory;
 
     protected $casts = [
         'evaluation_count' => 'integer',

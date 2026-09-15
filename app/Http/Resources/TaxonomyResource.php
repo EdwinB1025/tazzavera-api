@@ -16,10 +16,10 @@ class TaxonomyResource extends JsonResource
     {
         return [
             'level' => $this->level,
-            'name_en' => $this->name_en,
-            'name_es' => $this->name_es,
-            'description_en' => $this->description_en,
-            'description_es' => $this->description_es,
+            'nameEn' => $this->name_en,
+            'nameEs' => $this->name_es,
+            'descriptionEn' => $this->description_en,
+            'descriptionEs' => $this->description_es,
             'color' => $this->color,
             'categories' => $this->categories,
             'children' => TaxonomyResource::collection($this->whenLoaded('children')),
