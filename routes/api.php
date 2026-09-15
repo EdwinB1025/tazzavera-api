@@ -26,10 +26,10 @@ Route::middleware('auth:api')
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
-
-            Route::middleware('owns.location:locations')->group(function () {
-                Route::post('/offerings', [OfferingController::class, 'store']);
-            });
+            Route::post('/offerings', [OfferingController::class, 'store'])
+                ->middleware('owns.location:locations');
+            Route::delete('/offerings/{offering}', [OfferingController::class, 'destroy'])
+                ->middleware(['can:delete,offering', CheckTokenForAnyScope::using('profile:write')]);
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
