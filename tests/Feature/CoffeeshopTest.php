@@ -5,9 +5,11 @@ use App\Models\Coffee;
 use App\Models\CoffeeInventory;
 use App\Models\Contact;
 use App\Models\Location;
+use App\Models\Offering;
 use App\Models\Roastery;
 use Database\Seeders\CertificationTypeSeeder;
 use Database\Seeders\CreateOfferingSeeder;
+use Database\Seeders\GetAnOfferingSeeder;
 use Database\Seeders\OlfactoryTaxonomySeeder;
 use Database\Seeders\RolesSeeder;
 
@@ -172,3 +174,15 @@ test('coffeeshop_creates_offering', function ($count) {
         'Multiple Locations' => 3
     ]
 );
+
+test('anyone_retrieves_an_offering', function () {
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $offeringId = Offering::inRandomOrder()->first()->ulid;
+
+    $this->getJson("/offerings/{$offeringId}")
+        ->dump()
+        ->assertOk()
+        ->assertJsonPath('data.ulid', $offeringId);
+});
