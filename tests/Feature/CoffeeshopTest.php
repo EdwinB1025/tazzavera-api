@@ -214,15 +214,84 @@ test('anyone_retrieves_an_offering', function () {
 });
 
 test('authenticated_coffeeshp_deletes_offering', function () {
-    [$user, $token] = authenticateWithWriteScope();
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
 
-    $offering = Offering::inRandomOrder()->first();
+    /** Assigning autheticated user to 6 of the locations created */
+    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
+    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
+
+    $offering = Offering::whereHas('location', function ($query) use ($user) {
+        $query->where('user_id', $user->id);
+    })->inRandomOrder()->first();
 
     $this->withToken($token)
         ->deleteJson("/offerings/{$offering->ulid}")
         ->assertOK();
 
     $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+});
+
+test('authenticated_coffeeshp_deletes_offerings', function () {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
+    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
+
+    /**Retrieving offering for the same user */
+
+    $offerings = Offering::whereHas(
+        'location',
+        function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }
+    )->inRandomOrder()->limit(3)->get();
+
+    $offeringsIds = $offerings->pluck('ulid')->toArray();
+
+    $this->withToken($token)
+        ->deleteJson("/offerings", ['offerings' => $offeringsIds])
+        ->assertOK();
+
+    foreach ($offerings as $offering) {
+        $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+    }
+});
+
+test('authenticated_coffeeshp_deletes_offerings_without_ownership', function () {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+
+    /**Retrieving offering for the same user */
+
+    $offerings = Offering::inRandomOrder()->limit(3)->get();
+
+    $offeringsIds = $offerings->pluck('ulid')->toArray();
+
+    $this->withToken($token)
+        ->deleteJson("/offerings", ['offerings' => $offeringsIds])
+        ->assertForbidden();
+});
+
+test('authenticated_coffeeshp_deletes_offering_without_scope', function () {
+    [$user, $token] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    /** Assigning autheticated user to 6 of the locations created */
+    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
+    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
+
+    $offering = Offering::whereHas('location', function ($query) use ($user) {
+        $query->where('user_id', $user->id);
+    })->inRandomOrder()->first();
+
+    $this->withToken($token)
+        ->deleteJson("/offerings/{$offering->ulid}")
+        ->assertForbidden();
 });
