@@ -98,6 +98,18 @@ Laravel generates these on its own; you only customize the response format (JSON
 
 ---
 
+## OAuth / authorization flow
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/oauth/authorize` | GET | 302 | — | requires active web session + PKCE params; with `skipsAuthorization` returns `code` in `Location` |
+| `/oauth/authorize` | GET | 400 | `Invalid Scope` | `RejectWildcardScope`: the requested `scope` contains the `*` wildcard → rejected before Passport issues anything |
+| `/oauth/authorize` | GET | 401 | no session | not authenticated in the web session |
+
+> **Wildcard rejection (`RejectWildcardScope`).** Passport's token `can()` returns `true` for any scope if the token carries `*`, which would defeat the `profile:read`/`profile:write` segmentation. The middleware runs on the `web` group, filtered to the `oauth/authorize` path: it splits the requested `scope` on spaces and aborts with **400 `Invalid Scope`** if `*` is among the tokens. It rejects rather than rewrites — the front is the only client, so a `*` is our own bug and must fail visibly. Lives in the issuance flow, not in the API routes.
+
+---
+
 ## Offerings
 
 | Endpoint | Method | Code | Message / i18n key | Notes |
@@ -109,16 +121,20 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/offerings` | POST | 401 | `Unauthenticated.` | no/invalid token |
 | `/offerings` | POST | 403 | `locations.location_not_owned` | ownership: some location is not the coffeeshop's (middleware `owns.location:locations` + `LocationPolicy`); nothing created |
 | `/offerings` | POST | 422 | validation + `errors{}` | `locations` required/array, `coffeeInventoryId` exists, etc. |
-| `/offerings/{offeringUlid}` | PUT | 200 | `offering.updated` | own; body `coffeeInventoryId`, `locations` (single) — *not yet implemented* |
-| `/offerings/{offeringUlid}` | PUT | 401 | `Unauthenticated.` | no/invalid token |
-| `/offerings/{offeringUlid}` | PUT | 403 | `This action is unauthorized.` | not owner (`OfferingPolicy`) — *not yet implemented* |
-| `/offerings/{offeringUlid}` | PUT | 404 | model not found | ulid does not resolve — *not yet implemented* |
-| `/offerings/{offeringUlid}` | DELETE | 200 | `offering.deleted` | own — *not yet implemented* |
-| `/offerings/{offeringUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token — *not yet implemented* |
-| `/offerings/{offeringUlid}` | DELETE | 403 | `This action is unauthorized.` | not owner — *not yet implemented* |
-| `/offerings/{offeringUlid}` | DELETE | 404 | model not found | ulid does not resolve — *not yet implemented* |
+| `/offerings/{offeringUlid}` | DELETE | 200 | `offering.deleted` | single delete; own (middleware `owns.offering` + `OfferingPolicy::delete`) + scope `profile:write`. Hard delete (no SoftDeletes) |
+| `/offerings/{offeringUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token |
+| `/offerings/{offeringUlid}` | DELETE | 403 | `offerings.not_owned` | not owner, missing scope, or not a coffeeshop |
+| `/offerings/{offeringUlid}` | DELETE | 404 | model not found | ulid does not resolve |
+| `/offerings` | DELETE | 200 | `offering.deleted` | batch delete; body `{ offerings: [ulids] }`; own (middleware `owns.offering:offerings`) + scope `profile:write`. Hard delete |
+| `/offerings` | DELETE | 401 | `Unauthenticated.` | no/invalid token |
+| `/offerings` | DELETE | 403 | `offerings.not_owned` | any ulid in the list is not the caller's → **total rejection, nothing deleted** |
+| `/offerings` | DELETE | 422 | validation + `errors{}` | `offerings` required/array/max:50; each element `exists:offerings,ulid` (`MassDeleteOfferingRequest`) |
 
-> **Batch create (`POST /offerings`):** returns **201** with `{created: [...], skipped: [...]}`. `offering.created` (`created`/`updated`/`deleted` keys in `lang/*/offering.php`; `updated`/`deleted` reserved for the future PUT/DELETE, not yet implemented). Ownership (403) is a hard stop before any creation; duplicates are a partial warning inside the 200-family response (skipped list), NOT an error code.
+> **Batch create (`POST /offerings`):** returns **201** with `{created: [...], skipped: [...]}`. `offering.created` (`created`/`deleted` keys in `lang/*/offering.php`). Ownership (403) is a hard stop before any creation; duplicates are a partial warning inside the 200-family response (skipped list), NOT an error code.
+>
+> **Single delete (`DELETE /offerings/{offeringUlid}`):** ownership by route-model binding → `OfferingPolicy::delete` (`user->id === offering->location->user_id`) via the `owns.offering` middleware. Hard delete — `Offering` has no `SoftDeletes`, the row is removed and the UNIQUE `(location, coffeeInventory)` pair is freed immediately.
+>
+> **Batch delete (`DELETE /offerings`):** ulids in the body, no route binding, so authorization is done inside `owns.offering:offerings` (loads the offerings, checks each against the `delete` gate). **Rejection is total:** one foreign ulid → 403 and nothing is deleted, it does not delete the owned ones and skip the rest. Validation (`MassDeleteOfferingRequest`) rejects a non-existent or empty list with 422 before ownership runs. The `update` case is not a route — editing an offering is resolved as DELETE + POST batch (the PUT was removed by design, since changing both FKs points to a different offering, not an edit of this one).
 
 ---
 
@@ -161,7 +177,7 @@ Laravel generates these on its own; you only customize the response format (JSON
 |----------|--------|--------------|-----------------|--------------------|-------|
 | `/register` | POST | 201 | 422 (validation), 500 (`RoleAssignmentException`) | `user.created` | creates user + assigns role |
 | `/login` | POST | 200 | 401 (credentials), 422 (validation) | `auth.logged_in` | creates web session (Fortify, stateful); returns `{"two_factor": false}`; does NOT return token — auth step before `/oauth/authorize` |
-| `/oauth/authorize` | GET | 302 | 401 (no session), 400/`unauthorized_client`, `invalid_client` | — | requires active web session + PKCE params; with `skipsAuthorization` returns `code` in `Location` |
+| `/oauth/authorize` | GET | 302 | 400/`Invalid Scope` (wildcard), 401 (no session), `invalid_client` | — | requires active web session + PKCE params; with `skipsAuthorization` returns `code` in `Location`; `RejectWildcardScope` rejects `scope=*` with 400 |
 | `/oauth/token` | POST | 200 | 400/`invalid_request`, 401/`invalid_client`, `invalid_grant` | — | exchanges `code` + `code_verifier` (or password grant) for `access_token` + `refresh_token` |
 | `/logout` | POST | 200 | 401 | `auth.logged_out` | revokes ALL of the user's tokens (access + refresh) |
 | `/user` | GET | 200 | 401 | — | authenticated user's own data (no id) |
@@ -169,6 +185,8 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/users/{user}/password` | PUT | 200 | 401, 403, 404, 422 | `user.password_updated` | password change (current_password + confirmed); own + scope `profile:write` |
 | `/users/{user}` | DELETE | 200 | 401, 403, 404 | `user.deactivated` | soft delete (deactivate account, recoverable via `restore`); own + scope `profile:write` |
 | `/users/{user}/force` | DELETE | 200 | 401, 403, 404 | `user.deleted` | hard delete (permanent removal, cascade); own + scope `profile:write`; binding `withTrashed` |
+| `/offerings/{offeringUlid}` | DELETE | 200 | 401, 403 (`offerings.not_owned`), 404 | `offering.deleted` | single delete; own + scope `profile:write`; hard delete |
+| `/offerings` | DELETE | 200 | 401, 403 (`offerings.not_owned`, total rejection), 422 | `offering.deleted` | batch delete; body `{ offerings: [ulids] }`, max 50; own + scope `profile:write`; hard delete |
 
 ---
 

@@ -16,8 +16,9 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 |---|---|---|---|---|
 | GET | `/offerings` | — | Public | Query:  `evaluationCount`, `defectiveCount`, `cuppingAvgFrom`, `cuppingAvgTo`, `fragranceFrom`, `aromaFrom`, `flavorFrom`, `aftertasteFrom`, `acidityFrom`, `sweetnessFrom`, `mouthfeelFrom`, `overallFrom`, `fragranceTo`, `aromaTo`, `flavorTo`, `aftertasteTo`, `acidityTo`, `sweetnessTo`, `mouthfeelTo`, `overallTo`, `cataRef`, `fragranceCata`, `aromaCata`, `flavorCata`, `aftertasteCata`, `mouthfeelCata`, `coffeeshopUlid`, `locationUlid`, `city`, `coffeeName`, `originCountry`, `originRegion`, `process`, `producer` |
 | GET | `/offerings/{offeringId}` | — | Public | — |
-| POST | `/offerings` | coffeeshop | Authenticated | Body: `coffeeInventoryId`, `locations: []` (batch — one offering per location, all for the same inventory lot) |
-| DELETE | `/offerings/{offeringId}` | coffeeshop (owner) | Authenticated | — |
+| POST | `/offerings` | coffeeshop | Authenticated (`profile:write`) | Body: `coffeeInventoryId`, `locations: []` (batch — one offering per location, all for the same inventory lot) |
+| DELETE | `/offerings/{offeringId}` | coffeeshop (owner) | Authenticated (`profile:write`) | — |
+| DELETE | `/offerings` | coffeeshop (owner) | Authenticated (`profile:write`) | Body: `offerings: []` (array of ulids to delete, `max:50`) |
 
 **Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same inventory lot. The pair `(location, coffeeInventory)` is UNIQUE.
 
@@ -33,6 +34,16 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 ```
 
 `coffeeInventoryId` and `locations` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
+
+**Deletion is a hard delete.** `Offering` does **not** use the `SoftDeletes` trait, so both `DELETE` endpoints remove the row permanently. This is deliberate: the UNIQUE `(location, coffeeInventory)` pair is freed immediately, which is what makes the DELETE + POST-batch pattern work (re-creating the same pair right after deleting it). There is no soft-delete/restore for offerings — unlike users, offerings carry no data worth preserving after removal (the derived consensus averages recompute from the surviving evaluations).
+
+**Single delete (`DELETE /offerings/{offeringId}`):** ownership verified by middleware `owns.offering` + `OfferingPolicy::delete` (which checks `user->id === offering->location->user_id`). The model is resolved by route-model binding on the ulid, so the policy receives the loaded model directly.
+
+**Batch delete (`DELETE /offerings`):** the coffeeshop sends an array of offering ulids in the body to delete several at once.
+
+- **No policy-by-binding.** Unlike the single delete, there is no `{offering}` in the route, so nothing is resolved by binding and `can:delete,offering` cannot apply. Authorization is done inside the ownership middleware (`owns.offering:offerings`), which reads the ulids from the body, loads the offerings and verifies each one against the authenticated user via the `delete` gate.
+- **Rejection is total (hard 403).** If any ulid in the list belongs to an offering the caller does not own, the request is rejected with `403` and **nothing is deleted** — the whole operation fails, it does not delete the owned ones and skip the rest. A foreign ulid in the list is treated as a client bug, made visible rather than silently partially applied.
+- **Validation (`MassDeleteOfferingRequest`):** `offerings` is `required|array|max:50`; each element is `required|string|exists:offerings,ulid`. A non-existent ulid is rejected with `422` before ownership runs. The `max:50` is a sanity cap on payload size (the UI never selects more at once), not a performance limit — the delete itself is a single `WHERE ulid IN (...)` query.
 
 ## Coffee Inventory
 
@@ -92,7 +103,17 @@ Login is a three-step PKCE flow: `POST /login` (creates the Fortify web session)
 
 > OAuth2/PKCE body params (`grant_type`, `client_id`, `code_verifier`, etc.) stay snake_case — they follow the OAuth standard, not this API's camelCase convention.
 
-**Step-up (scope `profile:write`):** sensitive actions (update profile, change password, deactivate and delete account) require a token carrying the `profile:write` scope, verified with `CheckTokenForAnyScope::using('profile:write')` (Passport 13). That token is obtained through the same authorization flow by requesting `scope=profile:write` at `/oauth/authorize` — a single login mechanism, re-authenticating to elevate the token. A token without that scope receives a `403`.
+> **Password grant — bootcamp only.** The `grant_type=password` row above is kept for the bootcamp exercise, alongside PKCE, so both flows can be practised. It is **not valid for this project's real context:** the password grant is deprecated in OAuth 2.1 and discouraged by RFC 9700 (it forces the client to handle the user's raw credentials and bypasses the authorize/consent screen, so no step-up is possible). The valid production flow is authorization code + PKCE.
+
+### Scopes and step-up
+
+The API defines exactly two scopes (`Passport::tokensCan`): `profile:read` and `profile:write`. There is no wildcard scope exposed.
+
+- **Default scope.** `Passport::defaultScopes(['profile:read'])` — a token requested without an explicit `scope` is issued with `profile:read` (least privilege). The front only sends `scope=profile:write` when it needs an elevated token.
+- **Read floor on the authenticated group.** The outer `auth:api` group also requires `CheckTokenForAnyScope::using('profile:read', 'profile:write')` — any valid token of the system (carrying either scope) passes the base routes (`/logout`, `/user`, the coffeeshop read routes). A token carrying only `profile:write` still passes here.
+- **Step-up (scope `profile:write`).** Sensitive actions (update profile, change password, deactivate/delete account, create/delete offerings) require a token carrying `profile:write`, verified with `CheckTokenForAnyScope::using('profile:write')` (Passport 13). That token is obtained through the same authorization flow by requesting `scope=profile:write` at `/oauth/authorize` — a single login mechanism, re-authenticating to elevate the token. A token without that scope receives a `403`.
+
+**Wildcard rejection (`RejectWildcardScope`).** Passport's token `can()` short-circuits to `true` if the token carries the `*` wildcard scope, which would defeat the read/write segmentation entirely — a token issued with `*` passes every `CheckTokenForAnyScope` check. Passport honours `*` by default and offers no native way to disable it. To close this, a custom middleware `RejectWildcardScope` runs on the `web` group, filtered to the `oauth/authorize` path: it reads the requested `scope`, splits it on spaces, and if `*` appears among the tokens it aborts with `400` before Passport issues anything. It rejects (rather than rewrites) the scope because the front is the only client, so a `*` is our own bug and must fail visibly. This lives in the OAuth issuance flow, not in the API routes — by the time a token reaches the API, the wildcard has already been prevented at issuance.
 
 **Pending:**
 - `GET /users/{id}` to fetch *other* users (third-party profiles): role allowed and exposed fields not yet defined.
