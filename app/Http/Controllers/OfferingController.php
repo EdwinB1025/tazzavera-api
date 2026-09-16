@@ -79,8 +79,11 @@ class OfferingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offering $offering)
     {
-        //
+
+        $offering->delete();
+
+        return response()->json(['message' => __('offerings.deleted')], 200);
     }
 }
