@@ -2,6 +2,7 @@
 
 use App\Exceptions\ApiCustomException;
 use App\Http\Middleware\OwnLocation;
+use App\Http\Middleware\RejectWildcardScope;
 use App\Http\Middleware\SetLocale;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -25,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'owns.location' => OwnLocation::class,
+        ]);
+        $middleware->web(append: [
+            RejectWildcardScope::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -14,7 +14,7 @@ Route::post('/register', [UserController::class, 'store']);
 Route::get('/taxonomies', [TaxonomyController::class, 'index']);
 Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 
-Route::middleware('auth:api')
+Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
     ->group(function () {
 
         /**EDB 09/10/26: Routes to collect user profile data and logs out */

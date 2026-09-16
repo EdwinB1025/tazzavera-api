@@ -50,7 +50,12 @@ class AppServiceProvider extends ServiceProvider
         /** Registering scopes to enable the authorization flow in front-end*/
         Passport::tokensCan([
             'profile:write' => 'Modify or delete profile',
+            'profile:read' => 'Retreive data to performed actions'
         ]);
+
+        /** EDB 09/15/26: setting default scope to invalidated * scope, and enfore scope check in api routes */
+
+        Passport::defaultScopes(['profile:read']);
 
         /** Defining relations aliases for polomirphic relations */
 
