@@ -53,7 +53,9 @@ class AppServiceProvider extends ServiceProvider
             'profile:read' => 'Retreive data to performed actions'
         ]);
 
-        /** EDB 09/15/26: setting default scope to invalidated * scope, and enfore scope check in api routes */
+        /** EDB 09/15/26: setting default scope so tokens without an explicit scope
+         *  get profile:read, * to be invalidated through the middleware
+         */
 
         Passport::defaultScopes(['profile:read']);
 

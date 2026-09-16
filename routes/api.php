@@ -29,7 +29,9 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
             Route::post('/offerings', [OfferingController::class, 'store'])
                 ->middleware('owns.location:locations');
             Route::delete('/offerings/{offering}', [OfferingController::class, 'destroy'])
-                ->middleware(['can:delete,offering', CheckTokenForAnyScope::using('profile:write')]);
+                ->middleware(['owns.offering', CheckTokenForAnyScope::using('profile:write')]);
+            Route::delete('/offerings', [OfferingController::class, 'massDestroy'])
+                ->middleware(['owns.offering: offerings', CheckTokenForAnyScope::using('profile:write')]);
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
