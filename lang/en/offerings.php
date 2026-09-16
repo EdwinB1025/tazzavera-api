@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 return [
     'created' => 'Offering(s) created.',
-    'updated' => 'Offering(s) updated.',
     'deleted' => 'Offering(s) deleted.',
+    'not_owned' => 'Offering :ulid, does not belong to the user.'
 ];

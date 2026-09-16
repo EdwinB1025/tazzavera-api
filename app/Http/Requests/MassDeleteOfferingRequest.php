@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CoffeeInventory;
-use App\Models\Location;
+use App\Models\Offering;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOfferingRequest extends FormRequest
+class MassDeleteOfferingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,19 +25,14 @@ class StoreOfferingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'coffeeInventoryId' => ['required', 'string', 'exists:coffee_inventory,ulid'],
-            'locations' => ['required', 'array', 'min:1'],
-            'locations.*' => ['string', 'distinct', 'exists:locations,ulid'],
+            'offerings' => ['required', 'array', 'max:50'],
+            'offerings.*' => ['required', 'string', 'exists:offerings,ulid'],
         ];
     }
 
-    public function coffeeInventoryUlid(): string
+    public function offerings(): array
     {
-        return $this->validated()['coffeeInventoryId'];
-    }
-
-    public function locations(): array
-    {
-        return $this->validated()['locations'];
+        $offeringsId = $this->validated()['offerings'];
+        return $offeringsId;
     }
 }

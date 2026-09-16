@@ -73,7 +73,6 @@ function authenticate($role = 'user'): array
         'client_id' => $client->id,
         'username' => $user->email,
         'password' => $password,
-        'scope' => '*'
     ]);
 
     $token = $response->json('access_token');

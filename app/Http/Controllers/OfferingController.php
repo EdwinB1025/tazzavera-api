@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MassDeleteOfferingRequest;
 use App\Http\Requests\StoreOfferingRequest;
 use App\Http\Resources\OfferingResource;
+use App\Models\CoffeeInventory;
+use App\Models\Location;
 use App\Models\Offering;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -29,10 +32,14 @@ class OfferingController extends Controller
 
                 $response = new Collection();
 
-                foreach ($request->locations() as $location) {
+                $coffeeInventory = CoffeeInventory::where('ulid', $request->coffeeInventoryUlid())
+                    ->firstOrFail();
+                $locations = Location::whereIn('ulid', $request->locations())->get();
+
+                foreach ($locations as $location) {
                     $response->push(Offering::create(
                         [
-                            'coffee_inventory_id' => $request->coffeeInventory()->id,
+                            'coffee_inventory_id' => $coffeeInventory->id,
                             'location_id' => $location->id,
                         ]
                     )->refresh());
@@ -79,8 +86,22 @@ class OfferingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offering $offering)
     {
-        //
+        $offering->delete();
+
+        return response()->json(['message' => __('offerings.deleted')], 200);
+    }
+
+    /**
+     * Remove the specified collection of resources.
+     */
+    public function massDestroy(MassDeleteOfferingRequest $request)
+    {
+        Offering::whereIn('ulid', $request->offerings())
+            //->get() EDB 09/16/26: deleting from collection to enable the event generation for future notifications if needed.
+            ->delete();
+
+        return response()->json(['message' => __('offerings.deleted')], 200);
     }
 }

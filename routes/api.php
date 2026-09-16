@@ -14,7 +14,7 @@ Route::post('/register', [UserController::class, 'store']);
 Route::get('/taxonomies', [TaxonomyController::class, 'index']);
 Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 
-Route::middleware('auth:api')
+Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
     ->group(function () {
 
         /**EDB 09/10/26: Routes to collect user profile data and logs out */
@@ -26,10 +26,12 @@ Route::middleware('auth:api')
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
-
-            Route::middleware('owns.location:locations')->group(function () {
-                Route::post('/offerings', [OfferingController::class, 'store']);
-            });
+            Route::post('/offerings', [OfferingController::class, 'store'])
+                ->middleware('owns.location:locations');
+            Route::delete('/offerings/{offering}', [OfferingController::class, 'destroy'])
+                ->middleware(['owns.offering', CheckTokenForAnyScope::using('profile:write')]);
+            Route::delete('/offerings', [OfferingController::class, 'massDestroy'])
+                ->middleware(['owns.offering:offerings', CheckTokenForAnyScope::using('profile:write')]);
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
