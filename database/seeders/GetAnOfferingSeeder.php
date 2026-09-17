@@ -13,8 +13,9 @@ class GetAnOfferingSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 10; $i++) {
-            $locations = mt_rand(1, 8);
+        //**EDB 09/16/26: Creating i coffeeshops */
+        for ($i = 1; $i <= 15; $i++) {
+            $locations = mt_rand(1, 6);
             $this->callWith(LocationSeeder::class, ['locations' => $locations]);
         }
         $this->call(CreateOfferingSeeder::class);

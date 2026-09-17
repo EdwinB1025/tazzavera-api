@@ -213,18 +213,12 @@ test('anyone_retrieves_an_offering', function () {
         ->assertJsonStructure($structure);
 });
 
-test('authenticated_coffeeshp_deletes_offering', function () {
+test('authenticated_coffeeshop_deletes_offering', function () {
     [$user, $token] = authenticateWithWriteScope('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
 
-    /** Assigning autheticated user to 6 of the locations created */
-    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
-    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
-
-    $offering = Offering::whereHas('location', function ($query) use ($user) {
-        $query->where('user_id', $user->id);
-    })->inRandomOrder()->first();
+    $offering = createOfferingsForUser($user, 1, 1);
 
     $this->withToken($token)
         ->deleteJson("/offerings/{$offering->ulid}")
@@ -238,17 +232,8 @@ test('authenticated_coffeeshp_deletes_offerings', function () {
 
     $this->seed(GetAnOfferingSeeder::class);
 
-    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
-    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
+    $offerings = createOfferingsForUser($user, 4, 4)->random(3);
 
-    /**Retrieving offering for the same user */
-
-    $offerings = Offering::whereHas(
-        'location',
-        function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        }
-    )->inRandomOrder()->limit(3)->get();
 
     $offeringsIds = $offerings->pluck('ulid')->toArray();
 
@@ -266,9 +251,6 @@ test('authenticated_coffeeshp_deletes_offerings_without_ownership', function () 
 
     $this->seed(GetAnOfferingSeeder::class);
 
-
-    /**Retrieving offering for the same user */
-
     $offerings = Offering::inRandomOrder()->limit(3)->get();
 
     $offeringsIds = $offerings->pluck('ulid')->toArray();
@@ -283,13 +265,7 @@ test('authenticated_coffeeshp_deletes_offering_without_scope', function () {
 
     $this->seed(GetAnOfferingSeeder::class);
 
-    /** Assigning autheticated user to 6 of the locations created */
-    $randomLocationIds = Location::whereHas('offerings')->inRandomOrder()->limit(6)->pluck('id');
-    Location::whereIn('id', $randomLocationIds)->update(['user_id' => $user->id]);
-
-    $offering = Offering::whereHas('location', function ($query) use ($user) {
-        $query->where('user_id', $user->id);
-    })->inRandomOrder()->first();
+    $offering = createOfferingsForUser($user, 1, 1);
 
     $this->withToken($token)
         ->deleteJson("/offerings/{$offering->ulid}")

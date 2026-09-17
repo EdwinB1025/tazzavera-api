@@ -12,8 +12,8 @@ class CreateOfferingSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->callWith(RoasterySeeder::class, ['count' => 5]);
-        $this->callWith(CoffeeSeeder::class, ['count' => 15]);
-        $this->callWith(CoffeeInventorySeeder::class, ['count' => 12]);
+        $this->callWith(RoasterySeeder::class, ['count' => 20]);
+        $this->callWith(CoffeeSeeder::class, ['count' => 40]);
+        $this->callWith(CoffeeInventorySeeder::class, ['count' => 50]);
     }
 }
