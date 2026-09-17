@@ -171,7 +171,7 @@ function createOfferingsForUser(User $user, int $count, int $numLocations): Coll
         'user_id' => $user->id,
     ]);
 
-    $locations->flatMap(
+    $offerings = $locations->flatMap(
         fn($location) =>
         $inventories->map(
             fn($inventory) =>
@@ -182,7 +182,6 @@ function createOfferingsForUser(User $user, int $count, int $numLocations): Coll
         )
     );
 
-    $offerings = Offering::whereIn('location_id', $locations->pluck('id'))->get();
 
     return $offerings->count() === 1 ? $offerings->first() : $offerings;
 }

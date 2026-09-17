@@ -31,11 +31,6 @@ class Offering extends Model
 
     /** Relationships */
 
-    public function location(): BelongsTo
-    {
-        return $this->belongsTo(Location::class);
-    }
-
     public function coffeeInventory(): BelongsTo
     {
         return $this->belongsTo(CoffeeInventory::class);
@@ -44,5 +39,15 @@ class Offering extends Model
     public function offeringTastes(): HasMany
     {
         return $this->hasMany(OfferingTaste::class);
+    }
+
+    public function evaluations(): HasMany
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 }
