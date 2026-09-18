@@ -165,7 +165,7 @@ UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño an
 | `ulid` | CHAR(26) | UNIQUE, NN (identificador público; trait `HasPublicUlid`, `getRouteKeyName`→'ulid'). PK sigue siendo `id` BIGINT |
 | `offering_id` | BIGINT UNSIGNED | FK→offerings (ON DELETE RESTRICT), NN |
 | `evaluator_id` | BIGINT UNSIGNED | FK→users (ON DELETE RESTRICT), NN |
-| `evaluator_role` | ENUM('specialist','consumer','coffeeshop') | NN, DEFAULT 'specialist' |
+| `evaluation_type` | ENUM('specialist','baseline') | NN (sin default) |
 | `extraction_method` | VARCHAR(60) | NULL |
 | `status` | ENUM('open','closed') | NN, DEFAULT 'open' |
 | `cupping_score` | DECIMAL(4,2) | NULL, derivado del JSON de entrada al insertar (filtrable — filtro `score`) |
@@ -174,7 +174,7 @@ UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño an
 | `affective` | JSON | NULL |
 | `extrinsics` | JSON | NULL |
 
-`evaluator_id`/`evaluator_role` los deriva el backend del usuario autenticado, no son inputs. `cupping_score` e `is_defective` se **computan a partir del JSON de entrada** al insertar (no viajan en el body) y se guardan como columnas por ser filtrables/contables.
+`evaluator_id` lo deriva el backend del usuario autenticado; no es input. **`evaluation_type` describe la evaluación, no el rol Spatie del usuario** — se deriva del rol real del usuario autenticado al crear (coffeeshop→`baseline`, specialist→`specialist`), verificado en backend, nunca tomado del front. Es un snapshot **inmutable** en la creación: el rol del usuario puede cambiar, pero el tipo de la evaluación no. Dos valores por ahora; `consumer` queda en backlog (tendrá otra estructura y probablemente entidad separada). Modelado como PHP enum `EvaluationType` (cast, como `RoastLevel`), NOT NULL **sin default** (campo derivado que siempre se asigna; un default enmascararía un olvido, grabando un tipo falso). `cupping_score` e `is_defective` se computan a partir del JSON de entrada al insertar (no viajan en el body) y se guardan como columnas por ser filtrables/contables.
 
 **`descriptive` / `affective` — estructura homóloga (`{eje: {score, note}}`).** `descriptive`: 7 ejes, escala 0-15, sin `overall`. `affective`: 8 ejes, escala 1-9, con `overall`. La nota de `affective.overall.note` **es** la nota general de la evaluación (único eje cuya nota es la general). Orden de ejes según CVA: `fragrance` (olor seco) precede a `aroma` (olor húmedo). Cómo se popula `fragrance` es responsabilidad del front; el cálculo del back es aparte.
 

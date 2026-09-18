@@ -53,7 +53,7 @@ test('specialist_create_evaluation', function () {
         'offeringId' => $offering->ulid,
         'extractionMethod' => 'v60',
         'descriptive' => [
-            'roast_level' => 'medium',
+            'roastLevel' => 'medium',
             'fragrance'  => ['score' => 8,  'cata' => $cataFragance, 'note' => null],
             'aroma'      => ['score' => 9,  'cata' => $cataAroma, 'note' => null],
             'flavor'     => ['score' => 11, 'cata' => $cataFlavor, 'note' => null],
@@ -61,7 +61,7 @@ test('specialist_create_evaluation', function () {
             'acidity'    => ['score' => 9,  'note' => null],
             'sweetness'  => ['score' => 10, 'note' => null],
             'mouthfeel'  => ['score' => 8,  'cata' => $cataMouthfeel, 'note' => null],
-            'main_tastes' => $cataMainTastes,
+            'mainTastes' => $cataMainTastes,
         ],
         'affective' => [
             'fragrance'  => ['score' => 7, 'note' => null],
@@ -79,7 +79,7 @@ test('specialist_create_evaluation', function () {
             'processing' => null,
             'trading' => null,
             'certifications' => null,
-            'general_observation' => null,
+            'generalObservation' => null,
         ],
     ];
 

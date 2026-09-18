@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\EvaluationServiceContract;
+use App\Http\Requests\StoreEvaluationRequest;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
+
+    public function __construct(private EvaluationServiceContract $service) {}
     /**
      * Display a listing of the resource.
      */
@@ -17,9 +21,12 @@ class EvaluationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEvaluationRequest $request)
     {
-        //
+        $this->service->parseEvaluation($request);
+        $this->service->saveEvaluation();
+
+        //** Pendiente la generacion del recurso para responder al cliente */
     }
 
     /**
