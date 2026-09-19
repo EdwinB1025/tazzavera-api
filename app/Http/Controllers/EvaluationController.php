@@ -27,7 +27,7 @@ class EvaluationController extends Controller
         $this->service->parseEvaluation($request);
         $this->service->saveEvaluation();
 
-        return EvaluationResource::collection($this->service->getEvaluation())
+        return (new EvaluationResource($this->service->getEvaluation()))
             ->additional(['message' => __('evaluations.created')])
             ->response()
             ->setStatusCode(201);

@@ -12,6 +12,7 @@ use Database\Seeders\GetAnOfferingSeeder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection as SupportCollection;
 use Laravel\Passport\ClientRepository;
 use Tests\TestCase;
 
@@ -158,7 +159,7 @@ function updateContact(array $contact, Model|Collection $model): void
     }
 }
 
-function createOfferingsForUser(User $user, int $count, int $numLocations): Collection|Offering
+function createOfferingsForUser(User $user, int $count, int $numLocations): SupportCollection|Offering
 {
     $inventories = CoffeeInventory::inRandomOrder()->take($count)->get();
 

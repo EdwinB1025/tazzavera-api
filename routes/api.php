@@ -37,7 +37,7 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
 
         /**EDB 09/17/26: Routes for specialist to manage evaluations */
         Route::middleware('role:specialist')->group(function () {
-            Route::post('/evaluation', [EvaluationController::class, 'store']);
+            Route::post('/evaluations', [EvaluationController::class, 'store']);
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/

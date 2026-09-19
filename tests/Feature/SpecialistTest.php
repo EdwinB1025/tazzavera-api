@@ -85,5 +85,7 @@ test('specialist_create_evaluation', function () {
 
     $this->withToken($token)
         ->postJson('/evaluations', $payLoad)
+        ->dump()
+        ->assertJsonPath('data.offeringId', $offering->ulid)
         ->assertStatus(201);
 });

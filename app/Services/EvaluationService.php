@@ -61,7 +61,10 @@ class EvaluationService implements EvaluationServiceContract
             if (in_array($axis, ['mainTastes', 'fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'], true)) {
                 $refs = $axis === 'mainTastes' ? $data : ($data['cata'] ?? []);
                 foreach ($refs as $ref) {
-                    $cataAttributes[] = ['taxonomy_ref' => $ref, 'type' => $axis];
+                    $cataAttributes[] = [
+                        'taxonomy_ref' => $ref,
+                        'type' => $axis === 'mainTastes' ? 'main_tastes' : $axis
+                    ];
                 }
             }
         }
@@ -93,8 +96,7 @@ class EvaluationService implements EvaluationServiceContract
 
         $jsonColumns = $this->request
             ->safe()
-            ->only(['descriptive', 'affective', 'extrinsics'])
-            ->all();
+            ->only(['descriptive', 'affective', 'extrinsics']);
 
 
         foreach ($jsonColumns as $column => $data) {
@@ -173,7 +175,7 @@ class EvaluationService implements EvaluationServiceContract
         $evaluation->offering()->associate($this->offering);
         $evaluation->save();
         $evaluation->tastes()->createMany($this->tastes->all());
-        $evaluation->lodad('tastes.taxonomy:id,ulid');
+        $evaluation->load('tastes.taxonomy:id,ulid');
 
         $this->evaluation = $evaluation;
     }
@@ -188,7 +190,7 @@ class EvaluationService implements EvaluationServiceContract
         /**EDB 09/18/26 load the updated values posted by the client, the db taste values are refreshed */
         $evaluation->tastes()->delete();
         $evaluation->tastes()->createMany($this->tastes->all());
-        $evaluation->lodad('tastes.taxonomy:id,ulid');
+        $evaluation->load('tastes.taxonomy:id,ulid');
 
         $this->evaluation = $evaluation;
     }

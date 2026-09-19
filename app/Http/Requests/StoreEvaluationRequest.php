@@ -32,7 +32,7 @@ class StoreEvaluationRequest extends FormRequest
 
             // --- descriptive ---
             'descriptive'                  => ['required', 'array'],
-            'descriptive.roast_level'      => ['required', Rule::enum(RoastLevel::class)],
+            'descriptive.roastLevel'      => ['required', Rule::enum(RoastLevel::class)],
             'descriptive.fragrance'        => ['nullable', 'array'],
             'descriptive.fragrance.score'  => ['nullable', 'integer', 'between:0,15'],
             'descriptive.fragrance.note'   => ['nullable', 'string'],
