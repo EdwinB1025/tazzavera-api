@@ -23,15 +23,15 @@ class OfferingResource extends JsonResource
             'aromaAffectiveAvg' => $this->whenNotNull($this->aroma_avg),
             'flavorAffectiveAvg' => $this->whenNotNull($this->flavor_avg),
             'aftertasteAffectiveAvg' => $this->whenNotNull($this->aftertaste_avg),
-            'acidityAfectiveAvg' => $this->whenNotNull($this->acidity_avg),
-            'sweetnessAfectiveAvg' => $this->whenNotNull($this->sweetness_avg),
+            'acidityAffectiveAvg' => $this->whenNotNull($this->acidity_avg),
+            'sweetnessAffectiveAvg' => $this->whenNotNull($this->sweetness_avg),
             'mouthfeelAffectiveAvg' => $this->whenNotNull($this->mouthfeel_avg),
             'overallAffectiveAvg' => $this->whenNotNull($this->overall_avg),
             'concordance' => $this->whenNotNull($this->concordance),
             'verificationStatus' => $this->verification_status,
             'location' => new LocationResource($this->whenLoaded('location')),
             'coffeeInventory' => new CoffeeInventoryResource($this->whenLoaded('coffeeInventory')),
-            'SensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('offeringTastes')),
+            'sensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('offeringTastes')),
         ];
     }
 }

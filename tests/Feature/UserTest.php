@@ -42,7 +42,6 @@ test('user_authenticates_with_pkce', function () {
         'client_id' => $client->id,
         'redirect_uri' => 'http://localhost/callback',
         'response_type' => 'code',
-        'scope' => '*',
         'state' => $state,
         'code_challenge' => $codeChallenge,
         'code_challenge_method' => 'S256',

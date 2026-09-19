@@ -1,13 +1,18 @@
 <?php
 
 use App\Models\Coffee;
+use App\Models\CoffeeInventory;
 use App\Models\Contact;
 use App\Models\Location;
+use App\Models\Offering;
+use App\Models\OlfactoryTaxonomy;
 use App\Models\Roastery;
 use App\Models\User;
+use Database\Seeders\GetAnOfferingSeeder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection as SupportCollection;
 use Laravel\Passport\ClientRepository;
 use Tests\TestCase;
 
@@ -152,4 +157,76 @@ function updateContact(array $contact, Model|Collection $model): void
             $contactData
         );
     }
+}
+
+function createOfferingsForUser(User $user, int $count, int $numLocations): SupportCollection|Offering
+{
+    $inventories = CoffeeInventory::inRandomOrder()->take($count)->get();
+
+    if ($inventories->count() < $count) {
+        test()->seed(GetAnOfferingSeeder::class);
+        $inventories = CoffeeInventory::inRandomOrder()->take($count)->get();
+    }
+
+    $locations = Location::factory()->count($numLocations)->create([
+        'user_id' => $user->id,
+    ]);
+
+    $offerings = $locations->flatMap(
+        fn($location) =>
+        $inventories->map(
+            fn($inventory) =>
+            Offering::factory()->create([
+                'location_id' => $location->id,
+                'coffee_inventory_id' => $inventory->id,
+            ])
+        )
+    );
+
+
+    return $offerings->count() === 1 ? $offerings->first() : $offerings;
+}
+
+function getOlfactoryTaxonomyCollection($category = 'aromatics', $all = false, $count = 1)
+{
+
+    switch ($category) {
+        case 'mouthfeel':
+            $result = OlfactoryTaxonomy::where('level', 1)
+                ->whereJsonContains('categories', $category);
+            $result = $all ? $result->get() : $result->limit($count)->get();
+            break;
+
+        case 'main_tastes':
+            $result = OlfactoryTaxonomy::where('level', 0)
+                ->whereJsonContains('categories', $category);
+            $result = $all ? $result->get() : $result->limit($count)->get();
+            break;
+
+        default:
+
+            /**Retrieve all the bottom models */
+            $orphan = OlfactoryTaxonomy::doesntHave('children')
+                ->whereJsonContains('categories', $category)
+                ->get();
+
+            $result = $orphan->concat($orphan)->unique('id')->values();
+
+            /**EDB 09/18/26: it will be responsability of fron to print the olfactory taxonomy, keeping code for a future use
+            $branches->each->setAttribute('isBottom', true);
+
+            if (! $all) {
+                $branches = $branches->take($count);
+            }
+
+            /Filter grandchild with relationship to add relationships
+
+            $child = $branches->map->parent->filter();
+            $parent = $child->map->parent->filter();
+            $result = $branches->concat($child)->concat($parent)->unique('id')->values();
+             */
+            break;
+    }
+
+    return $result;
 }

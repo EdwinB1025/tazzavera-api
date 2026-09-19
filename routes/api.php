@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoffeeInventoryController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfferingController;
 use App\Http\Controllers\TaxonomyController;
@@ -32,6 +33,11 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
                 ->middleware(['owns.offering', CheckTokenForAnyScope::using('profile:write')]);
             Route::delete('/offerings', [OfferingController::class, 'massDestroy'])
                 ->middleware(['owns.offering:offerings', CheckTokenForAnyScope::using('profile:write')]);
+        });
+
+        /**EDB 09/17/26: Routes for specialist to manage evaluations */
+        Route::middleware('role:specialist')->group(function () {
+            Route::post('/evaluations', [EvaluationController::class, 'store']);
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/

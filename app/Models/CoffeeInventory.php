@@ -24,6 +24,10 @@ class CoffeeInventory extends Pivot
 {
     use HasPublicUlid, HasFactory;
 
+    protected $casts = [
+        'production_date' => 'date',
+    ];
+
     /**Modle Scopes */
 
     /**

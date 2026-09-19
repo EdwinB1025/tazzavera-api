@@ -4,6 +4,12 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 
 > **API naming convention:** everything that enters or leaves through the API (request body, query params, JSON responses) uses **camelCase**. DB column names are snake_case (see `entidades_relacionales.md`) and are resolved internally. **Exception:** OAuth2/PKCE parameters (`grant_type`, `client_id`, `redirect_uri`, `code_verifier`, `code_challenge`, `client_secret`, etc.) stay snake_case because they are defined by the OAuth standard, not by this API.
 
+> **Response shapes:** JSON examples below are derived from the actual Resources. Notes worth keeping in mind:
+> - Decimal-cast fields (`cuppingAvg`, the `*Avg` axes, `concordance`, `latitud`, `longitud`) serialize as **strings** (MySQL DECIMAL → string in PHP). The front parses them.
+> - `whenNotNull` fields are **omitted from the JSON when null** (e.g. a provisional offering with no consensus won't include the `*Avg`/`concordance` keys at all).
+> - `whenLoaded` relations only appear when the controller eager-loaded them; absent otherwise.
+> - Resource collections are wrapped in `data`; `->additional([...])` merges keys (like `message`) at the root.
+
 **Specialist:** authenticated professional cupper/taster. Their role is to create, edit and close evaluations on existing offerings — they provide the expert judgment that feeds an offering's consensus. They do not create or edit offerings.
 
 **Coffeeshop:** authenticated coffee shop, owner of its own offerings. Creates and edits its offerings (associating a coffee inventory lot and one or more of its own locations), and creates/edits the provisional technical evaluation (at most one per offering) required to publish it. Does not close evaluations or evaluate other shops' offerings.
@@ -23,15 +29,23 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 **Batch creation (`POST /offerings`):** the coffeeshop selects one inventory lot and one or more of its own locations; the endpoint creates one offering per location, all pointing to the same inventory lot. The pair `(location, coffeeInventory)` is UNIQUE.
 
 - **Ownership (hard 403):** every location in `locations` is validated first against the authenticated coffeeshop (middleware `owns.location:locations` + `LocationPolicy`). If any location is not owned by the caller → `403`, nothing is created. This is authorization, not a warning.
-- **Duplicates (partial, warning):** after ownership passes, offerings are created; any `(location, coffeeInventory)` pair that already exists is skipped (not a failure). Not transactional-all-or-nothing — the new ones persist, the colliding ones are reported.
-- **Response `201`** with a partial breakdown the front handles as a warning:
+- **Response `201`:** a collection of the created offerings (`OfferingResource`) plus a `message`.
 
 ```json
 {
-  "created": [ { "offeringUlid": "01J…", "locationUlid": "01J…" } ],
-  "skipped": [ { "locationUlid": "01J…", "reason": "already_offered" } ]
+  "data": [
+    {
+      "ulid": "01J…",
+      "verificationStatus": "provisional",
+      "location": { "…": "LocationResource (whenLoaded)" },
+      "coffeeInventory": { "…": "CoffeeInventoryResource (whenLoaded)" }
+    }
+  ],
+  "message": "Offering(s) created."
 }
 ```
+
+> A freshly created offering is provisional: it has no consensus yet, so `evaluationCount`, `defectiveEvaluationCount`, the `*Avg` axes and `concordance` are null and therefore **omitted** (`whenNotNull`). `sensoryTaxonomy` is empty/absent until `updateConsensus()` runs.
 
 `coffeeInventoryId` and `locations` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
 
@@ -45,6 +59,30 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 - **Rejection is total (hard 403).** If any ulid in the list belongs to an offering the caller does not own, the request is rejected with `403` and **nothing is deleted** — the whole operation fails, it does not delete the owned ones and skip the rest. A foreign ulid in the list is treated as a client bug, made visible rather than silently partially applied.
 - **Validation (`MassDeleteOfferingRequest`):** `offerings` is `required|array|max:50`; each element is `required|string|exists:offerings,ulid`. A non-existent ulid is rejected with `422` before ownership runs. The `max:50` is a sanity cap on payload size (the UI never selects more at once), not a performance limit — the delete itself is a single `WHERE ulid IN (...)` query.
 
+### `OfferingResource` (GET index/show — full shape)
+
+```json
+{
+  "ulid": "01J…",
+  "evaluationCount": 12,
+  "defectiveEvaluationCount": 1,
+  "cuppingAvg": "84.25",
+  "fragranceAffectiveAvg": "7.2",
+  "aromaAffectiveAvg": "7.8",
+  "flavorAffectiveAvg": "7.5",
+  "aftertasteAffectiveAvg": "7.1",
+  "acidityAffectiveAvg": "7.4",
+  "sweetnessAffectiveAvg": "7.6",
+  "mouthfeelAffectiveAvg": "7.0",
+  "overallAffectiveAvg": "7.9",
+  "concordance": "0.812",
+  "verificationStatus": "verified",
+  "location": { "…": "LocationResource" },
+  "coffeeInventory": { "…": "CoffeeInventoryResource" },
+  "sensoryTaxonomy": [ { "…": "OfferingTasteResource" } ]
+}
+```
+
 ## Coffee Inventory
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
@@ -55,6 +93,41 @@ Feeds the inventory selector when a coffeeshop creates an offering. Returns the 
 
 Filters operate on the nested café (`whereHas('coffee', …)`) since `coffeeName`/`originCountry`/`originRegion`/`process`/`producer` are `coffees` columns, not inventory columns. **`city`** filters by the roastery's contact (`whereHas('roastery.contacts', …)`).
 
+### `CoffeeInventoryResource`
+
+```json
+{
+  "data": [
+    {
+      "ulid": "01J…",
+      "roastLot": "L-2026-014",
+      "productionDate": "2026-09-19",
+      "coffee": {
+        "ulid": "01J…",
+        "name": "…",
+        "roastLevel": "medium",
+        "process": "washed",
+        "variety": "…",
+        "producer": "…",
+        "country": "…",
+        "region": "…",
+        "altitude": 1800,
+        "lot": "…",
+        "certifications": [ 
+                            { "code": "organic", 
+                              "description": "…" } 
+                          ]
+      },
+      "roastery": { "ulid": "01J…", 
+                    "name": "…", 
+                    "description": "…" }
+    }
+  ]
+}
+```
+
+> `certifications` in `CoffeeResource` lists the **certification type** (`code` + `description`) only — it does not expose the pivot's `issuedAt`/`expiresAt`. Pending: decide whether the response should carry those dates.
+
 ## Locations
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
@@ -62,6 +135,36 @@ Filters operate on the nested café (`whereHas('coffee', …)`) since `coffeeNam
 | GET | `/locations` | coffeeshop | `auth:api` | — Returns the authenticated coffeeshop's own locations (query scoped to `user()->locations`) |
 
 Two layers: role middleware (only coffeeshops enter the endpoint) + query scoping (only the owner's locations are returned — ownership lives in the query, not a policy). No ulid in the route: the "whose" comes from the token. Query-parameter filters to be added later.
+
+### `LocationResource`
+
+```json
+{
+  "data": [
+    {
+      "ulid": "01J…",
+      "name": "…",
+      "description": "…",
+      "latitud": "41.38790000",
+      "longitud": "2.16990000",
+      "contacts": [
+        {
+          "ulid": "01J…",
+          "isPrimary": true,
+          "phone": "…",
+          "email": "…",
+          "web": "…",
+          "social": "…",
+          "address": "…",
+          "country": "…",
+          "city": "…",
+          "postalCode": "…"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Taxonomy
 
@@ -71,17 +174,86 @@ Two layers: role middleware (only coffeeshops enter the endpoint) + query scopin
 
 Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root with its `children`, and each child with its `children` / grandchildren). Feeds the cata descriptor wheel in the evaluation form. Reference data — cacheable aggressively.
 
+### `TaxonomyResource` (recursive)
+
+```json
+{
+  "data": [
+    {
+      "level": 0,
+      "nameEn": "Floral",
+      "nameEs": "Floral",
+      "descriptionEn": "…",
+      "descriptionEs": "…",
+      "color": "#C match",
+      "categories": { "aromatics": true, 
+                      "mainTastes": false, 
+                      "defects": false, 
+                      "mouthfeel": false 
+                    },
+      "children": [
+        { "level": 1, 
+          "nameEn": "…", 
+          "children": [ 
+                        { "level": 2, 
+                          "…": "…", 
+                          "children": [] } 
+                      ] 
+        }
+      ]
+    }
+  ]
+}
+```
+
+> `TaxonomyResource` does **not** expose `ulid`. Note that cata references in evaluations/offerings point to taxonomy nodes by ulid (`ref`); if the front needs to match a cata `ref` against this tree to render it, the tree currently offers no ulid to match on. Open decision: add `ulid` to `TaxonomyResource`, or have the front match by another key.
+
 ## Evaluations
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
 | GET | `/evaluations` | — | Public | Query: `evaluatorId`, `coffeeId`, `city`, `locationId`, `process`, `score`, `status` |
 | GET | `/evaluations/{evaluationId}` | — | Public | — |
-| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offeringId`, `extractionMethod`, `status`, `descriptive`, `affective`, `note` |
-| PUT | `/evaluations/{evaluationId}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extractionMethod`, `status`, `descriptive`, `affective`, `note` |
+| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offeringId`, `extractionMethod`, `descriptive`, `affective`, `extrinsics` |
+| PUT | `/evaluations/{evaluationId}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extractionMethod`, `descriptive`, `affective`, `extrinsics`, `status` |
 | DELETE | `/evaluations/{evaluationId}` | specialist (own), coffeeshop (own) | Authenticated | — |
 
-`evaluatorId` and `evaluatorRole` are **not** request inputs: the backend derives them from the authenticated user (`evaluatorId` = logged-in user; `evaluatorRole` = that user's role). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
+`evaluatorId` and `evaluationType` are **not** request inputs: the backend derives them from the authenticated user (`evaluatorId` = logged-in user; `evaluationType` from the user's real Spatie role — coffeeshop→`baseline`, specialist→`specialist`). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
+
+### `EvaluationResource`
+
+```json
+{
+  "ulid": "01J…",
+  "offeringId": "01J…",
+  "evaluationType": "specialist",
+  "status": "open",
+  "extractionMethod": "v60",
+  "cuppingScore": "84.25",
+  "isDefective": false,
+  "descriptive": {
+    "fragrance": { "score": 11, "note": null },
+    "aroma": { "score": 12, "note": null }
+  },
+  "affective": {
+    "aroma": { "score": 8, "note": null },
+    "overall": { "score": 8, "note": "…" }
+  },
+  "extrinsics": {
+    "farming": null, 
+    "processing": null, 
+    "trading": null,
+    "certifications": null, 
+    "generalObservation": null
+  },
+  "tastes": [
+    { "ref": "01J…", "type": "aroma" },
+    { "ref": "01J…", "type": "main_tastes" }
+  ]
+}
+```
+
+> `tastes` is the flat selection (leaf `ref` = the taxonomy node's ulid + `type`). The front rebuilds the cascade against the taxonomy tree it already has. `type` is snake_case here because it mirrors the DB ENUM values (`main_tastes`, `defects`, …). `cuppingScore` is a string (decimal cast); omitted/`null` on incomplete evaluations. `tastes` only appears when the relation was eager-loaded (`load('tastes.taxonomy')`).
 
 ## Users
 
@@ -136,4 +308,4 @@ The API defines exactly two scopes (`Passport::tokensCan`): `profile:read` and `
 | GET | `/coffees` | — | Public | Query: `coffeeName`, `originCountry`, `originRegion`, `process`, `producer`, `city` |
 | GET | `/coffees/{coffeeUlid}` | — | Public | — |
 
-Public catalog browsing of coffees (informational). Distinct from `/coffeeInventory`, which is the lot-level resource used to create offerings.
+Public catalog browsing of coffees (informational). Distinct from `/coffeeInventory`, which is the lot-level resource used to create offerings. Uses `CoffeeResource` (same shape as nested under `coffeeInventory`).

@@ -117,7 +117,7 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/offerings` | GET | 200 | — | public list with filters; paginated |
 | `/offerings/{offeringUlid}` | GET | 200 | — | public; single offering |
 | `/offerings/{offeringUlid}` | GET | 404 | model not found | ulid does not resolve |
-| `/offerings` | POST | 201 | `offering.created` | batch create; body `{created, skipped}` — the created ones persist, duplicates are reported in `skipped` (partial success) |
+| `/offerings` | POST | 201 | `offering.created` | batch create; returns `{ data: [OfferingResource], message }` — a collection of the created offerings |
 | `/offerings` | POST | 401 | `Unauthenticated.` | no/invalid token |
 | `/offerings` | POST | 403 | `locations.location_not_owned` | ownership: some location is not the coffeeshop's (middleware `owns.location:locations` + `LocationPolicy`); nothing created |
 | `/offerings` | POST | 422 | validation + `errors{}` | `locations` required/array, `coffeeInventoryId` exists, etc. |
@@ -130,11 +130,36 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/offerings` | DELETE | 403 | `offerings.not_owned` | any ulid in the list is not the caller's → **total rejection, nothing deleted** |
 | `/offerings` | DELETE | 422 | validation + `errors{}` | `offerings` required/array/max:50; each element `exists:offerings,ulid` (`MassDeleteOfferingRequest`) |
 
-> **Batch create (`POST /offerings`):** returns **201** with `{created: [...], skipped: [...]}`. `offering.created` (`created`/`deleted` keys in `lang/*/offering.php`). Ownership (403) is a hard stop before any creation; duplicates are a partial warning inside the 200-family response (skipped list), NOT an error code.
+> **Batch create (`POST /offerings`):** returns **201** with `{ data: [OfferingResource], message: offering.created }` — the collection of created offerings. Ownership (403) is a hard stop before any creation: if any location is not the caller's, the whole request is rejected and nothing is created (no partial "skipped" — a foreign location is a client bug, made visible, not silently skipped). Message key `offering.created` (`created`/`updated`/`deleted` keys in `lang/*/offering.php`; `updated` not yet implemented).
 >
 > **Single delete (`DELETE /offerings/{offeringUlid}`):** ownership by route-model binding → `OfferingPolicy::delete` (`user->id === offering->location->user_id`) via the `owns.offering` middleware. Hard delete — `Offering` has no `SoftDeletes`, the row is removed and the UNIQUE `(location, coffeeInventory)` pair is freed immediately.
 >
 > **Batch delete (`DELETE /offerings`):** ulids in the body, no route binding, so authorization is done inside `owns.offering:offerings` (loads the offerings, checks each against the `delete` gate). **Rejection is total:** one foreign ulid → 403 and nothing is deleted, it does not delete the owned ones and skip the rest. Validation (`MassDeleteOfferingRequest`) rejects a non-existent or empty list with 422 before ownership runs. The `update` case is not a route — editing an offering is resolved as DELETE + POST batch (the PUT was removed by design, since changing both FKs points to a different offering, not an edit of this one).
+
+---
+
+## Evaluations
+
+| Endpoint | Method | Code | Message / i18n key | Notes |
+|----------|--------|------|--------------------|-------|
+| `/evaluations` | GET | 200 | — | public list with filters; paginated |
+| `/evaluations/{evaluationUlid}` | GET | 200 | — | public; single evaluation |
+| `/evaluations/{evaluationUlid}` | GET | 404 | model not found | ulid does not resolve |
+| `/evaluations` | POST | 201 | `evaluation.created` | create; `EvaluationResource`. `evaluatorId`/`evaluationType` derived from the authed user (not inputs); `status` fixed to `open` |
+| `/evaluations` | POST | 401 | `Unauthenticated.` | no/invalid token |
+| `/evaluations` | POST | 403 | authorization | not specialist/coffeeshop, or coffeeshop already has its one baseline for this offering |
+| `/evaluations` | POST | 422 | validation + `errors{}` | sensory blocks / refs invalid (`StoreEvaluationRequest`) |
+| `/evaluations/{evaluationUlid}` | PUT | 200 | `evaluation.updated` | edit own; includes closing with `status: closed`. Front resends the full cata set (missing cata = user removed it) |
+| `/evaluations/{evaluationUlid}` | PUT | 401 | `Unauthenticated.` | no/invalid token |
+| `/evaluations/{evaluationUlid}` | PUT | 403 | authorization | not owner of the evaluation |
+| `/evaluations/{evaluationUlid}` | PUT | 404 | model not found | ulid does not resolve |
+| `/evaluations/{evaluationUlid}` | PUT | 422 | validation + `errors{}` | `UpdateEvaluationRequest`; `offeringId` prohibited (offering not reassignable) |
+| `/evaluations/{evaluationUlid}` | DELETE | 200 | `evaluation.deleted` | own (specialist or coffeeshop) |
+| `/evaluations/{evaluationUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token |
+| `/evaluations/{evaluationUlid}` | DELETE | 403 | authorization | not owner |
+| `/evaluations/{evaluationUlid}` | DELETE | 404 | model not found | ulid does not resolve |
+
+> **Create/update flow.** `evaluatorId` and `evaluationType` are never request inputs — the backend derives them from the authenticated user (`evaluationType`: coffeeshop→`baseline`, specialist→`specialist`, from the real Spatie role, verified backend-side). `cuppingScore` and `is_defective` are computed from the input JSON at write time, not sent. Closing is the same `PUT` setting `status: closed` — no dedicated route. On update the front resends the complete cata set, so the service replaces `evaluation_tastes` (delete + recreate) rather than diffing; a cata absent from the payload means the user removed it. `descriptive`/`affective` columns are **preserved when their key is absent** from the payload (only overwritten when sent).
 
 ---
 
@@ -185,8 +210,12 @@ Laravel generates these on its own; you only customize the response format (JSON
 | `/users/{user}/password` | PUT | 200 | 401, 403, 404, 422 | `user.password_updated` | password change (current_password + confirmed); own + scope `profile:write` |
 | `/users/{user}` | DELETE | 200 | 401, 403, 404 | `user.deactivated` | soft delete (deactivate account, recoverable via `restore`); own + scope `profile:write` |
 | `/users/{user}/force` | DELETE | 200 | 401, 403, 404 | `user.deleted` | hard delete (permanent removal, cascade); own + scope `profile:write`; binding `withTrashed` |
+| `/offerings` | POST | 201 | 401, 403 (`locations.location_not_owned`), 422 | `offering.created` | batch create; `{ data: [OfferingResource], message }`; ownership hard-stop, nothing created on foreign location |
 | `/offerings/{offeringUlid}` | DELETE | 200 | 401, 403 (`offerings.not_owned`), 404 | `offering.deleted` | single delete; own + scope `profile:write`; hard delete |
 | `/offerings` | DELETE | 200 | 401, 403 (`offerings.not_owned`, total rejection), 422 | `offering.deleted` | batch delete; body `{ offerings: [ulids] }`, max 50; own + scope `profile:write`; hard delete |
+| `/evaluations` | POST | 201 | 401, 403, 422 | `evaluation.created` | create; `evaluatorId`/`evaluationType` derived from authed user; `status` fixed `open`; cata refs → `evaluation_tastes` |
+| `/evaluations/{evaluationUlid}` | PUT | 200 | 401, 403, 404, 422 | `evaluation.updated` | edit own; closing = `status: closed`; `offeringId` prohibited; full cata set resent (delete+recreate) |
+| `/evaluations/{evaluationUlid}` | DELETE | 200 | 401, 403, 404 | `evaluation.deleted` | own (specialist or coffeeshop) |
 
 ---
 
@@ -194,6 +223,7 @@ Laravel generates these on its own; you only customize the response format (JSON
 
 - **Success with a resource:** `return (new UserResource($user))->response()->setStatusCode(201);`
 - **Success with a resource + message:** `return (new UserResource($user))->additional(['message' => __('user.updated')])->response()->setStatusCode(200);`
+- **Success with a collection + message:** `return SomeResource::collection($items)->additional(['message' => __('offering.created')])->response()->setStatusCode(201);`
 - **Success with no body:** `return response()->noContent();` (204)
 - **Success with a message only:** `return response()->json(['message' => __('user.deactivated')], 200);`
 - **Business error (custom exception):** extend `HttpException` with the code in the constructor, or define it in the `render` of `withExceptions`.

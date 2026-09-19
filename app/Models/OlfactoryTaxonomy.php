@@ -6,6 +6,8 @@ use App\Traits\HasPublicUlid;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(
     'parent_id',
@@ -25,13 +27,25 @@ class OlfactoryTaxonomy extends Model
 
     //**Inner relationships with childreen */
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(OlfactoryTaxonomy::class, 'parent_id');
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(OlfactoryTaxonomy::class, 'parent_id');
+    }
+
+    /**Relationships external */
+
+    public function evaluationTastes(): HasMany
+    {
+        return $this->hasMany(EvaluationTaste::class, 'taxonomy_ref');
+    }
+
+    public function offeringTastes(): HasMany
+    {
+        return $this->hasMany(OfferingTaste::class, 'taxonomy_ref');
     }
 }

@@ -159,80 +159,88 @@ UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño an
 > **PENDIENTE (`count`):** decidir si `count` cuenta **menciones** (`COUNT(*)`) o **evaluaciones distintas** (`COUNT(DISTINCT evaluation_id)`). Afecta la magnitud del ranking y del radar (si dos ejes de la misma evaluación mencionan el mismo sabor, menciones lo cuenta dos veces). Para la búsqueda por existencia da igual; para la gráfica/ranking importa. `offering_tastes` es agregado y hoy no guarda `evaluation_id`, así que contar evaluaciones distintas exige resolverlo en `updateConsensus()` al construir el agregado. Resolver antes de implementar `updateConsensus()`.
 
 ### `evaluations` (contenedor; descriptive y affective como JSON homólogo)
+
 | Columna | Tipo MySQL | Propiedades |
 |---|---|---|
+| `ulid` | CHAR(26) | UNIQUE, NN (identificador público; trait `HasPublicUlid`, `getRouteKeyName`→'ulid'). PK sigue siendo `id` BIGINT |
 | `offering_id` | BIGINT UNSIGNED | FK→offerings (ON DELETE RESTRICT), NN |
 | `evaluator_id` | BIGINT UNSIGNED | FK→users (ON DELETE RESTRICT), NN |
-| `evaluator_role` | ENUM('specialist','consumer','coffeeshop') | NN, DEFAULT 'specialist' |
+| `evaluation_type` | ENUM('specialist','baseline') | NN (sin default) |
 | `extraction_method` | VARCHAR(60) | NULL |
 | `status` | ENUM('open','closed') | NN, DEFAULT 'open' |
-| `cupping_score` | DECIMAL(4,2) | NULL, der (0-100; filtrable — filtro `score`) |
-| `is_defective` | BOOLEAN | NN, DEFAULT 0 (conteo de defectuosos) |
-| `defects` | JSON | NULL (array de refs de defectos; sale de `affective`, fuera del mapa de ejes) |
-| `main_tastes` | JSON | NULL (array de refs de sabores principales; sale de `descriptive`, fuera del mapa de ejes) |
+| `cupping_score` | DECIMAL(4,2) | NULL, derivado del JSON de entrada al insertar (filtrable — filtro `score`) |
+| `is_defective` | BOOLEAN | NN, DEFAULT 0, calculado por el controlador |
 | `descriptive` | JSON | NN |
 | `affective` | JSON | NULL |
-| `note` | TEXT | NULL (nota general / eje overall) |
-| `note_extrinsics` | TEXT | NULL |
+| `extrinsics` | JSON | NULL |
 
-`evaluator_id`/`evaluator_role` los deriva el backend del usuario autenticado, no son inputs. `cupping_score` e `is_defective` se extrajeron de `affective` a columnas (filtrables/contables). `defects` (de `affective`) y `main_tastes` (de `descriptive`) se sacaron a columnas JSON aparte: son arrays de refs que no son ejes, y sacarlos deja **ambos JSON como mapas de ejes puros e idénticos en estructura** (`{eje: {score, cata, note}}`). El resto de ambos JSON son datos crudos anidados que solo se leen enteros para agregar (consenso) y mostrar — no se filtran por evaluación individual. La estructura JSON uniforme permite aplanarlos a tablas analíticas por ETL en el futuro sin rediseñar la BD operacional.
+`evaluator_id` lo deriva el backend del usuario autenticado; no es input. **`evaluation_type` describe la evaluación, no el rol Spatie del usuario** — se deriva del rol real del usuario autenticado al crear (coffeeshop→`baseline`, specialist→`specialist`), verificado en backend, nunca tomado del front. Es un snapshot **inmutable** en la creación: el rol del usuario puede cambiar, pero el tipo de la evaluación no. Dos valores por ahora; `consumer` queda en backlog (tendrá otra estructura y probablemente entidad separada). Modelado como PHP enum `EvaluationType` (cast, como `RoastLevel`), NOT NULL **sin default** (campo derivado que siempre se asigna; un default enmascararía un olvido, grabando un tipo falso). `cupping_score` e `is_defective` se computan a partir del JSON de entrada al insertar (no viajan en el body) y se guardan como columnas por ser filtrables/contables.
 
-**`descriptive` / `affective` — estructura homóloga (mapa por eje `{score, cata, note}`).** Cada eje agrupa su puntuación, sus sabores CATA (cadena jerárquica completa `{ref, level, parent_id}`, niveles 0-1-2) y su nota de texto. `descriptive`: escala 0-15. `affective`: escala 1-9. `cata` guarda la jerarquía completa (no solo la hoja) para reconstruir la rueda sin re-consultar la taxonomía. Orden de ejes según CVA: `fragrance` (olor seco) precede a `aroma` (olor húmedo). Cómo se popula `fragrance` es responsabilidad del **front**; el cálculo del back es aparte.
+**`descriptive` / `affective` — estructura homóloga (`{eje: {score, note}}`).** `descriptive`: 7 ejes, escala 0-15, sin `overall`. `affective`: 8 ejes, escala 1-9, con `overall`. La nota de `affective.overall.note` **es** la nota general de la evaluación (único eje cuya nota es la general). Orden de ejes según CVA: `fragrance` (olor seco) precede a `aroma` (olor húmedo). Cómo se popula `fragrance` es responsabilidad del front; el cálculo del back es aparte.
 
 ```json
-// DESCRIPTIVE — mapa homólogo por eje (escala 0-15)
+// DESCRIPTIVE — mapa por eje (escala 0-15), 7 ejes, sin overall
 {
-  "fragrance":  { "score": 11, "cata": [], "note": null },
-  "aroma": {
-    "score": 12,
-    "cata": [
-      { "ref": 1,  "level": 0, "parent_id": null },
-      { "ref": 10, "level": 1, "parent_id": 1 },
-      { "ref": 15, "level": 2, "parent_id": 10 }
-    ],
-    "note": null
-  },
-  "flavor":     { "score": 12, "cata": [ { "ref": 24, "level": 0, "parent_id": null }, { "ref": 25, "level": 1, "parent_id": 24 }, { "ref": 29, "level": 2, "parent_id": 25 } ], "note": null },
-  "acidity":    { "score": 12, "cata": [], "note": null },
-  "sweetness":  { "score": 12, "cata": [], "note": null },
-  "mouthfeel":  { "score": 12, "cata": [], "note": null },
-  "aftertaste": { "score": 12, "cata": [], "note": null },
-  "overall":    { "score": null, "cata": [], "note": null }
+  "fragrance":  { "score": 11, "note": null },
+  "aroma":      { "score": 12, "note": null },
+  "flavor":     { "score": 12, "note": null },
+  "acidity":    { "score": 12, "note": null },
+  "sweetness":  { "score": 12, "note": null },
+  "mouthfeel":  { "score": 12, "note": null },
+  "aftertaste": { "score": 12, "note": null }
 }
 ```
 
 ```json
-// AFFECTIVE — misma estructura (escala 1-9); cupping_score/is_defective/defects fuera (columnas)
+// AFFECTIVE — misma forma (escala 1-9), 8 ejes con overall; overall.note = nota general
 {
-  "fragrance":  { "score": 7, "cata": [], "note": null },
-  "aroma":      { "score": 8, "cata": [], "note": null },
-  "flavor":     { "score": 7, "cata": [], "note": null },
-  "acidity":    { "score": 7, "cata": [], "note": null },
-  "sweetness":  { "score": 8, "cata": [], "note": null },
-  "mouthfeel":  { "score": null, "cata": [ { "ref": 115, "level": 0, "parent_id": null }, { "ref": 117, "level": 1, "parent_id": 115 } ], "note": null },
-  "aftertaste": { "score": 8, "cata": [], "note": null },
-  "overall":    { "score": 8, "cata": [], "note": null }
+  "fragrance":  { "score": 7, "note": null },
+  "aroma":      { "score": 8, "note": null },
+  "flavor":     { "score": 7, "note": null },
+  "acidity":    { "score": 7, "note": null },
+  "sweetness":  { "score": 8, "note": null },
+  "mouthfeel":  { "score": null, "note": null },
+  "aftertaste": { "score": 8, "note": null },
+  "overall":    { "score": 8, "note": "cuerpo redondo, cierre dulce" }
 }
 ```
 
 ```json
-// defects (columna JSON aparte, de affective) — mismo formato que cata
-[
-  { "ref": 52, "level": 2, "parent_id": 47 }
-]
+// EXTRINSICS — 5 campos de texto (ex note_extrinsics)
+{
+  "farming": null,
+  "processing": null,
+  "trading": null,
+  "certifications": null,
+  "general_observation": null
+}
 ```
+
+---
+
+### `evaluation_tastes` (catas crudas de la evaluación; selección plana del evaluador)
+
+| Columna | Tipo MySQL | Propiedades |
+|---|---|---|
+| `evaluation_id` | BIGINT UNSIGNED | FK→evaluations (ON DELETE CASCADE), NN |
+| `taxonomy_ref` | BIGINT UNSIGNED | FK→olfactory_taxonomies (ON DELETE RESTRICT), NN — mismo tipo que `offering_tastes.taxonomy_ref` |
+| `type` | ENUM('main_tastes','defects','fragrance','aroma','flavor','aftertaste','mouthfeel') | NN |
+
+UNIQUE(`evaluation_id`, `taxonomy_ref`, `type`). Sin `level`, `parent_id`, `count` ni `ulid` — no se expone individualmente (mismo patrón que `offering_tastes`).
+
+Guarda la **selección plana** del evaluador: el payload trae ULIDs de taxonomía sin jerarquía (el front la resuelve), y el controlador los reparte aquí con su `type` al insertar. `level`/`parent_id`/`count` son artefactos del árbol de consenso que se reconstruyen **al agregar** hacia `offering_tastes`, no datos de la selección cruda; la jerarquía, cuando se necesita, se recupera por JOIN a `olfactory_taxonomies`, no se almacena.
+
+El `type` usa **el mismo ENUM que `offering_tastes`** a propósito: así `updateConsensus` es un `GROUP BY taxonomy_ref, type → count` que inserta directo en `offering_tastes`, sin parsear JSON. (Sin `acidity`/`sweetness`/`overall`: esos ejes no llevan cata.)
 
 ```json
-// main_tastes (columna JSON aparte, de descriptive) — mismo formato que cata
+// filas resultantes de un payload (ULIDs ya resueltos a taxonomy_ref)
 [
-  { "ref": 24, "level": 0, "parent_id": null }
+  { "taxonomy_ref": 15, "type": "aroma" },
+  { "taxonomy_ref": 29, "type": "flavor" },
+  { "taxonomy_ref": 24, "type": "main_tastes" },
+  { "taxonomy_ref": 52, "type": "defects" }
 ]
 ```
-
-> **Notas de migración desde el modelo anterior:** `roast_level` eliminado de `descriptive` (venía null, redundante con `coffees.roast_level`). `cupping_score` (DECIMAL, ej. 88.25) e `is_defective` (boolean) extraídos de `affective` a columnas. `main_tastes` conserva `parent_id` (null en raíz). `note.overall` sigue unificado con la columna `evaluations.note`. La reestructuración a mapa-por-eje unifica descriptive y affective bajo la misma forma (`{eje: {score, cata, note}}`), permitiendo código de lectura/escritura/agregación compartido.
->
-> **Eje `fragrance` (nuevo):** añadido como eje propio a ambos JSON y como `fragrance_avg` en offerings. Cómo se popula es responsabilidad del front. **Pendiente:** actualizar el cálculo de `cupping_score` en el back — hoy duplica `aroma` para hacer de fragrance (`Σh_i` = 7 ejes + aroma duplicado); con `fragrance` como eje real, la fórmula debe usar el valor propio en vez de duplicar aroma.
-
 ---
 
 ## Taxonomía (Presentation Layer)

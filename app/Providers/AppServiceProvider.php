@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\EvaluationServiceContract;
 use App\Models\Passport\Client;
 use App\Models\User;
+use App\Services\EvaluationService;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -20,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(EvaluationServiceContract::class, EvaluationService::class);
     }
 
     /**

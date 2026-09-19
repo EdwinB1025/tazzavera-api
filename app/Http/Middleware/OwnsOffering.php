@@ -32,7 +32,7 @@ class OwnsOffering
 
         foreach ($offerings as $offering) {
             if (Gate::denies('delete', $offering)) {
-                abort(403, __('offerings.not_owned', ['ulid' => $offering->ulid]));
+                abort(403, __('offerings.not_owned'));
             }
         }
 
