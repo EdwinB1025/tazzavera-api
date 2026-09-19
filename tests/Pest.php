@@ -230,3 +230,83 @@ function getOlfactoryTaxonomyCollection($category = 'aromatics', $all = false, $
 
     return $result;
 }
+
+function createEvaluationPayload(
+    Offering $offering,
+    $minScore = 7,
+    $extractionMethod = 'v60',
+    $fraganceCount = 2,
+    $aromaCount = 1,
+    $flavorCount = 1,
+    $afterTasteCount = 1,
+    $mouthfeelCount = 1,
+    $mainTastesCount = 1,
+    $defectsCount = 1,
+    $notes = ['affective.overall' => 'Balanced, clean finish.'],
+): array {
+
+    $cataFragance = getOlfactoryTaxonomyCollection('aromatics', false, $fraganceCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataAroma = getOlfactoryTaxonomyCollection('aromatics', false, $aromaCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataFlavor = getOlfactoryTaxonomyCollection('aromatics', false, $flavorCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataAftertaste = getOlfactoryTaxonomyCollection('aromatics', false, $afterTasteCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataMouthfeel = getOlfactoryTaxonomyCollection('mouthfeel', false, $mouthfeelCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataMainTastes = getOlfactoryTaxonomyCollection('main_tastes', false, $mainTastesCount)
+        ->pluck('ulid')
+        ->toArray();
+
+    $cataDefects = getOlfactoryTaxonomyCollection('defects', false, $defectsCount)
+        ->pluck('ulid')
+        ->toArray();
+
+
+    $payLoad = [
+        'offeringId' => $offering->ulid,
+        'extractionMethod' => $extractionMethod,
+        'descriptive' => [
+            'roastLevel' => 'medium',
+            'fragrance'  => ['score' => fake()->numberBetween(1, 15),  'cata' => $cataFragance, 'note' => $notes['descriptive.fragrance'] ?? null],
+            'aroma'      => ['score' => fake()->numberBetween(1, 15),  'cata' => $cataAroma, 'note' => $notes['descriptive.aroma'] ?? null],
+            'flavor'     => ['score' => fake()->numberBetween(1, 15), 'cata' => $cataFlavor, 'note' => $notes['descriptive.flavor'] ?? null],
+            'aftertaste' => ['score' => fake()->numberBetween(1, 15), 'cata' => $cataAftertaste, 'note' => $notes['descriptive.aftertaste'] ?? null],
+            'acidity'    => ['score' => fake()->numberBetween(1, 15),  'note' => $notes['descriptive.acidity'] ?? null],
+            'sweetness'  => ['score' => fake()->numberBetween(1, 15), 'note' => $notes['descriptive.sweetness'] ?? null],
+            'mouthfeel'  => ['score' => fake()->numberBetween(1, 15),  'cata' => $cataMouthfeel, 'note' => $notes['descriptive.mouthfeel'] ?? null],
+            'mainTastes' => $cataMainTastes,
+        ],
+        'affective' => [
+            'fragrance'  => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.fragrance'] ?? null],
+            'aroma'      => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.aroma'] ?? null],
+            'flavor'     => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.flavor'] ?? null],
+            'aftertaste' => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.aftertaste'] ?? null],
+            'acidity'    => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.acidity'] ?? null],
+            'sweetness'  => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.sweetness'] ?? null],
+            'mouthfeel'  => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.mouthfeel'] ?? null],
+            'overall'    => ['score' => fake()->numberBetween($minScore, 9), 'note' => $notes['affective.overall'] ?? null],
+            'defects'    => $cataDefects,
+        ],
+        'extrinsics' => [
+            'farming' => $notes['extrinsics.farming'] ?? null,
+            'processing' => $notes['extrinsics.processing'] ?? null,
+            'trading' => $notes['extrinsics.trading'] ?? null,
+            'certifications' => $notes['extrinsics.certifications'] ?? null,
+            'generalObservation' => $notes['extrinsics.generalObservation'] ?? null,
+        ],
+    ];
+
+    return $payLoad;
+}

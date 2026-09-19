@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Evaluation;
 use App\Models\OlfactoryTaxonomy;
 use Database\Seeders\CertificationTypeSeeder;
 use Database\Seeders\GetAnOfferingSeeder;
@@ -20,72 +21,88 @@ test('specialist_create_evaluation', function () {
 
     $offering = createOfferingsForUser($user, 1, 1);
 
-    $cataFragance = getOlfactoryTaxonomyCollection('aromatics', false, 2)
-        ->pluck('ulid')
-        ->toArray();
+    $payLoad = createEvaluationPayload(
+        offering: $offering,
+        defectsCount: 0
+    );
 
-    $cataAroma = getOlfactoryTaxonomyCollection('aromatics', false, 1)
-        ->pluck('ulid')
-        ->toArray();;
+    $response = $this->withToken($token)
+        ->postJson('/evaluations', $payLoad);
 
-    $cataFlavor = getOlfactoryTaxonomyCollection('aromatics', false, 1)
-        ->pluck('ulid')
-        ->toArray();;
+    $response->assertJsonPath('data.offeringId', $offering->ulid)
+        ->assertStatus(201);
 
-    $cataAftertaste = getOlfactoryTaxonomyCollection('aromatics', false, 2)
-        ->pluck('ulid')
-        ->toArray();;
+    $evaluationId = $response->json('data.ulid');
 
-    $cataMouthfeel = getOlfactoryTaxonomyCollection('mouthfeel', false, 1)
-        ->pluck('ulid')
-        ->toArray();;
-
-    $cataMainTastes = getOlfactoryTaxonomyCollection('main_tastes', false, 1)
-        ->pluck('ulid')
-        ->toArray();;
-
-    $cataDefects = getOlfactoryTaxonomyCollection('defects', false, 1)
-        ->pluck('ulid')
-        ->toArray();;
+    $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
 
 
-    $payLoad = [
-        'offeringId' => $offering->ulid,
-        'extractionMethod' => 'v60',
-        'descriptive' => [
-            'roastLevel' => 'medium',
-            'fragrance'  => ['score' => 8,  'cata' => $cataFragance, 'note' => null],
-            'aroma'      => ['score' => 9,  'cata' => $cataAroma, 'note' => null],
-            'flavor'     => ['score' => 11, 'cata' => $cataFlavor, 'note' => null],
-            'aftertaste' => ['score' => 10, 'cata' => $cataAftertaste, 'note' => null],
-            'acidity'    => ['score' => 9,  'note' => null],
-            'sweetness'  => ['score' => 10, 'note' => null],
-            'mouthfeel'  => ['score' => 8,  'cata' => $cataMouthfeel, 'note' => null],
-            'mainTastes' => $cataMainTastes,
-        ],
-        'affective' => [
-            'fragrance'  => ['score' => 7, 'note' => null],
-            'aroma'      => ['score' => 8, 'note' => null],
-            'flavor'     => ['score' => 7, 'note' => null],
-            'aftertaste' => ['score' => 8, 'note' => null],
-            'acidity'    => ['score' => 7, 'note' => null],
-            'sweetness'  => ['score' => 8, 'note' => null],
-            'mouthfeel'  => ['score' => 6, 'note' => null],
-            'overall'    => ['score' => 8, 'note' => 'Balanced, clean finish.'],
-            'defects'    => $cataDefects,
-        ],
-        'extrinsics' => [
-            'farming' => null,
-            'processing' => null,
-            'trading' => null,
-            'certifications' => null,
-            'generalObservation' => null,
-        ],
-    ];
+    $this->assertDatabaseHas('evaluation_tastes', [
+        'evaluation_id' => $evaluation->id,
+        'type' => 'defects',
+    ]);
+});
+
+test('specialist_update_evaluation', function () {
+    [$user, $token] = authenticate('specialist');
+
+    $offering = createOfferingsForUser($user, 1, 1);
+
+
+    $noteFragance = 'intense fragance, persistant in nose.';
+    $noteProcessing = 'traces of fermentation, uncontrolled variables.';
+
+    $payLoad = createEvaluationPayload(
+        offering: $offering,
+        defectsCount: 2,
+        notes: [
+            'affective.fragrance' => $noteFragance,
+            'extrinsics.processing' => $noteProcessing,
+        ]
+    );
+
+
+
+    $response = $this->withToken($token)
+        ->postJson('/evaluations', $payLoad);
+
+    $score = $response->json('data.cuppingScore');
+
+    $evaluationId = $response->json('data.ulid');
+    $evaluation = Evaluation::where('ulid', $evaluationId)->get();
+
+    $uploadPayload = $payLoad;
+
+    unset($uploadPayload['offeringId']);
+
+    $uploadPayload = json_decode(json_encode($uploadPayload));
+
+    $aromaScore = $uploadPayload->affective->aroma->score - 1;
+    $sweetnessScore = $uploadPayload->affective->sweetness->score;
+
+    $uploadPayload->affective->aroma->score = $aromaScore;
+    $uploadPayload->affective->sweetness->score = $sweetnessScore === 9 ? $sweetnessScore - 2 : $sweetnessScore + 1;
+    $sweetnessScore = $uploadPayload->affective->sweetness->score;
+
+    $uploadPayload->affective->defects = null;
+    $uploadPayload->descriptive->fragrance->note = 'intense fragance, not persistant in nose.';
+    $uploadPayload->extrinsics->processing = 'desireable traces of fermentation, good control of variables.';
+
+    $arrayPayload = json_decode(json_encode($uploadPayload), true);
+
 
     $this->withToken($token)
-        ->postJson('/evaluations', $payLoad)
-        ->dump()
-        ->assertJsonPath('data.offeringId', $offering->ulid)
-        ->assertStatus(201);
+        ->putJson("/evaluations/{$evaluationId}", $arrayPayload)
+        ->assertOk()
+        ->assertJsonPath('data.affective.aroma.score', $aromaScore)
+        ->assertJsonPath('data.affective.sweetness.score', $sweetnessScore)
+        ->assertJsonPath('data.isDefective', false)
+        ->assertJsonPath('data.descriptive.fragrance.note', 'intense fragance, not persistant in nose.')
+        ->assertJsonPath('data.extrinsics.processing', 'desireable traces of fermentation, good control of variables.')
+        ->asserJsonPath('data.cuppingScore', fn($v) => $v !== $score);
+
+    $this->assertDatabaseMissing('evaluation_tastes', [
+        'evaluation_id' => $evaluation->id,
+        'type' => 'defects',
+    ]);
 });
