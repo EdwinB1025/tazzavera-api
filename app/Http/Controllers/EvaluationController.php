@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\EvaluationServiceContract;
 use App\Http\Requests\StoreEvaluationRequest;
+use App\Http\Requests\UpdateEvaluationRequest;
 use App\Http\Resources\EvaluationResource;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,14 @@ class EvaluationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateEvaluationRequest $request)
     {
-        //
+        $this->service->parseEvaluation($request);
+        $this->service->updateEvaluation();
+
+        return (new EvaluationResource($this->service->getEvaluation()))
+            ->additional(['message' => __('evaluations.updated')])
+            ->response();
     }
 
     /**
