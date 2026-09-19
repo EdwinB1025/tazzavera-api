@@ -173,6 +173,7 @@ class EvaluationService implements EvaluationServiceContract
         $evaluation->offering()->associate($this->offering);
         $evaluation->save();
         $evaluation->tastes()->createMany($this->tastes->all());
+        $evaluation->lodad('tastes.taxonomy:id,ulid');
 
         $this->evaluation = $evaluation;
     }
@@ -187,6 +188,7 @@ class EvaluationService implements EvaluationServiceContract
         /**EDB 09/18/26 load the updated values posted by the client, the db taste values are refreshed */
         $evaluation->tastes()->delete();
         $evaluation->tastes()->createMany($this->tastes->all());
+        $evaluation->lodad('tastes.taxonomy:id,ulid');
 
         $this->evaluation = $evaluation;
     }

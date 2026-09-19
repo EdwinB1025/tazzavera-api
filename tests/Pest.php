@@ -205,23 +205,25 @@ function getOlfactoryTaxonomyCollection($category = 'aromatics', $all = false, $
         default:
 
             /**Retrieve all the bottom models */
-            $grandChild = OlfactoryTaxonomy::where('level', 2)
+            $orphan = OlfactoryTaxonomy::doesntHave('children')
                 ->whereJsonContains('categories', $category)
                 ->get();
-            $orphan = OlfactoryTaxonomy::doesntHave('children')->get();
 
-            $branches = $grandChild->concat($orphan)->unique('id')->values();
+            $result = $orphan->concat($orphan)->unique('id')->values();
+
+            /**EDB 09/18/26: it will be responsability of fron to print the olfactory taxonomy, keeping code for a future use
             $branches->each->setAttribute('isBottom', true);
 
             if (! $all) {
                 $branches = $branches->take($count);
             }
 
-            /**Filter grandchild with relationship to add relationships*/
+            /Filter grandchild with relationship to add relationships
 
             $child = $branches->map->parent->filter();
             $parent = $child->map->parent->filter();
             $result = $branches->concat($child)->concat($parent)->unique('id')->values();
+             */
             break;
     }
 

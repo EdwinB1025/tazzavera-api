@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\EvaluationServiceContract;
 use App\Http\Requests\StoreEvaluationRequest;
+use App\Http\Resources\EvaluationResource;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
@@ -26,7 +27,10 @@ class EvaluationController extends Controller
         $this->service->parseEvaluation($request);
         $this->service->saveEvaluation();
 
-        //** Pendiente la generacion del recurso para responder al cliente */
+        return EvaluationResource::collection($this->service->getEvaluation())
+            ->additional(['message' => __('evaluations.created')])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
