@@ -38,8 +38,10 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
         /**EDB 09/17/26: Routes for specialist to manage evaluations */
         Route::middleware('role:specialist')->group(function () {
             Route::post('/evaluations', [EvaluationController::class, 'store']);
-            Route::put('/evaluations/{evaluation}', [EvaluationController::class, 'update'])
-                ->middleware('can:update,evaluation');
+            Route::middleware('can:update,evaluation')->group(function () {
+                Route::put('/evaluations/{evaluation}', [EvaluationController::class, 'update']);
+                Route::patch('/evaluations/{evaluation}/close', [EvaluationController::class, 'close']);
+            });
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
