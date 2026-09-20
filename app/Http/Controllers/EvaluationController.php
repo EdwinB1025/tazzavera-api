@@ -74,6 +74,7 @@ class EvaluationController extends Controller
 
         $evaluation->status = 'closed';
         $evaluation->save();
+        event(new \App\Events\EvaluationClosed($evaluation->offering_id));
 
         return response()->json(['message' => __('evaluations.closed')], 200);
     }
