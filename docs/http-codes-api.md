@@ -142,25 +142,41 @@ Laravel generates these on its own; you only customize the response format (JSON
 
 | Endpoint | Method | Code | Message / i18n key | Notes |
 |----------|--------|------|--------------------|-------|
-| `/evaluations` | GET | 200 | — | public list with filters; paginated |
-| `/evaluations/{evaluationUlid}` | GET | 200 | — | public; single evaluation |
-| `/evaluations/{evaluationUlid}` | GET | 404 | model not found | ulid does not resolve |
-| `/evaluations` | POST | 201 | `evaluation.created` | create; `EvaluationResource`. `evaluatorId`/`evaluationType` derived from the authed user (not inputs); `status` fixed to `open` |
+| `/evaluations` | GET | 200 | — | public list with filters; paginated *(not built yet)* |
+| `/evaluations/{evaluationUlid}` | GET | 200 | — | public; single evaluation *(not built yet)* |
+| `/evaluations/{evaluationUlid}` | GET | 404 | model not found | ulid does not resolve *(not built yet)* |
+| `/evaluations` | POST | 201 | `evaluation.created` | create; `EvaluationResource`. `evaluatorId` derived from the authed user (not an input); `evaluationType` fixed to `specialist` by column default on this route; `status` fixed to `open` |
 | `/evaluations` | POST | 401 | `Unauthenticated.` | no/invalid token |
-| `/evaluations` | POST | 403 | authorization | not specialist/coffeeshop, or coffeeshop already has its one baseline for this offering |
+| `/evaluations` | POST | 403 | `This action is unauthorized.` | not a specialist (`role:specialist`) |
 | `/evaluations` | POST | 422 | validation + `errors{}` | sensory blocks / refs invalid (`StoreEvaluationRequest`) |
-| `/evaluations/{evaluationUlid}` | PUT | 200 | `evaluation.updated` | edit own; includes closing with `status: closed`. Front resends the full cata set (missing cata = user removed it) |
+| `/evaluations/{evaluationUlid}` | PUT | 200 | `evaluation.updated` | edit own content; **full payload** (front resends the complete cata set — a missing cata = user removed it) |
 | `/evaluations/{evaluationUlid}` | PUT | 401 | `Unauthenticated.` | no/invalid token |
-| `/evaluations/{evaluationUlid}` | PUT | 403 | authorization | not owner of the evaluation |
+| `/evaluations/{evaluationUlid}` | PUT | 403 | `This action is unauthorized.` | not owner of the evaluation (`can:update,evaluation` → `EvaluationPolicy::update`) |
 | `/evaluations/{evaluationUlid}` | PUT | 404 | model not found | ulid does not resolve |
+| `/evaluations/{evaluationUlid}` | PUT | **409** | `evaluations.already_closed` | evaluation is `closed` → immutable; controller `abort(409)` before parsing |
 | `/evaluations/{evaluationUlid}` | PUT | 422 | validation + `errors{}` | `UpdateEvaluationRequest`; `offeringId` prohibited (offering not reassignable) |
-| `/evaluations/{evaluationUlid}` | DELETE | 200 | `evaluation.deleted` | own (specialist or coffeeshop) |
-| `/evaluations/{evaluationUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token |
-| `/evaluations/{evaluationUlid}` | DELETE | 403 | authorization | not owner |
-| `/evaluations/{evaluationUlid}` | DELETE | 404 | model not found | ulid does not resolve |
+| `/evaluations/{evaluationUlid}/close` | PATCH | 200 | `evaluations.closed` | transition `open→closed`; no body. **Idempotent** — closing an already-closed evaluation also returns 200 (no error thrown) *(not built yet)* |
+| `/evaluations/{evaluationUlid}/close` | PATCH | 401 | `Unauthenticated.` | no/invalid token |
+| `/evaluations/{evaluationUlid}/close` | PATCH | 403 | `This action is unauthorized.` | not owner (`can:update,evaluation`) |
+| `/evaluations/{evaluationUlid}/close` | PATCH | 404 | model not found | ulid does not resolve |
+| `/evaluations/{evaluationUlid}` | DELETE | 200 | `evaluation.deleted` | own | *(not built yet)* |
+| `/evaluations/{evaluationUlid}` | DELETE | 401 | `Unauthenticated.` | no/invalid token *(not built yet)* |
+| `/evaluations/{evaluationUlid}` | DELETE | 403 | `This action is unauthorized.` | not owner *(not built yet)* |
+| `/evaluations/{evaluationUlid}` | DELETE | 404 | model not found | ulid does not resolve *(not built yet)* |
 
-> **Create/update flow.** `evaluatorId` and `evaluationType` are never request inputs — the backend derives them from the authenticated user (`evaluationType`: coffeeshop→`baseline`, specialist→`specialist`, from the real Spatie role, verified backend-side). `cuppingScore` and `is_defective` are computed from the input JSON at write time, not sent. Closing is the same `PUT` setting `status: closed` — no dedicated route. On update the front resends the complete cata set, so the service replaces `evaluation_tastes` (delete + recreate) rather than diffing; a cata absent from the payload means the user removed it. `descriptive`/`affective` columns are **preserved when their key is absent** from the payload (only overwritten when sent).
-
+> **Build status.** Only `POST` (create) and `PUT` (update) are implemented. `GET` index/show, `PATCH close` and `DELETE` are designed here but not yet built. The `coffeeshop` baseline flow is a separate future endpoint (see baseline design notes), so `coffeeshop` is not a role on these routes yet.
+>
+> **Authorization & scope.** Evaluation routes run under `auth:api` + the read floor (`profile:read` or `profile:write`) + `role:specialist`. A `profile:read` token suffices — **evaluations do not require `profile:write`**: an evaluation is transactional data, not sensitive account data, so create/edit/close is not a step-up action (deliberate exception to the profile/offering step-up rule). Ownership on `PUT` and `PATCH close` is `can:update,evaluation` → `EvaluationPolicy::update` (`$user->id === $evaluation->evaluator_id`, the FK column). The same `update` policy method authorizes both routes — closing asks the same question as editing (is this the owner?).
+>
+> **Create.** `evaluatorId` is derived from the authed user; `evaluationType` is fixed to `specialist` by the column default on this route (the role-derived `coffeeshop→baseline` mapping belongs to the future baseline endpoint). `cuppingScore` and `isDefective` are computed from the input JSON at write time, not sent. `status` is fixed to `open`.
+>
+> **Update — full payload.** `PUT` replaces the evaluation's editable content in full. The front resends the complete `descriptive`/`affective`/`extrinsics` blocks and the complete cata set; the service replaces `evaluation_tastes` (delete + recreate) rather than diffing, so a cata absent from the payload means the user removed it. `affective.defects` accepts `[]` or `null` (both = no defects). This full-payload contract is why there is no "preserve when key absent" behaviour — the client always sends the whole content.
+>
+> **Closing is a separate route.** Closing is **not** a `PUT` with `status: closed` — it is `PATCH /evaluations/{ulid}/close`, no body, which transitions `status` from `open` to `closed`. Only `closed` evaluations enter an offering's consensus. Closing is terminal (no reopen).
+>
+> **State guards (controller, not policy).** Two mutually exclusive rules, both enforced in the controller so the status code is correct (a policy denial would wrongly surface as 403):
+> - **`PUT` on a `closed` evaluation → 409** `evaluations.already_closed`. The request is well-formed and authorized, but conflicts with the resource's frozen state. Thrown via `abort(409)` before parsing.
+> - **`PATCH close` on an already-`closed` evaluation → 200** `evaluations.closed`. Nothing is thrown: the desired end-state already holds, so the controller early-returns the resource. Idempotent by design (safe to retry).
 ---
 
 ## Coffee Inventory

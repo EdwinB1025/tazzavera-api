@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
         Passport::defaultScopes(['profile:read']);
 
-        /** Defining relations aliases for polomirphic relations */
+        /** Defining relations aliases for polomirphic relations, everytime a contactabe model is adde need to be reflected here */
 
         Relation::enforceMorphMap(
             [

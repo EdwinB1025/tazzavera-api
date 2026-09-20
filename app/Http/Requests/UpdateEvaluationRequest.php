@@ -32,7 +32,7 @@ class UpdateEvaluationRequest extends FormRequest
 
             // --- descriptive ---
             'descriptive'                  => ['required', 'array'],
-            'descriptive.roastlevel' => ['required', Rule::enum(RoastLevel::class)],
+            'descriptive.roastLevel' => ['required', Rule::enum(RoastLevel::class)],
             'descriptive.fragrance'        => ['nullable', 'array'],
             'descriptive.fragrance.score'  => ['nullable', 'integer', 'between:0,15'],
             'descriptive.fragrance.note'   => ['nullable', 'string'],
@@ -85,7 +85,7 @@ class UpdateEvaluationRequest extends FormRequest
             'affective.sweetness.note'    => ['nullable', 'string'],
             'affective.mouthfeel.score'   => ['nullable', 'integer', 'between:1,9'],
             'affective.mouthfeel.note'    => ['nullable', 'string'],
-            'affective.defects'           => ['array'],
+            'affective.defects'           => ['nullable', 'array'],
             'affective.defects.*'         => ['string', 'distinct', 'exists:olfactory_taxonomies,ulid'],
 
             // --- extrinsics ---

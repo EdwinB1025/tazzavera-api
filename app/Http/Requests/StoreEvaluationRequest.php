@@ -85,7 +85,7 @@ class StoreEvaluationRequest extends FormRequest
             'affective.sweetness.note'    => ['nullable', 'string'],
             'affective.mouthfeel.score'   => ['nullable', 'integer', 'between:1,9'],
             'affective.mouthfeel.note'    => ['nullable', 'string'],
-            'affective.defects'           => ['array'],
+            'affective.defects'           => ['nullable', 'array'],
             'affective.defects.*'         => ['string', 'distinct', 'exists:olfactory_taxonomies,ulid'],
 
             // --- extrinsics ---

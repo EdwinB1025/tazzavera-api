@@ -11,6 +11,7 @@ use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use LogicException;
 
 class EvaluationService implements EvaluationServiceContract
@@ -98,6 +99,8 @@ class EvaluationService implements EvaluationServiceContract
             ->safe()
             ->only(['descriptive', 'affective', 'extrinsics']);
 
+        $this->affective = collect();
+        $this->descriptive = collect();
 
         foreach ($jsonColumns as $column => $data) {
 
@@ -107,9 +110,6 @@ class EvaluationService implements EvaluationServiceContract
                     break;
                 case 'affective':
                 case 'descriptive':
-                    $this->affective = collect();
-                    $this->descriptive = collect();
-
                     foreach ($data as $axis => $array) {
                         if (! in_array($axis, ['roastLevel', 'mainTastes', 'defects'], true)) {
                             $arrayFiltered = array_intersect_key($array, array_flip(['score', 'note']));
@@ -169,30 +169,38 @@ class EvaluationService implements EvaluationServiceContract
 
     public function saveEvaluation(): void
     {
+        DB::transaction(function () {
+            $evaluation = $this->evaluation;
+            $evaluation->evaluator()->associate($this->request->user());
+            $evaluation->offering()->associate($this->offering);
+            $evaluation->save();
+            $evaluation->refresh();
 
-        $evaluation = $this->evaluation;
-        $evaluation->evaluator()->associate($this->request->user());
-        $evaluation->offering()->associate($this->offering);
-        $evaluation->save();
-        $evaluation->tastes()->createMany($this->tastes->all());
-        $evaluation->load('tastes.taxonomy:id,ulid');
 
-        $this->evaluation = $evaluation;
+            $evaluation->tastes()->createMany($this->tastes->all());
+            $evaluation->load('tastes.taxonomy:id,ulid');
+
+
+            $this->evaluation = $evaluation;
+        });
     }
 
 
     public function updateEvaluation(): void
     {
+        DB::transaction(function () {
+            $evaluation = $this->evaluation;
+            $evaluation->save();
+            $evaluation->refresh();
 
-        $evaluation = $this->evaluation;
-        $evaluation->save();
+            /**EDB 09/18/26 load the updated values posted by the client, the db taste values are refreshed inside a transaction so the delete and recreate are atomic */
+            $evaluation->tastes()->delete();
+            $evaluation->tastes()->createMany($this->tastes->all());
+            $evaluation->load('tastes.taxonomy:id,ulid');
 
-        /**EDB 09/18/26 load the updated values posted by the client, the db taste values are refreshed */
-        $evaluation->tastes()->delete();
-        $evaluation->tastes()->createMany($this->tastes->all());
-        $evaluation->load('tastes.taxonomy:id,ulid');
 
-        $this->evaluation = $evaluation;
+            $this->evaluation = $evaluation;
+        });
     }
 
     public function getEvaluation(): Evaluation
