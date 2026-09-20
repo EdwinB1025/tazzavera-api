@@ -117,3 +117,80 @@ test('specialist_update_evaluation', function () {
         'type' => 'defects',
     ]);
 });
+
+
+test('specialist_close_evaluation', function () {
+    [$user, $token] = authenticate('specialist');
+
+    $offering = createOfferingsForUser($user, 1, 1);
+
+
+    $noteFragance = 'intense fragance, persistant in nose.';
+    $noteProcessing = 'traces of fermentation, uncontrolled variables.';
+
+    $payLoad = createEvaluationPayload(
+        offering: $offering,
+        defectsCount: 2,
+        notes: [
+            'affective.fragrance' => $noteFragance,
+            'extrinsics.processing' => $noteProcessing,
+        ]
+    );
+
+    $response = $this->withToken($token)
+        ->postJson('/evaluations', $payLoad);
+
+
+    $evaluationId = $response->json('data.ulid');
+    $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
+
+    $this->withToken($token)
+        ->patchJson("/evaluations/{$evaluation->ulid}/close")
+        ->assertOk();
+
+    $this->assertDatabaseHas(
+        'evaluations',
+        [
+            'id' => $evaluation->id,
+            'status' => 'closed'
+        ]
+    );
+});
+
+test('specialist_cannot_update_closed_evaluation', function () {
+    [$user, $token] = authenticate('specialist');
+
+    $offering = createOfferingsForUser($user, 1, 1);
+
+    $payLoad = createEvaluationPayload(
+        offering: $offering,
+        defectsCount: 2,
+        notes: [
+            'affective.fragrance' => 'intense fragance, persistant in nose.',
+            'extrinsics.processing' => 'traces of fermentation, uncontrolled variables.',
+        ]
+    );
+
+    $response = $this->withToken($token)
+        ->postJson('/evaluations', $payLoad);
+
+    $evaluationId = $response->json('data.ulid');
+    $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
+
+    $this->withToken($token)
+        ->patchJson("/evaluations/{$evaluation->ulid}/close")
+        ->assertOk();
+
+    $uploadPayload = $payLoad;
+    unset($uploadPayload['offeringId']);
+    $uploadPayload['descriptive']['fragrance']['note'] = 'trying to edit a closed one.';
+
+    $this->withToken($token)
+        ->putJson("/evaluations/{$evaluationId}", $uploadPayload)
+        ->assertStatus(409);
+
+    $this->assertDatabaseHas('evaluations', [
+        'id' => $evaluation->id,
+        'status' => 'closed',
+    ]);
+});
