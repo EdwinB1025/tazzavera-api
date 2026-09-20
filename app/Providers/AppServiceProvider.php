@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(EvaluationServiceContract::class, EvaluationService::class);
+        $this->app->scoped(EvaluationServiceContract::class, EvaluationService::class);
     }
 
     /**

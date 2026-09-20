@@ -34,15 +34,15 @@ class EvaluationService implements EvaluationServiceContract
             $this->request = $request;
         }
 
-        if (! $request->isMethod('post') && ! isset($this->evaluation)) {
+        if ($request->isMethod('post')) {
+            $offering = Offering::where('ulid', $request->validated('offeringId'))->firstOrFail();
+        } else {
             $this->evaluation = $request->route('evaluation');
             $this->affective = collect($this->evaluation->affective);
             $this->descriptive = collect($this->evaluation->descriptive);
             $this->extrinsics = collect($this->evaluation->extrinsics);
             $this->tastes = $this->evaluation->tastes->toBase();
             $offering = $this->evaluation->offering;
-        } else {
-            $offering = Offering::where('ulid', $request->validated('offeringId'))->firstOrFail();
         }
 
         if (! isset($this->offering)) {
@@ -141,7 +141,6 @@ class EvaluationService implements EvaluationServiceContract
         $this->setMainAttributes($request);
         $this->setTastes();
 
-
         if ($request->isMethod('post') || $request->isMethod('put')) {
 
             $this->parseJsonColumns();
@@ -153,11 +152,11 @@ class EvaluationService implements EvaluationServiceContract
                 'extrinsics' => $this->extrinsics->all(),
             ];
 
-            if (isset($this->evaluation)) {
-                $evaluation = $this->evaluation->fill($dataFill);
-            } else {
+            if ($request->isMethod('post')) {
                 $evaluation = new Evaluation($dataFill);
                 $evaluation->status = 'open';
+            } else {
+                $evaluation = $this->evaluation->fill($dataFill);
             }
 
             $this->evaluation = $evaluation;

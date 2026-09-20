@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\EvaluationController;
 use App\Models\Evaluation;
 use App\Models\OlfactoryTaxonomy;
+use App\Services\EvaluationService;
 use Database\Seeders\CertificationTypeSeeder;
 use Database\Seeders\GetAnOfferingSeeder;
 use Database\Seeders\OlfactoryTaxonomySeeder;
@@ -85,9 +87,9 @@ test('specialist_update_evaluation', function () {
     $uploadPayload = json_decode(json_encode($uploadPayload));
 
     $score = $response->json('data.cuppingScore');
-    $aromaScore = $uploadPayload->affective->aroma->score - 1;
+    $aromaScore = $uploadPayload->affective->aroma->score - 2;
     $sweetnessScore = $uploadPayload->affective->sweetness->score;
-    $sweetnessScore = $sweetnessScore === 9 ? $sweetnessScore - 2 : $sweetnessScore + 1;
+    $sweetnessScore = $sweetnessScore === 9 ? $sweetnessScore - 1 : $sweetnessScore + 1;
 
     $uploadPayload->affective->aroma->score = $aromaScore;
     $uploadPayload->affective->sweetness->score = $sweetnessScore;
@@ -193,4 +195,27 @@ test('specialist_cannot_update_closed_evaluation', function () {
         'id' => $evaluation->id,
         'status' => 'closed',
     ]);
+});
+
+test('specialist_triggers_consensus', function () {
+    [$owner] = authenticate('specialist');
+    $offering = createOfferingsForUser($owner, 1, 1)->first();
+
+    for ($i = 0; $i < 5; $i++) {
+        [$evaluator, $token] = authenticate('specialist');
+        $payLoad = createEvaluationPayload(offering: $offering);
+
+        $ulid = $this->withToken($token)
+            ->postJson('/evaluations', $payLoad)
+            ->json('data.ulid');
+        var_dump($ulid, $i);
+
+
+        $this->withToken($token)
+            ->patchJson("/evaluations/{$ulid}/close")
+            ->assertOk();
+    }
+
+    $offering->refresh();
+    $this->assertNotNull($offering->cupping_avg);
 });
