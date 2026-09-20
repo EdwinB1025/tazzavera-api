@@ -36,8 +36,17 @@ test('specialist_create_evaluation', function () {
 
     $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
 
+    $this->assertDatabaseHas('evaluation_tastes', [
+        'evaluation_id' => $evaluation->id,
+        'type' => 'fragrance',
+    ]);
 
     $this->assertDatabaseHas('evaluation_tastes', [
+        'evaluation_id' => $evaluation->id,
+        'type' => 'aroma',
+    ]);
+
+    $this->assertDatabaseMissing('evaluation_tastes', [
         'evaluation_id' => $evaluation->id,
         'type' => 'defects',
     ]);
@@ -61,35 +70,37 @@ test('specialist_update_evaluation', function () {
         ]
     );
 
-
-
     $response = $this->withToken($token)
         ->postJson('/evaluations', $payLoad);
 
-    $score = $response->json('data.cuppingScore');
 
     $evaluationId = $response->json('data.ulid');
-    $evaluation = Evaluation::where('ulid', $evaluationId)->get();
+    $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
+
+    //dump(['body' => $evaluationId, 'model_found' => $evaluation->ulid]);
+
 
     $uploadPayload = $payLoad;
-
     unset($uploadPayload['offeringId']);
-
     $uploadPayload = json_decode(json_encode($uploadPayload));
 
+    $score = $response->json('data.cuppingScore');
     $aromaScore = $uploadPayload->affective->aroma->score - 1;
     $sweetnessScore = $uploadPayload->affective->sweetness->score;
+    $sweetnessScore = $sweetnessScore === 9 ? $sweetnessScore - 2 : $sweetnessScore + 1;
 
     $uploadPayload->affective->aroma->score = $aromaScore;
-    $uploadPayload->affective->sweetness->score = $sweetnessScore === 9 ? $sweetnessScore - 2 : $sweetnessScore + 1;
-    $sweetnessScore = $uploadPayload->affective->sweetness->score;
-
+    $uploadPayload->affective->sweetness->score = $sweetnessScore;
     $uploadPayload->affective->defects = null;
     $uploadPayload->descriptive->fragrance->note = 'intense fragance, not persistant in nose.';
     $uploadPayload->extrinsics->processing = 'desireable traces of fermentation, good control of variables.';
 
     $arrayPayload = json_decode(json_encode($uploadPayload), true);
 
+    /*
+    dump($user->hasRole('specialist', 'api'));   // lo que el middleware evalúa
+    dump(auth('api')->check());                    // ¿hay user en el guard api?
+    */
 
     $this->withToken($token)
         ->putJson("/evaluations/{$evaluationId}", $arrayPayload)
@@ -99,7 +110,7 @@ test('specialist_update_evaluation', function () {
         ->assertJsonPath('data.isDefective', false)
         ->assertJsonPath('data.descriptive.fragrance.note', 'intense fragance, not persistant in nose.')
         ->assertJsonPath('data.extrinsics.processing', 'desireable traces of fermentation, good control of variables.')
-        ->asserJsonPath('data.cuppingScore', fn($v) => $v !== $score);
+        ->assertJsonPath('data.cuppingScore', fn($v) => $v !== $score);
 
     $this->assertDatabaseMissing('evaluation_tastes', [
         'evaluation_id' => $evaluation->id,

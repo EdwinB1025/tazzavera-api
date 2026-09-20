@@ -194,23 +194,22 @@ function getOlfactoryTaxonomyCollection($category = 'aromatics', $all = false, $
         case 'mouthfeel':
             $result = OlfactoryTaxonomy::where('level', 1)
                 ->whereJsonContains('categories', $category);
-            $result = $all ? $result->get() : $result->limit($count)->get();
+            $result = $all ? $result->get() : $result->inRandomOrder()->limit($count)->get();
             break;
 
         case 'main_tastes':
             $result = OlfactoryTaxonomy::where('level', 0)
                 ->whereJsonContains('categories', $category);
-            $result = $all ? $result->get() : $result->limit($count)->get();
+            $result = $all ? $result->get() : $result->inRandomOrder()->limit($count)->get();
             break;
 
         default:
 
             /**Retrieve all the bottom models */
             $orphan = OlfactoryTaxonomy::doesntHave('children')
-                ->whereJsonContains('categories', $category)
-                ->get();
+                ->whereJsonContains('categories', $category);
 
-            $result = $orphan->concat($orphan)->unique('id')->values();
+            $result = $all ? $orphan->get() : $orphan->inRandomOrder()->limit($count)->get();
 
             /**EDB 09/18/26: it will be responsability of fron to print the olfactory taxonomy, keeping code for a future use
             $branches->each->setAttribute('isBottom', true);

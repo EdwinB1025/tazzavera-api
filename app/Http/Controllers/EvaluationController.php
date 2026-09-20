@@ -6,6 +6,7 @@ use App\Contracts\EvaluationServiceContract;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
 use App\Http\Resources\EvaluationResource;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
@@ -45,7 +46,7 @@ class EvaluationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEvaluationRequest $request)
+    public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
     {
         $this->service->parseEvaluation($request);
         $this->service->updateEvaluation();

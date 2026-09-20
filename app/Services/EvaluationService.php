@@ -99,6 +99,8 @@ class EvaluationService implements EvaluationServiceContract
             ->safe()
             ->only(['descriptive', 'affective', 'extrinsics']);
 
+        $this->affective = collect();
+        $this->descriptive = collect();
 
         foreach ($jsonColumns as $column => $data) {
 
@@ -108,9 +110,6 @@ class EvaluationService implements EvaluationServiceContract
                     break;
                 case 'affective':
                 case 'descriptive':
-                    $this->affective = collect();
-                    $this->descriptive = collect();
-
                     foreach ($data as $axis => $array) {
                         if (! in_array($axis, ['roastLevel', 'mainTastes', 'defects'], true)) {
                             $arrayFiltered = array_intersect_key($array, array_flip(['score', 'note']));
@@ -175,8 +174,12 @@ class EvaluationService implements EvaluationServiceContract
             $evaluation->evaluator()->associate($this->request->user());
             $evaluation->offering()->associate($this->offering);
             $evaluation->save();
+            $evaluation->refresh();
+
+
             $evaluation->tastes()->createMany($this->tastes->all());
             $evaluation->load('tastes.taxonomy:id,ulid');
+
 
             $this->evaluation = $evaluation;
         });
@@ -188,11 +191,13 @@ class EvaluationService implements EvaluationServiceContract
         DB::transaction(function () {
             $evaluation = $this->evaluation;
             $evaluation->save();
+            $evaluation->refresh();
 
             /**EDB 09/18/26 load the updated values posted by the client, the db taste values are refreshed inside a transaction so the delete and recreate are atomic */
             $evaluation->tastes()->delete();
             $evaluation->tastes()->createMany($this->tastes->all());
             $evaluation->load('tastes.taxonomy:id,ulid');
+
 
             $this->evaluation = $evaluation;
         });
