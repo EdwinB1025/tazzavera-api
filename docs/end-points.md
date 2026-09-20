@@ -212,13 +212,34 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
 
 | Method | Endpoint | Role | Auth | Query Parameters / Inputs |
 |---|---|---|---|---|
-| GET | `/evaluations` | — | Public | Query: `evaluatorId`, `coffeeId`, `city`, `locationId`, `process`, `score`, `status` |
-| GET | `/evaluations/{evaluationId}` | — | Public | — |
-| POST | `/evaluations` | specialist, coffeeshop | Authenticated | Body: `offeringId`, `extractionMethod`, `descriptive`, `affective`, `extrinsics` |
-| PUT | `/evaluations/{evaluationId}` | specialist (own, includes closing with `status: closed`), coffeeshop (own, max. 1 per offering) | Authenticated | Body: `extractionMethod`, `descriptive`, `affective`, `extrinsics`, `status` |
-| DELETE | `/evaluations/{evaluationId}` | specialist (own), coffeeshop (own) | Authenticated | — |
+| GET | `/evaluations` | — | Public | Query: `evaluatorId`, `coffeeId`, `city`, `locationId`, `process`, `score`, `status` *(not built yet)* |
+| GET | `/evaluations/{evaluationId}` | — | Public | — *(not built yet)* |
+| POST | `/evaluations` | specialist | `auth:api` + `profile:read` + `role:specialist` | Body: `offeringId`, `extractionMethod`, `descriptive`, `affective`, `extrinsics` |
+| PUT | `/evaluations/{evaluationId}` | specialist (own) | `auth:api` + `profile:read` + `role:specialist` + `can:update,evaluation` | Body: `extractionMethod`, `descriptive`, `affective`, `extrinsics` — **full payload** |
+| PATCH | `/evaluations/{evaluationId}/close` | specialist (own) | `auth:api` + `profile:read` + `role:specialist` + `can:update,evaluation` | — no body (state transition only) |
+| DELETE | `/evaluations/{evaluationId}` | specialist (own) | `auth:api` + `profile:read` + `role:specialist` | — *(not built yet)* |
 
-`evaluatorId` and `evaluationType` are **not** request inputs: the backend derives them from the authenticated user (`evaluatorId` = logged-in user; `evaluationType` from the user's real Spatie role — coffeeshop→`baseline`, specialist→`specialist`). Closing an evaluation has no dedicated route — it is the same `PUT` changing `status` to `closed`.
+> **Build status.** Only `POST` (specialist create) and `PUT` (specialist update) are implemented. `GET` index/show, `PATCH close` and `DELETE` are designed here but **not yet built**. The `coffeeshop` baseline flow (a coffeeshop's provisional evaluation, `evaluationType: baseline`, at most one per offering) is a separate future endpoint — see the baseline design notes — so `coffeeshop` is not a role on these routes yet.
+
+`evaluatorId` and `evaluationType` are **not** request inputs: the backend derives them from the authenticated user (`evaluatorId` = logged-in user). `evaluationType` is currently fixed to `specialist` by the column default on this route (the role-derived `coffeeshop→baseline` mapping belongs to the future baseline endpoint, not to this one).
+
+### Authorization and scope
+
+All evaluation routes sit under the `auth:api` group and its read floor (`CheckTokenForAnyScope::using('profile:read','profile:write')`), then `role:specialist`. A standard token carrying `profile:read` is enough — **evaluations do not require `profile:write`**. This is a deliberate exception to the step-up rule that governs profile and offering mutations: an evaluation is transactional data, not sensitive account data, so creating, editing and closing one is not treated as a step-up action. Elevating the token buys nothing here.
+
+Ownership on `PUT` and `PATCH close` is enforced by `can:update,evaluation` → `EvaluationPolicy::update` (`$user->id === $evaluation->evaluator_id`, compared against the FK **column**, not the `evaluator` relation). The same `update` policy method authorizes both routes: editing and closing ask the same question (is this the owner?), so there is no separate `close` method — one is added only if the two ever diverge.
+
+### PUT — full-payload replacement
+
+`PUT` replaces the evaluation's editable content in full: the client sends the complete `descriptive` / `affective` / `extrinsics` blocks, not a partial diff. This is required by the cata-handling logic: on update the backend **deletes and recreates** the whole `evaluation_tastes` set from the payload, so a cata absent from the request is read as "the user removed it". A partial update would make "not sent because unchanged" indistinguishable from "removed" — hence full payload, by design. `affective.defects` accepts `[]` **or `null`** (both mean "no defects"); an absent key is not accepted for defects.
+
+### PATCH close — dedicated state transition
+
+Closing is its own route, separate from editing, so the two flows never mix: a request either edits content (`PUT`) or transitions state (`PATCH close`), never both in one call. `PATCH /evaluations/{evaluationId}/close` takes no body — it moves `status` from `open` to `closed`. Only `closed` evaluations enter an offering's consensus. **Closing is terminal: there is no reopen** (not a planned feature).
+
+### Closed evaluations are immutable (409)
+
+Once an evaluation is `closed` it can no longer be edited. A `PUT` against a closed evaluation is rejected with **`409 Conflict`** — the request is well-formed and the caller is authorized, but it conflicts with the resource's current state. This guard lives in the **controller** (`abort_if($evaluation->status === 'closed', 409, …)` before parsing), not in the policy: "already closed" is a state conflict (409), not an authorization failure (403) nor an input error (422). Keeping it out of the policy is what preserves the correct status code — a policy denial would surface as a misleading 403 ("you can't") when the truth is "this is already closed".
 
 ### `EvaluationResource`
 
@@ -240,10 +261,10 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
     "overall": { "score": 8, "note": "…" }
   },
   "extrinsics": {
-    "farming": null, 
-    "processing": null, 
+    "farming": null,
+    "processing": null,
     "trading": null,
-    "certifications": null, 
+    "certifications": null,
     "generalObservation": null
   },
   "tastes": [

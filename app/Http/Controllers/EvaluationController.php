@@ -48,6 +48,7 @@ class EvaluationController extends Controller
      */
     public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
     {
+        abort_if($evaluation->status === 'closed', 409, __('evaluations.status_closed'));
         $this->service->parseEvaluation($request);
         $this->service->updateEvaluation();
 
