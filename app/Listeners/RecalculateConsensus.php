@@ -22,6 +22,6 @@ class RecalculateConsensus
      */
     public function handle(EvaluationClosed $event): void
     {
-        Log::info("Consensus recalculation triggered for offering {$event->offeringId}");
+        (new \App\Services\OfferingConsensusService())->recompute($event->offeringId);
     }
 }
