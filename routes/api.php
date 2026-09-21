@@ -42,6 +42,8 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
                 Route::put('/evaluations/{evaluation}', [EvaluationController::class, 'update']);
                 Route::patch('/evaluations/{evaluation}/close', [EvaluationController::class, 'close']);
             });
+            Route::delete('/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])
+                ->middleware('can:delete,evaluation');
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
