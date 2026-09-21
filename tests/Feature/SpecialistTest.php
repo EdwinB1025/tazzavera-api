@@ -238,7 +238,7 @@ test('specialist_triggers_consensus_calculation', function () {
     $this->assertTrue($offering->offeringTastes()->exists());
 });
 
-test('specialist_deletes_evaluations', function () {
+test('specialist_deletes_evaluation', function () {
     [$user, $token] = authenticateWithWriteScope('specialist');
 
     $offering = createOfferingsForUser($user, 1, 1);
