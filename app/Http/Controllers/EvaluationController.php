@@ -82,8 +82,10 @@ class EvaluationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Evaluation $evaluation)
     {
-        //
+        $evaluation->delete();
+
+        return response()->json(['message' => __('evaluations.deleted')], 200);
     }
 }
