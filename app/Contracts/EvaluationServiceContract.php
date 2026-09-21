@@ -10,11 +10,15 @@ use Illuminate\Http\Request;
 
 interface EvaluationServiceContract
 {
+    public function setMainAttributes(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void;
+
     public function parseEvaluation(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void;
 
-    public function saveEvaluation(): void;
+    public function saveNewEvaluation(): void;
 
     public function updateEvaluation(): void;
 
     public function getEvaluation(): Evaluation;
+
+    public function isReadyForClosing(): bool;
 }

@@ -28,26 +28,24 @@ class EvaluationService implements EvaluationServiceContract
      * Create a new class instance.
      */
 
-    private function setMainAttributes(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void
+    public function setMainAttributes(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void
     {
-        if (! isset($this->request)) {
-            $this->request = $request;
-        }
+        dump(spl_object_id($this), isset($this->request));
+        $this->request = $request;
 
-        if (! $request->isMethod('post') && ! isset($this->evaluation)) {
+        if ($request->isMethod('post')) {
+            $offering = Offering::where('ulid', $request->validated('offeringId'))->firstOrFail();
+        } else {
             $this->evaluation = $request->route('evaluation');
             $this->affective = collect($this->evaluation->affective);
             $this->descriptive = collect($this->evaluation->descriptive);
             $this->extrinsics = collect($this->evaluation->extrinsics);
             $this->tastes = $this->evaluation->tastes->toBase();
             $offering = $this->evaluation->offering;
-        } else {
-            $offering = Offering::where('ulid', $request->validated('offeringId'))->firstOrFail();
         }
 
-        if (! isset($this->offering)) {
-            $this->offering = $offering;
-        }
+
+        $this->offering = $offering;
     }
 
     private function setTastes(): void
@@ -139,50 +137,56 @@ class EvaluationService implements EvaluationServiceContract
     {
 
         $this->setMainAttributes($request);
-
         $this->setTastes();
 
-        $this->parseJsonColumns();
+        if ($request->isMethod('post') || $request->isMethod('put')) {
 
-        $dataFill = [
-            'extraction_method' => $request->validated('extractionMethod'),
-            'descriptive' => $this->descriptive->all(),
-            'affective' => $this->affective->all(),
-            'extrinsics' => $this->extrinsics->all(),
-        ];
+            $this->parseJsonColumns();
 
-        if (isset($this->evaluation)) {
-            $evaluation = $this->evaluation->fill($dataFill);
-        } else {
-            $evaluation = new Evaluation($dataFill);
-            $evaluation->status = 'open';
-        }
+            $dataFill = [
+                'extraction_method' => $request->validated('extractionMethod'),
+                'descriptive' => $this->descriptive->all(),
+                'affective' => $this->affective->all(),
+                'extrinsics' => $this->extrinsics->all(),
+            ];
 
-        $this->evaluation = $evaluation;
-
-        if ($this->affective->where('score', '>', 0)->count() === 8) {
-            $this->evaluation->cupping_score = $this->computeCuppingScore();
-        }
-
-        $this->evaluation->is_defective = count($this->request->validated('affective.defects') ?? []) > 0;
-    }
-
-    public function saveEvaluation(): void
-    {
-        DB::transaction(function () {
-            $evaluation = $this->evaluation;
-            $evaluation->evaluator()->associate($this->request->user());
-            $evaluation->offering()->associate($this->offering);
-            $evaluation->save();
-            $evaluation->refresh();
-
-
-            $evaluation->tastes()->createMany($this->tastes->all());
-            $evaluation->load('tastes.taxonomy:id,ulid');
-
+            if ($request->isMethod('post')) {
+                $evaluation = new Evaluation($dataFill);
+                $evaluation->status = 'open';
+            } else {
+                $evaluation = $this->evaluation->fill($dataFill);
+            }
 
             $this->evaluation = $evaluation;
-        });
+
+            if ($this->affective->where('score', '>', 0)->count() === 8) {
+                $this->evaluation->cupping_score = $this->computeCuppingScore();
+            }
+
+            $this->evaluation->is_defective = count($this->request->validated('affective.defects') ?? []) > 0;
+        }
+    }
+
+    public function saveNewEvaluation(): void
+    {
+        if ($this->evaluation->has('offering')) {
+            DB::transaction(function () {
+                $evaluation = $this->evaluation;
+                $evaluation->evaluator()->associate($this->request->user());
+                $evaluation->offering()->associate($this->offering);
+                $evaluation->save();
+                $evaluation->refresh();
+
+
+                $evaluation->tastes()->createMany($this->tastes->all());
+                $evaluation->load('tastes.taxonomy:id,ulid');
+
+
+                $this->evaluation = $evaluation;
+            });
+        } else {
+            throw new LogicException('cannot use saveNewEvaluation() method for an existing evaluatoin.');
+        }
     }
 
 
@@ -201,6 +205,19 @@ class EvaluationService implements EvaluationServiceContract
 
             $this->evaluation = $evaluation;
         });
+    }
+
+    public function isReadyForClosing(): bool
+    {
+        $scoreCheck = $this->affective
+            ->concat($this->descriptive)
+            ->where('score', '>', 0)->count() === 15;
+
+        $cataMainTasteCheck = $this->tastes->where('type', 'main_tastes')->count() > 0;
+        $cataMouthfeelCheck = $this->tastes->where('type', 'mouthfeel')->count() > 0;
+        $cataAromaticCheck = $this->tastes->whereNotIn('type', ['main_tastes', 'defects', 'mouthfeel'])->count() > 0;
+
+        return $scoreCheck && $cataMainTasteCheck && $cataMouthfeelCheck && $cataAromaticCheck;
     }
 
     public function getEvaluation(): Evaluation

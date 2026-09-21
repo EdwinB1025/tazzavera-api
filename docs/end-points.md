@@ -75,11 +75,13 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
   "sweetnessAffectiveAvg": "7.6",
   "mouthfeelAffectiveAvg": "7.0",
   "overallAffectiveAvg": "7.9",
-  "concordance": "0.812",
+  "concordanceAffective": "0.812",
+  "concordanceDescriptive": "0.740",
   "verificationStatus": "verified",
   "location": { "…": "LocationResource" },
   "coffeeInventory": { "…": "CoffeeInventoryResource" },
-  "sensoryTaxonomy": [ { "…": "OfferingTasteResource" } ]
+  "sensoryTaxonomy": [ { "…": "OfferingTasteResource (per-descriptor detail + count)" } ],
+  "cataConcordance": { "aromatics": 12, "main_tastes": 4, "defects": 1 }
 }
 ```
 

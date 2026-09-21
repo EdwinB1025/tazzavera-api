@@ -26,10 +26,16 @@ class Offering extends Model
         'sweetness_avg' => 'decimal:1',
         'mouthfeel_avg' => 'decimal:1',
         'overall_avg' => 'decimal:1',
-        'concordance' => 'decimal:3',
+        'concordance_affective' => 'decimal:3',
+        'concordance_descriptive' => 'decimal:3',
     ];
 
     /** Relationships */
+
+    public function axisConcordances(): HasMany
+    {
+        return $this->hasMany(AxisConcordance::class);
+    }
 
     public function coffeeInventory(): BelongsTo
     {
