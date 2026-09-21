@@ -45,7 +45,9 @@ Roles: `specialist`, `coffeeshop` (separate `roles` table; there is no `admin` r
 }
 ```
 
-> A freshly created offering is provisional: it has no consensus yet, so `evaluationCount`, `defectiveEvaluationCount`, the `*Avg` axes and `concordance` are null and therefore **omitted** (`whenNotNull`). `sensoryTaxonomy` is empty/absent until `updateConsensus()` runs.
+> A freshly created offering is provisional: it has no consensus yet, so `evaluationCount`, `defectiveEvaluationCount`, the `*Avg` axes and `concordanceAffective`/`concordanceDescriptive` are null and therefore **omitted** (`whenNotNull`). `sensoryTaxonomy` is empty/absent until `updateConsensus()` runs.
+
+>`sensoryTaxonomy` is the per-descriptor detail (which flavours were chosen, each with its count and tree position). `cataConcordance` is a per-type aggregate (total `marks` grouped into aromatics — the 5 aromatic `offering_tastes` types collapsed — plus `main_tastes` and `defects`), resolved in the Resource via `groupBy(type)->sum('count')`. Different data, not redundant.
 
 `coffeeInventoryId` and `locations` reference existing records by their public ulid; the backend resolves each ulid to its model (a non-existent ulid → 404/invalid; an existing one owned by another coffeeshop → 403). The DB UNIQUE and FKs operate on internal ids; the ulid is the public API layer only.
 
@@ -115,14 +117,15 @@ Filters operate on the nested café (`whereHas('coffee', …)`) since `coffeeNam
         "region": "…",
         "altitude": 1800,
         "lot": "…",
-        "certifications": [ 
-                            { "code": "organic", 
-                              "description": "…" } 
-                          ]
+    "certifications": [ 
+      { "code": "organic", 
+        "description": "…" } 
+    ]
       },
-      "roastery": { "ulid": "01J…", 
-                    "name": "…", 
-                    "description": "…" }
+      "roastery": { 
+        "ulid": "01J…", 
+        "name": "…", 
+        "description": "…" }
     }
   ]
 }
@@ -188,19 +191,20 @@ Returns the complete `olfactory_taxonomies` tree nested (3 levels: each root wit
       "descriptionEn": "…",
       "descriptionEs": "…",
       "color": "#C match",
-      "categories": { "aromatics": true, 
-                      "mainTastes": false, 
-                      "defects": false, 
-                      "mouthfeel": false 
-                    },
+      "categories": { 
+        "aromatics": true, 
+        "mainTastes": false, 
+        "defects": false, 
+        "mouthfeel": false 
+      },
       "children": [
         { "level": 1, 
           "nameEn": "…", 
-          "children": [ 
-                        { "level": 2, 
-                          "…": "…", 
-                          "children": [] } 
-                      ] 
+          "children": [{ 
+            "level": 2, 
+            "…": "…", 
+            "children": [] } 
+          ] 
         }
       ]
     }

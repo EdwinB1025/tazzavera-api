@@ -80,7 +80,6 @@ class OfferingConsensusService
         $perAxis = [];
         foreach ($axes as $axis) {
             $scores = $evaluations->map(fn($e) => $e->{$part}[$axis]['score'])->values()->all();
-            dump($part, $axis, $scores);
             $sigma = $this->stdDev($scores);
             $perAxis[$axis] = round(max(0, 1 - $sigma / $sigmaMax), 3);
         }

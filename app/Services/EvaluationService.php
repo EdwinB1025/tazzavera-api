@@ -30,7 +30,6 @@ class EvaluationService implements EvaluationServiceContract
 
     public function setMainAttributes(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void
     {
-        dump(spl_object_id($this), isset($this->request));
         $this->request = $request;
 
         if ($request->isMethod('post')) {
