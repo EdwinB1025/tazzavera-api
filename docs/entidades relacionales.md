@@ -130,7 +130,9 @@ Lleva `ulid` (entidad de dominio expuesta por API — el front referencia un lot
 | `sweetness_avg` | DECIMAL(3,1) | NULL, der |
 | `mouthfeel_avg` | DECIMAL(3,1) | NULL, der |
 | `overall_avg` | DECIMAL(3,1) | NULL, der |
-| `concordance` | DECIMAL(4,3) | NULL, der (Kendall's W 0-1) |
+| `concordance_descriptive` | DECIMAL(4,3) | NULL, der |
+| `concordance_affective` | DECIMAL(4,3) | NULL, der |
+
 | `verification_status` | ENUM('provisional','verified') | NN, DEFAULT 'provisional', der |
 
 UNIQUE (`location_id`,`coffee_inventory_id`). El `consensus` JSON del diseño anterior se descompuso: `cupping_avg` + los 8 ejes (`*_avg`, incl. `fragrance`) son columnas filtrables; los sabores (main_tastes + cata) pasaron a `offering_tastes`. Ya no hay JSON en offerings. Derivados: `updateConsensus()` recalcula columnas + reescribe `offering_tastes` cuando la offering tiene >5 evaluaciones `closed` + `specialist`. **Modelo `Offering`:** `$fillable = ['location_id', 'coffee_inventory_id']` (los derivados los pone el backend, no el request); casts decimales con la precisión de cada columna (`decimal:N` — devuelven string, castear en `updateConsensus` si se opera numéricamente); `HasPublicUlid`. Al crear (`store`), los defaults de columna (verification_status='provisional', counts=0) NO se reflejan en el objeto en memoria — usar `refresh()` tras `create()` para que la respuesta traiga los defaults reales de BD.
