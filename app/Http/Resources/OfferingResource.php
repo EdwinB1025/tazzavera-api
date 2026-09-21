@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class OfferingResource extends JsonResource
 {
+    private const AROMATIC_TYPES = ['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'];
     /**
      * Transform the resource into an array.
      *
@@ -27,11 +28,21 @@ class OfferingResource extends JsonResource
             'sweetnessAffectiveAvg' => $this->whenNotNull($this->sweetness_avg),
             'mouthfeelAffectiveAvg' => $this->whenNotNull($this->mouthfeel_avg),
             'overallAffectiveAvg' => $this->whenNotNull($this->overall_avg),
-            'concordance' => $this->whenNotNull($this->concordance),
+            'concordanceAffective' => $this->whenNotNull($this->concordance_affective),
+            'concordanceDescriptive' => $this->whenNotNull($this->concordance_descriptive),
             'verificationStatus' => $this->verification_status,
             'location' => new LocationResource($this->whenLoaded('location')),
             'coffeeInventory' => new CoffeeInventoryResource($this->whenLoaded('coffeeInventory')),
             'sensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('offeringTastes')),
+            'cataConcordance' => $this->whenLoaded('offeringTastes', fn() => $this->groupCataByType()),
         ];
+    }
+
+    private function groupCataByType(): array
+    {
+        return $this->offeringTastes
+            ->groupBy(fn($taste) => in_array($taste->type, self::AROMATIC_TYPES, true) ? 'aromatics' : $taste->type)
+            ->map(fn($group) => $group->sum('count'))
+            ->all();
     }
 }

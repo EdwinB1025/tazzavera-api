@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AxisConcordance;
 use App\Models\Offering;
+use App\Models\OlfactoryTaxonomy;
 
 class OfferingConsensusService
 {
@@ -44,10 +45,12 @@ class OfferingConsensusService
         $offering->cupping_avg = $cuppingAvg;
         $offering->concordance_affective = $affective['global'];
         $offering->concordance_descriptive = $descriptive['global'];
+        $offering->verification_status = 'verified';
         $offering->save();
 
         $this->storeAxisConcordances($offering, 'affective', $affective['perAxis']);
         $this->storeAxisConcordances($offering, 'descriptive', $descriptive['perAxis']);
+        $this->populateOfferingTastes($offering, $evaluations);
     }
 
     private function computeAffectiveAverages($evaluations): array
@@ -106,5 +109,80 @@ class OfferingConsensusService
                 ['value' => $value]
             );
         }
+    }
+
+    private function populateOfferingTastes(Offering $offering, $evaluations): void
+    {
+        $marks = [];
+        foreach ($evaluations as $evaluation) {
+            foreach ($evaluation->tastes as $taste) {
+                $key = $taste->taxonomy_ref . '|' . $taste->type;
+                $marks[$key]['taxonomy_ref'] = $taste->taxonomy_ref;
+                $marks[$key]['type'] = $taste->type;
+                $marks[$key]['evals'][$evaluation->id] = true;
+            }
+        }
+
+        $refIds = collect($marks)->pluck('taxonomy_ref')->unique();
+        $nodes = OlfactoryTaxonomy::with('parent.parent')
+            ->whereIn('id', $refIds)
+            ->get()
+            ->keyBy('id');
+
+        $aggregated = [];
+        foreach ($marks as $mark) {
+            $type = $mark['type'];
+            $node = $nodes[$mark['taxonomy_ref']] ?? null;
+
+            while ($node !== null) {
+                $key = $node->id . '|' . $type;
+                if (! isset($aggregated[$key])) {
+                    $aggregated[$key] = [
+                        'taxonomy_ref' => $node->id,
+                        'type'         => $type,
+                        'level'        => (string) $node->level,
+                        'evals'        => [],
+                    ];
+                }
+                $aggregated[$key]['evals'] += $mark['evals'];
+                $node = $node->parent;
+            }
+        }
+
+        $offering->offeringTastes()->delete();
+
+        $byLevel = collect($aggregated)->groupBy('level');
+        $createdIds = [];
+
+        foreach (['0', '1', '2'] as $level) {
+            foreach ($byLevel->get($level, []) as $row) {
+                $parentId = $this->resolveParentOfferingTasteId(
+                    $nodes,
+                    $row['taxonomy_ref'],
+                    $row['type'],
+                    $createdIds
+                );
+
+                $created = $offering->offeringTastes()->create([
+                    'taxonomy_ref' => $row['taxonomy_ref'],
+                    'type'         => $row['type'],
+                    'level'        => $row['level'],
+                    'parent_id'    => $parentId,
+                    'count'        => count($row['evals']),
+                ]);
+
+                $createdIds[$row['taxonomy_ref'] . '|' . $row['type']] = $created->id;
+            }
+        }
+    }
+
+    private function resolveParentOfferingTasteId($nodes, $taxonomyRef, string $type, array $createdIds): ?int
+    {
+        $node = $nodes[$taxonomyRef] ?? null;
+        $parent = $node?->parent;
+        if ($parent === null) {
+            return null;
+        }
+        return $createdIds[$parent->id . '|' . $type] ?? null;
     }
 }

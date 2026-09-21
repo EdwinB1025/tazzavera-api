@@ -208,8 +208,6 @@ test('specialist_triggers_consensus', function () {
         $ulid = $this->withToken($token)
             ->postJson('/evaluations', $payLoad)
             ->json('data.ulid');
-        var_dump($ulid, $i);
-
 
         $this->withToken($token)
             ->patchJson("/evaluations/{$ulid}/close")
@@ -217,5 +215,18 @@ test('specialist_triggers_consensus', function () {
     }
 
     $offering->refresh();
+
+    dump($offering);
+
     $this->assertNotNull($offering->cupping_avg);
+    $this->assertNotNull($offering->concordance_affective);
+    $this->assertNotNull($offering->concordance_descriptive);
+    $this->assertSame('verified', $offering->verification_status);
+
+    $this->assertDatabaseHas('axis_concordances', [
+        'offering_id' => $offering->id,
+        'cva_type' => 'affective',
+    ]);
+
+    $this->assertTrue($offering->offeringTastes()->exists());
 });
