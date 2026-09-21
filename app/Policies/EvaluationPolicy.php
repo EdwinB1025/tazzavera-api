@@ -46,7 +46,7 @@ class EvaluationPolicy
      */
     public function delete(User $user, Evaluation $evaluation): bool
     {
-        return false;
+        return $user->id === $evaluation->evaluator_id;
     }
 
     /**

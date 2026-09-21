@@ -237,3 +237,30 @@ test('specialist_triggers_consensus_calculation', function () {
 
     $this->assertTrue($offering->offeringTastes()->exists());
 });
+
+test('specialist_deletes_evaluation', function () {
+    [$user, $token] = authenticateWithWriteScope('specialist');
+
+    $offering = createOfferingsForUser($user, 1, 1);
+
+    $payLoad = createEvaluationPayload(
+        offering: $offering,
+        defectsCount: 2,
+        notes: [
+            'affective.fragrance' => 'intense fragance, persistant in nose.',
+            'extrinsics.processing' => 'traces of fermentation, uncontrolled variables.',
+        ]
+    );
+
+    $response = $this->withToken($token)
+        ->postJson('/evaluations', $payLoad);
+
+    $evaluationId = $response->json('data.ulid');
+    $evaluation = Evaluation::where('ulid', $evaluationId)->firstOrFail();
+
+    $this->withToken($token)
+        ->deleteJson("/evaluations/{$evaluation->ulid}")
+        ->assertOK();
+
+    $this->assertDatabaseMissing('evaluations', ['id' => $evaluation->id]);
+});

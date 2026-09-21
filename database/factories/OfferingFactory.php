@@ -19,15 +19,18 @@ class OfferingFactory extends Factory
      */
     public function definition(): array
     {
+        $coffeeInventoryId = CoffeeInventory::inRandomOrder()->first()->id;
+        $locationsId =  Location::whereDoesntHave(
+            'offerings',
+            function ($query) use ($coffeeInventoryId) {
+                $query->where('coffee_inventory_id', $coffeeInventoryId);
+            }
+        )->inRandomOrder()->first();
+
+
         return [
-            'coffee_inventory_id' => CoffeeInventory::inRandomOrder()->first()->id,
-            'location_id' => function ($attributes) {
-                $locations = Offering::where('coffee_inventory_id', $attributes['coffee_inventory_id'])->pluck('location_id');
-                return Location::whereNotIn('id', $locations)
-                    ->inRandomOrder()
-                    ->first()
-                    ->id;
-            },
+            'coffee_inventory_id' => $coffeeInventoryId,
+            'location_id' => $locationsId,
         ];
     }
 }

@@ -202,7 +202,7 @@ test('anyone_retrieves_an_offering', function () {
                 'coffee',
                 'roastery',
             ],
-            'SensoryTaxonomy',
+            'sensoryTaxonomy',
         ],
     ];
 
@@ -216,8 +216,6 @@ test('anyone_retrieves_an_offering', function () {
 test('authenticated_coffeeshop_deletes_offering', function () {
     [$user, $token] = authenticateWithWriteScope('coffeeshop');
 
-    $this->seed(GetAnOfferingSeeder::class);
-
     $offering = createOfferingsForUser($user, 1, 1);
 
     $this->withToken($token)
@@ -227,7 +225,7 @@ test('authenticated_coffeeshop_deletes_offering', function () {
     $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
 });
 
-test('authenticated_coffeeshp_deletes_offerings', function () {
+test('authenticated_coffeeshop_deletes_offerings', function () {
     [$user, $token] = authenticateWithWriteScope('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
@@ -246,7 +244,7 @@ test('authenticated_coffeeshp_deletes_offerings', function () {
     }
 });
 
-test('authenticated_coffeeshp_deletes_offerings_without_ownership', function () {
+test('authenticated_coffeeshop_deletes_offerings_without_ownership', function () {
     [$user, $token] = authenticateWithWriteScope('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
@@ -260,7 +258,7 @@ test('authenticated_coffeeshp_deletes_offerings_without_ownership', function () 
         ->assertForbidden();
 });
 
-test('authenticated_coffeeshp_deletes_offering_without_scope', function () {
+test('authenticated_coffeeshop_deletes_offering_without_scope', function () {
     [$user, $token] = authenticate('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
