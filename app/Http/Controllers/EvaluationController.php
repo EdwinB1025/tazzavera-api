@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\EvaluationServiceContract;
+use App\Http\Requests\FilterEvaluationRequest;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
 use App\Http\Resources\EvaluationResource;
@@ -16,9 +17,14 @@ class EvaluationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(FilterEvaluationRequest $request)
     {
-        //
+        $evaluations = Evaluation::query()
+            ->filter($request->validated())
+            ->with('tastes.taxonomy:id,ulid', 'offering:id,ulid')
+            ->paginate();
+
+        return EvaluationResource::collection($evaluations);
     }
 
     /**
@@ -38,9 +44,11 @@ class EvaluationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Evaluation $evaluation)
     {
-        //
+        $evaluation->load('tastes.taxonomy:id,ulid', 'offering:id,ulid');
+
+        return new EvaluationResource($evaluation);
     }
 
     /**
