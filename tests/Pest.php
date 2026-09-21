@@ -243,7 +243,6 @@ function createEvaluationPayload(
     $defectsCount = 1,
     $notes = ['affective.overall' => 'Balanced, clean finish.'],
 ): array {
-
     $cataFragance = getOlfactoryTaxonomyCollection('aromatics', false, $fraganceCount)
         ->pluck('ulid')
         ->toArray();

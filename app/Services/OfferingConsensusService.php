@@ -45,6 +45,8 @@ class OfferingConsensusService
         $offering->cupping_avg = $cuppingAvg;
         $offering->concordance_affective = $affective['global'];
         $offering->concordance_descriptive = $descriptive['global'];
+        $offering->evaluation_count = $evaluations->count();
+        $offering->defective_evaluation_count = $evaluations->where('is_defective', true)->count();
         $offering->verification_status = 'verified';
         $offering->save();
 
@@ -78,6 +80,7 @@ class OfferingConsensusService
         $perAxis = [];
         foreach ($axes as $axis) {
             $scores = $evaluations->map(fn($e) => $e->{$part}[$axis]['score'])->values()->all();
+            dump($part, $axis, $scores);
             $sigma = $this->stdDev($scores);
             $perAxis[$axis] = round(max(0, 1 - $sigma / $sigmaMax), 3);
         }

@@ -30,9 +30,8 @@ class EvaluationService implements EvaluationServiceContract
 
     public function setMainAttributes(StoreEvaluationRequest|UpdateEvaluationRequest|Request $request): void
     {
-        if (! isset($this->request)) {
-            $this->request = $request;
-        }
+        dump(spl_object_id($this), isset($this->request));
+        $this->request = $request;
 
         if ($request->isMethod('post')) {
             $offering = Offering::where('ulid', $request->validated('offeringId'))->firstOrFail();
@@ -45,9 +44,8 @@ class EvaluationService implements EvaluationServiceContract
             $offering = $this->evaluation->offering;
         }
 
-        if (! isset($this->offering)) {
-            $this->offering = $offering;
-        }
+
+        $this->offering = $offering;
     }
 
     private function setTastes(): void

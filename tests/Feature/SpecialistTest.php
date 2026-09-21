@@ -4,6 +4,7 @@ use App\Http\Controllers\EvaluationController;
 use App\Models\Evaluation;
 use App\Models\OlfactoryTaxonomy;
 use App\Services\EvaluationService;
+use App\Services\OfferingConsensusService;
 use Database\Seeders\CertificationTypeSeeder;
 use Database\Seeders\GetAnOfferingSeeder;
 use Database\Seeders\OlfactoryTaxonomySeeder;
@@ -197,31 +198,37 @@ test('specialist_cannot_update_closed_evaluation', function () {
     ]);
 });
 
-test('specialist_triggers_consensus', function () {
+test('specialist_triggers_consensus_calculation', function () {
     [$owner] = authenticate('specialist');
     $offering = createOfferingsForUser($owner, 1, 1)->first();
 
-    for ($i = 0; $i < 5; $i++) {
-        [$evaluator, $token] = authenticate('specialist');
-        $payLoad = createEvaluationPayload(offering: $offering);
+    Evaluation::factory()
+        ->count(4)
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
 
-        $ulid = $this->withToken($token)
-            ->postJson('/evaluations', $payLoad)
-            ->json('data.ulid');
+    [$evaluator, $token] = authenticate('specialist');
+    $fifth = Evaluation::factory()
+        ->withTastes()
+        ->open()
+        ->create([
+            'offering_id' => $offering->id,
+            'evaluator_id' => $evaluator->id,
+        ]);
 
-        $this->withToken($token)
-            ->patchJson("/evaluations/{$ulid}/close")
-            ->assertOk();
-    }
+    $this->withToken($token)
+        ->patchJson("/evaluations/{$fifth->ulid}/close")
+        ->assertOk();
 
     $offering->refresh();
 
-    dump($offering);
+    dump($offering->toArray());
 
     $this->assertNotNull($offering->cupping_avg);
     $this->assertNotNull($offering->concordance_affective);
     $this->assertNotNull($offering->concordance_descriptive);
     $this->assertSame('verified', $offering->verification_status);
+    $this->assertSame(5, $offering->evaluation_count);
 
     $this->assertDatabaseHas('axis_concordances', [
         'offering_id' => $offering->id,
