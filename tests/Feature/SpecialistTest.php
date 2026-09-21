@@ -264,3 +264,56 @@ test('specialist_deletes_evaluation', function () {
 
     $this->assertDatabaseMissing('evaluations', ['id' => $evaluation->id]);
 });
+
+test('get_single_evaluation_by_ulid', function () {
+    [$owner] = authenticate('specialist');
+    $offering = createOfferingsForUser($owner, 1, 1)->first();
+
+    $evaluation = \App\Models\Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
+
+    $this->getJson("/evaluations/{$evaluation->ulid}")
+        ->assertOk()
+        ->assertJsonPath('data.ulid', $evaluation->ulid)
+        ->assertJsonPath('data.status', $evaluation->status)
+        ->assertJsonPath('data.evaluationType', $evaluation->evaluation_type);
+});
+
+test('filter_evaluations_by_query_parameters', function () {
+    [$owner] = authenticate('specialist');
+    $offering = createOfferingsForUser($owner, 1, 1)->first();
+
+    $target = \App\Models\Evaluation::factory()
+        ->withTastes()
+        ->create([
+            'offering_id' => $offering->id,
+            'status' => 'closed',
+            'cupping_score' => 85,
+        ]);
+
+    \App\Models\Evaluation::factory()
+        ->withTastes()
+        ->create([
+            'offering_id' => $offering->id,
+            'status' => 'open',
+            'cupping_score' => 60,
+        ]);
+
+    $coffee = $offering->coffeeInventory->coffee;
+
+    $response = $this->getJson('/evaluations?' . http_build_query([
+        'coffeeId' => $coffee->ulid,
+        'process' => $coffee->process,
+        'status' => 'closed',
+        'scoreMin' => 80,
+        'scoreMax' => 90,
+        'orderBy' => 'cupping_score',
+        'orderDirection' => 'desc',
+    ]));
+
+    $response
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.ulid', $target->ulid);
+});
