@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class OfferingResource extends JsonResource
 {
@@ -40,9 +41,11 @@ class OfferingResource extends JsonResource
 
     private function groupCataByType(): array
     {
-        return $this->offeringTastes
+        $cataConcordance = $this->offeringTastes
             ->groupBy(fn($taste) => in_array($taste->type, self::AROMATIC_TYPES, true) ? 'aromatics' : $taste->type)
-            ->map(fn($group) => $group->sum('count'))
-            ->all();
+            ->map(fn($group) => $group->sum('count'));
+
+        $cataConcordance = $cataConcordance->map(fn($cata) => $cata->type = Str::camel($cata->type));
+        return $cataConcordance->all();
     }
 }

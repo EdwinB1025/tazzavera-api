@@ -222,7 +222,7 @@ test('specialist_triggers_consensus_calculation', function () {
 
     $offering->refresh();
 
-    dump($offering->toArray());
+    //dump($offering->offeringTastes->toArray());
 
     $this->assertNotNull($offering->cupping_avg);
     $this->assertNotNull($offering->concordance_affective);
