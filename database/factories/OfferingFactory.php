@@ -35,6 +35,20 @@ class OfferingFactory extends Factory
         return [
             'coffee_inventory_id' => $coffeeInventoryId,
             'location_id' => $locationsId,
+            'evaluation_count' => 0,
+            'defective_evaluation_count' => 0,
+            'cupping_avg' => null,
+            'fragrance_avg' => null,
+            'aroma_avg' => null,
+            'flavor_avg' => null,
+            'aftertaste_avg' => null,
+            'acidity_avg' => null,
+            'sweetness_avg' => null,
+            'mouthfeel_avg' => null,
+            'overall_avg' => null,
+            'concordance_affective' => null,
+            'concordance_descriptive' => null,
+            'verification_status' => 'provisional',
         ];
     }
 }
