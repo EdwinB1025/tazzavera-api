@@ -24,14 +24,7 @@ class CoffeeInventoryFactory extends Factory
             'coffee_id' => Coffee::inRandomOrder()->first()?->id,
             'production_date' => fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d'),
             //EDB 09/04/31: generate a new lot, if the combination exists already for the same day
-            'roast_lot' => function (array $attributes) {
-                $nextLot = CoffeeInventory::where('roastery_id', $attributes['roastery_id'])
-                    ->where('coffee_id', $attributes['coffee_id'])
-                    ->where('production_date', $attributes['production_date'])
-                    ->count() + 1;
-
-                return $attributes['production_date'] . '-' . $nextLot;
-            },
+            'roast_lot' => fn(array $attributes) => $attributes['production_date'] . '-' . fake()->unique()->numberBetween(1, 999999),
         ];
     }
 }
