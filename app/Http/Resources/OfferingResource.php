@@ -41,11 +41,14 @@ class OfferingResource extends JsonResource
 
     private function groupCataByType(): array
     {
-        $cataConcordance = $this->offeringTastes
-            ->groupBy(fn($taste) => in_array($taste->type, self::AROMATIC_TYPES, true) ? 'aromatics' : $taste->type)
-            ->map(fn($group) => $group->sum('count'));
-
-        $cataConcordance = $cataConcordance->map(fn($cata) => $cata->type = Str::camel($cata->type));
-        return $cataConcordance->all();
+        return $this->offeringTastes
+            ->groupBy(fn($taste) => in_array($taste->type, self::AROMATIC_TYPES, true)
+                ? 'aromatics'
+                : Str::camel($taste->type))
+            ->map(fn($group) => $group->map(fn($taste) => [
+                'ref' => $taste->taxonomy->ulid,
+                'count' => $taste->count,
+            ])->values())
+            ->all();
     }
 }

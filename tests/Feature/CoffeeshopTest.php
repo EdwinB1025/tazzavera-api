@@ -304,6 +304,7 @@ test('filter_offerings_by_ranges_and_relations', function () {
     ]));
 
     $response
+        //->dump()
         ->assertOk()
         ->assertJsonCount(2, 'data');
 
@@ -311,6 +312,7 @@ test('filter_offerings_by_ranges_and_relations', function () {
     expect($ulids)->toContain($match->ulid, $second->ulid);
 
     $locations = collect($response->json('data'))->pluck('location.ulid')->unique();
+    //dump($locations);
     expect($locations->count())->toBeGreaterThan(1);
 });
 
