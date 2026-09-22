@@ -269,3 +269,76 @@ test('authenticated_coffeeshop_deletes_offering_without_scope', function () {
         ->deleteJson("/offerings/{$offering->ulid}")
         ->assertForbidden();
 });
+
+test('filter_offerings_by_ranges_and_relations', function () {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+
+    $match = Offering::factory()->create([
+        'cupping_avg' => 85,
+        'fragrance_avg' => 8,
+        'evaluation_count' => 10,
+        'verification_status' => 'verified',
+    ]);
+
+    $second = Offering::factory()->create([
+        'cupping_avg' => 82,
+        'fragrance_avg' => 7,
+        'evaluation_count' => 8,
+        'verification_status' => 'verified',
+    ]);
+
+    Offering::factory()->create([
+        'cupping_avg' => 60,
+        'fragrance_avg' => 4,
+        'evaluation_count' => 2,
+    ]);
+
+    $response = $this->getJson('/offerings?' . http_build_query([
+        'cuppingAvgMin' => 80,
+        'cuppingAvgMax' => 90,
+        'fragranceMin' => 6,
+        'evaluationCountMin' => 5,
+    ]));
+
+    $response
+        ->assertOk()
+        ->assertJsonCount(2, 'data');
+
+    $ulids = collect($response->json('data'))->pluck('ulid');
+    expect($ulids)->toContain($match->ulid, $second->ulid);
+
+    $locations = collect($response->json('data'))->pluck('location.ulid')->unique();
+    expect($locations->count())->toBeGreaterThan(1);
+});
+
+test('filter_offerings_by_cata_ref', function () {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+
+    $taxonomy = getOlfactoryTaxonomyCollection('aromatics', false, 1)->first();
+
+    $match = Offering::factory()->create();
+    $match->offeringTastes()->create([
+        'taxonomy_ref' => $taxonomy->id,
+        'type' => 'fragrance',
+        'level' => (string) $taxonomy->level,
+        'parent_id' => null,
+        'count' => 3,
+    ]);
+
+    Offering::factory()->create();
+
+    $response = $this->getJson('/offerings?' . http_build_query([
+        'cataRef' => [$taxonomy->ulid],
+    ]));
+
+    $response
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.ulid', $match->ulid);
+});
