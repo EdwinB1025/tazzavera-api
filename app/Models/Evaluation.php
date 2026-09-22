@@ -38,7 +38,7 @@ class Evaluation extends Model
             $query->{$scope}($validated);
         }
 
-        $query->orderBy($validated);
+        $query->applyOrderBy($validated);
     }
 
     #[Scope]
@@ -125,7 +125,7 @@ class Evaluation extends Model
     }
 
     #[Scope]
-    protected function orderBy(Builder $query, array $validated): void
+    protected function applyOrderBy(Builder $query, array $validated): void
     {
         $query->when(
             $validated['orderBy'] ?? null,

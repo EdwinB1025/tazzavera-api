@@ -284,7 +284,7 @@ test('filter_evaluations_by_query_parameters', function () {
     [$owner] = authenticate('specialist');
     $offering = createOfferingsForUser($owner, 1, 1)->first();
 
-    $target = \App\Models\Evaluation::factory()
+    $target = Evaluation::factory()
         ->withTastes()
         ->create([
             'offering_id' => $offering->id,
@@ -292,7 +292,7 @@ test('filter_evaluations_by_query_parameters', function () {
             'cupping_score' => 85,
         ]);
 
-    \App\Models\Evaluation::factory()
+    Evaluation::factory()
         ->withTastes()
         ->create([
             'offering_id' => $offering->id,
@@ -316,4 +316,26 @@ test('filter_evaluations_by_query_parameters', function () {
         ->assertOk()
         ->assertJsonCount(1, 'data')
         ->assertJsonPath('data.0.ulid', $target->ulid);
+});
+
+test('filter_evaluations_returns_multiple_locations', function () {
+    [$owner] = authenticate('specialist');
+    $offerings = createOfferingsForUser($owner, 1, 3);
+
+    foreach ($offerings as $offering) {
+        Evaluation::factory()
+            ->withTastes()
+            ->create([
+                'offering_id' => $offering->id,
+                'status' => 'closed',
+                'cupping_score' => 85,
+            ]);
+    }
+
+    $response = $this->getJson('/evaluations?' . http_build_query([
+        'status' => 'closed',
+    ]));
+
+    $response->assertOk()
+        ->assertJsonCount(3, 'data');
 });
