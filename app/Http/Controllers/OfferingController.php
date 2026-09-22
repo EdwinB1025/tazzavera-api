@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterOfferingRequest;
 use App\Http\Requests\MassDeleteOfferingRequest;
 use App\Http\Requests\StoreOfferingRequest;
 use App\Http\Resources\OfferingResource;
@@ -17,9 +18,14 @@ class OfferingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(FilterOfferingRequest $request)
     {
-        //
+        $offerings = Offering::query()
+            ->filter($request->validated())
+            ->with('offeringTastes.taxonomy', 'coffeeInventory.roastery', 'coffeeInventory.coffee', 'location')
+            ->paginate();
+
+        return OfferingResource::collection($offerings);
     }
 
     /**
@@ -73,14 +79,6 @@ class OfferingController extends Controller
         ]);
 
         return new OfferingResource($offering);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**

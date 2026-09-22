@@ -14,6 +14,7 @@ use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/taxonomies', [TaxonomyController::class, 'index']);
 Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
+Route::get('/offerings', [OfferingController::class, 'index']);
 Route::get('/evaluations/{evaluation}', [EvaluationController::class, 'show']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
 
