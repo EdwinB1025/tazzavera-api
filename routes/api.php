@@ -14,6 +14,9 @@ use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/taxonomies', [TaxonomyController::class, 'index']);
 Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
+Route::get('/evaluations/{evaluation}', [EvaluationController::class, 'show']);
+Route::get('/evaluations', [EvaluationController::class, 'index']);
+
 
 Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
     ->group(function () {
