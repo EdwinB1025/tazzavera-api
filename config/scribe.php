@@ -14,7 +14,7 @@ return [
     'title' => config('app.name') . ' API Documentation',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => '',
+    'description' => 'REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.',
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<'INTRO'
@@ -32,21 +32,42 @@ return [
     'routes' => [
         [
             'match' => [
-                // Match only routes whose paths match this pattern (use * as a wildcard to match any characters). Example: 'users/*'.
-                'prefixes' => ['api/*'],
-
-                // Match only routes whose domains match this pattern (use * as a wildcard to match any characters). Example: 'api.*'.
+                'prefixes' => ['*'],
                 'domains' => ['*'],
             ],
-
-            // Include these routes even if they did not match the rules above.
-            'include' => [
-                // 'users.index', 'POST /new', '/auth/*'
-            ],
-
-            // Exclude these routes even if they matched the rules above.
+            'include' => [],
             'exclude' => [
-                // 'GET /health', 'admin.*'
+                // Passport (OAuth)
+                'oauth/*',
+
+                // Livewire and flux (asset endpoints con hash)
+                'livewire-*',
+                'flux/*',
+
+                // Fortify (login + 2FA)
+                'login',
+                'two-factor-challenge',
+                'user/confirm-password',
+                'user/confirmed-password-status',
+                'user/confirmed-two-factor-authentication',
+                'user/two-factor-authentication',
+                'user/two-factor-qr-code',
+                'user/two-factor-recovery-codes',
+                'user/two-factor-secret-key',
+
+                // Passkeys
+                'passkeys/*',
+                'user/passkeys',
+                'user/passkeys/*',
+
+                // Welcome
+                '/',
+
+                // Scribe y framework (por si acaso)
+                'docs',
+                'docs.*',
+                'up',
+                'storage/*',
             ],
         ],
     ],
@@ -104,39 +125,36 @@ return [
 
     // How is your API authenticated? This information will be used in the displayed docs, generated examples and response calls.
     'auth' => [
-        // Set this to true if ANY endpoints in your API use authentication.
-        'enabled' => false,
-
-        // Set this to true if your API should be authenticated by default. If so, you must also set `enabled` (above) to true.
-        // You can then use @unauthenticated or @authenticated on individual endpoints to change their status from the default.
+        'enabled' => true,
         'default' => false,
-
-        // Where is the auth value meant to be sent in a request?
         'in' => AuthIn::BEARER->value,
-
-        // The name of the auth parameter (e.g. token, key, apiKey) or header (e.g. Authorization, Api-Key).
-        'name' => 'key',
-
-        // The value of the parameter to be used by Scribe to authenticate response calls.
-        // This will NOT be included in the generated documentation. If empty, Scribe will use a random value.
+        'name' => 'Authorization',
         'use_value' => env('SCRIBE_AUTH_KEY'),
+        'placeholder' => '{ACCESS_TOKEN}',
+        'extra_info' => <<<'AUTH'
+        This API uses **Laravel Passport (OAuth 2.0)**. Authenticated endpoints require a Bearer access token in the `Authorization` header. Two grant flows are supported:
 
-        // Placeholder your users will see for the auth parameter in the example requests.
-        // Set this to null if you want Scribe to use a random value as placeholder instead.
-        'placeholder' => '{YOUR_AUTH_KEY}',
+        **Authorization Code + PKCE** (recommended, for public/first-party clients such as SPAs and mobile apps that cannot safely store a client secret):
+        1. Generate a `code_verifier` (random string) and derive a `code_challenge` = BASE64URL(SHA256(`code_verifier`)).
+        2. Redirect the user to `GET /oauth/authorize` with `response_type=code`, your `client_id`, `redirect_uri`, `scope`, `state`, `code_challenge`, and `code_challenge_method=S256`.
+        3. After the user approves, exchange the returned `code` at `POST /oauth/token` with `grant_type=authorization_code`, the `code`, `redirect_uri`, `client_id`, and the original `code_verifier`.
+        4. The response contains `access_token`, `refresh_token`, and `expires_in`.
 
-        // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
+        **Password grant** (for trusted first-party clients only):
+        - `POST /oauth/token` with `grant_type=password`, `client_id`, `client_secret`, the user's `username` and `password`, and the required `scope`.
+        - The response contains `access_token`, `refresh_token`, and `expires_in`.
+
+        Send the token as: `Authorization: Bearer {ACCESS_TOKEN}`.
+
+        **Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token, or the request will be rejected.
+        AUTH,
     ],
 
     // Example requests for each endpoint will be shown in each of these languages.
     // Supported options are: bash, javascript, php, python
     // To add a language of your own, see https://scribe.knuckles.wtf/laravel/advanced/example-requests
     // Note: does not work for `external` docs types
-    'example_languages' => [
-        'bash',
-        'javascript',
-    ],
+    'example_languages' => ['bash', 'javascript', 'php'],
 
     // Generate a Postman collection (v2.1.0) in addition to HTML docs.
     // For 'static' docs, the collection will be generated to public/docs/collection.json.

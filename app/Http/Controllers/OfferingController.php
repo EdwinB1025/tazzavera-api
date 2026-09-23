@@ -16,7 +16,16 @@ use Illuminate\Support\Facades\DB;
 class OfferingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List offerings
+     *
+     * Returns a paginated list of coffee offerings, each including its taste
+     * profile (olfactory taxonomy), coffee inventory (with roastery and coffee
+     * details), and location. Supports extensive filtering and sorting via query
+     * parameters.
+     *
+     * @group Offerings
+     *
+     * @unauthenticated
      */
     public function index(FilterOfferingRequest $request)
     {
@@ -29,7 +38,19 @@ class OfferingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create offerings
+     *
+     * Creates one offering per location for a given coffee inventory item. A single
+     * request may target multiple locations; one offering is created for each,
+     * all within a single database transaction (all-or-nothing).
+     *
+     * **Authorization:** requires the `coffeeshop` role and the `profile:write`
+     * scope. The authenticated user must own every location referenced
+     * (`owns.location`).
+     *
+     * @group Offerings
+     *
+     * @authenticated
      */
     public function store(StoreOfferingRequest $request)
     {
@@ -64,7 +85,17 @@ class OfferingController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get an offering
+     *
+     * Returns a single offering with its full taste profile. Taste notes are
+     * returned as a nested tree (up to three levels of olfactory taxonomy),
+     * alongside location, coffee, and roastery details.
+     *
+     * @group Offerings
+     *
+     * @unauthenticated
+     *
+     * @urlParam offering string required The ULID of the offering. Example: 01J8ZKQH3M7...
      */
     public function show(Offering $offering)
     {
@@ -82,7 +113,20 @@ class OfferingController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete an offering
+     *
+     * Permanently deletes a single offering. This action cannot be undone.
+     *
+     * **Authorization:** requires the `coffeeshop` role and the `profile:write`
+     * scope. The authenticated user must own the offering (`owns.offering`).
+     *
+     * @group Offerings
+     *
+     * @authenticated
+     *
+     * @urlParam offering string required The ULID of the offering. Example: 01J8ZKQH3M7...
+     *
+     * @response 200 scenario="Deleted" {"message": "Offering deleted."}
      */
     public function destroy(Offering $offering)
     {
@@ -92,7 +136,20 @@ class OfferingController extends Controller
     }
 
     /**
-     * Remove the specified collection of resources.
+     * Delete multiple offerings
+     *
+     * Permanently deletes several offerings in one request, identified by their
+     * ULIDs (maximum 50). This action cannot be undone.
+     *
+     * **Authorization:** requires the `coffeeshop` role and the `profile:write`
+     * scope. The authenticated user must own all referenced offerings
+     * (`owns.offering`).
+     *
+     * @group Offerings
+     *
+     * @authenticated
+     *
+     * @response 200 scenario="Deleted" {"message": "Offering deleted."}
      */
     public function massDestroy(MassDeleteOfferingRequest $request)
     {

@@ -31,4 +31,16 @@ class FilterCoffeeInventoryRequest extends FormRequest
             'city'          => ['nullable', 'string', 'max:90'],
         ];
     }
+
+    public function queryParameters(): array
+    {
+        return [
+            'coffeeName'    => ['description' => 'Filter by coffee name (max 150 chars).', 'example' => 'Geisha'],
+            'originCountry' => ['description' => 'Filter by country of origin (max 60 chars).', 'example' => 'Colombia'],
+            'originRegion'  => ['description' => 'Filter by region of origin (max 90 chars).', 'example' => 'Huila'],
+            'process'       => ['description' => 'Filter by processing method (max 60 chars).', 'example' => 'Washed'],
+            'producer'      => ['description' => 'Filter by producer name (max 150 chars).', 'example' => 'Finca La Esperanza'],
+            'city'          => ['description' => 'Filter by city (max 90 chars).', 'example' => 'Barcelona'],
+        ];
+    }
 }

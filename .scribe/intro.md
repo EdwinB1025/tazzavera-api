@@ -1,6 +1,6 @@
 # Introduction
 
-
+REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.
 
 <aside>
     <strong>Base URL</strong>: <code>http://localhost:8000</code>

@@ -10,12 +10,1343 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "b89957b2-ed38-431d-babd-edbe546a5e29",
-        "description": "",
+        "_postman_id": "00c82686-3ca0-4d50-a812-5a7dc19f60de",
+        "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
-    "item": [],
+    "item": [
+        {
+            "name": "Coffee Inventory",
+            "description": "",
+            "item": [
+                {
+                    "name": "List coffee inventory",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "coffeeInventory",
+                            "query": [
+                                {
+                                    "key": "coffeeName",
+                                    "value": "Geisha",
+                                    "description": "Filter by coffee name (max 150 chars). Must not be greater than 150 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "originCountry",
+                                    "value": "Colombia",
+                                    "description": "Filter by country of origin (max 60 chars). Must not be greater than 60 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "originRegion",
+                                    "value": "Huila",
+                                    "description": "Filter by region of origin (max 90 chars). Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "process",
+                                    "value": "Washed",
+                                    "description": "Filter by processing method (max 60 chars). Must not be greater than 60 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "producer",
+                                    "value": "Finca La Esperanza",
+                                    "description": "Filter by producer name (max 150 chars). Must not be greater than 150 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Barcelona",
+                                    "description": "Filter by city (max 90 chars). Must not be greater than 90 characters.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/coffeeInventory?coffeeName=Geisha&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&city=Barcelona"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns coffee inventory items, each with coffee details (including\ncurrently valid certifications) and roastery. Used by coffeeshops to\nretrieve available coffees when creating an offering. Supports filtering\nvia query parameters.\n\nOnly non-expired certifications are included (those with no expiry, or an\nexpiry date in the future).\n\n**Authorization:** requires the `coffeeshop` role and the `profile:read`\nor `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"ulid\":\"01M36SQP8PFS04WB0C15FAWKQ2\",\"roastLot\":\"2026-08-26-552013\",\"productionDate\":\"2026-08-26T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36SQP8J21MK43Q7DZBH9KNF\",\"name\":\"odio veritatis\",\"roastLevel\":\"dark\",\"process\":\"wet_hulled\",\"variety\":\"Catuai\",\"producer\":\"Cristian O'Reilly\",\"country\":\"Colombia\",\"region\":\"Antioquia\",\"altitude\":1384,\"lot\":\"2005-01\"},\"roastery\":{\"ulid\":\"01M36SQP855ZGDN907S11Y3V2S\",\"name\":\"Bailey Ltd\",\"description\":\"Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.\"}},{\"ulid\":\"01M36SQPA9GYJWBD87JHRZ9D4W\",\"roastLot\":\"2026-09-11-450403\",\"productionDate\":\"2026-09-11T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36SQP9SCGWX0WKB4E54CXM4\",\"name\":\"deserunt sint\",\"roastLevel\":\"medium_dark\",\"process\":\"anaerobic\",\"variety\":\"Geisha\",\"producer\":null,\"country\":\"Kenia\",\"region\":\"Nyeri\",\"altitude\":1457,\"lot\":\"1978-08\"},\"roastery\":{\"ulid\":\"01M36SQP9D3T2E5MG6CTZJFXQC\",\"name\":\"Moen-Kovacek\",\"description\":\"Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.\"}}]}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Evaluations",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get an evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations\/:evaluation_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid",
+                            "variable": [
+                                {
+                                    "id": "evaluation_ulid",
+                                    "key": "evaluation_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "evaluation",
+                                    "key": "evaluation",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the evaluation."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single evaluation with its taste notes and associated offering.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                }
+                            ],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Evaluation] architecto\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List evaluations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations",
+                            "query": [
+                                {
+                                    "key": "evaluatorId",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "Filter by the evaluating specialist (user) ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "coffeeId",
+                                    "value": "01M35F5JEZMS845TNPAEM1V8PF",
+                                    "description": "Filter by coffee ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "locationId",
+                                    "value": "01M35F5JDFXM13R1CA06FFWTNG",
+                                    "description": "Filter by location ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Barcelona",
+                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "process",
+                                    "value": "Washed",
+                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "closed",
+                                    "description": "Filter by evaluation status. One of: open, closed.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMin",
+                                    "value": "80",
+                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMax",
+                                    "value": "95",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "cupping_score",
+                                    "description": "Sort field. One of: cupping_score, created_at, status.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderDirection",
+                                    "value": "desc",
+                                    "description": "Sort direction. One of: asc, desc.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of sensory evaluations, each including its taste\nnotes (olfactory taxonomy references) and the offering it belongs to.\nSupports filtering and sorting via query parameters.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                }
+                            ],
+                            "code": 422,
+                            "body": "{\"message\":\"The selected evaluator id is invalid. (and 2 more errors)\",\"errors\":{\"evaluatorId\":[\"The selected evaluator id is invalid.\"],\"coffeeId\":[\"The selected coffee id is invalid.\"],\"locationId\":[\"The selected location id is invalid.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create an evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/evaluations"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"offeringId\":\"01M35F5RX4ADGC3CSDXXYB08DA\",\"status\":\"architecto\",\"extractionMethod\":\"v60\",\"descriptive\":{\"roastLevel\":\"medium\",\"fragrance\":{\"score\":11,\"cata\":[\"architecto\"]},\"aroma\":{\"score\":5,\"cata\":[\"architecto\"]},\"flavor\":{\"score\":12,\"cata\":[\"architecto\"]},\"acidity\":{\"score\":12},\"sweetness\":{\"score\":6},\"mouthfeel\":{\"score\":11,\"cata\":[\"architecto\"]},\"aftertaste\":{\"score\":5,\"cata\":[\"architecto\"]},\"mainTastes\":[\"architecto\"]},\"affective\":{\"overall\":{\"score\":8,\"note\":\"Balanced, clean finish.\"},\"fragrance\":{\"score\":7},\"aroma\":{\"score\":7},\"flavor\":{\"score\":9},\"aftertaste\":{\"score\":9},\"acidity\":{\"score\":9},\"sweetness\":{\"score\":9},\"mouthfeel\":{\"score\":8},\"defects\":[\"architecto\"]}}"
+                        },
+                        "description": "Records a new sensory evaluation (cupping) for an offering. The evaluation\nis created in the \"open\" state and must later be finalized via the close\nendpoint. Returns the created evaluation with a confirmation message.\n\nThe request body carries three main blocks: `descriptive` (objective\nassessment, scores 0\u201315), `affective` (preference assessment, scores 1\u20139),\nand `extrinsics` (contextual metadata). See the body parameters and example\nbelow for the full nested structure.\n\n**Authorization:** requires the `specialist` role."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"ulid\":\"01M36SQPH837K5TDVX3NHB19RD\",\"offeringId\":\"01M36SQPHKH5GFGKFABARKDAHF\",\"evaluationType\":\"specialist\",\"status\":\"closed\",\"extractionMethod\":\"v60\",\"cuppingScore\":\"94.88\",\"isDefective\":true,\"descriptive\":{\"aroma\":{\"note\":null,\"score\":15},\"flavor\":{\"note\":null,\"score\":11},\"acidity\":{\"note\":null,\"score\":11},\"fragrance\":{\"note\":null,\"score\":15},\"mouthfeel\":{\"note\":null,\"score\":14},\"sweetness\":{\"note\":null,\"score\":6},\"aftertaste\":{\"note\":null,\"score\":14}},\"affective\":{\"aroma\":{\"note\":null,\"score\":7},\"flavor\":{\"note\":null,\"score\":8},\"acidity\":{\"note\":null,\"score\":9},\"overall\":{\"note\":null,\"score\":6},\"fragrance\":{\"note\":null,\"score\":9},\"mouthfeel\":{\"note\":null,\"score\":6},\"sweetness\":{\"note\":null,\"score\":8},\"aftertaste\":{\"note\":null,\"score\":8}},\"extrinsics\":{\"farming\":null,\"trading\":null,\"processing\":null,\"certifications\":null,\"general_observation\":null}}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"data\": {}, \"message\": \"Evaluation created.\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update an evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations\/:evaluation_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid",
+                            "variable": [
+                                {
+                                    "id": "evaluation_ulid",
+                                    "key": "evaluation_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "evaluation",
+                                    "key": "evaluation",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the evaluation."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":\"architecto\",\"extractionMethod\":\"v60\",\"descriptive\":{\"roastLevel\":\"medium\",\"fragrance\":{\"score\":1,\"note\":\"architecto\",\"cata\":[\"architecto\"]},\"aroma\":{\"score\":1,\"note\":\"architecto\",\"cata\":[\"architecto\"]},\"flavor\":{\"score\":1,\"note\":\"architecto\",\"cata\":[\"architecto\"]},\"acidity\":{\"score\":1,\"note\":\"architecto\"},\"sweetness\":{\"score\":1,\"note\":\"architecto\"},\"mouthfeel\":{\"score\":1,\"note\":\"architecto\",\"cata\":[\"architecto\"]},\"aftertaste\":{\"score\":1,\"note\":\"architecto\",\"cata\":[\"architecto\"]},\"mainTastes\":[\"architecto\"]},\"affective\":{\"overall\":{\"score\":2,\"note\":\"architecto\"},\"fragrance\":{\"score\":2,\"note\":\"architecto\"},\"aroma\":{\"score\":2,\"note\":\"architecto\"},\"flavor\":{\"score\":2,\"note\":\"architecto\"},\"aftertaste\":{\"score\":2,\"note\":\"architecto\"},\"acidity\":{\"score\":2,\"note\":\"architecto\"},\"sweetness\":{\"score\":2,\"note\":\"architecto\"},\"mouthfeel\":{\"score\":2,\"note\":\"architecto\"},\"defects\":[\"architecto\"]},\"extrinsics\":{\"farming\":\"architecto\",\"processing\":\"architecto\",\"trading\":\"architecto\",\"certifications\":\"architecto\",\"generalObservation\":\"architecto\"}}"
+                        },
+                        "description": "Updates an existing evaluation. Returns the updated evaluation with a\nconfirmation message. The body structure matches the create endpoint,\nexcept `offeringId` is prohibited \u2014 an evaluation cannot be reassigned to\nanother offering.\n\nA **closed** evaluation cannot be updated; attempting to do so returns\n`409 Conflict`.\n\n**Authorization:** requires the `specialist` role and permission to update\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"One or more evaluations do not belong to the user.\"}",
+                            "name": "Not the owner"
+                        },
+                        {
+                            "header": [],
+                            "code": 409,
+                            "body": "{\"message\": \"Evaluation cannot be updated.\"}",
+                            "name": "Evaluation already closed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Close an evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations\/:evaluation_ulid\/close",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid\/close",
+                            "variable": [
+                                {
+                                    "id": "evaluation_ulid",
+                                    "key": "evaluation_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "evaluation",
+                                    "key": "evaluation",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the evaluation."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Transitions an evaluation to the **closed** state, finalizing it. A closed\nevaluation can no longer be updated. No request body is required \u2014 the\nevaluation is validated and closed using the data already stored.\n\nThe evaluation is only closed if it is complete. Completeness requires all\n15 sensory scores greater than 0 (7 descriptive + 8 affective), plus at\nleast one taste reference for each of: main tastes, mouthfeel, and the\naromatic set (fragrance\/aroma\/flavor\/aftertaste). If any is missing, the\nrequest fails with `409 Conflict`.\n\nIf the evaluation is **already closed**, the endpoint returns `200 OK`\nidempotently.\n\nClosing dispatches an `EvaluationClosed` event, which recalculates the\noffering's aggregate scores and concordance (via OfferingConsensusService).\n\n**Authorization:** requires the `specialist` role and permission to update\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Evaluation closed.\"}",
+                            "name": "Closed successfully"
+                        },
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Evaluation closed.\"}",
+                            "name": "Already closed"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"One or more evaluations do not belong to the user.\"}",
+                            "name": "Not the owner"
+                        },
+                        {
+                            "header": [],
+                            "code": 409,
+                            "body": "{\"message\": \"Evaluation is incomplete, all scores need to be provided, and at least one cata attribute for each MainTastes, mouthfeel and the set of sensorial axis.\"}",
+                            "name": "Evaluation incomplete"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete an evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "evaluations\/:evaluation_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid",
+                            "variable": [
+                                {
+                                    "id": "evaluation_ulid",
+                                    "key": "evaluation_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "evaluation",
+                                    "key": "evaluation",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the evaluation."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes an evaluation. This action cannot be undone.\n\n**Authorization:** requires the `specialist` role and permission to delete\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Evaluation(s) deleted.\"}",
+                            "name": "Deleted"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"One or more evaluations do not belong to the user.\"}",
+                            "name": "Not the owner"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Locations",
+            "description": "",
+            "item": [
+                {
+                    "name": "List my locations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "locations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/locations"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the locations owned by the authenticated user, each with its\ncontact details. Used by coffeeshops to retrieve their locations when\ncreating an offering.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:read`\nor `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"ulid\":\"01M36SQP3JW84J5TQR3SA6NNA7\",\"name\":\"Price Ltd\",\"description\":\"Function-based even-keeled monitoring\",\"latitud\":\"-23.35486300\",\"longitud\":\"-144.62930200\"},{\"ulid\":\"01M36SQP4REWXH76SSPCXB0W0T\",\"name\":\"Stanton, Homenick and Schimmel\",\"description\":\"Synergized bifurcated attitude\",\"latitud\":\"51.55520100\",\"longitud\":\"-160.60547300\"}]}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Offerings",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get an offering",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "offerings\/:offering_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/offerings\/:offering_ulid",
+                            "variable": [
+                                {
+                                    "id": "offering_ulid",
+                                    "key": "offering_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "offering",
+                                    "key": "offering",
+                                    "value": "01J8ZKQH3M7...",
+                                    "description": "The ULID of the offering."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single offering with its full taste profile. Taste notes are\nreturned as a nested tree (up to three levels of olfactory taxonomy),\nalongside location, coffee, and roastery details.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                }
+                            ],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Offering] architecto\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List offerings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "offerings",
+                            "query": [
+                                {
+                                    "key": "coffeeName",
+                                    "value": "Geisha",
+                                    "description": "Filter by coffee name (partial match). Must not be greater than 150 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "originCountry",
+                                    "value": "Colombia",
+                                    "description": "Filter by country of origin. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "originRegion",
+                                    "value": "Huila",
+                                    "description": "Filter by region of origin. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "process",
+                                    "value": "Washed",
+                                    "description": "Filter by processing method. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "producer",
+                                    "value": "Finca La Esperanza",
+                                    "description": "Filter by producer name. Must not be greater than 150 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "variety",
+                                    "value": "Caturra",
+                                    "description": "Filter by coffee variety. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Barcelona",
+                                    "description": "Filter by the city of the offering location. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "coffeeshopUlid",
+                                    "value": "01J8ZK...",
+                                    "description": "Filter by coffeeshop (user) ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "locationUlid",
+                                    "value": "01J8ZK...",
+                                    "description": "Filter by location ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "cuppingAvgMin",
+                                    "value": "80",
+                                    "description": "Minimum average cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "cuppingAvgMax",
+                                    "value": "95",
+                                    "description": "Maximum average cupping score (0\u2013100). Must be \u2265 cuppingAvgMin. Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "evaluationCountMin",
+                                    "value": "1",
+                                    "description": "Minimum number of evaluations. Must be at least 0.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "evaluationCountMax",
+                                    "value": "50",
+                                    "description": "Maximum number of evaluations. Must be \u2265 evaluationCountMin. Must be at least 0.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "defectiveCountMin",
+                                    "value": "0",
+                                    "description": "Minimum number of defective evaluations. Must be at least 0.",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "defectiveCountMax",
+                                    "value": "5",
+                                    "description": "Maximum number of defective evaluations. Must be \u2265 defectiveCountMin. Must be at least 0.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "fragranceMin",
+                                    "value": "6",
+                                    "description": "Minimum fragrance score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "fragranceMax",
+                                    "value": "8",
+                                    "description": "Maximum fragrance score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aromaMin",
+                                    "value": "6",
+                                    "description": "Minimum aroma score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aromaMax",
+                                    "value": "8",
+                                    "description": "Maximum aroma score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "flavorMin",
+                                    "value": "6",
+                                    "description": "Minimum flavor score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "flavorMax",
+                                    "value": "8",
+                                    "description": "Maximum flavor score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aftertasteMin",
+                                    "value": "6",
+                                    "description": "Minimum aftertaste score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aftertasteMax",
+                                    "value": "8",
+                                    "description": "Maximum aftertaste score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "acidityMin",
+                                    "value": "6",
+                                    "description": "Minimum acidity score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "acidityMax",
+                                    "value": "8",
+                                    "description": "Maximum acidity score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sweetnessMin",
+                                    "value": "6",
+                                    "description": "Minimum sweetness score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sweetnessMax",
+                                    "value": "8",
+                                    "description": "Maximum sweetness score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mouthfeelMin",
+                                    "value": "6",
+                                    "description": "Minimum mouthfeel score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mouthfeelMax",
+                                    "value": "8",
+                                    "description": "Maximum mouthfeel score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "overallMin",
+                                    "value": "6",
+                                    "description": "Minimum overall score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "overallMax",
+                                    "value": "8",
+                                    "description": "Maximum overall score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "cataRef[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "fragranceCata[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aromaCata[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "flavorCata[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "aftertasteCata[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mouthfeelCata[0]",
+                                    "value": "architecto",
+                                    "description": "Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "cupping_avg",
+                                    "description": "Sort field. One of: cupping_avg, evaluation_count, created_at.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderDirection",
+                                    "value": "desc",
+                                    "description": "Sort direction. One of: asc, desc.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/offerings?coffeeName=Geisha&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&variety=Caturra&city=Barcelona&coffeeshopUlid=01J8ZK...&locationUlid=01J8ZK...&cuppingAvgMin=80&cuppingAvgMax=95&evaluationCountMin=1&evaluationCountMax=50&defectiveCountMin=0&defectiveCountMax=5&fragranceMin=6&fragranceMax=8&aromaMin=6&aromaMax=8&flavorMin=6&flavorMax=8&aftertasteMin=6&aftertasteMax=8&acidityMin=6&acidityMax=8&sweetnessMin=6&sweetnessMax=8&mouthfeelMin=6&mouthfeelMax=8&overallMin=6&overallMax=8&cataRef%5B0%5D=architecto&fragranceCata%5B0%5D=architecto&aromaCata%5B0%5D=architecto&flavorCata%5B0%5D=architecto&aftertasteCata%5B0%5D=architecto&mouthfeelCata%5B0%5D=architecto&orderBy=cupping_avg&orderDirection=desc"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of coffee offerings, each including its taste\nprofile (olfactory taxonomy), coffee inventory (with roastery and coffee\ndetails), and location. Supports extensive filtering and sorting via query\nparameters.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                }
+                            ],
+                            "code": 422,
+                            "body": "{\"message\":\"The selected coffeeshop ulid is invalid. (and 7 more errors)\",\"errors\":{\"coffeeshopUlid\":[\"The selected coffeeshop ulid is invalid.\"],\"locationUlid\":[\"The selected location ulid is invalid.\"],\"cataRef.0\":[\"The selected cataRef.0 is invalid.\"],\"fragranceCata.0\":[\"The selected fragranceCata.0 is invalid.\"],\"aromaCata.0\":[\"The selected aromaCata.0 is invalid.\"],\"flavorCata.0\":[\"The selected flavorCata.0 is invalid.\"],\"aftertasteCata.0\":[\"The selected aftertasteCata.0 is invalid.\"],\"mouthfeelCata.0\":[\"The selected mouthfeelCata.0 is invalid.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create offerings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "offerings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/offerings"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"coffeeInventoryId\":\"01J8ZK...\",\"locations\":[\"architecto\"]}"
+                        },
+                        "description": "Creates one offering per location for a given coffee inventory item. A single\nrequest may target multiple locations; one offering is created for each,\nall within a single database transaction (all-or-nothing).\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own every location referenced\n(`owns.location`)."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete an offering",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "offerings\/:offering_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/offerings\/:offering_ulid",
+                            "variable": [
+                                {
+                                    "id": "offering_ulid",
+                                    "key": "offering_ulid",
+                                    "value": "architecto",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "offering",
+                                    "key": "offering",
+                                    "value": "01J8ZKQH3M7...",
+                                    "description": "The ULID of the offering."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a single offering. This action cannot be undone.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own the offering (`owns.offering`)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Offering deleted.\"}",
+                            "name": "Deleted"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete multiple offerings",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "offerings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/offerings"
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"offerings\":[\"architecto\"]}"
+                        },
+                        "description": "Permanently deletes several offerings in one request, identified by their\nULIDs (maximum 50). This action cannot be undone.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own all referenced offerings\n(`owns.offering`)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Offering deleted.\"}",
+                            "name": "Deleted"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Taxonomies",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET taxonomies",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "taxonomies",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/taxonomies"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"data\":[{\"level\":0,\"nameEn\":\"Fruity\",\"nameEs\":\"Frutal\",\"descriptionEn\":\"Sweet, floral aromatic blend of a variety of ripe fruits.\",\"descriptionEs\":\"Mezcla arom\\u00e1tica dulce, floral, de una variedad de frutas maduras.\",\"color\":\"#a4485c\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Berry\",\"nameEs\":\"Baya\",\"descriptionEn\":\"Sweet, sour, floral, sometimes heavy aromatic associated with berries such as blackberries, raspberries, blueberries or strawberries.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, \\u00e1cido, floral, a veces pesado, asociado a bayas como moras, frambuesas, ar\\u00e1ndanos o fresas.\",\"color\":\"#af5e70\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Strawberry\",\"nameEs\":\"Fresa\",\"descriptionEn\":\"Somewhat sweet, slightly sour, floral, fruity, often winey aromatic associated with strawberry.\",\"descriptionEs\":\"Arom\\u00e1tico algo dulce, ligeramente \\u00e1cido, floral, frutal, frecuentemente avinado, asociado a la fresa.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Raspberry\",\"nameEs\":\"Frambuesa\",\"descriptionEn\":\"Slightly sweet, fruity, floral, slightly sour and musty aromatic associated with raspberries.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente dulce, frutal, floral, ligeramente \\u00e1cido y mohoso, asociado a las frambuesas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Blueberry\",\"nameEs\":\"Ar\\u00e1ndano\",\"descriptionEn\":\"Slightly dark, fruity, sweet, slightly sour, musty, dusty, floral aromatic associated with blueberry.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente oscuro, frutal, dulce, ligeramente \\u00e1cido, mohoso, polvoriento, floral, asociado al ar\\u00e1ndano.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Blackberry\",\"nameEs\":\"Mora\",\"descriptionEn\":\"Sweet, dark, fruity, floral, slightly sour, somewhat woody aromatic associated with blackberries.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, oscuro, frutal, floral, ligeramente \\u00e1cido, algo amaderado, asociado a las moras.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Dried Fruit\",\"nameEs\":\"Fruta Seca\",\"descriptionEn\":\"Aromatic impression of dark, sweet, slightly brown fruit associated with prunes and raisins.\",\"descriptionEs\":\"Impresi\\u00f3n arom\\u00e1tica de fruta oscura, dulce y ligeramente marr\\u00f3n, asociada a ciruelas pasas y pasas.\",\"color\":\"#af5e70\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Raisin\",\"nameEs\":\"Pasa\",\"descriptionEn\":\"Concentrated, sweet, somewhat sour, brown, fruity, floral aromatic characteristic of dried grapes.\",\"descriptionEs\":\"Arom\\u00e1tico concentrado, dulce, algo \\u00e1cido, marr\\u00f3n, frutal, floral, caracter\\u00edstico de las uvas secas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Prune\",\"nameEs\":\"Ciruela Pasa\",\"descriptionEn\":\"Aromatic impression of sweet dark fruit, slightly brown, floral, musty and overripe, associated with prunes.\",\"descriptionEs\":\"Impresi\\u00f3n arom\\u00e1tica de fruta oscura dulce, ligeramente marr\\u00f3n, floral, mohosa y sobremadura, asociada a las ciruelas secas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Other Fruit\",\"nameEs\":\"Otras Frutas\",\"descriptionEn\":\"Sweet, light, fruity, somewhat floral, sour or green aromatic that may include apples, grapes, peaches, pears or cherries.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligero, frutal, algo floral, \\u00e1cido o verde, que puede incluir manzanas, uvas, melocotones, peras o cerezas.\",\"color\":\"#af5e70\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Apple\",\"nameEs\":\"Manzana\",\"descriptionEn\":\"Sweet, light, fruity, somewhat floral aromatic commonly associated with fresh or processed apples.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligero, frutal, algo floral, com\\u00fanmente asociado a manzanas frescas o procesadas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Pear\",\"nameEs\":\"Pera\",\"descriptionEn\":\"Sweet, slightly floral, musty, woody, fruity aromatic associated with pears.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligeramente floral, mohoso, amaderado, frutal, asociado a las peras.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Peach\",\"nameEs\":\"Melocot\\u00f3n\",\"descriptionEn\":\"Floral, perfumy, fruity, sweet, slightly sour aromatic associated with peaches.\",\"descriptionEs\":\"Arom\\u00e1tico floral, perfumado, frutal, dulce, ligeramente \\u00e1cido, asociado a los melocotones.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Grape\",\"nameEs\":\"Uva\",\"descriptionEn\":\"Sweet, fruity, floral, slightly sour, musty aromatic commonly associated with grapes.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, frutal, floral, ligeramente \\u00e1cido, mohoso, com\\u00fanmente asociado a las uvas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Cherry\",\"nameEs\":\"Cereza\",\"descriptionEn\":\"Sour, fruity, slightly bitter, floral aromatic associated with cherries.\",\"descriptionEs\":\"Arom\\u00e1tico \\u00e1cido, frutal, ligeramente amargo, floral, asociado a las cerezas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Pomegranate\",\"nameEs\":\"Granada\",\"descriptionEn\":\"Sour, sweet, fruity aromatic that may be somewhat dark, musty and earthy, reminiscent of dark fruits and roots such as beet and carrot; may have an astringent feel.\",\"descriptionEs\":\"Arom\\u00e1tico \\u00e1cido, dulce, frutal, que puede ser algo oscuro, mohoso y terroso, reminiscente de frutas oscuras y ra\\u00edces como remolacha y zanahoria; puede tener sensaci\\u00f3n astringente.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Coconut\",\"nameEs\":\"Coco\",\"descriptionEn\":\"Slightly sweet, nutty, somewhat woody aromatic associated with coconut.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente dulce, a nuez, algo amaderado, asociado al coco.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Pineapple\",\"nameEs\":\"Pi\\u00f1a\",\"descriptionEn\":\"Sweet, slightly sharp, fruity aromatic associated with pineapple.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligeramente agudo, frutal, asociado a la pi\\u00f1a.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Citrus Fruit\",\"nameEs\":\"Fruta C\\u00edtrica\",\"descriptionEn\":\"Citric, sour, astringent, slightly sweet, peely, somewhat floral aromatic that may include lemons, limes, grapefruits or oranges.\",\"descriptionEs\":\"Arom\\u00e1tico c\\u00edtrico, \\u00e1cido, astringente, ligeramente dulce, a c\\u00e1scara, algo floral, que puede incluir limones, limas, pomelos o naranjas.\",\"color\":\"#af5e70\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Lemon\",\"nameEs\":\"Lim\\u00f3n\",\"descriptionEn\":\"Citric, sour, astringent, slightly sweet, peely, somewhat floral aromatic associated with lemon.\",\"descriptionEs\":\"Arom\\u00e1tico c\\u00edtrico, \\u00e1cido, astringente, ligeramente dulce, a c\\u00e1scara, algo floral, asociado al lim\\u00f3n.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Grapefruit\",\"nameEs\":\"Pomelo\",\"descriptionEn\":\"Citric, sour, bitter, astringent, peely, sharp, slightly sweet aromatic associated with grapefruit.\",\"descriptionEs\":\"Arom\\u00e1tico c\\u00edtrico, \\u00e1cido, amargo, astringente, a c\\u00e1scara, agudo, ligeramente dulce, asociado al pomelo.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Orange\",\"nameEs\":\"Naranja\",\"descriptionEn\":\"Citric, sweet, floral, slightly sour aromatic associated with oranges, which may include bitter, peely and astringent notes.\",\"descriptionEs\":\"Arom\\u00e1tico c\\u00edtrico, dulce, floral, ligeramente \\u00e1cido, asociado a las naranjas, que puede incluir notas amargas, a c\\u00e1scara y astringentes.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Lime\",\"nameEs\":\"Lima\",\"descriptionEn\":\"Citric, sour, astringent, bitter, green, peely, sharp and somewhat floral aromatic associated with limes.\",\"descriptionEs\":\"Arom\\u00e1tico c\\u00edtrico, \\u00e1cido, astringente, amargo, verde, a c\\u00e1scara, agudo y algo floral, asociado a las limas.\",\"color\":\"#ba7483\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Sour\\\/Acid\",\"nameEs\":\"\\u00c1cidos\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#c2b34a\",\"categories\":\"[\\\"main_tastes\\\", \\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Sour Aromatics\",\"nameEs\":\"\\u00c1cidos Arom\\u00e1ticos\",\"descriptionEn\":\"Aromatic associated with the impression of a sour product.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a la impresi\\u00f3n de un producto \\u00e1cido.\",\"color\":\"#c9bc60\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Acetic Acid\",\"nameEs\":\"\\u00c1cido Ac\\u00e9tico\",\"descriptionEn\":\"Sour, astringent, slightly pungent aromatic associated with vinegar.\",\"descriptionEs\":\"Arom\\u00e1tico \\u00e1cido, astringente, ligeramente punzante, asociado al vinagre.\",\"color\":\"#d1c575\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Butyric Acid\",\"nameEs\":\"\\u00c1cido But\\u00edrico\",\"descriptionEn\":\"Sour, fermented-dairy aromatic associated with certain aged cheeses such as parmesan.\",\"descriptionEs\":\"Arom\\u00e1tico \\u00e1cido, a l\\u00e1cteo fermentado, asociado a ciertos quesos curados como el parmesano.\",\"color\":\"#d1c575\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Isovaleric Acid\",\"nameEs\":\"\\u00c1cido Isoval\\u00e9rico\",\"descriptionEn\":\"Pungent, sour aromatic associated with the smell of sweaty feet and certain aged cheeses such as romano.\",\"descriptionEs\":\"Arom\\u00e1tico punzante, \\u00e1cido, asociado al olor a pies sudados y a ciertos quesos curados como el romano.\",\"color\":\"#d1c575\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Citric Acid\",\"nameEs\":\"\\u00c1cido C\\u00edtrico\",\"descriptionEn\":\"Mild, clean, sour aromatic with light citrus notes accompanied by astringency.\",\"descriptionEs\":\"Arom\\u00e1tico suave, limpio, \\u00e1cido, con ligeras notas c\\u00edtricas acompa\\u00f1ado de astringencia.\",\"color\":\"#d1c575\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Malic Acid\",\"nameEs\":\"\\u00c1cido M\\u00e1lico\",\"descriptionEn\":\"Sour, sharp, somewhat fruity aromatic accompanied by astringency.\",\"descriptionEs\":\"Arom\\u00e1tico \\u00e1cido, agudo, algo frutal, acompa\\u00f1ado de astringencia.\",\"color\":\"#d1c575\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Alcohol\\\/Fermented\",\"nameEs\":\"Alcoholes\\\/Fermentados\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#7d4a6f\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Alcohol\",\"nameEs\":\"Alcohol\",\"descriptionEn\":\"Colorless, pungent, chemical aromatic associated with distilled or grain products.\",\"descriptionEs\":\"Arom\\u00e1tico incoloro, punzante, qu\\u00edmico, asociado a destilados o productos de grano.\",\"color\":\"#8d6080\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Whiskey\",\"nameEs\":\"Whisky\",\"descriptionEn\":\"Aromatic associated with products distilled from fermented grain mash.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a productos destilados de mosto de grano fermentado.\",\"color\":\"#9c7592\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Winey\",\"nameEs\":\"Avinado\",\"descriptionEn\":\"Sharp, pungent, somewhat fruity, alcohol-like aromatic associated with wine.\",\"descriptionEs\":\"Arom\\u00e1tico agudo, punzante, algo frutal, similar al alcohol, asociado al vino.\",\"color\":\"#9c7592\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Fermented\",\"nameEs\":\"Fermentado\",\"descriptionEn\":\"Pungent, sweet, slightly sour, sometimes yeasty, alcohol-like aromatic characteristic of fermented fruits or sugar, or overfermented dough.\",\"descriptionEs\":\"Arom\\u00e1tico punzante, dulce, ligeramente \\u00e1cido, a veces a levadura, similar al alcohol, caracter\\u00edstico de frutas o az\\u00facar fermentados o masa sobrefermentada.\",\"color\":\"#8d6080\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Overripe\\\/Near fermented\",\"nameEs\":\"Sobremaduro\\\/Cerca al fermentado\",\"descriptionEn\":\"Sweet, slightly sour, damp, earthy aromatic characteristic of fruit or vegetables past their optimal ripeness.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligeramente \\u00e1cido, h\\u00famedo, terroso, caracter\\u00edstico de fruta o verdura pasada de su punto \\u00f3ptimo de madurez.\",\"color\":\"#9c7592\",\"categories\":\"[\\\"defects\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Green\\\/Vegetative\",\"nameEs\":\"Verdes\\\/Vegetales\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#5f8a53\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Olive Oil\",\"nameEs\":\"Aceite de oliva\",\"descriptionEn\":\"Light, oily aromatic that may have buttery, green, peppery, bitter and sweet notes.\",\"descriptionEs\":\"Arom\\u00e1tico ligero, aceitoso, que puede tener notas mantecosas, verdes, picantes, amargas y dulces.\",\"color\":\"#729868\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Raw\",\"nameEs\":\"Vegetal Crudo\",\"descriptionEn\":\"Aromatic associated with uncooked products.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a productos sin cocinar.\",\"color\":\"#729868\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Green\",\"nameEs\":\"Verde\",\"descriptionEn\":\"Aromatic characteristic of fresh plant material. May include leafy, viney, unripe, grassy and peapod notes.\",\"descriptionEs\":\"Arom\\u00e1tico caracter\\u00edstico de material vegetal fresco. Puede incluir notas a hoja, enredadera, inmaduro, hierba y vaina.\",\"color\":\"#729868\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Under-ripe\",\"nameEs\":\"Biche (Fruto inmaduro)\",\"descriptionEn\":\"Aromatic present in green\\\/immature fruit.\",\"descriptionEs\":\"Arom\\u00e1tico presente en fruta verde\\\/inmadura.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"defects\\\"]\"},{\"level\":2,\"nameEn\":\"Peapod\",\"nameEs\":\"Arveja\",\"descriptionEn\":\"Sweet green, legume-like, fresh, raw and earthy aromatic.\",\"descriptionEs\":\"Arom\\u00e1tico verde dulce, a legumbre, fresco, crudo y terroso.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Fresh\",\"nameEs\":\"Fresco\",\"descriptionEn\":\"Green aromatic associated with freshly cut grass and leafy plants, sweet and pungent in character.\",\"descriptionEs\":\"Arom\\u00e1tico verde asociado a hierba reci\\u00e9n cortada y plantas de hoja, de car\\u00e1cter dulce y punzante.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Dark Green\",\"nameEs\":\"Verde oscuro (Espinaca, acelgas)\",\"descriptionEn\":\"Aromatic associated with cooked green vegetables such as spinach, kale or green beans, which may include bitter, sweet, dusty, musty or earthy elements, with a dark, heavy impression.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a verduras verdes cocidas como espinaca, kale o jud\\u00edas verdes, que puede incluir elementos amargos, dulces, polvorientos, mohosos o terrosos, con impresi\\u00f3n oscura y pesada.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Vegetative\",\"nameEs\":\"Vegetal\",\"descriptionEn\":\"Sharp, slightly pungent aromatic associated with green plant matter such as parsley, spinach or peapod.\",\"descriptionEs\":\"Arom\\u00e1tico agudo, ligeramente punzante, asociado a materia vegetal verde como perejil, espinaca o vaina.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Hay-like\",\"nameEs\":\"Heno, paja\",\"descriptionEn\":\"Slightly sweet, dry, dusty aromatic with a light green character, associated with dried grasses.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente dulce, seco, polvoriento, con ligero car\\u00e1cter verde, asociado a hierbas secas.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Herb-like\",\"nameEs\":\"Hierbas\",\"descriptionEn\":\"Aromatic associated with green herbs, which may be characterized as sweet, slightly pungent and slightly bitter.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a hierbas verdes, que puede caracterizarse como dulce, ligeramente punzante y ligeramente amargo.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Beany\",\"nameEs\":\"Granos (Frijoles)\",\"descriptionEn\":\"Aromatic characteristic of legumes and their derivatives, with earthy, dusty, sour, bitter, starchy and green\\\/peapod, nutty or brown elements.\",\"descriptionEs\":\"Arom\\u00e1tico caracter\\u00edstico de legumbres y derivados, con elementos terrosos, polvorientos, \\u00e1cidos, amargos, almidonados y verdes\\\/a vaina, a nuez o marrones.\",\"color\":\"#85a67c\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Earthy\",\"nameEs\":\"Terrosos\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#7a5c43\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Musty\\\/Earthy\",\"nameEs\":\"Humedad\\\/Almizcle de Tierra\",\"descriptionEn\":\"Somewhat sweet, heavy aromatic associated with decaying vegetation and damp black soil.\",\"descriptionEs\":\"Arom\\u00e1tico algo dulce, pesado, asociado a vegetaci\\u00f3n en descomposici\\u00f3n y tierra negra h\\u00fameda.\",\"color\":\"#8a705a\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Musty\\\/Dusty\",\"nameEs\":\"Humedad\\\/Almizcle del polvo\",\"descriptionEn\":\"Aromatic associated with dry, closed spaces such as attics and closets. May have dry, musty, papery, dry-earth or grain elements.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a espacios secos y cerrados como \\u00e1ticos y armarios. Puede tener elementos secos, mohosos, a papel, tierra seca o grano.\",\"color\":\"#9a8370\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Moldy\\\/Damp\",\"nameEs\":\"Mohoso\",\"descriptionEn\":\"Aromatic associated with damp, closed spaces or basements. May be moldy, sharp and slightly green.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a espacios h\\u00famedos y cerrados o s\\u00f3tanos. Puede ser mohoso, agudo y ligeramente verde.\",\"color\":\"#9a8370\",\"categories\":\"[\\\"defects\\\"]\"}]},{\"level\":1,\"nameEn\":\"Woody\",\"nameEs\":\"Amaderado\",\"descriptionEn\":\"Sweet, brown, musty, dark aromatic associated with tree bark.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n, mohoso, oscuro, asociado a la corteza de un \\u00e1rbol.\",\"color\":\"#8a705a\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Phenolic\",\"nameEs\":\"Fen\\u00f3lico\",\"descriptionEn\":\"Aromatic described as damp, musty and animal-hide-like. Reminiscent of a tack room.\",\"descriptionEs\":\"Arom\\u00e1tico descrito como h\\u00famedo, mohoso y a piel de animal. Reminiscente de una sala de arreos.\",\"color\":\"#8a705a\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Animalic\",\"nameEs\":\"Animal\",\"descriptionEn\":\"Combination of aromatics associated with farm animals and their habitat.\",\"descriptionEs\":\"Combinaci\\u00f3n de arom\\u00e1ticos asociados a animales de granja y su h\\u00e1bitat.\",\"color\":\"#8a705a\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Meaty\\\/Brothy\",\"nameEs\":\"C\\u00e1rnicos\\\/Sopas\",\"descriptionEn\":\"Aromatic associated with boiled meat, soup or broth, with weak meaty notes.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a carne hervida, sopa o caldo, con notas c\\u00e1rnicas d\\u00e9biles.\",\"color\":\"#8a705a\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]}]},{\"level\":0,\"nameEn\":\"Roasted\",\"nameEs\":\"Asado\\\/Quemado\",\"descriptionEn\":\"Dark brown impression characteristic of products cooked at high temperature by dry heat. Does not include bitter or burnt notes.\",\"descriptionEs\":\"Impresi\\u00f3n marr\\u00f3n oscura caracter\\u00edstica de productos cocinados a alta temperatura por calor seco. No incluye notas amargas ni quemadas.\",\"color\":\"#4a2510\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Tobacco\",\"nameEs\":\"Tabaco\",\"descriptionEn\":\"Brown, slightly sweet, slightly pungent aromatic associated with cured tobacco.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n, ligeramente dulce, ligeramente punzante, asociado al tabaco curado.\",\"color\":\"#603f2d\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Pipe Tobacco\",\"nameEs\":\"Pipa de Tabaco\",\"descriptionEn\":\"Brown, sweet, slightly pungent, fruity, floral, spicy aromatic associated with cured tobacco.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n, dulce, ligeramente punzante, frutal, floral, especiado, asociado al tabaco curado.\",\"color\":\"#755949\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Burnt\",\"nameEs\":\"Quemado\",\"descriptionEn\":\"Dark brown impression of an overcooked or over-roasted product, which may be sharp, bitter and sour.\",\"descriptionEs\":\"Impresi\\u00f3n marr\\u00f3n oscura de un producto sobrecocido o sobrerrostizado, que puede ser agudo, amargo y \\u00e1cido.\",\"color\":\"#603f2d\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Acrid\",\"nameEs\":\"Acre\",\"descriptionEn\":\"Sharp, pungent, bitter, sour aromatic associated with excessively roasted or browned products.\",\"descriptionEs\":\"Arom\\u00e1tico agudo, punzante, amargo, \\u00e1cido, asociado a productos excesivamente asados o dorados.\",\"color\":\"#755949\",\"categories\":\"[\\\"defects\\\"]\"},{\"level\":2,\"nameEn\":\"Ashy\",\"nameEs\":\"Ceniza\",\"descriptionEn\":\"Dry, dusty, dirty, smoky aromatic associated with the residue of burnt products.\",\"descriptionEs\":\"Arom\\u00e1tico seco, polvoriento, sucio, ahumado, asociado al residuo de productos quemados.\",\"color\":\"#755949\",\"categories\":\"[\\\"defects\\\"]\"},{\"level\":2,\"nameEn\":\"Smoky\",\"nameEs\":\"Ahumado\",\"descriptionEn\":\"Sharp, pungent aromatic produced by the combustion of wood, leaves or a non-natural product.\",\"descriptionEs\":\"Arom\\u00e1tico agudo, punzante, producto de la combusti\\u00f3n de madera, hojas o un producto no natural.\",\"color\":\"#755949\",\"categories\":\"[\\\"defects\\\"]\"}]},{\"level\":1,\"nameEn\":\"Roasted\",\"nameEs\":\"Asado\",\"descriptionEn\":\"Dark brown impression characteristic of products cooked at high temperature by dry heat. Does not include bitter or burnt notes.\",\"descriptionEs\":\"Impresi\\u00f3n marr\\u00f3n oscura caracter\\u00edstica de productos cocinados a alta temperatura por calor seco. No incluye notas amargas ni quemadas.\",\"color\":\"#603f2d\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Brown, Roast\",\"nameEs\":\"Muy Asado\",\"descriptionEn\":\"Rich, full, round aromatic impression, always with some degree of darkness, associated with attributes such as toasted, nutty, roasted and sweet.\",\"descriptionEs\":\"Impresi\\u00f3n arom\\u00e1tica rica, plena, redonda, siempre con cierto grado de oscuridad, asociada a atributos como tostado, a nuez, asado y dulce.\",\"color\":\"#755949\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Spices\",\"nameEs\":\"Especias\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#b0623a\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Pungent\",\"nameEs\":\"Punzante\",\"descriptionEn\":\"Sharp, physically penetrating sensation in the nasal cavity.\",\"descriptionEs\":\"Sensaci\\u00f3n aguda, f\\u00edsicamente penetrante, en la cavidad nasal.\",\"color\":\"#b97552\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Pepper\",\"nameEs\":\"Pimienta\",\"descriptionEn\":\"Spicy, pungent, musty and woody aromatic characteristic of ground black pepper.\",\"descriptionEs\":\"Arom\\u00e1tico especiado, punzante, mohoso y amaderado, caracter\\u00edstico de la pimienta negra molida.\",\"color\":\"#b97552\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Brown Spice\",\"nameEs\":\"Especia marr\\u00f3n\",\"descriptionEn\":\"Sweet, brown aromatic associated with spices such as cinnamon, clove, nutmeg and allspice.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n, asociado a especias como canela, clavo, nuez moscada y pimienta de Jamaica.\",\"color\":\"#b97552\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Anise\",\"nameEs\":\"An\\u00eds\",\"descriptionEn\":\"Pungent, sweet, brown, caramelized aromatic that may contain petroleum-like, medicinal and floral notes.\",\"descriptionEs\":\"Arom\\u00e1tico punzante, dulce, marr\\u00f3n, caramelizado, que puede contener notas a petr\\u00f3leo, medicinales y florales.\",\"color\":\"#c38869\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Nutmeg\",\"nameEs\":\"Nuez moscada\",\"descriptionEn\":\"Damp, brown, woody, pungent, petroleum-like, heavy aromatic with a slight lemon impression.\",\"descriptionEs\":\"Arom\\u00e1tico h\\u00famedo, marr\\u00f3n, amaderado, punzante, a petr\\u00f3leo, pesado, con ligera impresi\\u00f3n a lim\\u00f3n.\",\"color\":\"#c38869\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Cinnamon\",\"nameEs\":\"Canela\",\"descriptionEn\":\"Sweet, brown, slightly woody, slightly pungent, spicy aromatic.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n, ligeramente amaderado, ligeramente punzante, especiado.\",\"color\":\"#c38869\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Clove\",\"nameEs\":\"Clavo\",\"descriptionEn\":\"Sweet, brown, spicy, pungent, floral, citric, medicinal and slightly mentholated aromatic.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n, especiado, punzante, floral, c\\u00edtrico, medicinal y ligeramente mentolado.\",\"color\":\"#c38869\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Nutty\",\"nameEs\":\"Nueces\",\"descriptionEn\":\"Slightly sweet, brown, woody, oily, musty, astringent and bitter aromatic commonly associated with nuts, seeds, legumes and grains.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente dulce, marr\\u00f3n, amaderado, aceitoso, mohoso, astringente y amargo, com\\u00fanmente asociado a frutos secos, semillas, legumbres y granos.\",\"color\":\"#a5804f\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Nutty\",\"nameEs\":\"Nuez\",\"descriptionEn\":\"Slightly sweet, brown, woody, oily, musty, astringent and bitter aromatic commonly associated with nuts, seeds, legumes and grains.\",\"descriptionEs\":\"Arom\\u00e1tico ligeramente dulce, marr\\u00f3n, amaderado, aceitoso, mohoso, astringente y amargo, com\\u00fanmente asociado a frutos secos, semillas, legumbres y granos.\",\"color\":\"#b08f64\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Almond\",\"nameEs\":\"Almendra\",\"descriptionEn\":\"Sweet, light brown, woody and buttery aromatic with floral and fruity notes that may include rose, cherry and apricot. Also astringent and slightly smoky.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n claro, amaderado y mantecoso, con notas florales y frutales que pueden incluir rosa, cereza y albaricoque. Tambi\\u00e9n astringente y ligeramente ahumado.\",\"color\":\"#bb9e79\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Hazelnut\",\"nameEs\":\"Avellana\",\"descriptionEn\":\"Woody, brown, sweet, earthy, slightly cedar-like aromatic. May include floral, legume-like, oily, astringent and bitter notes.\",\"descriptionEs\":\"Arom\\u00e1tico amaderado, marr\\u00f3n, dulce, terroso, ligeramente a cedro. Puede incluir notas florales, a legumbre, aceitosas, astringentes y amargas.\",\"color\":\"#bb9e79\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Peanuts\",\"nameEs\":\"Man\\u00ed\",\"descriptionEn\":\"Sweet, light brown, oily, somewhat dusty, legume-like aromatic that may be slightly astringent.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n claro, aceitoso, algo polvoriento, a legumbre, que puede ser ligeramente astringente.\",\"color\":\"#bb9e79\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Cocoa\",\"nameEs\":\"Cocoa\",\"descriptionEn\":\"Brown, sweet, dusty, musty, often bitter aromatic associated with cocoa beans, cocoa powder and chocolate bars.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n, dulce, polvoriento, mohoso, a menudo amargo, asociado al grano de cacao, cacao en polvo y barras de chocolate.\",\"color\":\"#6b4226\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Cocoa\",\"nameEs\":\"Cocoa\",\"descriptionEn\":\"Brown, sweet, dusty, musty, often bitter aromatic associated with cocoa beans, cocoa powder and chocolate bars.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n, dulce, polvoriento, mohoso, a menudo amargo, asociado al grano de cacao, cacao en polvo y barras de chocolate.\",\"color\":\"#7d5940\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Chocolate\",\"nameEs\":\"Chocolate\",\"descriptionEn\":\"Blend of cocoa, including cocoa butter and dark-roast aromatics at varying intensities.\",\"descriptionEs\":\"Mezcla de cacao, incluyendo manteca de cacao y arom\\u00e1ticos de tueste oscuro en intensidades variables.\",\"color\":\"#8f6f5a\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Dark Chocolate\",\"nameEs\":\"Chocolate negro\",\"descriptionEn\":\"High-intensity blend of cocoa and cocoa butter that may include dark-roast, spicy, burnt and musty notes, with greater astringency and bitterness.\",\"descriptionEs\":\"Mezcla de alta intensidad de cacao y manteca de cacao que puede incluir notas a tueste oscuro, especiadas, quemadas y mohosas, con mayor astringencia y amargor.\",\"color\":\"#8f6f5a\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Sweet\",\"nameEs\":\"Dulces\",\"descriptionEn\":\"See Basic Tastes.\",\"descriptionEs\":\"Ver Sabores B\\u00e1sicos.\",\"color\":\"#c99a4b\",\"categories\":\"[\\\"main_tastes\\\", \\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Sweet\",\"nameEs\":\"Dulce\",\"descriptionEn\":\"See Basic Tastes.\",\"descriptionEs\":\"Ver Sabores B\\u00e1sicos.\",\"color\":\"#cfa661\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Molasses\",\"nameEs\":\"Melaza\",\"descriptionEn\":\"Dark, caramelized notes that may include slightly sharp, acrid and sulfurous notes, characteristic of molasses.\",\"descriptionEs\":\"Notas oscuras, caramelizadas, que pueden incluir notas ligeramente agudas, acres y sulfurosas, caracter\\u00edsticas de la melaza.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Maple Syrup\",\"nameEs\":\"Miel de maple\",\"descriptionEn\":\"Woody, sweet, caramelized, brown, slightly green aromatic associated with maple syrup.\",\"descriptionEs\":\"Arom\\u00e1tico amaderado, dulce, caramelizado, marr\\u00f3n, ligeramente verde, asociado al jarabe de arce.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Brown Sugar\",\"nameEs\":\"Az\\u00facar morena\",\"descriptionEn\":\"Rich, full, round, sweet aromatic impression characterized by some degree of darkness.\",\"descriptionEs\":\"Impresi\\u00f3n arom\\u00e1tica rica, plena, redonda, dulce, caracterizada por cierto grado de oscuridad.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Caramelized\",\"nameEs\":\"Caramelo\",\"descriptionEn\":\"Round, full-bodied, medium brown, sweet aromatic associated with cooked sugars and other carbohydrates. Does not include burnt or scorched notes.\",\"descriptionEs\":\"Arom\\u00e1tico redondo, con cuerpo, marr\\u00f3n medio, dulce, asociado a az\\u00facares cocidos y otros carbohidratos. No incluye notas quemadas ni chamuscadas.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Honey\",\"nameEs\":\"Miel\",\"descriptionEn\":\"Sweet, light brown, slightly spicy aromatic associated with honey.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, marr\\u00f3n claro, ligeramente especiado, asociado a la miel.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Vanilla\",\"nameEs\":\"Vainilla\",\"descriptionEn\":\"Woody, slightly chemical aromatic associated with vanilla bean, which may include brown, legume-like, floral and spicy notes.\",\"descriptionEs\":\"Arom\\u00e1tico amaderado, ligeramente qu\\u00edmico, asociado a la vaina de vainilla, que puede incluir notas marrones, a legumbre, florales y especiadas.\",\"color\":\"#cfa661\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Vanillin\",\"nameEs\":\"Vainillina\",\"descriptionEn\":\"Extremely sweet, unnatural aromatic associated with vanilla, cotton candy and marshmallows.\",\"descriptionEs\":\"Arom\\u00e1tico extremadamente dulce, no natural, asociado a la vainilla, algod\\u00f3n de az\\u00facar y malvaviscos.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"}]},{\"level\":1,\"nameEn\":\"Sweet Aromatics\",\"nameEs\":\"Arom\\u00e1ticos Dulces\",\"descriptionEn\":\"Aromatic associated with the impression of a sweet substance.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a la impresi\\u00f3n de una sustancia dulce.\",\"color\":\"#cfa661\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Overall Sweet\",\"nameEs\":\"Generalmente dulce\",\"descriptionEn\":\"Perception of a combination of sweet taste and aromatics.\",\"descriptionEs\":\"Percepci\\u00f3n de una combinaci\\u00f3n de gusto dulce y arom\\u00e1ticos.\",\"color\":\"#d6b276\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Floral\",\"nameEs\":\"Florales\",\"descriptionEn\":\"Sweet, light, slightly fragrant aromatic associated with fresh flowers.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligero, ligeramente fragante, asociado a flores frescas.\",\"color\":\"#c489a0\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Floral\",\"nameEs\":\"Flores\",\"descriptionEn\":\"Sweet, light, slightly fragrant aromatic associated with fresh flowers.\",\"descriptionEs\":\"Arom\\u00e1tico dulce, ligero, ligeramente fragante, asociado a flores frescas.\",\"color\":\"#cb97ab\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Rose\",\"nameEs\":\"Rosas\",\"descriptionEn\":\"Sweet, soft, slightly musty\\\/dusty floral fragrance associated with fresh or dried roses.\",\"descriptionEs\":\"Fragancia floral dulce, suave, ligeramente mohosa\\\/polvorienta, asociada a rosas frescas o secas.\",\"color\":\"#d2a5b7\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Jasmine\",\"nameEs\":\"Jazm\\u00edn\",\"descriptionEn\":\"Intense, slightly pungent, sweet, floral aromatic with underlying green, musty\\\/dusty notes.\",\"descriptionEs\":\"Arom\\u00e1tico intenso, ligeramente punzante, dulce, floral, con notas verdes, mohosas\\\/polvorientas subyacentes.\",\"color\":\"#d2a5b7\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Chamomile\",\"nameEs\":\"Manzanilla\",\"descriptionEn\":\"Sweet green, slightly floral\\\/fruity, somewhat woody aromatic associated with chamomile.\",\"descriptionEs\":\"Verde dulce, ligeramente floral\\\/frutal, algo amaderado, asociado a la manzanilla.\",\"color\":\"#d2a5b7\",\"categories\":\"[\\\"aromatics\\\"]\"},{\"level\":2,\"nameEn\":\"Black Tea\",\"nameEs\":\"T\\u00e9 Negro\",\"descriptionEn\":\"Somewhat brown, musty, dried-plant and dried-bark aromatic associated with the oxidation of tea leaves.\",\"descriptionEs\":\"Arom\\u00e1tico algo marr\\u00f3n, mohoso, a planta seca y corteza seca, asociado a la oxidaci\\u00f3n de las hojas de t\\u00e9.\",\"color\":\"#d2a5b7\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Stale\\\/Papery\",\"nameEs\":\"Rancios\\\/Papel\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#8a8577\",\"categories\":\"[\\\"aromatics\\\", \\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Stale\",\"nameEs\":\"Rancio\",\"descriptionEn\":\"Aromatic characterized by a lack of freshness.\",\"descriptionEs\":\"Arom\\u00e1tico caracterizado por la falta de frescura.\",\"color\":\"#989487\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Papery\",\"nameEs\":\"Papel\",\"descriptionEn\":\"Aromatic associated with white paper cups.\",\"descriptionEs\":\"Arom\\u00e1tico asociado a vasos de papel blanco.\",\"color\":\"#a6a298\",\"categories\":\"[\\\"defects\\\"]\"},{\"level\":2,\"nameEn\":\"Cardboard\",\"nameEs\":\"Cartulina\",\"descriptionEn\":\"Aromatic associated with cardboard or paper packaging.\",\"descriptionEs\":\"Arom\\u00e1tico asociado al cart\\u00f3n o embalaje de papel.\",\"color\":\"#a6a298\",\"categories\":\"[\\\"defects\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Chemical\",\"nameEs\":\"Qu\\u00edmicos\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#5c7080\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Medicinal\",\"nameEs\":\"Medicina\",\"descriptionEn\":\"Clean, sterile aromatic characteristic of antiseptic products such as band-aids, alcohol and iodine.\",\"descriptionEs\":\"Arom\\u00e1tico limpio, est\\u00e9ril, caracter\\u00edstico de productos antis\\u00e9pticos como tiritas, alcohol y yodo.\",\"color\":\"#70818f\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Rubber\",\"nameEs\":\"Caucho\",\"descriptionEn\":\"Dark, heavy, slightly sharp and pungent aromatic associated with rubber.\",\"descriptionEs\":\"Arom\\u00e1tico oscuro, pesado, ligeramente agudo y punzante, asociado al caucho.\",\"color\":\"#83929e\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Petroleum\",\"nameEs\":\"Petr\\u00f3leo\",\"descriptionEn\":\"Specific chemical aromatic associated with crude oil and its refined products, with heavy-oil characteristics.\",\"descriptionEs\":\"Arom\\u00e1tico qu\\u00edmico espec\\u00edfico asociado al crudo y sus refinados, con caracter\\u00edsticas de aceite pesado.\",\"color\":\"#83929e\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Skunky\",\"nameEs\":\"Mofeta\",\"descriptionEn\":\"Combination of aromatics associated with skunks.\",\"descriptionEs\":\"Combinaci\\u00f3n de arom\\u00e1ticos asociados a las mofetas.\",\"color\":\"#83929e\",\"categories\":\"[\\\"defects\\\"]\",\"children\":[]}]},{\"level\":0,\"nameEn\":\"Bitter\",\"nameEs\":\"Amargo\",\"descriptionEn\":\"See Basic Tastes.\",\"descriptionEs\":\"Ver Sabores B\\u00e1sicos.\",\"color\":\"#7e8a4c\",\"categories\":\"[\\\"main_tastes\\\", \\\"defects\\\"]\",\"children\":[]},{\"level\":0,\"nameEn\":\"Salty\",\"nameEs\":\"Salado\",\"descriptionEn\":\"See Basic Tastes.\",\"descriptionEs\":\"Ver Sabores B\\u00e1sicos.\",\"color\":\"#a1b2b6\",\"categories\":\"[\\\"main_tastes\\\"]\",\"children\":[]},{\"level\":0,\"nameEn\":\"Cereal\",\"nameEs\":\"Cereales\",\"descriptionEn\":null,\"descriptionEs\":null,\"color\":\"#b8a06a\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Grain\",\"nameEs\":\"Granos\",\"descriptionEn\":\"Light brown, dusty, musty, sweet aromatic associated with grains.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n claro, polvoriento, mohoso, dulce, asociado a los granos.\",\"color\":\"#c1ab7c\",\"categories\":\"[\\\"aromatics\\\"]\",\"children\":[{\"level\":2,\"nameEn\":\"Malt\",\"nameEs\":\"Malta\",\"descriptionEn\":\"Light brown, dusty, musty, sweet, sour and\\\/or slightly fermented aromatic associated with grains.\",\"descriptionEs\":\"Arom\\u00e1tico marr\\u00f3n claro, polvoriento, mohoso, dulce, \\u00e1cido y\\\/o ligeramente fermentado, asociado a los granos.\",\"color\":\"#c9b78e\",\"categories\":\"[\\\"aromatics\\\"]\"}]}]},{\"level\":0,\"nameEn\":\"Umami\",\"nameEs\":\"Umami\",\"descriptionEn\":\"Savory, brothy basic taste associated with glutamate; reminiscent of broth, soy sauce or ripe tomato, adding body and lingering depth.\",\"descriptionEs\":\"Gusto b\\u00e1sico sabroso y carnoso, asociado al glutamato; sensaci\\u00f3n de caldo, salsa de soja o tomate maduro que aporta cuerpo y persistencia.\",\"color\":\"#ae7d6b\",\"categories\":\"[\\\"main_tastes\\\"]\",\"children\":[]},{\"level\":0,\"nameEn\":\"Mouthfeel\",\"nameEs\":\"Sensaci\\u00f3n en boca\",\"descriptionEn\":\"Root category for tactile mouthfeel descriptors.\",\"descriptionEs\":\"Categor\\u00eda ra\\u00edz para los descriptores t\\u00e1ctiles de sensaci\\u00f3n en boca.\",\"color\":\"#6b6f76\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[{\"level\":1,\"nameEn\":\"Rough\",\"nameEs\":\"Rugoso\",\"descriptionEn\":\"Coarse or abrasive tactile sensation in the mouth, with a dry or gritty texture.\",\"descriptionEs\":\"Sensaci\\u00f3n \\u00e1spera o abrasiva en boca, con textura seca o granulosa.\",\"color\":\"#7d818a\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Oily\",\"nameEs\":\"Aceitoso\",\"descriptionEn\":\"Fatty, unctuous, lingering sensation that coats the palate.\",\"descriptionEs\":\"Sensaci\\u00f3n grasa, untuosa y persistente que recubre el paladar.\",\"color\":\"#7d818a\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Smooth\",\"nameEs\":\"Sedoso\",\"descriptionEn\":\"Soft, round, velvety sensation, free of edges or roughness.\",\"descriptionEs\":\"Sensaci\\u00f3n suave, redonda y aterciopelada, sin aristas ni aspereza.\",\"color\":\"#7d818a\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Mouth-drying\",\"nameEs\":\"Astringente\",\"descriptionEn\":\"Drying, puckering sensation in the mouth, characteristic of astringency.\",\"descriptionEs\":\"Sensaci\\u00f3n de sequedad y contracci\\u00f3n en boca, t\\u00edpica de la astringencia.\",\"color\":\"#7d818a\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[]},{\"level\":1,\"nameEn\":\"Metallic\",\"nameEs\":\"Met\\u00e1lico\",\"descriptionEn\":\"Metallic sensation, sometimes with an iron- or copper-like taste impression.\",\"descriptionEs\":\"Sensaci\\u00f3n met\\u00e1lica, a veces con impresi\\u00f3n de sabor a hierro o cobre.\",\"color\":\"#7d818a\",\"categories\":\"[\\\"mouthfeel\\\"]\",\"children\":[]}]}]}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "description": "",
+            "item": [
+                {
+                    "name": "Log out",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Revokes all of the authenticated user's access tokens and their refresh\ntokens, ending the session.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"logout successfully.\"}",
+                            "name": "Logged out"
+                        }
+                    ]
+                },
+                {
+                    "name": "Register a user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\",\"password\":\"Str0ngP@ss!\",\"role\":\"coffeeshop\"}"
+                        },
+                        "description": "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":66,\"ulid\":\"01M36SQNA0WSGQCDKFZ26WSAYM\",\"name\":\"Ms. Audra Crooks II\",\"surname\":\"Rempel\",\"email\":\"okon.justina@example.com\",\"email_verified_at\":\"2026-09-23T09:32:16.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T09:32:17.000000Z\",\"updated_at\":\"2026-09-23T09:32:17.000000Z\",\"deleted_at\":null}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"data\": {}, \"message\": \"Profile created.\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get the authenticated user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the profile of the currently authenticated user.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":67,\"ulid\":\"01M36SQP06Z7Y51YRP3NMSNK33\",\"name\":\"Morgan Hirthe\",\"surname\":\"Cronin\",\"email\":\"emelie.baumbach@example.net\",\"email_verified_at\":\"2026-09-23T09:32:17.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T09:32:17.000000Z\",\"updated_at\":\"2026-09-23T09:32:17.000000Z\",\"deleted_at\":null}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35EKKNQT2NCB7QMBW0YR13D",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the user."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\"}"
+                        },
+                        "description": "Updates a user's profile data. Returns the updated user with a\nconfirmation message.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). A non-owner receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {}, \"message\": \"Profile updated.\"}",
+                            "name": "Updated"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"This action is unauthorized.\"}",
+                            "name": "Forbidden"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update user password",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid\/password",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid\/password",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35EKKNQT2NCB7QMBW0YR13D",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the user."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"currentPassword\":\"OldP@ss123\",\"password\":\"NewStr0ng!\",\"passwordConfirmation\":\"NewStr0ng!\"}"
+                        },
+                        "description": "Changes a user's password. The current password must be supplied and is\nverified before the change is applied.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). A non-owner receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Password updated successfully.\"}",
+                            "name": "Password updated"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"This action is unauthorized.\"}",
+                            "name": "Forbidden"
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate a user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35EKKNQT2NCB7QMBW0YR13D",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the user."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Soft-deletes (deactivates) a user account; the account can be restored\nlater. Also revokes the requesting user's access tokens.\n\n**Authorization:** requires the `profile:write` scope and permission to\ndelete this user (policy). A non-owner receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Profile deactivated.\"}",
+                            "name": "Deactivated"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"This action is unauthorized.\"}",
+                            "name": "Forbidden"
+                        }
+                    ]
+                },
+                {
+                    "name": "Permanently delete a user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid\/force",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid\/force",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35EKKNQT2NCB7QMBW0YR13D",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "user",
+                                    "key": "user",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the user."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a user account (hard delete). This cannot be undone.\nAlso revokes the requesting user's access tokens.\n\n**Authorization:** requires the `profile:write` scope and permission to\ndelete this user (policy). A non-owner receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"Profile deleted.\"}",
+                            "name": "Deleted"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"message\": \"This action is unauthorized.\"}",
+                            "name": "Forbidden"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     "auth": {
-        "type": "noauth"
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
     }
 }

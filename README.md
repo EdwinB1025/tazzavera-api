@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/main/public/favicon.svg" width="120" alt="Tazavera">
+  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/DEV/public/favicon.svg" width="120">
 </p>
 
-<h1 align="center">Tazavera API</h1>
+  <p align="center"><strong><em style="font-size: 24px;">TAZAVERA API</em></strong></p>
+
 
 Backend REST de **Tazavera**, la plataforma de verificación de café de especialidad. Esta API sirve el modelo de datos, la autenticación OAuth2/PKCE, y el motor de **consenso** que promedia y contrasta las evaluaciones de los especialistas sobre cada café que ofrece una cafetería de especialidad.
 
@@ -37,10 +38,7 @@ El detalle de fórmulas, umbral, y la reinterpretación de las deducciones `u` (
 
 ## 📚 Documentación
 
-- `endpoints.md` — diseño de todos los endpoints REST, con Resources y shapes de respuesta.
-- `http-response-codes.md` — códigos HTTP por endpoint, con la lógica de cada 2xx/4xx.
-- `entidades_relacionales.md` — esquema MySQL completo (entidades, FKs, columnas derivadas, JSON).
-- `deployment-notes.md` — conflictos de instalación resueltos y notas de despliegue (incl. el worker de colas en producción).
+To be updated.
 
 > 🔄 Ante una discrepancia entre docs y código, **el código es la fuente de verdad**.
 

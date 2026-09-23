@@ -8,7 +8,21 @@ use Illuminate\Http\Request;
 class LocationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List my locations
+     *
+     * Returns the locations owned by the authenticated user, each with its
+     * contact details. Used by coffeeshops to retrieve their locations when
+     * creating an offering.
+     *
+     * **Authorization:** requires the `coffeeshop` role and the `profile:read`
+     * or `profile:write` scope.
+     *
+     * @group Locations
+     *
+     * @authenticated
+     *
+     * @apiResourceCollection App\Http\Resources\LocationResource
+     * @apiResourceModel App\Models\Location
      */
     public function index(Request $request)
     {

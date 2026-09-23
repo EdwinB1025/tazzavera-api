@@ -35,4 +35,19 @@ class MassDeleteOfferingRequest extends FormRequest
         $offeringsId = $this->validated()['offerings'];
         return $offeringsId;
     }
+
+    /**
+     * Body parameters documented for Scribe.
+     *
+     * @return array<string, array>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'offerings' => [
+                'description' => 'Array of offering ULIDs to delete. At least one required, maximum 50 per request.',
+                'example' => ['01J8ZK...', '01J8ZM...'],
+            ],
+        ];
+    }
 }
