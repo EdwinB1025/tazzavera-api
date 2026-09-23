@@ -5,82 +5,82 @@
   <p align="center"><strong><em style="font-size: 24px;">TAZAVERA API</em></strong></p>
 
 
-Backend REST de **Tazavera**, la plataforma de verificación de café de especialidad. Esta API sirve el modelo de datos, la autenticación OAuth2/PKCE, y el motor de **consenso** que promedia y contrasta las evaluaciones de los especialistas sobre cada café que ofrece una cafetería de especialidad.
+REST backend for **Tazavera**, the specialty coffee verification platform. This API serves the data model, OAuth2/PKCE authentication, and the **consensus** engine that averages and cross-checks specialist evaluations of each coffee a specialty coffee shop offers.
 
-Proyecto académico (bootcamp) con vocación de producto real. Construido en **Laravel 13 + Passport + MySQL 8**, consumido por un front separado ([`tazavera-app`](https://github.com/EdwinB1025/tazavera-app), monolito Livewire).
+> This repository is **the API only**. The front end (Livewire, D3, Leaflet, flavor wheel) lives in a separate repository.
 
-> Este repositorio es **solo la API**. El front (Livewire, D3, Leaflet, rueda de sabores) vive en un repositorio aparte.
+## 🕵️ The problem it tackles
 
-## 🕵️ El problema que ataca
+There's a lot of coffee labeled "specialty" that really isn't, and the everyday consumer has no way to tell — grading stays in the hands of a few, and that skews the market. Tazavera doesn't settle for yet another rating: it **verifies** what a coffee shop claims to sell. If it declares "fruity notes, high acidity, natural process," several specialists cup the actual product and the system derives a consensus that confirms or refutes that claim.
 
-Hay mucho café "specialty" que en realidad no lo es, y el consumidor de a pie no tiene cómo saberlo — la calificación queda en manos de pocos, y eso sesga el mercado. Tazavera no se conforma con un rating más: **verifica** lo que una cafetería dice vender. Si declara "notas frutales, acidez alta, proceso natural", varios especialistas catan el producto real y el sistema deriva un consenso que confirma o desmiente esa afirmación.
+The evaluation system is based on the **SCA Coffee Value Assessment (CVA v2, provisional standard 2024–2025)**, adapting the formal cupping method to real coffee-shop conditions (coffee already brewed, without strict replication of the physical-cups protocol).
 
-El sistema de evaluación se basa en el **SCA Coffee Value Assessment (CVA v2, standard provisional 2024-2025)**, adaptando el método de cupping formal a condiciones reales de cafetería (café ya preparado, sin réplica estricta del protocolo de tazas físicas).
+## 🧪 Evaluation model (overview)
 
-## 🧪 Modelo de evaluación (resumen)
+- 🔬 **Descriptive (specialist)** — objective intensity record. Seven axes (fragrance, aroma, flavor, aftertaste, acidity, sweetness, mouthfeel) on a 0–15 scale, plus CATA descriptors from a hierarchical taxonomy and Main Tastes.
+- ⭐ **Affective (specialist)** — the quality verdict, eight axes (the seven + overall) on a 1–9 scale. Derives a **cupping score 0–100** per evaluation and feeds the **aggregate consensus** at the offering level.
+- 👤 **Consumer** — simple reaction mapped to the 1–9 scale. Role foreseen in the ENUM; its own flow remains in the backlog.
 
-- 🔬 **Descriptive (especialista)** — registro objetivo de intensidad. Siete ejes (fragancia, aroma, flavor, aftertaste, acidez, dulzor, mouthfeel) en escala 0-15, más descriptores CATA de una taxonomía jerárquica y Main Tastes.
-- ⭐ **Affective (especialista)** — el veredicto de calidad, ocho ejes (los siete + overall) en escala 1-9. Deriva un **cupping score 0-100** por evaluación y alimenta el **consenso agregado** a nivel de offering.
-- 👤 **Consumer** — reacción simple homologada a la escala 1-9. Rol previsto en el ENUM; su flujo propio queda en backlog.
+Specialist and consumer are **not averaged against each other** — they are cross-checked attribute by attribute; that's where the market-intelligence value lives.
 
-Especialista y consumidor **no se promedian entre sí** — se contrastan atributo por atributo; ahí vive el valor de inteligencia de mercado.
+### The consensus (this API's engine)
 
-### El consenso (motor de esta API)
+When an offering reaches **≥5 closed specialist evaluations**, closing an evaluation triggers — via event and a **queue worker** — the recalculation of the consensus (`OfferingConsensusService::recompute`):
 
-Cuando una offering alcanza **≥5 evaluaciones cerradas de especialista**, cerrar una evaluación dispara —vía evento y un **worker de cola**— el recálculo del consenso (`OfferingConsensusService::recompute`):
+- **Per-axis averages** (`*_avg`) and **aggregate cupping score** (CVA formula `0.65625·Σ + 52.75 − 2u − 4d`, rounded to 0.25).
+- **Inter-specialist concordance** for the descriptive/affective parts (normalized dispersion index, `1 − σ/σ_max`), with per-axis detail in `axis_concordances`.
+- **Consensus flavor tree** (`offering_tastes`): grouped descriptors, each with how many distinct specialists marked it.
+- **`verification_status`**: `provisional` → `verified` once the threshold is reached.
 
-- **Promedios por eje** (`*_avg`) y **cupping score agregado** (fórmula CVA `0.65625·Σ + 52.75 − 2u − 4d`, redondeo a 0.25).
-- **Concordancia inter-especialista** por parte descriptive/affective (índice de dispersión normalizada, `1 − σ/σ_max`), con detalle por eje en `axis_concordances`.
-- **Árbol de sabores del consenso** (`offering_tastes`): descriptores agrupados, cada uno con cuántos especialistas distintos lo marcaron.
-- **`verification_status`**: `provisional` → `verified` al alcanzar el umbral.
+The detail of the formulas, the threshold, and the reinterpretation of the deductions `u` (non-uniformity, derived from inter-specialist dispersion) and `d` (defects) is in the design documentation.
 
-El detalle de fórmulas, umbral, y la reinterpretación de las deducciones `u` (no-uniformidad, derivada de la dispersión inter-especialista) y `d` (defectos) está en la documentación de diseño.
+## 📚 Documentation
 
-## 📚 Documentación
+- 📖 **API docs:** [`http://localhost:8000/docs`](http://localhost:8000/docs) — replace `localhost:8000` with your deployed domain in production.
 
-To be updated.
+The page includes example requests (bash, JavaScript), a Postman collection (`/docs/collection.json`), and an OpenAPI spec (`/docs/openapi.yaml`).
 
-> 🔄 Ante una discrepancia entre docs y código, **el código es la fuente de verdad**.
+> 🔄 In case of a discrepancy between docs and code, **the code is the source of truth**.
 
 ## 🛠️ Stack
 
 - 🐘 **Framework:** Laravel 13, PHP 8.5
-- 🔐 **Auth:** Laravel Passport 13 (OAuth2 + PKCE) + Fortify (sesión web para el flujo de autorización)
-- 🛡️ **Roles/permisos:** Spatie Laravel-Permission (guard `api`)
-- 🗄️ **Base de datos:** MySQL 8 (dev/prod) · SQLite `:memory:` (tests)
-- ⚙️ **Colas:** driver `database` (worker de consenso); `sync` en tests
+- 🔐 **Auth:** Laravel Passport 13 (OAuth2 + PKCE) + Fortify (web session for the authorization flow)
+- 🛡️ **Roles/permissions:** Spatie Laravel-Permission (guard `api`)
+- 🗄️ **Database:** MySQL 8 (dev/prod) · SQLite `:memory:` (tests)
+- ⚙️ **Queues:** `database` driver (consensus worker); `sync` in tests
 - 🧪 **Tests:** Pest (TDD)
 
-## ✅ Requisitos previos
+## ✅ Prerequisites
 
-- PHP 8.5+ con las extensiones estándar de Laravel + **`ext-sodium`** (requerida por Passport en runtime — ver `deployment-notes.md`)
+- PHP 8.5+ with Laravel's standard extensions + **`ext-sodium`** (required by Passport at runtime — see `deployment-notes.md`)
 - Composer 2.x
-- **MySQL 8** corriendo y accesible
-- Node.js 18+ y npm (solo si se compilan las vistas mínimas de OAuth)
+- **MySQL 8** running and reachable
+- Node.js 18+ and npm (only if compiling the minimal OAuth views)
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### 1. Clonar el repositorio
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/EdwinB1025/tazzavera-api.git
 cd tazzavera-api
 ```
 
-### 2. Instalar dependencias PHP
+### 2. Install PHP dependencies
 
 ```bash
 composer install
 ```
 
-### 3. Configurar el entorno
+### 3. Configure the environment
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Editar `.env` para apuntar a MySQL 8:
+Edit `.env` to point to MySQL 8:
 
 ```env
 DB_CONNECTION=mysql
@@ -92,54 +92,54 @@ DB_PASSWORD=
 QUEUE_CONNECTION=database
 ```
 
-Crear la base de datos vacía antes de migrar:
+Create the empty database before migrating:
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE tazavera;"
 ```
 
-### 4. Instalar Passport (OAuth2)
+### 4. Install Passport (OAuth2)
 
 ```bash
 php artisan install:api --passport
 php artisan passport:keys
 ```
 
-> ⚠️ Si `install:api --passport` falla revirtiendo `composer.json`, casi seguro es `ext-sodium` deshabilitado — habilitar `extension=sodium` en `php.ini` y reintentar (detalle en `deployment-notes.md`).
+> ⚠️ If `install:api --passport` fails and reverts `composer.json`, it's almost certainly `ext-sodium` being disabled — enable `extension=sodium` in `php.ini` and retry (details in `deployment-notes.md`).
 
-Crear un cliente público (PKCE) para el front:
+Create a public (PKCE) client for the front end:
 
 ```bash
 php artisan passport:client --public
 ```
 
-### 5. Migrar y poblar
+### 5. Migrate and seed
 
 ```bash
 php artisan migrate --seed
 ```
 
-🌱 El seeder puebla la taxonomía olfativa (desde CSV, fuente WCR Sensory Lexicon), catálogo de cafés, tostadores, inventario, y datos base para probar el flujo de punta a punta.
+🌱 The seeder populates the olfactory taxonomy (from CSV, source WCR Sensory Lexicon), the coffee catalog, roasters, inventory, and base data to test the flow end to end.
 
-## ▶️ Levantar el proyecto
+## ▶️ Running the project
 
-### Servidor
+### Server
 
 ```bash
 php artisan serve
 ```
 
-La API queda en `http://localhost:8000`.
+The API is available at `http://localhost:8000`.
 
-### Worker de consenso
+### Consensus worker
 
-En dev, para procesar el recálculo de consenso en background:
+In dev, to process the consensus recalculation in the background:
 
 ```bash
 php artisan queue:work
 ```
 
-> Alternativamente, `QUEUE_CONNECTION=sync` en `.env` corre los jobs inline sin worker (más simple para desarrollar; se pierde el desacople). En producción el worker se mantiene vivo con Supervisor / Docker `restart: always` — ver `deployment-notes.md`.
+> Alternatively, `QUEUE_CONNECTION=sync` in `.env` runs jobs inline without a worker (simpler for development; you lose the decoupling). In production the worker is kept alive with Supervisor / Docker `restart: always` — see `deployment-notes.md`.
 
 ### Tests
 
@@ -147,59 +147,59 @@ php artisan queue:work
 php artisan test
 ```
 
-Corren sobre SQLite `:memory:` con `QUEUE_CONNECTION=sync`, así que el consenso se ejecuta inline sin necesidad de worker.
+They run against SQLite `:memory:` with `QUEUE_CONNECTION=sync`, so the consensus executes inline without needing a worker.
 
-## 🔑 Autenticación (OAuth2 / PKCE)
+## 🔑 Authentication (OAuth2 / PKCE)
 
-Login en tres pasos:
+Login in three steps:
 
-1. `POST /login` — crea la sesión web (Fortify); devuelve `{"two_factor": false}`, **sin** token.
-2. `GET /oauth/authorize` — con esa sesión + parámetros PKCE, devuelve el `code` (302, consentimiento omitido para el cliente first-party).
-3. `POST /oauth/token` — intercambia `code` + `code_verifier` por `access_token` + `refresh_token`.
+1. `POST /login` — creates the web session (Fortify); returns `{"two_factor": false}`, **without** a token.
+2. `GET /oauth/authorize` — with that session + PKCE parameters, returns the `code` (302, consent skipped for the first-party client).
+3. `POST /oauth/token` — exchanges `code` + `code_verifier` for `access_token` + `refresh_token`.
 
-El `access_token` autentica las rutas `auth:api` vía `Authorization: Bearer`. Dos scopes: `profile:read` (por defecto) y `profile:write` (step-up para acciones sensibles). Detalle completo en `endpoints.md`.
+The `access_token` authenticates the `auth:api` routes via `Authorization: Bearer`. Two scopes: `profile:read` (default) and `profile:write` (step-up for sensitive actions). Full detail in `endpoints.md`.
 
-## 📊 Estado de implementación
+## 📊 Implementation status
 
-**API completa.** Todos los endpoints del MVP están construidos y cubiertos por tests Pest:
+**API complete.** All MVP endpoints are built and covered by Pest tests:
 
-| Pieza | Estado |
+| Piece | Status |
 |---|---|
-| Auth OAuth2 + PKCE (Passport) | ✅ End-to-end (Postman + Pest) |
-| Scopes + step-up + rechazo de wildcard | ✅ Implementado |
-| CRUD de usuarios (soft + hard delete) | ✅ Implementado |
-| Offerings (batch create, delete single/batch, index filtrado, show) | ✅ Implementado |
-| Evaluations (create, update, close, delete, index filtrado, show) | ✅ Implementado |
-| Cupping score individual (0-100, 8 ejes reales) | ✅ Implementado |
-| Consenso agregado (worker por evento al **cerrar**) | ✅ Implementado |
-| Concordancia inter-especialista (dispersión normalizada) | ✅ Implementada (columnas + `axis_concordances`) |
-| Deducciones `−4d` (defectos) y `−2u` (no-uniformidad) en cupping | ✅ Implementadas |
-| Árbol de sabores del consenso (`offering_tastes`) | ✅ Poblado (padres + hojas, count = especialistas distintos) |
-| `verification_status` (provisional → verified) | ✅ Implementado |
+| OAuth2 + PKCE auth (Passport) | ✅ End-to-end (Postman + Pest) |
+| Scopes + step-up + wildcard rejection | ✅ Implemented |
+| User CRUD (soft + hard delete) | ✅ Implemented |
+| Offerings (batch create, delete single/batch, filtered index, show) | ✅ Implemented |
+| Evaluations (create, update, close, delete, filtered index, show) | ✅ Implemented |
+| Individual cupping score (0–100, 8 real axes) | ✅ Implemented |
+| Aggregate consensus (event-driven worker on **close**) | ✅ Implemented |
+| Inter-specialist concordance (normalized dispersion) | ✅ Implemented (columns + `axis_concordances`) |
+| `−4d` (defects) and `−2u` (non-uniformity) deductions in cupping | ✅ Implemented |
+| Consensus flavor tree (`offering_tastes`) | ✅ Populated (parents + leaves, count = distinct specialists) |
+| `verification_status` (provisional → verified) | ✅ Implemented |
 
 ## 🗺️ Backlog
 
-Lo que **deliberadamente se dejó fuera del MVP** para mantener el alcance manejable — funcionalidad de producto futura, no deuda técnica.
+What was **deliberately left out of the MVP** to keep the scope manageable — future product functionality, not technical debt.
 
-- 🖥️ **Front / interfaz de usuario** — esta API se consume hoy desde el monolito `tazavera-app`; un front dedicado que consuma esta REST (SPA o móvil) está pendiente de desarrollar.
-- 👤 **Evaluación consumer** — el rol existe en el ENUM, pero su formulario, validación y estructura propia (CATA restringido a los niveles superiores de la taxonomía) quedan por definir; probablemente una entidad separada.
-- 🏪 **Baseline de la cafetería** — endpoint dedicado para la evaluación provisional que la cafetería declara sobre su propia offering (una por offering, con ownership y unicidad). Diseñado, no construido.
-- 🔀 **Consenso segregado por método de extracción** — hoy el consenso mezcla espresso, V60, prensa francesa, etc. Separar el cálculo por método cuando haya volumen suficiente para no perder muestra.
-- ⏱️ **Cronjob de cierre automático de evaluaciones** — cerrar en masa evaluaciones abiertas más de cierto tiempo (Laravel scheduler), en vez de depender del cierre manual. Distinto del worker reactivo de consenso.
-- 🎯 **Tag Q de calibración en acidez** — cruzar el tag con la certificación del evaluador para detectar si los especialistas Q-certificados concuerdan más entre sí en los descriptores de acidez.
-- 🧾 **Marketplace transaccional** — órdenes, pagos y comunicación con la cafetería. El MVP es directorio + verificación, no venta.
-- 💸 **Payout automatizado** a cafeterías (settlement programado).
-- 🏅 **Panel de fidelización para cafeterías** — suscripciones, puntos.
-- 📈 **Reportes de tendencias de mercado** — valor ponderado por atributo según segmento de consumidor.
-- 🎓 **Verificación de especialista — subsistema completo** — banco de preguntas, auto-validación y combinación de certificación Q Grader + exposición + calificación comunitaria. El MVP se queda con la declaración mínima.
-- ☕ **Tercer lado del mercado — especialistas monetizados** — consultoría, recetas, workshops de cata.
-- 🚚 **Integración logística con terceros** — APIs de delivery.
-- 🌱 **Physical assessment del café verde** — evaluación del grano sin tostar; el estándar SCA para esto está en fase alpha.
-- 📖 **Guía de uso + FAQ** — diferida hasta que las decisiones de evaluación estén cerradas.
-- 🧮 **Refinamiento estadístico del consenso** — revisar `σ_max` (teórico vs. realista) y evaluar ICC / Fleiss como índice de concordancia cuando haya volumen multi-offering suficiente.
+- 🖥️ **Front end / user interface** — this API is currently consumed from the `tazavera-app` monolith; a dedicated front end consuming this REST API (SPA or mobile) is yet to be developed.
+- 👤 **Consumer evaluation** — the role exists in the ENUM, but its form, validation, and own structure (CATA restricted to the upper taxonomy levels) remain to be defined; likely a separate entity.
+- 🏪 **Coffee shop baseline** — a dedicated endpoint for the provisional evaluation a coffee shop declares about its own offering (one per offering, with ownership and uniqueness). Designed, not built.
+- 🔀 **Consensus segregated by extraction method** — today the consensus mixes espresso, V60, French press, etc. Split the calculation by method once there's enough volume to avoid losing sample size.
+- ⏱️ **Automatic evaluation-close cron** — bulk-close evaluations left open beyond a certain time (Laravel scheduler), instead of relying on manual closing. Distinct from the reactive consensus worker.
+- 🎯 **Q calibration tag on acidity** — cross the tag with the evaluator's certification to detect whether Q-certified specialists agree more with each other on acidity descriptors.
+- 🧾 **Transactional marketplace** — orders, payments, and communication with the coffee shop. The MVP is a directory + verification, not sales.
+- 💸 **Automated payout** to coffee shops (scheduled settlement).
+- 🏅 **Loyalty panel for coffee shops** — subscriptions, points.
+- 📈 **Market trend reports** — value weighted per attribute by consumer segment.
+- 🎓 **Specialist verification — full subsystem** — question bank, self-validation, and a combination of Q Grader certification + exposure + community rating. The MVP settles for the minimal declaration.
+- ☕ **Third side of the market — monetized specialists** — consulting, recipes, cupping workshops.
+- 🚚 **Third-party logistics integration** — delivery APIs.
+- 🌱 **Green coffee physical assessment** — evaluation of the unroasted bean; the SCA standard for this is in alpha.
+- 📖 **Usage guide + FAQ** — deferred until the evaluation decisions are settled.
+- 🧮 **Statistical refinement of the consensus** — revisit `σ_max` (theoretical vs. realistic) and evaluate ICC / Fleiss as a concordance index once there's enough multi-offering volume.
 
-## 📝 Notas
+## 📝 Notes
 
-- 🔍 `php artisan tinker` para inspeccionar datos rápido (ej. `Evaluation::first()->affective`).
-- 🩹 Si algo falla al migrar con error de sintaxis SQL, revisar que `.env` apunte a MySQL 8 y no a `sqlite`.
-- 🔄 El worker cachea el código en memoria: tras editar el servicio de consenso en dev, reiniciar `queue:work` (o usar `sync`).
+- 🔍 `php artisan tinker` to inspect data quickly (e.g. `Evaluation::first()->affective`).
+- 🩹 If something fails when migrating with a SQL syntax error, check that `.env` points to MySQL 8 and not `sqlite`.
+- 🔄 The worker caches code in memory: after editing the consensus service in dev, restart `queue:work` (or use `sync`).
