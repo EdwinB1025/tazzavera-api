@@ -36,7 +36,7 @@ The detail of the formulas, the threshold, and the reinterpretation of the deduc
 
 ## 📚 Documentation
 
-- 📖 **API docs:** [`http://localhost:8000/docs`](http://localhost:8000/docs) — replace `localhost:8000` with your deployed domain in production.
+- 📖 [`**API docs:**`]((https://edwinb1025.github.io/tazzavera-api/public/docs/index.html)) 
 
 The page includes example requests (bash, JavaScript), a Postman collection (`/docs/collection.json`), and an OpenAPI spec (`/docs/openapi.yaml`).
 
