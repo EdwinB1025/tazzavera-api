@@ -146,7 +146,7 @@ return [
 
         Send the token as: `Authorization: Bearer {ACCESS_TOKEN}`.
 
-        **Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token, or the request will be rejected.
+        **Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token. When not scope parameter scope is requested, it will be defaulted to 'profile:red', in the case an unappropiate scope is requested, the authorization will be rejected.
         AUTH,
     ],
 
@@ -205,7 +205,7 @@ return [
     // For example, if your logo is in public/img:
     // - 'logo' => '../img/logo.png' // for `static` type (output folder is public/docs)
     // - 'logo' => 'img/logo.png' // for `laravel` type
-    'logo' => false,
+    'logo' => '../img/logo.svg',
 
     // Customize the "Last updated" value displayed in the docs by specifying tokens and formats.
     // Examples:
