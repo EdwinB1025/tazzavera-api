@@ -1,0 +1,41 @@
+{
+    "data": [
+        {
+            "level": 0,
+            "nameEn": "Fruity",
+            "nameEs": "Frutal",
+            "descriptionEn": "Aromas reminiscent of fresh, dried, or cooked fruit.",
+            "descriptionEs": "Aromas que recuerdan a fruta fresca, seca o cocida.",
+            "color": "#D9345A",
+            "categories": [
+                "aromatics"
+            ],
+            "children": [
+                {
+                    "level": 1,
+                    "nameEn": "Berry",
+                    "nameEs": "Baya",
+                    "descriptionEn": "Notes of berry fruits.",
+                    "descriptionEs": "Notas de frutos del bosque.",
+                    "color": "#B02A4A",
+                    "categories": [
+                        "aromatics"
+                    ],
+                    "children": [
+                        {
+                            "level": 2,
+                            "nameEn": "Blackberry",
+                            "nameEs": "Mora",
+                            "descriptionEn": "Specific note of blackberry.",
+                            "descriptionEs": "Nota específica de mora.",
+                            "color": "#7A1F35",
+                            "categories": [
+                                "aromatics"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

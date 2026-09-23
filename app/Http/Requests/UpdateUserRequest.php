@@ -23,11 +23,20 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user')->id;
+        $userId = $this->route('user')?->id;
         return [
             'name'    => ['sometimes', 'string'],
             'surname' => ['sometimes', 'string'],
             'email'   => ['sometimes', 'email', Rule::unique('users')->ignore($userId)],
+        ];
+    }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => ['description' => 'User first name.', 'example' => 'Augusto'],
+            'surname' => ['description' => 'User last name.', 'example' => 'Restrepo'],
+            'email' => ['description' => 'Email address. Must be unique (excluding the current user).', 'example' => 'augusto@example.com'],
         ];
     }
 }

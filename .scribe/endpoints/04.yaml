@@ -1,0 +1,50 @@
+name: Locations
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: locations
+    metadata:
+      custom: []
+      groupName: Locations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List my locations'
+      description: |-
+        Returns the locations owned by the authenticated user, each with its
+        contact details. Used by coffeeshops to retrieve their locations when
+        creating an offering.
+
+        **Authorization:** requires the `coffeeshop` role and the `profile:read`
+        or `profile:write` scope.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"ulid":"01M36SQP3JW84J5TQR3SA6NNA7","name":"Price Ltd","description":"Function-based even-keeled monitoring","latitud":"-23.35486300","longitud":"-144.62930200"},{"ulid":"01M36SQP4REWXH76SSPCXB0W0T","name":"Stanton, Homenick and Schimmel","description":"Synergized bifurcated attitude","latitud":"51.55520100","longitud":"-160.60547300"}]}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

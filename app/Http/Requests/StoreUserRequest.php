@@ -34,4 +34,15 @@ class StoreUserRequest extends FormRequest
             'role' => ['sometimes', Rule::enum(Roles::class)],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => ['description' => 'User first name.', 'example' => 'Augusto'],
+            'surname' => ['description' => 'User last name.', 'example' => 'Restrepo'],
+            'email' => ['description' => 'Email address. Must be unique.', 'example' => 'augusto@example.com'],
+            'password' => ['description' => 'Password. Must meet the default strength rules and be confirmed via password_confirmation.', 'example' => 'Str0ngP@ss!'],
+            'role' => ['description' => 'Optional. Role to assign at registration. One of: coffeeshop, specialist, user.', 'example' => 'coffeeshop'],
+        ];
+    }
 }

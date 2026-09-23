@@ -97,4 +97,33 @@ class UpdateEvaluationRequest extends FormRequest
             'extrinsics.generalObservation' => ['nullable', 'string'],
         ];
     }
+    public function bodyParameters(): array
+    {
+        return [
+            'offeringId' => [
+                'description' => 'Prohibited on update — an evaluation cannot be reassigned to another offering. Sending this field returns 422.',
+                'example' => null,
+            ],
+            'extractionMethod' => [
+                'description' => 'Brewing/extraction method used (max 60 chars).',
+                'example' => 'v60',
+            ],
+            'descriptive' => [
+                'description' => 'Objective assessment. Same structure as the create endpoint: roastLevel plus per-axis objects with score (0–15), optional note, and cata arrays where applicable, plus mainTastes.',
+                'example' => null,
+            ],
+            'descriptive.roastLevel' => [
+                'description' => 'Roast level. One of: light, medium_light, medium, medium_dark, dark.',
+                'example' => 'medium',
+            ],
+            'affective' => [
+                'description' => 'Preference assessment. Same structure as the create endpoint: per-axis objects with score (1–9) and optional note, plus defects.',
+                'example' => null,
+            ],
+            'extrinsics' => [
+                'description' => 'Optional contextual metadata: farming, processing, trading, certifications, generalObservation.',
+                'example' => null,
+            ],
+        ];
+    }
 }

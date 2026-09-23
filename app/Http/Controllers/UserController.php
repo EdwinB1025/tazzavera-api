@@ -18,15 +18,21 @@ use Throwable;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Register a user
+     *
+     * Creates a new user account and assigns the requested role. Public
+     * registration endpoint. User creation and role assignment happen in a
+     * single transaction; if role assignment fails, the whole operation is
+     * rolled back.
+     *
+     * @group Users
+     *
+     * @unauthenticated
+     *
+     * @apiResource App\Http\Resources\User
+     * @apiResourceModel App\Models\User
+     *
+     * @response 201 scenario="Created" {"data": {}, "message": "Profile created."}
      */
     public function store(StoreUserRequest $request)
     {
@@ -55,7 +61,18 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get the authenticated user
+     *
+     * Returns the profile of the currently authenticated user.
+     *
+     * **Authorization:** requires the `profile:read` or `profile:write` scope.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @apiResource App\Http\Resources\User
+     * @apiResourceModel App\Models\User
      */
     public function show(Request $request)
     {
@@ -64,7 +81,22 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a user
+     *
+     * Updates a user's profile data. Returns the updated user with a
+     * confirmation message.
+     *
+     * **Authorization:** requires the `profile:write` scope and permission to
+     * update this user (policy). A non-owner receives `403 Forbidden`.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     *
+     * @response 200 scenario="Updated" {"data": {}, "message": "Profile updated."}
+     * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -76,7 +108,22 @@ class UserController extends Controller
     }
 
     /**
-     * Update password for user model
+     * Update user password
+     *
+     * Changes a user's password. The current password must be supplied and is
+     * verified before the change is applied.
+     *
+     * **Authorization:** requires the `profile:write` scope and permission to
+     * update this user (policy). A non-owner receives `403 Forbidden`.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     *
+     * @response 200 scenario="Password updated" {"message": "Password updated successfully."}
+     * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
      */
     public function updatePassword(UpdatePasswordRequest $request, User $user)
     {
@@ -87,7 +134,22 @@ class UserController extends Controller
     }
 
     /**
-     * SoftDelete the specified resource from storage.
+     * Deactivate a user
+     *
+     * Soft-deletes (deactivates) a user account; the account can be restored
+     * later. Also revokes the requesting user's access tokens.
+     *
+     * **Authorization:** requires the `profile:write` scope and permission to
+     * delete this user (policy). A non-owner receives `403 Forbidden`.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     *
+     * @response 200 scenario="Deactivated" {"message": "Profile deactivated."}
+     * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
      */
     public function destroy(Request $request, User $user)
     {
@@ -98,7 +160,22 @@ class UserController extends Controller
     }
 
     /**
-     * SoftDelete the specified resource from storage.
+     * Permanently delete a user
+     *
+     * Permanently deletes a user account (hard delete). This cannot be undone.
+     * Also revokes the requesting user's access tokens.
+     *
+     * **Authorization:** requires the `profile:write` scope and permission to
+     * delete this user (policy). A non-owner receives `403 Forbidden`.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     *
+     * @response 200 scenario="Deleted" {"message": "Profile deleted."}
+     * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
      */
     public function forceDestroy(Request $request, User $user)
     {
@@ -108,8 +185,20 @@ class UserController extends Controller
         return response()->json(['message' => __('user.deleted')], 200);
     }
 
-    /**Revoke tokens: logging user out */
-
+    /**
+     * Log out
+     *
+     * Revokes all of the authenticated user's access tokens and their refresh
+     * tokens, ending the session.
+     *
+     * **Authorization:** requires the `profile:read` or `profile:write` scope.
+     *
+     * @group Users
+     *
+     * @authenticated
+     *
+     * @response 200 scenario="Logged out" {"message": "logout successfully."}
+     */
     public function logout(Request $request)
     {
         $user = $request->user();

@@ -24,6 +24,8 @@ class CoffeeInventory extends Pivot
 {
     use HasPublicUlid, HasFactory;
 
+    public $incrementing = true; //EDB 09/23/26: this resolves the model determination by scribed without affecting the ulid biding.
+
     protected $casts = [
         'production_date' => 'date',
     ];
