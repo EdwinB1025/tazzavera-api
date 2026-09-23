@@ -30,7 +30,7 @@ components:
     default:
       type: http
       scheme: bearer
-      description: "This API uses **Laravel Passport (OAuth 2.0)**. Authenticated endpoints require a Bearer access token in the `Authorization` header. Two grant flows are supported:\n\n**Authorization Code + PKCE** (recommended, for public/first-party clients such as SPAs and mobile apps that cannot safely store a client secret):\n1. Generate a `code_verifier` (random string) and derive a `code_challenge` = BASE64URL(SHA256(`code_verifier`)).\n2. Redirect the user to `GET /oauth/authorize` with `response_type=code`, your `client_id`, `redirect_uri`, `scope`, `state`, `code_challenge`, and `code_challenge_method=S256`.\n3. After the user approves, exchange the returned `code` at `POST /oauth/token` with `grant_type=authorization_code`, the `code`, `redirect_uri`, `client_id`, and the original `code_verifier`.\n4. The response contains `access_token`, `refresh_token`, and `expires_in`.\n\n**Password grant** (for trusted first-party clients only):\n- `POST /oauth/token` with `grant_type=password`, `client_id`, `client_secret`, the user's `username` and `password`, and the required `scope`.\n- The response contains `access_token`, `refresh_token`, and `expires_in`.\n\nSend the token as: `Authorization: Bearer {ACCESS_TOKEN}`.\n\n**Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token, or the request will be rejected."
+      description: "This API uses **Laravel Passport (OAuth 2.0)**. Authenticated endpoints require a Bearer access token in the `Authorization` header. Two grant flows are supported:\n\n**Authorization Code + PKCE** (recommended, for public/first-party clients such as SPAs and mobile apps that cannot safely store a client secret):\n1. Generate a `code_verifier` (random string) and derive a `code_challenge` = BASE64URL(SHA256(`code_verifier`)).\n2. Redirect the user to `GET /oauth/authorize` with `response_type=code`, your `client_id`, `redirect_uri`, `scope`, `state`, `code_challenge`, and `code_challenge_method=S256`.\n3. After the user approves, exchange the returned `code` at `POST /oauth/token` with `grant_type=authorization_code`, the `code`, `redirect_uri`, `client_id`, and the original `code_verifier`.\n4. The response contains `access_token`, `refresh_token`, and `expires_in`.\n\n**Password grant** (for trusted first-party clients only):\n- `POST /oauth/token` with `grant_type=password`, `client_id`, `client_secret`, the user's `username` and `password`, and the required `scope`.\n- The response contains `access_token`, `refresh_token`, and `expires_in`.\n\nSend the token as: `Authorization: Bearer {ACCESS_TOKEN}`.\n\n**Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token. When not scope parameter scope is requested, it will be defaulted to 'profile:red', in the case an unappropiate scope is requested, the authorization will be rejected."
 security:
   -
     default: []
@@ -117,11 +117,11 @@ paths:
                 example:
                   data:
                     -
-                      ulid: 01M36SQP8PFS04WB0C15FAWKQ2
+                      ulid: 01M36ZFMYF7B03Q5Q6CDAEGSYZ
                       roastLot: 2026-08-26-552013
                       productionDate: '2026-08-26T00:00:00.000000Z'
                       coffee:
-                        ulid: 01M36SQP8J21MK43Q7DZBH9KNF
+                        ulid: 01M36ZFMYC6NE5JD4RH9CWGB0T
                         name: 'odio veritatis'
                         roastLevel: dark
                         process: wet_hulled
@@ -132,15 +132,15 @@ paths:
                         altitude: 1384
                         lot: 2005-01
                       roastery:
-                        ulid: 01M36SQP855ZGDN907S11Y3V2S
+                        ulid: 01M36ZFMXZJ2MB67MJGPVYQP45
                         name: 'Bailey Ltd'
                         description: 'Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.'
                     -
-                      ulid: 01M36SQPA9GYJWBD87JHRZ9D4W
+                      ulid: 01M36ZFMZW6EM0QFXDQ0YA9VYB
                       roastLot: 2026-09-11-450403
                       productionDate: '2026-09-11T00:00:00.000000Z'
                       coffee:
-                        ulid: 01M36SQP9SCGWX0WKB4E54CXM4
+                        ulid: 01M36ZFMZEHWJAP0DJ6GYPE2HN
                         name: 'deserunt sint'
                         roastLevel: medium_dark
                         process: anaerobic
@@ -151,7 +151,7 @@ paths:
                         altitude: 1457
                         lot: 1978-08
                       roastery:
-                        ulid: 01M36SQP9D3T2E5MG6CTZJFXQC
+                        ulid: 01M36ZFMZ36DENSZ2EG8046JFJ
                         name: Moen-Kovacek
                         description: 'Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.'
                 properties:
@@ -159,11 +159,11 @@ paths:
                     type: array
                     example:
                       -
-                        ulid: 01M36SQP8PFS04WB0C15FAWKQ2
+                        ulid: 01M36ZFMYF7B03Q5Q6CDAEGSYZ
                         roastLot: 2026-08-26-552013
                         productionDate: '2026-08-26T00:00:00.000000Z'
                         coffee:
-                          ulid: 01M36SQP8J21MK43Q7DZBH9KNF
+                          ulid: 01M36ZFMYC6NE5JD4RH9CWGB0T
                           name: 'odio veritatis'
                           roastLevel: dark
                           process: wet_hulled
@@ -174,15 +174,15 @@ paths:
                           altitude: 1384
                           lot: 2005-01
                         roastery:
-                          ulid: 01M36SQP855ZGDN907S11Y3V2S
+                          ulid: 01M36ZFMXZJ2MB67MJGPVYQP45
                           name: 'Bailey Ltd'
                           description: 'Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.'
                       -
-                        ulid: 01M36SQPA9GYJWBD87JHRZ9D4W
+                        ulid: 01M36ZFMZW6EM0QFXDQ0YA9VYB
                         roastLot: 2026-09-11-450403
                         productionDate: '2026-09-11T00:00:00.000000Z'
                         coffee:
-                          ulid: 01M36SQP9SCGWX0WKB4E54CXM4
+                          ulid: 01M36ZFMZEHWJAP0DJ6GYPE2HN
                           name: 'deserunt sint'
                           roastLevel: medium_dark
                           process: anaerobic
@@ -193,7 +193,7 @@ paths:
                           altitude: 1457
                           lot: 1978-08
                         roastery:
-                          ulid: 01M36SQP9D3T2E5MG6CTZJFXQC
+                          ulid: 01M36ZFMZ36DENSZ2EG8046JFJ
                           name: Moen-Kovacek
                           description: 'Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.'
                     items:
@@ -201,7 +201,7 @@ paths:
                       properties:
                         ulid:
                           type: string
-                          example: 01M36SQP8PFS04WB0C15FAWKQ2
+                          example: 01M36ZFMYF7B03Q5Q6CDAEGSYZ
                         roastLot:
                           type: string
                           example: 2026-08-26-552013
@@ -213,7 +213,7 @@ paths:
                           properties:
                             ulid:
                               type: string
-                              example: 01M36SQP8J21MK43Q7DZBH9KNF
+                              example: 01M36ZFMYC6NE5JD4RH9CWGB0T
                             name:
                               type: string
                               example: 'odio veritatis'
@@ -246,7 +246,7 @@ paths:
                           properties:
                             ulid:
                               type: string
-                              example: 01M36SQP855ZGDN907S11Y3V2S
+                              example: 01M36ZFMXZJ2MB67MJGPVYQP45
                             name:
                               type: string
                               example: 'Bailey Ltd'
@@ -890,8 +890,8 @@ paths:
                 type: object
                 example:
                   data:
-                    ulid: 01M36SQPH837K5TDVX3NHB19RD
-                    offeringId: 01M36SQPHKH5GFGKFABARKDAHF
+                    ulid: 01M36ZFN6Q2KN8VPXATXW9J5FW
+                    offeringId: 01M36ZFN73WG0BSDXSTS76ZKEZ
                     evaluationType: specialist
                     status: closed
                     extractionMethod: v60
@@ -956,10 +956,10 @@ paths:
                     properties:
                       ulid:
                         type: string
-                        example: 01M36SQPH837K5TDVX3NHB19RD
+                        example: 01M36ZFN6Q2KN8VPXATXW9J5FW
                       offeringId:
                         type: string
-                        example: 01M36SQPHKH5GFGKFABARKDAHF
+                        example: 01M36ZFN73WG0BSDXSTS76ZKEZ
                       evaluationType:
                         type: string
                         example: specialist
@@ -1621,13 +1621,13 @@ paths:
                 example:
                   data:
                     -
-                      ulid: 01M36SQP3JW84J5TQR3SA6NNA7
+                      ulid: 01M36ZFMSQN5R5BXTVXJCAK84V
                       name: 'Price Ltd'
                       description: 'Function-based even-keeled monitoring'
                       latitud: '-23.35486300'
                       longitud: '-144.62930200'
                     -
-                      ulid: 01M36SQP4REWXH76SSPCXB0W0T
+                      ulid: 01M36ZFMTWAJVVEF5D4HQ7WAW5
                       name: 'Stanton, Homenick and Schimmel'
                       description: 'Synergized bifurcated attitude'
                       latitud: '51.55520100'
@@ -1637,13 +1637,13 @@ paths:
                     type: array
                     example:
                       -
-                        ulid: 01M36SQP3JW84J5TQR3SA6NNA7
+                        ulid: 01M36ZFMSQN5R5BXTVXJCAK84V
                         name: 'Price Ltd'
                         description: 'Function-based even-keeled monitoring'
                         latitud: '-23.35486300'
                         longitud: '-144.62930200'
                       -
-                        ulid: 01M36SQP4REWXH76SSPCXB0W0T
+                        ulid: 01M36ZFMTWAJVVEF5D4HQ7WAW5
                         name: 'Stanton, Homenick and Schimmel'
                         description: 'Synergized bifurcated attitude'
                         latitud: '51.55520100'
@@ -1653,7 +1653,7 @@ paths:
                       properties:
                         ulid:
                           type: string
-                          example: 01M36SQP3JW84J5TQR3SA6NNA7
+                          example: 01M36ZFMSQN5R5BXTVXJCAK84V
                         name:
                           type: string
                           example: 'Price Ltd'
@@ -4682,17 +4682,17 @@ paths:
                 type: object
                 example:
                   data:
-                    id: 66
-                    ulid: 01M36SQNA0WSGQCDKFZ26WSAYM
+                    id: 146
+                    ulid: 01M36ZFM1WMWH1C5H6SCKRK2YH
                     name: 'Ms. Audra Crooks II'
                     surname: Rempel
                     email: okon.justina@example.com
-                    email_verified_at: '2026-09-23T09:32:16.000000Z'
+                    email_verified_at: '2026-09-23T11:12:44.000000Z'
                     two_factor_secret: null
                     two_factor_recovery_codes: null
                     two_factor_confirmed_at: null
-                    created_at: '2026-09-23T09:32:17.000000Z'
-                    updated_at: '2026-09-23T09:32:17.000000Z'
+                    created_at: '2026-09-23T11:12:45.000000Z'
+                    updated_at: '2026-09-23T11:12:45.000000Z'
                     deleted_at: null
                 properties:
                   data:
@@ -4700,10 +4700,10 @@ paths:
                     properties:
                       id:
                         type: integer
-                        example: 66
+                        example: 146
                       ulid:
                         type: string
-                        example: 01M36SQNA0WSGQCDKFZ26WSAYM
+                        example: 01M36ZFM1WMWH1C5H6SCKRK2YH
                       name:
                         type: string
                         example: 'Ms. Audra Crooks II'
@@ -4715,7 +4715,7 @@ paths:
                         example: okon.justina@example.com
                       email_verified_at:
                         type: string
-                        example: '2026-09-23T09:32:16.000000Z'
+                        example: '2026-09-23T11:12:44.000000Z'
                       two_factor_secret:
                         type: string
                         example: null
@@ -4730,10 +4730,10 @@ paths:
                         nullable: true
                       created_at:
                         type: string
-                        example: '2026-09-23T09:32:17.000000Z'
+                        example: '2026-09-23T11:12:45.000000Z'
                       updated_at:
                         type: string
-                        example: '2026-09-23T09:32:17.000000Z'
+                        example: '2026-09-23T11:12:45.000000Z'
                       deleted_at:
                         type: string
                         example: null
@@ -4808,17 +4808,17 @@ paths:
                 type: object
                 example:
                   data:
-                    id: 67
-                    ulid: 01M36SQP06Z7Y51YRP3NMSNK33
+                    id: 147
+                    ulid: 01M36ZFMPXX6BC25N6XDF0EXZ5
                     name: 'Morgan Hirthe'
                     surname: Cronin
                     email: emelie.baumbach@example.net
-                    email_verified_at: '2026-09-23T09:32:17.000000Z'
+                    email_verified_at: '2026-09-23T11:12:45.000000Z'
                     two_factor_secret: null
                     two_factor_recovery_codes: null
                     two_factor_confirmed_at: null
-                    created_at: '2026-09-23T09:32:17.000000Z'
-                    updated_at: '2026-09-23T09:32:17.000000Z'
+                    created_at: '2026-09-23T11:12:45.000000Z'
+                    updated_at: '2026-09-23T11:12:45.000000Z'
                     deleted_at: null
                 properties:
                   data:
@@ -4826,10 +4826,10 @@ paths:
                     properties:
                       id:
                         type: integer
-                        example: 67
+                        example: 147
                       ulid:
                         type: string
-                        example: 01M36SQP06Z7Y51YRP3NMSNK33
+                        example: 01M36ZFMPXX6BC25N6XDF0EXZ5
                       name:
                         type: string
                         example: 'Morgan Hirthe'
@@ -4841,7 +4841,7 @@ paths:
                         example: emelie.baumbach@example.net
                       email_verified_at:
                         type: string
-                        example: '2026-09-23T09:32:17.000000Z'
+                        example: '2026-09-23T11:12:45.000000Z'
                       two_factor_secret:
                         type: string
                         example: null
@@ -4856,10 +4856,10 @@ paths:
                         nullable: true
                       created_at:
                         type: string
-                        example: '2026-09-23T09:32:17.000000Z'
+                        example: '2026-09-23T11:12:45.000000Z'
                       updated_at:
                         type: string
-                        example: '2026-09-23T09:32:17.000000Z'
+                        example: '2026-09-23T11:12:45.000000Z'
                       deleted_at:
                         type: string
                         example: null

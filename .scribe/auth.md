@@ -18,4 +18,4 @@ This API uses **Laravel Passport (OAuth 2.0)**. Authenticated endpoints require 
 
 Send the token as: `Authorization: Bearer {ACCESS_TOKEN}`.
 
-**Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token, or the request will be rejected.
+**Scopes:** endpoints enforce `profile:read` and/or `profile:write`. Request the appropriate scope when obtaining your token. When not scope parameter scope is requested, it will be defaulted to 'profile:red', in the case an unappropiate scope is requested, the authorization will be rejected.

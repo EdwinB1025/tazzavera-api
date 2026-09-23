@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "00c82686-3ca0-4d50-a812-5a7dc19f60de",
+        "_postman_id": "1f3506cc-e2e9-4387-aa5d-bdea47347dc8",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -83,7 +83,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\":[{\"ulid\":\"01M36SQP8PFS04WB0C15FAWKQ2\",\"roastLot\":\"2026-08-26-552013\",\"productionDate\":\"2026-08-26T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36SQP8J21MK43Q7DZBH9KNF\",\"name\":\"odio veritatis\",\"roastLevel\":\"dark\",\"process\":\"wet_hulled\",\"variety\":\"Catuai\",\"producer\":\"Cristian O'Reilly\",\"country\":\"Colombia\",\"region\":\"Antioquia\",\"altitude\":1384,\"lot\":\"2005-01\"},\"roastery\":{\"ulid\":\"01M36SQP855ZGDN907S11Y3V2S\",\"name\":\"Bailey Ltd\",\"description\":\"Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.\"}},{\"ulid\":\"01M36SQPA9GYJWBD87JHRZ9D4W\",\"roastLot\":\"2026-09-11-450403\",\"productionDate\":\"2026-09-11T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36SQP9SCGWX0WKB4E54CXM4\",\"name\":\"deserunt sint\",\"roastLevel\":\"medium_dark\",\"process\":\"anaerobic\",\"variety\":\"Geisha\",\"producer\":null,\"country\":\"Kenia\",\"region\":\"Nyeri\",\"altitude\":1457,\"lot\":\"1978-08\"},\"roastery\":{\"ulid\":\"01M36SQP9D3T2E5MG6CTZJFXQC\",\"name\":\"Moen-Kovacek\",\"description\":\"Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.\"}}]}",
+                            "body": "{\"data\":[{\"ulid\":\"01M36ZFMYF7B03Q5Q6CDAEGSYZ\",\"roastLot\":\"2026-08-26-552013\",\"productionDate\":\"2026-08-26T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36ZFMYC6NE5JD4RH9CWGB0T\",\"name\":\"odio veritatis\",\"roastLevel\":\"dark\",\"process\":\"wet_hulled\",\"variety\":\"Catuai\",\"producer\":\"Cristian O'Reilly\",\"country\":\"Colombia\",\"region\":\"Antioquia\",\"altitude\":1384,\"lot\":\"2005-01\"},\"roastery\":{\"ulid\":\"01M36ZFMXZJ2MB67MJGPVYQP45\",\"name\":\"Bailey Ltd\",\"description\":\"Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.\"}},{\"ulid\":\"01M36ZFMZW6EM0QFXDQ0YA9VYB\",\"roastLot\":\"2026-09-11-450403\",\"productionDate\":\"2026-09-11T00:00:00.000000Z\",\"coffee\":{\"ulid\":\"01M36ZFMZEHWJAP0DJ6GYPE2HN\",\"name\":\"deserunt sint\",\"roastLevel\":\"medium_dark\",\"process\":\"anaerobic\",\"variety\":\"Geisha\",\"producer\":null,\"country\":\"Kenia\",\"region\":\"Nyeri\",\"altitude\":1457,\"lot\":\"1978-08\"},\"roastery\":{\"ulid\":\"01M36ZFMZ36DENSZ2EG8046JFJ\",\"name\":\"Moen-Kovacek\",\"description\":\"Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.\"}}]}",
                             "name": ""
                         }
                     ]
@@ -287,7 +287,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\":{\"ulid\":\"01M36SQPH837K5TDVX3NHB19RD\",\"offeringId\":\"01M36SQPHKH5GFGKFABARKDAHF\",\"evaluationType\":\"specialist\",\"status\":\"closed\",\"extractionMethod\":\"v60\",\"cuppingScore\":\"94.88\",\"isDefective\":true,\"descriptive\":{\"aroma\":{\"note\":null,\"score\":15},\"flavor\":{\"note\":null,\"score\":11},\"acidity\":{\"note\":null,\"score\":11},\"fragrance\":{\"note\":null,\"score\":15},\"mouthfeel\":{\"note\":null,\"score\":14},\"sweetness\":{\"note\":null,\"score\":6},\"aftertaste\":{\"note\":null,\"score\":14}},\"affective\":{\"aroma\":{\"note\":null,\"score\":7},\"flavor\":{\"note\":null,\"score\":8},\"acidity\":{\"note\":null,\"score\":9},\"overall\":{\"note\":null,\"score\":6},\"fragrance\":{\"note\":null,\"score\":9},\"mouthfeel\":{\"note\":null,\"score\":6},\"sweetness\":{\"note\":null,\"score\":8},\"aftertaste\":{\"note\":null,\"score\":8}},\"extrinsics\":{\"farming\":null,\"trading\":null,\"processing\":null,\"certifications\":null,\"general_observation\":null}}}",
+                            "body": "{\"data\":{\"ulid\":\"01M36ZFN6Q2KN8VPXATXW9J5FW\",\"offeringId\":\"01M36ZFN73WG0BSDXSTS76ZKEZ\",\"evaluationType\":\"specialist\",\"status\":\"closed\",\"extractionMethod\":\"v60\",\"cuppingScore\":\"94.88\",\"isDefective\":true,\"descriptive\":{\"aroma\":{\"note\":null,\"score\":15},\"flavor\":{\"note\":null,\"score\":11},\"acidity\":{\"note\":null,\"score\":11},\"fragrance\":{\"note\":null,\"score\":15},\"mouthfeel\":{\"note\":null,\"score\":14},\"sweetness\":{\"note\":null,\"score\":6},\"aftertaste\":{\"note\":null,\"score\":14}},\"affective\":{\"aroma\":{\"note\":null,\"score\":7},\"flavor\":{\"note\":null,\"score\":8},\"acidity\":{\"note\":null,\"score\":9},\"overall\":{\"note\":null,\"score\":6},\"fragrance\":{\"note\":null,\"score\":9},\"mouthfeel\":{\"note\":null,\"score\":6},\"sweetness\":{\"note\":null,\"score\":8},\"aftertaste\":{\"note\":null,\"score\":8}},\"extrinsics\":{\"farming\":null,\"trading\":null,\"processing\":null,\"certifications\":null,\"general_observation\":null}}}",
                             "name": ""
                         },
                         {
@@ -502,7 +502,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\":[{\"ulid\":\"01M36SQP3JW84J5TQR3SA6NNA7\",\"name\":\"Price Ltd\",\"description\":\"Function-based even-keeled monitoring\",\"latitud\":\"-23.35486300\",\"longitud\":\"-144.62930200\"},{\"ulid\":\"01M36SQP4REWXH76SSPCXB0W0T\",\"name\":\"Stanton, Homenick and Schimmel\",\"description\":\"Synergized bifurcated attitude\",\"latitud\":\"51.55520100\",\"longitud\":\"-160.60547300\"}]}",
+                            "body": "{\"data\":[{\"ulid\":\"01M36ZFMSQN5R5BXTVXJCAK84V\",\"name\":\"Price Ltd\",\"description\":\"Function-based even-keeled monitoring\",\"latitud\":\"-23.35486300\",\"longitud\":\"-144.62930200\"},{\"ulid\":\"01M36ZFMTWAJVVEF5D4HQ7WAW5\",\"name\":\"Stanton, Homenick and Schimmel\",\"description\":\"Synergized bifurcated attitude\",\"latitud\":\"51.55520100\",\"longitud\":\"-160.60547300\"}]}",
                             "name": ""
                         }
                     ]
@@ -1080,7 +1080,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\":{\"id\":66,\"ulid\":\"01M36SQNA0WSGQCDKFZ26WSAYM\",\"name\":\"Ms. Audra Crooks II\",\"surname\":\"Rempel\",\"email\":\"okon.justina@example.com\",\"email_verified_at\":\"2026-09-23T09:32:16.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T09:32:17.000000Z\",\"updated_at\":\"2026-09-23T09:32:17.000000Z\",\"deleted_at\":null}}",
+                            "body": "{\"data\":{\"id\":146,\"ulid\":\"01M36ZFM1WMWH1C5H6SCKRK2YH\",\"name\":\"Ms. Audra Crooks II\",\"surname\":\"Rempel\",\"email\":\"okon.justina@example.com\",\"email_verified_at\":\"2026-09-23T11:12:44.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T11:12:45.000000Z\",\"updated_at\":\"2026-09-23T11:12:45.000000Z\",\"deleted_at\":null}}",
                             "name": ""
                         },
                         {
@@ -1118,7 +1118,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\":{\"id\":67,\"ulid\":\"01M36SQP06Z7Y51YRP3NMSNK33\",\"name\":\"Morgan Hirthe\",\"surname\":\"Cronin\",\"email\":\"emelie.baumbach@example.net\",\"email_verified_at\":\"2026-09-23T09:32:17.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T09:32:17.000000Z\",\"updated_at\":\"2026-09-23T09:32:17.000000Z\",\"deleted_at\":null}}",
+                            "body": "{\"data\":{\"id\":147,\"ulid\":\"01M36ZFMPXX6BC25N6XDF0EXZ5\",\"name\":\"Morgan Hirthe\",\"surname\":\"Cronin\",\"email\":\"emelie.baumbach@example.net\",\"email_verified_at\":\"2026-09-23T11:12:45.000000Z\",\"two_factor_secret\":null,\"two_factor_recovery_codes\":null,\"two_factor_confirmed_at\":null,\"created_at\":\"2026-09-23T11:12:45.000000Z\",\"updated_at\":\"2026-09-23T11:12:45.000000Z\",\"deleted_at\":null}}",
                             "name": ""
                         }
                     ]

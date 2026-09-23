@@ -46,6 +46,7 @@
     </span>
 </a>
 <div class="tocify-wrapper">
+            <img src="../scribeIcon.svg" alt="logo" class="logo" style="padding-top: 10px;" width="100%"/>
     
             <div class="lang-selector">
                                             <button type="button" class="lang-button" data-language-name="bash">bash</button>
@@ -196,8 +197,23 @@
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
-&lt;aside&gt;As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).&lt;/aside&gt;</code></pre>
+As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).
+
+## HTTP response codes
+
+    This API uses standard HTTP status codes. The ones you'll encounter:
+
+    | Code | Meaning | When |
+    |------|---------|------|
+    | 200 | OK | Successful GET, PUT/PATCH, or a delete (returns a message body) |
+    | 201 | Created | A resource was created (register, store) — returns the created resource |
+    | 401 | Unauthorized | Missing or invalid access token |
+    | 403 | Forbidden | Authenticated but not permitted (role, scope, or ownership policy fails) |
+    | 404 | Not Found | The requested resource does not exist |
+    | 409 | Conflict | State conflict (e.g. updating or closing an already-closed evaluation, or an incomplete evaluation) |
+    | 422 | Unprocessable Entity | Validation failed — check the response body for field errors |
+    | 500 | Internal Server Error | Unhandled server error |</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {ACCESS_TOKEN}"</code></strong>.</p>
@@ -216,7 +232,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <li>The response contains <code>access_token</code>, <code>refresh_token</code>, and <code>expires_in</code>.</li>
 </ul>
 <p>Send the token as: <code>Authorization: Bearer {ACCESS_TOKEN}</code>.</p>
-<p><strong>Scopes:</strong> endpoints enforce <code>profile:read</code> and/or <code>profile:write</code>. Request the appropriate scope when obtaining your token, or the request will be rejected.</p>
+<p><strong>Scopes:</strong> endpoints enforce <code>profile:read</code> and/or <code>profile:write</code>. Request the appropriate scope when obtaining your token. When not scope parameter scope is requested, it will be defaulted to 'profile:red', in the case an unappropiate scope is requested, the authorization will be rejected.</p>
 
         <h1 id="coffee-inventory">Coffee Inventory</h1>
 
@@ -313,11 +329,11 @@ print_r(json_decode((string) $body));</code></pre></div>
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: [
         {
-            &quot;ulid&quot;: &quot;01M36SQP8PFS04WB0C15FAWKQ2&quot;,
+            &quot;ulid&quot;: &quot;01M36ZFMYF7B03Q5Q6CDAEGSYZ&quot;,
             &quot;roastLot&quot;: &quot;2026-08-26-552013&quot;,
             &quot;productionDate&quot;: &quot;2026-08-26T00:00:00.000000Z&quot;,
             &quot;coffee&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP8J21MK43Q7DZBH9KNF&quot;,
+                &quot;ulid&quot;: &quot;01M36ZFMYC6NE5JD4RH9CWGB0T&quot;,
                 &quot;name&quot;: &quot;odio veritatis&quot;,
                 &quot;roastLevel&quot;: &quot;dark&quot;,
                 &quot;process&quot;: &quot;wet_hulled&quot;,
@@ -329,17 +345,17 @@ print_r(json_decode((string) $body));</code></pre></div>
                 &quot;lot&quot;: &quot;2005-01&quot;
             },
             &quot;roastery&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP855ZGDN907S11Y3V2S&quot;,
+                &quot;ulid&quot;: &quot;01M36ZFMXZJ2MB67MJGPVYQP45&quot;,
                 &quot;name&quot;: &quot;Bailey Ltd&quot;,
                 &quot;description&quot;: &quot;Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.&quot;
             }
         },
         {
-            &quot;ulid&quot;: &quot;01M36SQPA9GYJWBD87JHRZ9D4W&quot;,
+            &quot;ulid&quot;: &quot;01M36ZFMZW6EM0QFXDQ0YA9VYB&quot;,
             &quot;roastLot&quot;: &quot;2026-09-11-450403&quot;,
             &quot;productionDate&quot;: &quot;2026-09-11T00:00:00.000000Z&quot;,
             &quot;coffee&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP9SCGWX0WKB4E54CXM4&quot;,
+                &quot;ulid&quot;: &quot;01M36ZFMZEHWJAP0DJ6GYPE2HN&quot;,
                 &quot;name&quot;: &quot;deserunt sint&quot;,
                 &quot;roastLevel&quot;: &quot;medium_dark&quot;,
                 &quot;process&quot;: &quot;anaerobic&quot;,
@@ -351,7 +367,7 @@ print_r(json_decode((string) $body));</code></pre></div>
                 &quot;lot&quot;: &quot;1978-08&quot;
             },
             &quot;roastery&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP9D3T2E5MG6CTZJFXQC&quot;,
+                &quot;ulid&quot;: &quot;01M36ZFMZ36DENSZ2EG8046JFJ&quot;,
                 &quot;name&quot;: &quot;Moen-Kovacek&quot;,
                 &quot;description&quot;: &quot;Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.&quot;
             }
@@ -1267,8 +1283,8 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;ulid&quot;: &quot;01M36SQPH837K5TDVX3NHB19RD&quot;,
-        &quot;offeringId&quot;: &quot;01M36SQPHKH5GFGKFABARKDAHF&quot;,
+        &quot;ulid&quot;: &quot;01M36ZFN6Q2KN8VPXATXW9J5FW&quot;,
+        &quot;offeringId&quot;: &quot;01M36ZFN73WG0BSDXSTS76ZKEZ&quot;,
         &quot;evaluationType&quot;: &quot;specialist&quot;,
         &quot;status&quot;: &quot;closed&quot;,
         &quot;extractionMethod&quot;: &quot;v60&quot;,
@@ -3931,14 +3947,14 @@ print_r(json_decode((string) $body));</code></pre></div>
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: [
         {
-            &quot;ulid&quot;: &quot;01M36SQP3JW84J5TQR3SA6NNA7&quot;,
+            &quot;ulid&quot;: &quot;01M36ZFMSQN5R5BXTVXJCAK84V&quot;,
             &quot;name&quot;: &quot;Price Ltd&quot;,
             &quot;description&quot;: &quot;Function-based even-keeled monitoring&quot;,
             &quot;latitud&quot;: &quot;-23.35486300&quot;,
             &quot;longitud&quot;: &quot;-144.62930200&quot;
         },
         {
-            &quot;ulid&quot;: &quot;01M36SQP4REWXH76SSPCXB0W0T&quot;,
+            &quot;ulid&quot;: &quot;01M36ZFMTWAJVVEF5D4HQ7WAW5&quot;,
             &quot;name&quot;: &quot;Stanton, Homenick and Schimmel&quot;,
             &quot;description&quot;: &quot;Synergized bifurcated attitude&quot;,
             &quot;latitud&quot;: &quot;51.55520100&quot;,
@@ -7068,17 +7084,17 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 66,
-        &quot;ulid&quot;: &quot;01M36SQNA0WSGQCDKFZ26WSAYM&quot;,
+        &quot;id&quot;: 146,
+        &quot;ulid&quot;: &quot;01M36ZFM1WMWH1C5H6SCKRK2YH&quot;,
         &quot;name&quot;: &quot;Ms. Audra Crooks II&quot;,
         &quot;surname&quot;: &quot;Rempel&quot;,
         &quot;email&quot;: &quot;okon.justina@example.com&quot;,
-        &quot;email_verified_at&quot;: &quot;2026-09-23T09:32:16.000000Z&quot;,
+        &quot;email_verified_at&quot;: &quot;2026-09-23T11:12:44.000000Z&quot;,
         &quot;two_factor_secret&quot;: null,
         &quot;two_factor_recovery_codes&quot;: null,
         &quot;two_factor_confirmed_at&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2026-09-23T11:12:45.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-23T11:12:45.000000Z&quot;,
         &quot;deleted_at&quot;: null
     }
 }</code>
@@ -7295,17 +7311,17 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 67,
-        &quot;ulid&quot;: &quot;01M36SQP06Z7Y51YRP3NMSNK33&quot;,
+        &quot;id&quot;: 147,
+        &quot;ulid&quot;: &quot;01M36ZFMPXX6BC25N6XDF0EXZ5&quot;,
         &quot;name&quot;: &quot;Morgan Hirthe&quot;,
         &quot;surname&quot;: &quot;Cronin&quot;,
         &quot;email&quot;: &quot;emelie.baumbach@example.net&quot;,
-        &quot;email_verified_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
+        &quot;email_verified_at&quot;: &quot;2026-09-23T11:12:45.000000Z&quot;,
         &quot;two_factor_secret&quot;: null,
         &quot;two_factor_recovery_codes&quot;: null,
         &quot;two_factor_confirmed_at&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2026-09-23T11:12:45.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-23T11:12:45.000000Z&quot;,
         &quot;deleted_at&quot;: null
     }
 }</code>

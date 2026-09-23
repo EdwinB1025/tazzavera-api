@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/DEV/public/favicon.svg" width="120">
+  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/DEV/public/scribeIcon.svg" width="120">
 </p>
 
   <p align="center"><strong><em style="font-size: 24px;">TAZAVERA API</em></strong></p>

@@ -37,7 +37,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":[{"ulid":"01M36SQP3JW84J5TQR3SA6NNA7","name":"Price Ltd","description":"Function-based even-keeled monitoring","latitud":"-23.35486300","longitud":"-144.62930200"},{"ulid":"01M36SQP4REWXH76SSPCXB0W0T","name":"Stanton, Homenick and Schimmel","description":"Synergized bifurcated attitude","latitud":"51.55520100","longitud":"-160.60547300"}]}'
+        content: '{"data":[{"ulid":"01M36ZFMSQN5R5BXTVXJCAK84V","name":"Price Ltd","description":"Function-based even-keeled monitoring","latitud":"-23.35486300","longitud":"-144.62930200"},{"ulid":"01M36ZFMTWAJVVEF5D4HQ7WAW5","name":"Stanton, Homenick and Schimmel","description":"Synergized bifurcated attitude","latitud":"51.55520100","longitud":"-160.60547300"}]}'
         headers: []
         description: ''
     responseFields: []
