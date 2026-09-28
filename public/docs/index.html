@@ -4627,58 +4627,88 @@ print_r(json_decode((string) $body));</code></pre></div>
                 ]
             }
         ],
-        &quot;cataConcordance&quot;: {
-            &quot;aromatics&quot;: [
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
-                    &quot;count&quot;: 5
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
-                    &quot;count&quot;: 4
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
-                    &quot;count&quot;: 4
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
-                    &quot;count&quot;: 2
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
-                    &quot;count&quot;: 2
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
-                    &quot;count&quot;: 3
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
-                    &quot;count&quot;: 3
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
-                    &quot;count&quot;: 3
-                }
-            ],
-            &quot;mainTastes&quot;: [
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
-                    &quot;count&quot;: 5
-                }
-            ],
-            &quot;defects&quot;: [
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
-                    &quot;count&quot;: 1
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
-                    &quot;count&quot;: 1
-                }
-            ]
-        }
+        &quot;cataConcordance&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                &quot;type&quot;: &quot;aromatics&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 5,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                        &quot;type&quot;: &quot;aromatics&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 4,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                                &quot;type&quot;: &quot;aromatics&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 4
+                            }
+                        ]
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                        &quot;type&quot;: &quot;aromatics&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 2,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                                &quot;type&quot;: &quot;aromatics&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                &quot;type&quot;: &quot;aromatics&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 3,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                        &quot;type&quot;: &quot;aromatics&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 3,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                                &quot;type&quot;: &quot;aromatics&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 5,
+                &quot;children&quot;: []
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                &quot;type&quot;: &quot;defects&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 1,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                        &quot;type&quot;: &quot;defects&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 1,
+                        &quot;children&quot;: []
+                    }
+                ]
+            }
+        ]
     }
 }</code>
  </pre>
@@ -4967,121 +4997,165 @@ print_r(json_decode((string) $body));</code></pre></div>
                     &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
                     &quot;type&quot;: &quot;flavor&quot;,
                     &quot;level&quot;: 0,
-                    &quot;count&quot;: 5
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
-                    &quot;type&quot;: &quot;flavor&quot;,
-                    &quot;level&quot;: 1,
-                    &quot;count&quot;: 4
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
-                    &quot;type&quot;: &quot;flavor&quot;,
-                    &quot;level&quot;: 2,
-                    &quot;count&quot;: 4
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
-                    &quot;type&quot;: &quot;flavor&quot;,
-                    &quot;level&quot;: 1,
-                    &quot;count&quot;: 2
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
-                    &quot;type&quot;: &quot;flavor&quot;,
-                    &quot;level&quot;: 2,
-                    &quot;count&quot;: 2
+                    &quot;count&quot;: 5,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                            &quot;type&quot;: &quot;flavor&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 4,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                                    &quot;type&quot;: &quot;flavor&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 4
+                                }
+                            ]
+                        },
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                            &quot;type&quot;: &quot;flavor&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 2,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                                    &quot;type&quot;: &quot;flavor&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 2
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
                     &quot;type&quot;: &quot;aroma&quot;,
                     &quot;level&quot;: 0,
-                    &quot;count&quot;: 3
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
-                    &quot;type&quot;: &quot;aroma&quot;,
-                    &quot;level&quot;: 1,
-                    &quot;count&quot;: 3
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
-                    &quot;type&quot;: &quot;aroma&quot;,
-                    &quot;level&quot;: 2,
-                    &quot;count&quot;: 3
+                    &quot;count&quot;: 3,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                            &quot;type&quot;: &quot;aroma&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 3,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                                    &quot;type&quot;: &quot;aroma&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 3
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
                     &quot;type&quot;: &quot;main_tastes&quot;,
                     &quot;level&quot;: 0,
-                    &quot;count&quot;: 5
+                    &quot;count&quot;: 5,
+                    &quot;children&quot;: []
                 },
                 {
                     &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
                     &quot;type&quot;: &quot;defects&quot;,
                     &quot;level&quot;: 0,
-                    &quot;count&quot;: 1
-                },
-                {
-                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
-                    &quot;type&quot;: &quot;defects&quot;,
-                    &quot;level&quot;: 1,
-                    &quot;count&quot;: 1
+                    &quot;count&quot;: 1,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                            &quot;type&quot;: &quot;defects&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 1,
+                            &quot;children&quot;: []
+                        }
+                    ]
                 }
             ],
-            &quot;cataConcordance&quot;: {
-                &quot;aromatics&quot;: [
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
-                        &quot;count&quot;: 5
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
-                        &quot;count&quot;: 4
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
-                        &quot;count&quot;: 4
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
-                        &quot;count&quot;: 2
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
-                        &quot;count&quot;: 2
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
-                        &quot;count&quot;: 3
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
-                        &quot;count&quot;: 3
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
-                        &quot;count&quot;: 3
-                    }
-                ],
-                &quot;mainTastes&quot;: [
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
-                        &quot;count&quot;: 5
-                    }
-                ],
-                &quot;defects&quot;: [
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
-                        &quot;count&quot;: 1
-                    },
-                    {
-                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
-                        &quot;count&quot;: 1
-                    }
-                ]
-            }
+            &quot;cataConcordance&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                    &quot;type&quot;: &quot;aromatics&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 5,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                            &quot;type&quot;: &quot;aromatics&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 4,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                                    &quot;type&quot;: &quot;aromatics&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 4
+                                }
+                            ]
+                        },
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                            &quot;type&quot;: &quot;aromatics&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 2,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                                    &quot;type&quot;: &quot;aromatics&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                    &quot;type&quot;: &quot;aromatics&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 3,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                            &quot;type&quot;: &quot;aromatics&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 3,
+                            &quot;children&quot;: [
+                                {
+                                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                                    &quot;type&quot;: &quot;aromatics&quot;,
+                                    &quot;level&quot;: 2,
+                                    &quot;count&quot;: 3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 5,
+                    &quot;children&quot;: []
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                    &quot;type&quot;: &quot;defects&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 1,
+                    &quot;children&quot;: [
+                        {
+                            &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                            &quot;type&quot;: &quot;defects&quot;,
+                            &quot;level&quot;: 1,
+                            &quot;count&quot;: 1,
+                            &quot;children&quot;: []
+                        }
+                    ]
+                }
+            ]
         },
         {
             &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0E&quot;,

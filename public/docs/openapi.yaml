@@ -3109,42 +3109,69 @@ paths:
                             count: 1
                             children: []
                     cataConcordance:
-                      aromatics:
-                        -
-                          ref: 01JTAXN0DE0000000000000001
-                          count: 5
-                        -
-                          ref: 01JTAXN0DE0000000000000002
-                          count: 4
-                        -
-                          ref: 01JTAXN0DE0000000000000003
-                          count: 4
-                        -
-                          ref: 01JTAXN0DE0000000000000004
-                          count: 2
-                        -
-                          ref: 01JTAXN0DE0000000000000005
-                          count: 2
-                        -
-                          ref: 01JTAXN0DE0000000000000006
-                          count: 3
-                        -
-                          ref: 01JTAXN0DE0000000000000007
-                          count: 3
-                        -
-                          ref: 01JTAXN0DE0000000000000008
-                          count: 3
-                      mainTastes:
-                        -
-                          ref: 01JTAXN0DE0000000000000009
-                          count: 5
-                      defects:
-                        -
-                          ref: 01JTAXN0DE000000000000000A
-                          count: 1
-                        -
-                          ref: 01JTAXN0DE000000000000000B
-                          count: 1
+                      -
+                        ref: 01JTAXN0DE0000000000000001
+                        type: aromatics
+                        level: 0
+                        count: 5
+                        children:
+                          -
+                            ref: 01JTAXN0DE0000000000000002
+                            type: aromatics
+                            level: 1
+                            count: 4
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000003
+                                type: aromatics
+                                level: 2
+                                count: 4
+                          -
+                            ref: 01JTAXN0DE0000000000000004
+                            type: aromatics
+                            level: 1
+                            count: 2
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000005
+                                type: aromatics
+                                level: 2
+                                count: 2
+                      -
+                        ref: 01JTAXN0DE0000000000000006
+                        type: aromatics
+                        level: 0
+                        count: 3
+                        children:
+                          -
+                            ref: 01JTAXN0DE0000000000000007
+                            type: aromatics
+                            level: 1
+                            count: 3
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000008
+                                type: aromatics
+                                level: 2
+                                count: 3
+                      -
+                        ref: 01JTAXN0DE0000000000000009
+                        type: main_tastes
+                        level: 0
+                        count: 5
+                        children: []
+                      -
+                        ref: 01JTAXN0DE000000000000000A
+                        type: defects
+                        level: 0
+                        count: 1
+                        children:
+                          -
+                            ref: 01JTAXN0DE000000000000000B
+                            type: defects
+                            level: 1
+                            count: 1
+                            children: []
                 properties:
                   data:
                     type: object
@@ -3399,77 +3426,133 @@ paths:
                                       type: object
                                       properties: { ref: { type: string, example: 01JTAXN0DE0000000000000003 }, type: { type: string, example: flavor }, level: { type: integer, example: 2 }, count: { type: integer, example: 4 } }
                       cataConcordance:
-                        type: object
-                        properties:
-                          aromatics:
-                            type: array
-                            example:
-                              -
-                                ref: 01JTAXN0DE0000000000000001
-                                count: 5
+                        type: array
+                        example:
+                          -
+                            ref: 01JTAXN0DE0000000000000001
+                            type: aromatics
+                            level: 0
+                            count: 5
+                            children:
                               -
                                 ref: 01JTAXN0DE0000000000000002
+                                type: aromatics
+                                level: 1
                                 count: 4
-                              -
-                                ref: 01JTAXN0DE0000000000000003
-                                count: 4
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000003
+                                    type: aromatics
+                                    level: 2
+                                    count: 4
                               -
                                 ref: 01JTAXN0DE0000000000000004
+                                type: aromatics
+                                level: 1
                                 count: 2
-                              -
-                                ref: 01JTAXN0DE0000000000000005
-                                count: 2
-                              -
-                                ref: 01JTAXN0DE0000000000000006
-                                count: 3
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000005
+                                    type: aromatics
+                                    level: 2
+                                    count: 2
+                          -
+                            ref: 01JTAXN0DE0000000000000006
+                            type: aromatics
+                            level: 0
+                            count: 3
+                            children:
                               -
                                 ref: 01JTAXN0DE0000000000000007
+                                type: aromatics
+                                level: 1
                                 count: 3
-                              -
-                                ref: 01JTAXN0DE0000000000000008
-                                count: 3
-                            items:
-                              type: object
-                              properties:
-                                ref:
-                                  type: string
-                                  example: 01JTAXN0DE0000000000000001
-                                count:
-                                  type: integer
-                                  example: 5
-                          mainTastes:
-                            type: array
-                            example:
-                              -
-                                ref: 01JTAXN0DE0000000000000009
-                                count: 5
-                            items:
-                              type: object
-                              properties:
-                                ref:
-                                  type: string
-                                  example: 01JTAXN0DE0000000000000009
-                                count:
-                                  type: integer
-                                  example: 5
-                          defects:
-                            type: array
-                            example:
-                              -
-                                ref: 01JTAXN0DE000000000000000A
-                                count: 1
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000008
+                                    type: aromatics
+                                    level: 2
+                                    count: 3
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                            level: 0
+                            count: 5
+                            children: []
+                          -
+                            ref: 01JTAXN0DE000000000000000A
+                            type: defects
+                            level: 0
+                            count: 1
+                            children:
                               -
                                 ref: 01JTAXN0DE000000000000000B
+                                type: defects
+                                level: 1
                                 count: 1
-                            items:
-                              type: object
-                              properties:
-                                ref:
-                                  type: string
-                                  example: 01JTAXN0DE000000000000000A
-                                count:
-                                  type: integer
-                                  example: 1
+                                children: []
+                        items:
+                          type: object
+                          properties:
+                            ref:
+                              type: string
+                              example: 01JTAXN0DE0000000000000001
+                            type:
+                              type: string
+                              example: aromatics
+                            level:
+                              type: integer
+                              example: 0
+                            count:
+                              type: integer
+                              example: 5
+                            children:
+                              type: array
+                              example:
+                                -
+                                  ref: 01JTAXN0DE0000000000000002
+                                  type: aromatics
+                                  level: 1
+                                  count: 4
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000003
+                                      type: aromatics
+                                      level: 2
+                                      count: 4
+                                -
+                                  ref: 01JTAXN0DE0000000000000004
+                                  type: aromatics
+                                  level: 1
+                                  count: 2
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000005
+                                      type: aromatics
+                                      level: 2
+                                      count: 2
+                              items:
+                                type: object
+                                properties:
+                                  ref:
+                                    type: string
+                                    example: 01JTAXN0DE0000000000000002
+                                  type:
+                                    type: string
+                                    example: aromatics
+                                  level:
+                                    type: integer
+                                    example: 1
+                                  count:
+                                    type: integer
+                                    example: 4
+                                  children:
+                                    type: array
+                                    example:
+                                      - { ref: 01JTAXN0DE0000000000000003, type: aromatics, level: 2, count: 4 }
+                                    items:
+                                      type: object
+                                      properties: { ref: { type: string, example: 01JTAXN0DE0000000000000003 }, type: { type: string, example: aromatics }, level: { type: integer, example: 2 }, count: { type: integer, example: 4 } }
       tags:
         - Offerings
       security: []
@@ -3985,93 +4068,128 @@ paths:
                           type: flavor
                           level: 0
                           count: 5
-                        -
-                          ref: 01JTAXN0DE0000000000000002
-                          type: flavor
-                          level: 1
-                          count: 4
-                        -
-                          ref: 01JTAXN0DE0000000000000003
-                          type: flavor
-                          level: 2
-                          count: 4
-                        -
-                          ref: 01JTAXN0DE0000000000000004
-                          type: flavor
-                          level: 1
-                          count: 2
-                        -
-                          ref: 01JTAXN0DE0000000000000005
-                          type: flavor
-                          level: 2
-                          count: 2
+                          children:
+                            -
+                              ref: 01JTAXN0DE0000000000000002
+                              type: flavor
+                              level: 1
+                              count: 4
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000003
+                                  type: flavor
+                                  level: 2
+                                  count: 4
+                            -
+                              ref: 01JTAXN0DE0000000000000004
+                              type: flavor
+                              level: 1
+                              count: 2
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000005
+                                  type: flavor
+                                  level: 2
+                                  count: 2
                         -
                           ref: 01JTAXN0DE0000000000000006
                           type: aroma
                           level: 0
                           count: 3
-                        -
-                          ref: 01JTAXN0DE0000000000000007
-                          type: aroma
-                          level: 1
-                          count: 3
-                        -
-                          ref: 01JTAXN0DE0000000000000008
-                          type: aroma
-                          level: 2
-                          count: 3
+                          children:
+                            -
+                              ref: 01JTAXN0DE0000000000000007
+                              type: aroma
+                              level: 1
+                              count: 3
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000008
+                                  type: aroma
+                                  level: 2
+                                  count: 3
                         -
                           ref: 01JTAXN0DE0000000000000009
                           type: main_tastes
                           level: 0
                           count: 5
+                          children: []
                         -
                           ref: 01JTAXN0DE000000000000000A
                           type: defects
                           level: 0
                           count: 1
-                        -
-                          ref: 01JTAXN0DE000000000000000B
-                          type: defects
-                          level: 1
-                          count: 1
+                          children:
+                            -
+                              ref: 01JTAXN0DE000000000000000B
+                              type: defects
+                              level: 1
+                              count: 1
+                              children: []
                       cataConcordance:
-                        aromatics:
-                          -
-                            ref: 01JTAXN0DE0000000000000001
-                            count: 5
-                          -
-                            ref: 01JTAXN0DE0000000000000002
-                            count: 4
-                          -
-                            ref: 01JTAXN0DE0000000000000003
-                            count: 4
-                          -
-                            ref: 01JTAXN0DE0000000000000004
-                            count: 2
-                          -
-                            ref: 01JTAXN0DE0000000000000005
-                            count: 2
-                          -
-                            ref: 01JTAXN0DE0000000000000006
-                            count: 3
-                          -
-                            ref: 01JTAXN0DE0000000000000007
-                            count: 3
-                          -
-                            ref: 01JTAXN0DE0000000000000008
-                            count: 3
-                        mainTastes:
-                          -
-                            ref: 01JTAXN0DE0000000000000009
-                            count: 5
-                        defects:
-                          -
-                            ref: 01JTAXN0DE000000000000000A
-                            count: 1
-                          -
-                            ref: 01JTAXN0DE000000000000000B
-                            count: 1
+                        -
+                          ref: 01JTAXN0DE0000000000000001
+                          type: aromatics
+                          level: 0
+                          count: 5
+                          children:
+                            -
+                              ref: 01JTAXN0DE0000000000000002
+                              type: aromatics
+                              level: 1
+                              count: 4
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000003
+                                  type: aromatics
+                                  level: 2
+                                  count: 4
+                            -
+                              ref: 01JTAXN0DE0000000000000004
+                              type: aromatics
+                              level: 1
+                              count: 2
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000005
+                                  type: aromatics
+                                  level: 2
+                                  count: 2
+                        -
+                          ref: 01JTAXN0DE0000000000000006
+                          type: aromatics
+                          level: 0
+                          count: 3
+                          children:
+                            -
+                              ref: 01JTAXN0DE0000000000000007
+                              type: aromatics
+                              level: 1
+                              count: 3
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000008
+                                  type: aromatics
+                                  level: 2
+                                  count: 3
+                        -
+                          ref: 01JTAXN0DE0000000000000009
+                          type: main_tastes
+                          level: 0
+                          count: 5
+                          children: []
+                        -
+                          ref: 01JTAXN0DE000000000000000A
+                          type: defects
+                          level: 0
+                          count: 1
+                          children:
+                            -
+                              ref: 01JTAXN0DE000000000000000B
+                              type: defects
+                              level: 1
+                              count: 1
+                              children: []
                     -
                       ulid: 01K6A3M8Q2V7XH4T9B5N1RCW0E
                       evaluationCount: 0
@@ -4181,93 +4299,128 @@ paths:
                             type: flavor
                             level: 0
                             count: 5
-                          -
-                            ref: 01JTAXN0DE0000000000000002
-                            type: flavor
-                            level: 1
-                            count: 4
-                          -
-                            ref: 01JTAXN0DE0000000000000003
-                            type: flavor
-                            level: 2
-                            count: 4
-                          -
-                            ref: 01JTAXN0DE0000000000000004
-                            type: flavor
-                            level: 1
-                            count: 2
-                          -
-                            ref: 01JTAXN0DE0000000000000005
-                            type: flavor
-                            level: 2
-                            count: 2
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000002
+                                type: flavor
+                                level: 1
+                                count: 4
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000003
+                                    type: flavor
+                                    level: 2
+                                    count: 4
+                              -
+                                ref: 01JTAXN0DE0000000000000004
+                                type: flavor
+                                level: 1
+                                count: 2
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000005
+                                    type: flavor
+                                    level: 2
+                                    count: 2
                           -
                             ref: 01JTAXN0DE0000000000000006
                             type: aroma
                             level: 0
                             count: 3
-                          -
-                            ref: 01JTAXN0DE0000000000000007
-                            type: aroma
-                            level: 1
-                            count: 3
-                          -
-                            ref: 01JTAXN0DE0000000000000008
-                            type: aroma
-                            level: 2
-                            count: 3
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000007
+                                type: aroma
+                                level: 1
+                                count: 3
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000008
+                                    type: aroma
+                                    level: 2
+                                    count: 3
                           -
                             ref: 01JTAXN0DE0000000000000009
                             type: main_tastes
                             level: 0
                             count: 5
+                            children: []
                           -
                             ref: 01JTAXN0DE000000000000000A
                             type: defects
                             level: 0
                             count: 1
-                          -
-                            ref: 01JTAXN0DE000000000000000B
-                            type: defects
-                            level: 1
-                            count: 1
+                            children:
+                              -
+                                ref: 01JTAXN0DE000000000000000B
+                                type: defects
+                                level: 1
+                                count: 1
+                                children: []
                         cataConcordance:
-                          aromatics:
-                            -
-                              ref: 01JTAXN0DE0000000000000001
-                              count: 5
-                            -
-                              ref: 01JTAXN0DE0000000000000002
-                              count: 4
-                            -
-                              ref: 01JTAXN0DE0000000000000003
-                              count: 4
-                            -
-                              ref: 01JTAXN0DE0000000000000004
-                              count: 2
-                            -
-                              ref: 01JTAXN0DE0000000000000005
-                              count: 2
-                            -
-                              ref: 01JTAXN0DE0000000000000006
-                              count: 3
-                            -
-                              ref: 01JTAXN0DE0000000000000007
-                              count: 3
-                            -
-                              ref: 01JTAXN0DE0000000000000008
-                              count: 3
-                          mainTastes:
-                            -
-                              ref: 01JTAXN0DE0000000000000009
-                              count: 5
-                          defects:
-                            -
-                              ref: 01JTAXN0DE000000000000000A
-                              count: 1
-                            -
-                              ref: 01JTAXN0DE000000000000000B
-                              count: 1
+                          -
+                            ref: 01JTAXN0DE0000000000000001
+                            type: aromatics
+                            level: 0
+                            count: 5
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000002
+                                type: aromatics
+                                level: 1
+                                count: 4
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000003
+                                    type: aromatics
+                                    level: 2
+                                    count: 4
+                              -
+                                ref: 01JTAXN0DE0000000000000004
+                                type: aromatics
+                                level: 1
+                                count: 2
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000005
+                                    type: aromatics
+                                    level: 2
+                                    count: 2
+                          -
+                            ref: 01JTAXN0DE0000000000000006
+                            type: aromatics
+                            level: 0
+                            count: 3
+                            children:
+                              -
+                                ref: 01JTAXN0DE0000000000000007
+                                type: aromatics
+                                level: 1
+                                count: 3
+                                children:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000008
+                                    type: aromatics
+                                    level: 2
+                                    count: 3
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                            level: 0
+                            count: 5
+                            children: []
+                          -
+                            ref: 01JTAXN0DE000000000000000A
+                            type: defects
+                            level: 0
+                            count: 1
+                            children:
+                              -
+                                ref: 01JTAXN0DE000000000000000B
+                                type: defects
+                                level: 1
+                                count: 1
+                                children: []
                       -
                         ulid: 01K6A3M8Q2V7XH4T9B5N1RCW0E
                         evaluationCount: 0
@@ -4432,56 +4585,64 @@ paths:
                               type: flavor
                               level: 0
                               count: 5
-                            -
-                              ref: 01JTAXN0DE0000000000000002
-                              type: flavor
-                              level: 1
-                              count: 4
-                            -
-                              ref: 01JTAXN0DE0000000000000003
-                              type: flavor
-                              level: 2
-                              count: 4
-                            -
-                              ref: 01JTAXN0DE0000000000000004
-                              type: flavor
-                              level: 1
-                              count: 2
-                            -
-                              ref: 01JTAXN0DE0000000000000005
-                              type: flavor
-                              level: 2
-                              count: 2
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000002
+                                  type: flavor
+                                  level: 1
+                                  count: 4
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000003
+                                      type: flavor
+                                      level: 2
+                                      count: 4
+                                -
+                                  ref: 01JTAXN0DE0000000000000004
+                                  type: flavor
+                                  level: 1
+                                  count: 2
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000005
+                                      type: flavor
+                                      level: 2
+                                      count: 2
                             -
                               ref: 01JTAXN0DE0000000000000006
                               type: aroma
                               level: 0
                               count: 3
-                            -
-                              ref: 01JTAXN0DE0000000000000007
-                              type: aroma
-                              level: 1
-                              count: 3
-                            -
-                              ref: 01JTAXN0DE0000000000000008
-                              type: aroma
-                              level: 2
-                              count: 3
+                              children:
+                                -
+                                  ref: 01JTAXN0DE0000000000000007
+                                  type: aroma
+                                  level: 1
+                                  count: 3
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000008
+                                      type: aroma
+                                      level: 2
+                                      count: 3
                             -
                               ref: 01JTAXN0DE0000000000000009
                               type: main_tastes
                               level: 0
                               count: 5
+                              children: []
                             -
                               ref: 01JTAXN0DE000000000000000A
                               type: defects
                               level: 0
                               count: 1
-                            -
-                              ref: 01JTAXN0DE000000000000000B
-                              type: defects
-                              level: 1
-                              count: 1
+                              children:
+                                -
+                                  ref: 01JTAXN0DE000000000000000B
+                                  type: defects
+                                  level: 1
+                                  count: 1
+                                  children: []
                           items:
                             type: object
                             properties:
@@ -4497,78 +4658,159 @@ paths:
                               count:
                                 type: integer
                                 example: 5
+                              children:
+                                type: array
+                                example:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000002
+                                    type: flavor
+                                    level: 1
+                                    count: 4
+                                    children:
+                                      - { ref: 01JTAXN0DE0000000000000003, type: flavor, level: 2, count: 4 }
+                                  -
+                                    ref: 01JTAXN0DE0000000000000004
+                                    type: flavor
+                                    level: 1
+                                    count: 2
+                                    children:
+                                      - { ref: 01JTAXN0DE0000000000000005, type: flavor, level: 2, count: 2 }
+                                items:
+                                  type: object
+                                  properties:
+                                    ref:
+                                      type: string
+                                      example: 01JTAXN0DE0000000000000002
+                                    type:
+                                      type: string
+                                      example: flavor
+                                    level:
+                                      type: integer
+                                      example: 1
+                                    count:
+                                      type: integer
+                                      example: 4
+                                    children:
+                                      type: array
+                                      example: [{ ref: 01JTAXN0DE0000000000000003, type: flavor, level: 2, count: 4 }]
+                                      items: { type: object, properties: { ref: { type: string, example: 01JTAXN0DE0000000000000003 }, type: { type: string, example: flavor }, level: { type: integer, example: 2 }, count: { type: integer, example: 4 } } }
                         cataConcordance:
-                          type: object
-                          properties:
-                            aromatics:
-                              type: array
-                              example:
-                                -
-                                  ref: 01JTAXN0DE0000000000000001
-                                  count: 5
+                          type: array
+                          example:
+                            -
+                              ref: 01JTAXN0DE0000000000000001
+                              type: aromatics
+                              level: 0
+                              count: 5
+                              children:
                                 -
                                   ref: 01JTAXN0DE0000000000000002
+                                  type: aromatics
+                                  level: 1
                                   count: 4
-                                -
-                                  ref: 01JTAXN0DE0000000000000003
-                                  count: 4
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000003
+                                      type: aromatics
+                                      level: 2
+                                      count: 4
                                 -
                                   ref: 01JTAXN0DE0000000000000004
+                                  type: aromatics
+                                  level: 1
                                   count: 2
-                                -
-                                  ref: 01JTAXN0DE0000000000000005
-                                  count: 2
-                                -
-                                  ref: 01JTAXN0DE0000000000000006
-                                  count: 3
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000005
+                                      type: aromatics
+                                      level: 2
+                                      count: 2
+                            -
+                              ref: 01JTAXN0DE0000000000000006
+                              type: aromatics
+                              level: 0
+                              count: 3
+                              children:
                                 -
                                   ref: 01JTAXN0DE0000000000000007
+                                  type: aromatics
+                                  level: 1
                                   count: 3
-                                -
-                                  ref: 01JTAXN0DE0000000000000008
-                                  count: 3
-                              items:
-                                type: object
-                                properties:
-                                  ref:
-                                    type: string
-                                    example: 01JTAXN0DE0000000000000001
-                                  count:
-                                    type: integer
-                                    example: 5
-                            mainTastes:
-                              type: array
-                              example:
-                                -
-                                  ref: 01JTAXN0DE0000000000000009
-                                  count: 5
-                              items:
-                                type: object
-                                properties:
-                                  ref:
-                                    type: string
-                                    example: 01JTAXN0DE0000000000000009
-                                  count:
-                                    type: integer
-                                    example: 5
-                            defects:
-                              type: array
-                              example:
-                                -
-                                  ref: 01JTAXN0DE000000000000000A
-                                  count: 1
+                                  children:
+                                    -
+                                      ref: 01JTAXN0DE0000000000000008
+                                      type: aromatics
+                                      level: 2
+                                      count: 3
+                            -
+                              ref: 01JTAXN0DE0000000000000009
+                              type: main_tastes
+                              level: 0
+                              count: 5
+                              children: []
+                            -
+                              ref: 01JTAXN0DE000000000000000A
+                              type: defects
+                              level: 0
+                              count: 1
+                              children:
                                 -
                                   ref: 01JTAXN0DE000000000000000B
+                                  type: defects
+                                  level: 1
                                   count: 1
-                              items:
-                                type: object
-                                properties:
-                                  ref:
-                                    type: string
-                                    example: 01JTAXN0DE000000000000000A
-                                  count:
-                                    type: integer
-                                    example: 1
+                                  children: []
+                          items:
+                            type: object
+                            properties:
+                              ref:
+                                type: string
+                                example: 01JTAXN0DE0000000000000001
+                              type:
+                                type: string
+                                example: aromatics
+                              level:
+                                type: integer
+                                example: 0
+                              count:
+                                type: integer
+                                example: 5
+                              children:
+                                type: array
+                                example:
+                                  -
+                                    ref: 01JTAXN0DE0000000000000002
+                                    type: aromatics
+                                    level: 1
+                                    count: 4
+                                    children:
+                                      - { ref: 01JTAXN0DE0000000000000003, type: aromatics, level: 2, count: 4 }
+                                  -
+                                    ref: 01JTAXN0DE0000000000000004
+                                    type: aromatics
+                                    level: 1
+                                    count: 2
+                                    children:
+                                      - { ref: 01JTAXN0DE0000000000000005, type: aromatics, level: 2, count: 2 }
+                                items:
+                                  type: object
+                                  properties:
+                                    ref:
+                                      type: string
+                                      example: 01JTAXN0DE0000000000000002
+                                    type:
+                                      type: string
+                                      example: aromatics
+                                    level:
+                                      type: integer
+                                      example: 1
+                                    count:
+                                      type: integer
+                                      example: 4
+                                    children:
+                                      type: array
+                                      example: [{ ref: 01JTAXN0DE0000000000000003, type: aromatics, level: 2, count: 4 }]
+                                      items: { type: object, properties: { ref: { type: string, example: 01JTAXN0DE0000000000000003 }, type: { type: string, example: aromatics }, level: { type: integer, example: 2 }, count: { type: integer, example: 4 } } }
                   links:
                     type: object
                     properties:

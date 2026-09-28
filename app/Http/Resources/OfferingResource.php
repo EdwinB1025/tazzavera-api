@@ -34,15 +34,7 @@ class OfferingResource extends JsonResource
             'location' => new LocationResource($this->whenLoaded('location')),
             'coffeeInventory' => new CoffeeInventoryResource($this->whenLoaded('coffeeInventory')),
             'sensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('sensoryTastes')),
-            'cataConcordance' => $this->whenLoaded('cataTastes', fn() => $this->groupCataByType()),
+            'cataConcordance' => OfferingTasteResource::collection($this->whenLoaded('cataTastes')),
         ];
-    }
-
-    private function groupCataByType(): array
-    {
-        return $this->cataTastes
-            ->groupBy(fn($taste) => Str::camel($taste->type))
-            ->map(fn($group) => OfferingTasteResource::collection($group->values()))
-            ->all();
     }
 }
