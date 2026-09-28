@@ -16,6 +16,12 @@ class User extends JsonResource
     public function toArray(Request $model): array
     {
         /** EDB: hidden attributes are not exposed*/
-        return parent::toArray($model);
+        return [
+            'ulid'    => $this->ulid,
+            'name'    => $this->name,
+            'surname' => $this->surname,
+            'email'   => $this->email,
+            'role'    => $this->getRoleNames()->first(),
+        ];
     }
 }

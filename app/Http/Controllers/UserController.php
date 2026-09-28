@@ -29,10 +29,7 @@ class UserController extends Controller
      *
      * @unauthenticated
      *
-     * @apiResource App\Http\Resources\User
-     * @apiResourceModel App\Models\User
-     *
-     * @response 201 scenario="Created" {"data": {}, "message": "Profile created."}
+     * @responseFile 201 storage/scribe/responses/users.store.json
      */
     public function store(StoreUserRequest $request)
     {
@@ -69,10 +66,8 @@ class UserController extends Controller
      *
      * @group Users
      *
-     * @authenticated
-     *
-     * @apiResource App\Http\Resources\User
-     * @apiResourceModel App\Models\User
+     * @authenticated  
+     * @responseFile storage/scribe/responses/users.show.json
      */
     public function show(Request $request)
     {
@@ -93,10 +88,11 @@ class UserController extends Controller
      *
      * @authenticated
      *
-     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam user_ulid string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
-     * @response 200 scenario="Updated" {"data": {}, "message": "Profile updated."}
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
+     * 
+     * @responseFile storage/scribe/responses/users.update.json
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -120,7 +116,7 @@ class UserController extends Controller
      *
      * @authenticated
      *
-     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam user_ulid string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @response 200 scenario="Password updated" {"message": "Password updated successfully."}
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
@@ -146,7 +142,7 @@ class UserController extends Controller
      *
      * @authenticated
      *
-     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam user_ulid string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @response 200 scenario="Deactivated" {"message": "Profile deactivated."}
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
@@ -172,7 +168,7 @@ class UserController extends Controller
      *
      * @authenticated
      *
-     * @urlParam user string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam user_ulid string required The ULID of the user. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @response 200 scenario="Deleted" {"message": "Profile deleted."}
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}

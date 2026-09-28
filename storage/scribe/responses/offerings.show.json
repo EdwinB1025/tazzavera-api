@@ -1,0 +1,182 @@
+{
+    "data": {
+        "ulid": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+        "evaluationCount": 5,
+        "defectiveEvaluationCount": 1,
+        "cuppingAvg": "84.25",
+        "fragranceAffectiveAvg": "7.2",
+        "aromaAffectiveAvg": "7.8",
+        "flavorAffectiveAvg": "7.5",
+        "aftertasteAffectiveAvg": "7.1",
+        "acidityAffectiveAvg": "7.4",
+        "sweetnessAffectiveAvg": "7.6",
+        "mouthfeelAffectiveAvg": "7.0",
+        "overallAffectiveAvg": "7.9",
+        "concordanceAffective": "0.812",
+        "concordanceDescriptive": "0.740",
+        "verificationStatus": "verified",
+        "location": {
+            "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PA",
+            "name": "Tazavera Gràcia",
+            "description": "Barra de especialidad en Gràcia.",
+            "latitud": "41.40290000",
+            "longitud": "2.15650000"
+        },
+        "coffeeInventory": {
+            "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XC",
+            "roastLot": "L-2026-014",
+            "productionDate": "2026-09-19",
+            "coffee": {
+                "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
+                "name": "Huila El Mirador",
+                "roastLevel": "medium",
+                "process": "washed",
+                "variety": "Caturra",
+                "producer": null,
+                "country": "Colombia",
+                "region": "Huila",
+                "altitude": 1800,
+                "lot": "HM-07"
+            },
+            "roastery": {
+                "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                "name": "Nómada Roasters",
+                "description": "Tostador de especialidad en Barcelona."
+            }
+        },
+        "sensoryTaxonomy": [
+            {
+                "ref": "01JTAXN0DE0000000000000001",
+                "type": "flavor",
+                "level": 0,
+                "count": 5,
+                "children": [
+                    {
+                        "ref": "01JTAXN0DE0000000000000002",
+                        "type": "flavor",
+                        "level": 1,
+                        "count": 4,
+                        "children": [
+                            {
+                                "ref": "01JTAXN0DE0000000000000003",
+                                "type": "flavor",
+                                "level": 2,
+                                "count": 4
+                            }
+                        ]
+                    },
+                    {
+                        "ref": "01JTAXN0DE0000000000000004",
+                        "type": "flavor",
+                        "level": 1,
+                        "count": 2,
+                        "children": [
+                            {
+                                "ref": "01JTAXN0DE0000000000000005",
+                                "type": "flavor",
+                                "level": 2,
+                                "count": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ref": "01JTAXN0DE0000000000000006",
+                "type": "aroma",
+                "level": 0,
+                "count": 3,
+                "children": [
+                    {
+                        "ref": "01JTAXN0DE0000000000000007",
+                        "type": "aroma",
+                        "level": 1,
+                        "count": 3,
+                        "children": [
+                            {
+                                "ref": "01JTAXN0DE0000000000000008",
+                                "type": "aroma",
+                                "level": 2,
+                                "count": 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ref": "01JTAXN0DE0000000000000009",
+                "type": "main_tastes",
+                "level": 0,
+                "count": 5,
+                "children": []
+            },
+            {
+                "ref": "01JTAXN0DE000000000000000A",
+                "type": "defects",
+                "level": 0,
+                "count": 1,
+                "children": [
+                    {
+                        "ref": "01JTAXN0DE000000000000000B",
+                        "type": "defects",
+                        "level": 1,
+                        "count": 1,
+                        "children": []
+                    }
+                ]
+            }
+        ],
+        "cataConcordance": {
+            "aromatics": [
+                {
+                    "ref": "01JTAXN0DE0000000000000001",
+                    "count": 5
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000002",
+                    "count": 4
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000003",
+                    "count": 4
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000004",
+                    "count": 2
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000005",
+                    "count": 2
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000006",
+                    "count": 3
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000007",
+                    "count": 3
+                },
+                {
+                    "ref": "01JTAXN0DE0000000000000008",
+                    "count": 3
+                }
+            ],
+            "mainTastes": [
+                {
+                    "ref": "01JTAXN0DE0000000000000009",
+                    "count": 5
+                }
+            ],
+            "defects": [
+                {
+                    "ref": "01JTAXN0DE000000000000000A",
+                    "count": 1
+                },
+                {
+                    "ref": "01JTAXN0DE000000000000000B",
+                    "count": 1
+                }
+            ]
+        }
+    }
+}

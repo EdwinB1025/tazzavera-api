@@ -1,0 +1,10 @@
+{
+    "data": {
+        "ulid": "01M35F5RX4ADGC3CSDXXYB08DC",
+        "name": "Laura",
+        "surname": "Gómez",
+        "email": "laura@tazavera.test",
+        "role": "coffeeshop"
+    },
+    "message": "Profile created."
+}

@@ -25,6 +25,7 @@ class EvaluationController extends Controller
      * @group Evaluations
      *
      * @unauthenticated
+     * @responseFile storage/scribe/responses/evaluations.index.json
      */
     public function index(FilterEvaluationRequest $request)
     {
@@ -54,10 +55,7 @@ class EvaluationController extends Controller
      *
      * @authenticated
      *
-     * @apiResource App\Http\Resources\EvaluationResource
-     * @apiResourceModel App\Models\Evaluation
-     *
-     * @response 201 scenario="Created" {"data": {}, "message": "Evaluation created."}
+     * @responseFile 201 storage/scribe/responses/evaluations.store.json
      */
     public function store(StoreEvaluationRequest $request)
     {
@@ -78,8 +76,10 @@ class EvaluationController extends Controller
      * @group Evaluations
      *
      * @unauthenticated
-     *
-     * @urlParam evaluation string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * 
+     * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * 
+     * @responseFile storage/scribe/responses/evaluations.show.json
      */
     public function show(Evaluation $evaluation)
     {
@@ -107,10 +107,12 @@ class EvaluationController extends Controller
      *
      * @authenticated
      *
-     * @urlParam evaluation string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}
      * @response 409 scenario="Evaluation already closed" {"message": "Evaluation cannot be updated."}
+     * 
+     * @responseFile storage/scribe/responses/evaluations.update.json
      */
     public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
     {
@@ -150,8 +152,8 @@ class EvaluationController extends Controller
      *
      * @authenticated
      *
-     * @urlParam evaluation string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
-     *
+     * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * 
      * @response 200 scenario="Closed successfully" {"message": "Evaluation closed."}
      * @response 200 scenario="Already closed" {"message": "Evaluation closed."}
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}
@@ -188,8 +190,7 @@ class EvaluationController extends Controller
      * @group Evaluations
      *
      * @authenticated
-     *
-     * @urlParam evaluation string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA        
      *
      * @response 200 scenario="Deleted" {"message": "Evaluation(s) deleted."}
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}

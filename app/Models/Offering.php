@@ -294,9 +294,9 @@ class Offering extends Model
 
     /** Relationships */
 
-    public function axisConcordances(): HasMany
+    public function cataTastes(): HasMany
     {
-        return $this->hasMany(AxisConcordance::class);
+        return $this->offeringTastes()->cataAggregate();
     }
 
     public function coffeeInventory(): BelongsTo
@@ -307,6 +307,11 @@ class Offering extends Model
     public function offeringTastes(): HasMany
     {
         return $this->hasMany(OfferingTaste::class);
+    }
+
+    public function sensoryTastes(): HasMany
+    {
+        return $this->offeringTastes()->sensoryAxes();
     }
 
     public function evaluations(): HasMany

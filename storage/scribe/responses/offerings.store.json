@@ -1,0 +1,75 @@
+{
+    "data": [
+        {
+            "ulid": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+            "evaluationCount": 0,
+            "defectiveEvaluationCount": 0,
+            "verificationStatus": "provisional",
+            "location": {
+                "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PA",
+                "name": "Tazavera Gràcia",
+                "description": "Barra de especialidad en Gràcia.",
+                "latitud": "41.40290000",
+                "longitud": "2.15650000"
+            },
+            "coffeeInventory": {
+                "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XC",
+                "roastLot": "L-2026-014",
+                "productionDate": "2026-09-19",
+                "coffee": {
+                    "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
+                    "name": "Huila El Mirador",
+                    "roastLevel": "medium",
+                    "process": "washed",
+                    "variety": "Caturra",
+                    "producer": null,
+                    "country": "Colombia",
+                    "region": "Huila",
+                    "altitude": 1800,
+                    "lot": "HM-07"
+                },
+                "roastery": {
+                    "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                    "name": "Nómada Roasters",
+                    "description": "Tostador de especialidad en Barcelona."
+                }
+            }
+        },
+        {
+            "ulid": "01K6A3M8Q2V7XH4T9B5N1RCW0E",
+            "evaluationCount": 0,
+            "defectiveEvaluationCount": 0,
+            "verificationStatus": "provisional",
+            "location": {
+                "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PB",
+                "name": "Tazavera Born",
+                "description": "Tienda y barra en el Born.",
+                "latitud": "41.38490000",
+                "longitud": "2.18210000"
+            },
+            "coffeeInventory": {
+                "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XC",
+                "roastLot": "L-2026-014",
+                "productionDate": "2026-09-19",
+                "coffee": {
+                    "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
+                    "name": "Huila El Mirador",
+                    "roastLevel": "medium",
+                    "process": "washed",
+                    "variety": "Caturra",
+                    "producer": null,
+                    "country": "Colombia",
+                    "region": "Huila",
+                    "altitude": 1800,
+                    "lot": "HM-07"
+                },
+                "roastery": {
+                    "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                    "name": "Nómada Roasters",
+                    "description": "Tostador de especialidad en Barcelona."
+                }
+            }
+        }
+    ],
+    "message": "Offering(s) created."
+}

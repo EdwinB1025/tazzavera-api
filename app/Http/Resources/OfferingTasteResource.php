@@ -15,7 +15,7 @@ class OfferingTasteResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'taxonomy' => new TaxonomyResource($this->whenLoaded('taxonomy')),
+            'ref' => $this->whenLoaded('taxonomy', fn() => $this->taxonomy->ulid),
             'type' => $this->type,
             'level' => $this->level,
             'count' => $this->count,

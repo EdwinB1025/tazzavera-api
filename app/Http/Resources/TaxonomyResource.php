@@ -15,13 +15,14 @@ class TaxonomyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'ulid' => $this->ulid,
             'level' => $this->level,
             'nameEn' => $this->name_en,
             'nameEs' => $this->name_es,
             'descriptionEn' => $this->description_en,
             'descriptionEs' => $this->description_es,
             'color' => $this->color,
-            'categories' => $this->categories,
+            'categories' => $this->categories ?? [],
             'children' => TaxonomyResource::collection($this->whenLoaded('children')),
         ];
     }

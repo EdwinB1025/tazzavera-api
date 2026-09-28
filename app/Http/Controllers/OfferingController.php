@@ -26,12 +26,13 @@ class OfferingController extends Controller
      * @group Offerings
      *
      * @unauthenticated
+     * @responseFile storage/scribe/responses/offerings.index.json
      */
     public function index(FilterOfferingRequest $request)
     {
         $offerings = Offering::query()
             ->filter($request->validated())
-            ->with('offeringTastes.taxonomy', 'coffeeInventory.roastery', 'coffeeInventory.coffee', 'location')
+            ->with('sensoryTastes.taxonomy', 'cataTastes.taxonomy', 'coffeeInventory.roastery', 'coffeeInventory.coffee', 'location')
             ->paginate();
 
         return OfferingResource::collection($offerings);
@@ -51,6 +52,7 @@ class OfferingController extends Controller
      * @group Offerings
      *
      * @authenticated
+     * @responseFile 201 storage/scribe/responses/offerings.store.json
      */
     public function store(StoreOfferingRequest $request)
     {
@@ -95,7 +97,8 @@ class OfferingController extends Controller
      *
      * @unauthenticated
      *
-     * @urlParam offering string required The ULID of the offering. Example: 01J8ZKQH3M7...
+     * @urlParam offering_ulid string required The ULID of the offering. Example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+     * @responseFile storage/scribe/responses/offerings.show.json
      */
     public function show(Offering $offering)
     {
@@ -103,10 +106,11 @@ class OfferingController extends Controller
             'location',
             'coffeeInventory.coffee',
             'coffeeInventory.roastery',
-            'offeringTastes' => fn($q) => $q->whereNull('parent_id'),
-            'offeringTastes.taxonomy',
-            'offeringTastes.children.taxonomy',
-            'offeringTastes.children.children.taxonomy',
+            'sensoryTastes' => fn($q) => $q->whereNull('parent_id'),
+            'sensoryTastes.taxonomy',
+            'sensoryTastes.children.taxonomy',
+            'sensoryTastes.children.children.taxonomy',
+            'cataTastes.taxonomy',
         ]);
 
         return new OfferingResource($offering);
@@ -123,10 +127,9 @@ class OfferingController extends Controller
      * @group Offerings
      *
      * @authenticated
-     *
-     * @urlParam offering string required The ULID of the offering. Example: 01J8ZKQH3M7...
-     *
-     * @response 200 scenario="Deleted" {"message": "Offering deleted."}
+     * @urlParam offering_ulid string required The ULID of the offering. Example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+     * 
+     * @response 200 scenario="Deleted" {"message": "Offering(s) deleted."}
      */
     public function destroy(Offering $offering)
     {
@@ -148,8 +151,8 @@ class OfferingController extends Controller
      * @group Offerings
      *
      * @authenticated
-     *
-     * @response 200 scenario="Deleted" {"message": "Offering deleted."}
+     * 
+     * @response 200 scenario="Deleted" {"message": "Offering(s) deleted."}
      */
     public function massDestroy(MassDeleteOfferingRequest $request)
     {

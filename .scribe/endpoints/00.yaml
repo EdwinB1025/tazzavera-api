@@ -141,16 +141,10 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '{"data":{"id":146,"ulid":"01M36ZFM1WMWH1C5H6SCKRK2YH","name":"Ms. Audra Crooks II","surname":"Rempel","email":"okon.justina@example.com","email_verified_at":"2026-09-23T11:12:44.000000Z","two_factor_secret":null,"two_factor_recovery_codes":null,"two_factor_confirmed_at":null,"created_at":"2026-09-23T11:12:45.000000Z","updated_at":"2026-09-23T11:12:45.000000Z","deleted_at":null}}'
+        status: 201
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\r\n        \"name\": \"Laura\",\r\n        \"surname\": \"Gómez\",\r\n        \"email\": \"laura@tazavera.test\",\r\n        \"role\": \"coffeeshop\"\r\n    },\r\n    \"message\": \"Profile created.\"\r\n}"
         headers: []
         description: ''
-      -
-        custom: []
-        status: 201
-        content: '{"data": {}, "message": "Profile created."}'
-        headers: []
-        description: Created
     responseFields: []
     auth: []
     controller: null
@@ -189,7 +183,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data":{"id":147,"ulid":"01M36ZFMPXX6BC25N6XDF0EXZ5","name":"Morgan Hirthe","surname":"Cronin","email":"emelie.baumbach@example.net","email_verified_at":"2026-09-23T11:12:45.000000Z","two_factor_secret":null,"two_factor_recovery_codes":null,"two_factor_confirmed_at":null,"created_at":"2026-09-23T11:12:45.000000Z","updated_at":"2026-09-23T11:12:45.000000Z","deleted_at":null}}'
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DD\",\r\n        \"name\": \"Andrés\",\r\n        \"surname\": \"Gómez\",\r\n        \"email\": \"andres@tazavera.test\",\r\n        \"role\": \"specialist\"\r\n    }\r\n}"
         headers: []
         description: ''
     responseFields: []
@@ -228,17 +222,6 @@ endpoints:
       user_ulid:
         custom: []
         name: user_ulid
-        description: ''
-        required: true
-        example: 01M35EKKNQT2NCB7QMBW0YR13D
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      user:
-        custom: []
-        name: user
         description: 'The ULID of the user.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -248,8 +231,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_ulid: 01M35EKKNQT2NCB7QMBW0YR13D
-      user: 01M35F5RX4ADGC3CSDXXYB08DA
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -295,9 +277,9 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {}, "message": "Profile updated."}'
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\r\n        \"name\": \"Laura\",\r\n        \"surname\": \"Gómez Ruiz\",\r\n        \"email\": \"laura@tazavera.test\",\r\n        \"role\": \"coffeeshop\"\r\n    },\r\n    \"message\": \"Profile updated.\"\r\n}"
         headers: []
-        description: Updated
+        description: ''
       -
         custom: []
         status: 403
@@ -340,17 +322,6 @@ endpoints:
       user_ulid:
         custom: []
         name: user_ulid
-        description: ''
-        required: true
-        example: 01M35EKKNQT2NCB7QMBW0YR13D
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      user:
-        custom: []
-        name: user
         description: 'The ULID of the user.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -360,8 +331,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_ulid: 01M35EKKNQT2NCB7QMBW0YR13D
-      user: 01M35F5RX4ADGC3CSDXXYB08DA
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -452,17 +422,6 @@ endpoints:
       user_ulid:
         custom: []
         name: user_ulid
-        description: ''
-        required: true
-        example: 01M35EKKNQT2NCB7QMBW0YR13D
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      user:
-        custom: []
-        name: user
         description: 'The ULID of the user.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -472,8 +431,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_ulid: 01M35EKKNQT2NCB7QMBW0YR13D
-      user: 01M35F5RX4ADGC3CSDXXYB08DA
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -528,17 +486,6 @@ endpoints:
       user_ulid:
         custom: []
         name: user_ulid
-        description: ''
-        required: true
-        example: 01M35EKKNQT2NCB7QMBW0YR13D
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      user:
-        custom: []
-        name: user
         description: 'The ULID of the user.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -548,8 +495,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user_ulid: 01M35EKKNQT2NCB7QMBW0YR13D
-      user: 01M35F5RX4ADGC3CSDXXYB08DA
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

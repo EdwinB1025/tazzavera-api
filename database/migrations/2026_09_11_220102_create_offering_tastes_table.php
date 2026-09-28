@@ -26,6 +26,7 @@ return new class extends Migration
                 'flavor',
                 'aftertaste',
                 'mouthfeel',
+                'aromatics',
             ]);
             $table->enum('level', ['0', '1', '2']);
             $table->unsignedBigInteger('parent_id')->nullable();
