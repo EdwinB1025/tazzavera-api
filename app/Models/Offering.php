@@ -294,6 +294,11 @@ class Offering extends Model
 
     /** Relationships */
 
+    public function axisConcordances(): HasMany
+    {
+        return $this->hasMany(AxisConcordance::class);
+    }
+
     public function cataTastes(): HasMany
     {
         return $this->offeringTastes()->cataAggregate()->roots();
