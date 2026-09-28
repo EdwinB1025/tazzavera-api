@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AxisConcordance;
 use App\Models\Offering;
+use App\Models\OfferingTaste;
 use App\Models\OlfactoryTaxonomy;
 
 class OfferingConsensusService
@@ -122,6 +123,13 @@ class OfferingConsensusService
                 $marks[$key]['taxonomy_ref'] = $taste->taxonomy_ref;
                 $marks[$key]['type'] = $taste->type;
                 $marks[$key]['evals'][$evaluation->id] = true;
+
+                if (in_array($taste->type, OfferingTaste::AROMATIC_TYPES, true)) {
+                    $groupKey = $taste->taxonomy_ref . '|' . OfferingTaste::AROMATIC_GROUP;
+                    $marks[$groupKey]['taxonomy_ref'] = $taste->taxonomy_ref;
+                    $marks[$groupKey]['type'] = OfferingTaste::AROMATIC_GROUP;
+                    $marks[$groupKey]['evals'][$evaluation->id] = true;
+                }
             }
         }
 

@@ -29,7 +29,7 @@ test('specialist_create_evaluation', function () {
         defectsCount: 0
     );
 
-    dump($payLoad);
+    //dump($payLoad);
 
     $response = $this->withToken($token)
         ->postJson('/evaluations', $payLoad);

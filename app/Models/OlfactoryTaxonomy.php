@@ -25,6 +25,10 @@ class OlfactoryTaxonomy extends Model
 {
     use HasPublicUlid, HasFactory;
 
+    protected $casts = [
+        'categories' => 'array',
+    ];
+
     //**Inner relationships with childreen */
 
     public function parent(): BelongsTo

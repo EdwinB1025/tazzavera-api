@@ -25,17 +25,6 @@ endpoints:
       evaluation_ulid:
         custom: []
         name: evaluation_ulid
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      evaluation:
-        custom: []
-        name: evaluation
         description: 'The ULID of the evaluation.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -45,8 +34,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation_ulid: architecto
-      evaluation: 01M35F5RX4ADGC3CSDXXYB08DA
+      evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -55,15 +43,10 @@ endpoints:
     responses:
       -
         custom: []
-        status: 404
-        content: |-
-          {
-              "message": "No query results for model [App\\Models\\Evaluation] architecto"
-          }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
+        status: 200
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\r\n        \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\r\n        \"evaluationType\": \"specialist\",\r\n        \"status\": \"open\",\r\n        \"extractionMethod\": \"espresso\",\r\n        \"cuppingScore\": null,\r\n        \"isDefective\": true,\r\n        \"descriptive\": {\r\n            \"fragrance\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 11,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 9,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 8,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"affective\": {\r\n            \"fragrance\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"overall\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"extrinsics\": {\r\n            \"farming\": null,\r\n            \"processing\": null,\r\n            \"trading\": null,\r\n            \"certifications\": null,\r\n            \"generalObservation\": null\r\n        },\r\n        \"tastes\": [\r\n            {\r\n                \"ref\": \"01JTAXN0DE000000000000000B\",\r\n                \"type\": \"defects\"\r\n            },\r\n            {\r\n                \"ref\": \"01JTAXN0DE0000000000000009\",\r\n                \"type\": \"main_tastes\"\r\n            }\r\n        ]\r\n    }\r\n}"
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -227,12 +210,10 @@ endpoints:
     responses:
       -
         custom: []
-        status: 422
-        content: '{"message":"The selected evaluator id is invalid. (and 2 more errors)","errors":{"evaluatorId":["The selected evaluator id is invalid."],"coffeeId":["The selected coffee id is invalid."],"locationId":["The selected location id is invalid."]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-        description: null
+        status: 200
+        content: "{\r\n    \"data\": [\r\n        {\r\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\r\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\r\n            \"evaluationType\": \"specialist\",\r\n            \"status\": \"open\",\r\n            \"extractionMethod\": \"espresso\",\r\n            \"cuppingScore\": null,\r\n            \"isDefective\": true,\r\n            \"descriptive\": {\r\n                \"fragrance\": {\r\n                    \"score\": 10,\r\n                    \"note\": null\r\n                },\r\n                \"aroma\": {\r\n                    \"score\": 11,\r\n                    \"note\": null\r\n                },\r\n                \"flavor\": {\r\n                    \"score\": 0,\r\n                    \"note\": null\r\n                },\r\n                \"aftertaste\": {\r\n                    \"score\": 0,\r\n                    \"note\": null\r\n                },\r\n                \"acidity\": {\r\n                    \"score\": 9,\r\n                    \"note\": null\r\n                },\r\n                \"sweetness\": {\r\n                    \"score\": 10,\r\n                    \"note\": null\r\n                },\r\n                \"mouthfeel\": {\r\n                    \"score\": 8,\r\n                    \"note\": null\r\n                }\r\n            },\r\n            \"affective\": {\r\n                \"fragrance\": {\r\n                    \"score\": 6,\r\n                    \"note\": null\r\n                },\r\n                \"aroma\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"flavor\": {\r\n                    \"score\": 0,\r\n                    \"note\": null\r\n                },\r\n                \"aftertaste\": {\r\n                    \"score\": 0,\r\n                    \"note\": null\r\n                },\r\n                \"acidity\": {\r\n                    \"score\": 6,\r\n                    \"note\": null\r\n                },\r\n                \"sweetness\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"mouthfeel\": {\r\n                    \"score\": 6,\r\n                    \"note\": null\r\n                },\r\n                \"overall\": {\r\n                    \"score\": 0,\r\n                    \"note\": null\r\n                }\r\n            },\r\n            \"extrinsics\": {\r\n                \"farming\": null,\r\n                \"processing\": null,\r\n                \"trading\": null,\r\n                \"certifications\": null,\r\n                \"generalObservation\": null\r\n            },\r\n            \"tastes\": [\r\n                {\r\n                    \"ref\": \"01JTAXN0DE000000000000000B\",\r\n                    \"type\": \"defects\"\r\n                },\r\n                {\r\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\r\n                    \"type\": \"main_tastes\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DA\",\r\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\r\n            \"evaluationType\": \"specialist\",\r\n            \"status\": \"closed\",\r\n            \"extractionMethod\": \"v60\",\r\n            \"cuppingScore\": \"84.25\",\r\n            \"isDefective\": false,\r\n            \"descriptive\": {\r\n                \"fragrance\": {\r\n                    \"score\": 11,\r\n                    \"note\": null\r\n                },\r\n                \"aroma\": {\r\n                    \"score\": 12,\r\n                    \"note\": null\r\n                },\r\n                \"flavor\": {\r\n                    \"score\": 10,\r\n                    \"note\": null\r\n                },\r\n                \"aftertaste\": {\r\n                    \"score\": 9,\r\n                    \"note\": null\r\n                },\r\n                \"acidity\": {\r\n                    \"score\": 11,\r\n                    \"note\": null\r\n                },\r\n                \"sweetness\": {\r\n                    \"score\": 10,\r\n                    \"note\": null\r\n                },\r\n                \"mouthfeel\": {\r\n                    \"score\": 8,\r\n                    \"note\": null\r\n                }\r\n            },\r\n            \"affective\": {\r\n                \"fragrance\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"aroma\": {\r\n                    \"score\": 8,\r\n                    \"note\": null\r\n                },\r\n                \"flavor\": {\r\n                    \"score\": 8,\r\n                    \"note\": null\r\n                },\r\n                \"aftertaste\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"acidity\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"sweetness\": {\r\n                    \"score\": 8,\r\n                    \"note\": null\r\n                },\r\n                \"mouthfeel\": {\r\n                    \"score\": 7,\r\n                    \"note\": null\r\n                },\r\n                \"overall\": {\r\n                    \"score\": 8,\r\n                    \"note\": \"Limpio y dulce, acidez cítrica.\"\r\n                }\r\n            },\r\n            \"extrinsics\": {\r\n                \"farming\": \"Agricultura orgánica\",\r\n                \"processing\": null,\r\n                \"trading\": \"Comercio directo\",\r\n                \"certifications\": null,\r\n                \"generalObservation\": null\r\n            },\r\n            \"tastes\": [\r\n                {\r\n                    \"ref\": \"01JTAXN0DE0000000000000003\",\r\n                    \"type\": \"flavor\"\r\n                },\r\n                {\r\n                    \"ref\": \"01JTAXN0DE0000000000000008\",\r\n                    \"type\": \"aroma\"\r\n                },\r\n                {\r\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\r\n                    \"type\": \"main_tastes\"\r\n                },\r\n                {\r\n                    \"ref\": \"01JTAXN0DE000000000000000C\",\r\n                    \"type\": \"mouthfeel\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"links\": {\r\n        \"first\": \"http://localhost/api/evaluations?page=1\",\r\n        \"last\": \"http://localhost/api/evaluations?page=1\",\r\n        \"prev\": null,\r\n        \"next\": null\r\n    },\r\n    \"meta\": {\r\n        \"current_page\": 1,\r\n        \"from\": 1,\r\n        \"last_page\": 1,\r\n        \"links\": [\r\n            {\r\n                \"url\": null,\r\n                \"label\": \"&laquo; Previous\",\r\n                \"active\": false\r\n            },\r\n            {\r\n                \"url\": \"http://localhost/api/evaluations?page=1\",\r\n                \"label\": \"1\",\r\n                \"active\": true\r\n            },\r\n            {\r\n                \"url\": null,\r\n                \"label\": \"Next &raquo;\",\r\n                \"active\": false\r\n            }\r\n        ],\r\n        \"path\": \"http://localhost/api/evaluations\",\r\n        \"per_page\": 15,\r\n        \"to\": 2,\r\n        \"total\": 2\r\n    }\r\n}"
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -1044,16 +1025,10 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '{"data":{"ulid":"01M36SQPH837K5TDVX3NHB19RD","offeringId":"01M36SQPHKH5GFGKFABARKDAHF","evaluationType":"specialist","status":"closed","extractionMethod":"v60","cuppingScore":"94.88","isDefective":true,"descriptive":{"aroma":{"note":null,"score":15},"flavor":{"note":null,"score":11},"acidity":{"note":null,"score":11},"fragrance":{"note":null,"score":15},"mouthfeel":{"note":null,"score":14},"sweetness":{"note":null,"score":6},"aftertaste":{"note":null,"score":14}},"affective":{"aroma":{"note":null,"score":7},"flavor":{"note":null,"score":8},"acidity":{"note":null,"score":9},"overall":{"note":null,"score":6},"fragrance":{"note":null,"score":9},"mouthfeel":{"note":null,"score":6},"sweetness":{"note":null,"score":8},"aftertaste":{"note":null,"score":8}},"extrinsics":{"farming":null,"trading":null,"processing":null,"certifications":null,"general_observation":null}}}'
+        status: 201
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\r\n        \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\r\n        \"evaluationType\": \"specialist\",\r\n        \"status\": \"open\",\r\n        \"extractionMethod\": \"espresso\",\r\n        \"cuppingScore\": null,\r\n        \"isDefective\": true,\r\n        \"descriptive\": {\r\n            \"fragrance\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 11,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 9,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 8,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"affective\": {\r\n            \"fragrance\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"overall\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"extrinsics\": {\r\n            \"farming\": null,\r\n            \"processing\": null,\r\n            \"trading\": null,\r\n            \"certifications\": null,\r\n            \"generalObservation\": null\r\n        },\r\n        \"tastes\": [\r\n            {\r\n                \"ref\": \"01JTAXN0DE000000000000000B\",\r\n                \"type\": \"defects\"\r\n            },\r\n            {\r\n                \"ref\": \"01JTAXN0DE0000000000000009\",\r\n                \"type\": \"main_tastes\"\r\n            }\r\n        ]\r\n    },\r\n    \"message\": \"Evaluation created.\"\r\n}"
         headers: []
         description: ''
-      -
-        custom: []
-        status: 201
-        content: '{"data": {}, "message": "Evaluation created."}'
-        headers: []
-        description: Created
     responseFields: []
     auth:
       - headers
@@ -1096,17 +1071,6 @@ endpoints:
       evaluation_ulid:
         custom: []
         name: evaluation_ulid
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      evaluation:
-        custom: []
-        name: evaluation
         description: 'The ULID of the evaluation.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -1116,8 +1080,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation_ulid: architecto
-      evaluation: 01M35F5RX4ADGC3CSDXXYB08DA
+      evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -1912,6 +1875,12 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: "{\r\n    \"data\": {\r\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\r\n        \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\r\n        \"evaluationType\": \"specialist\",\r\n        \"status\": \"open\",\r\n        \"extractionMethod\": \"espresso\",\r\n        \"cuppingScore\": null,\r\n        \"isDefective\": true,\r\n        \"descriptive\": {\r\n            \"fragrance\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 11,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 9,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 10,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 8,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"affective\": {\r\n            \"fragrance\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"aroma\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"flavor\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"aftertaste\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            },\r\n            \"acidity\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"sweetness\": {\r\n                \"score\": 7,\r\n                \"note\": null\r\n            },\r\n            \"mouthfeel\": {\r\n                \"score\": 6,\r\n                \"note\": null\r\n            },\r\n            \"overall\": {\r\n                \"score\": 0,\r\n                \"note\": null\r\n            }\r\n        },\r\n        \"extrinsics\": {\r\n            \"farming\": null,\r\n            \"processing\": null,\r\n            \"trading\": null,\r\n            \"certifications\": null,\r\n            \"generalObservation\": null\r\n        },\r\n        \"tastes\": [\r\n            {\r\n                \"ref\": \"01JTAXN0DE000000000000000B\",\r\n                \"type\": \"defects\"\r\n            },\r\n            {\r\n                \"ref\": \"01JTAXN0DE0000000000000009\",\r\n                \"type\": \"main_tastes\"\r\n            }\r\n        ]\r\n    },\r\n    \"message\": \"Evaluation updated.\"\r\n}"
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 403
         content: '{"message": "One or more evaluations do not belong to the user."}'
         headers: []
@@ -1972,17 +1941,6 @@ endpoints:
       evaluation_ulid:
         custom: []
         name: evaluation_ulid
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      evaluation:
-        custom: []
-        name: evaluation
         description: 'The ULID of the evaluation.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -1992,8 +1950,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation_ulid: architecto
-      evaluation: 01M35F5RX4ADGC3CSDXXYB08DA
+      evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -2060,17 +2017,6 @@ endpoints:
       evaluation_ulid:
         custom: []
         name: evaluation_ulid
-        description: ''
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      evaluation:
-        custom: []
-        name: evaluation
         description: 'The ULID of the evaluation.'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -2080,8 +2026,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation_ulid: architecto
-      evaluation: 01M35F5RX4ADGC3CSDXXYB08DA
+      evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

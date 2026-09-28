@@ -1,6 +1,7 @@
 {
     "data": [
         {
+            "ulid": "01JTAXN0DE0000000000000001",
             "level": 0,
             "nameEn": "Fruity",
             "nameEs": "Frutal",
@@ -12,6 +13,7 @@
             ],
             "children": [
                 {
+                    "ulid": "01JTAXN0DE0000000000000004",
                     "level": 1,
                     "nameEn": "Berry",
                     "nameEs": "Baya",
@@ -23,6 +25,7 @@
                     ],
                     "children": [
                         {
+                            "ulid": "01JTAXN0DE0000000000000005",
                             "level": 2,
                             "nameEn": "Blackberry",
                             "nameEs": "Mora",
@@ -34,6 +37,19 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "ulid": "01JTAXN0DE000000000000000D",
+                    "level": 1,
+                    "nameEn": "Dried fruit",
+                    "nameEs": "Fruta seca",
+                    "descriptionEn": "Notes of dried or dehydrated fruit.",
+                    "descriptionEs": "Notas de fruta seca o deshidratada.",
+                    "color": "#C4562F",
+                    "categories": [
+                        "aromatics"
+                    ],
+                    "children": []
                 }
             ]
         }

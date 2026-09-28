@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 
 class OfferingResource extends JsonResource
 {
-    private const AROMATIC_TYPES = ['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'];
     /**
      * Transform the resource into an array.
      *
@@ -34,17 +33,15 @@ class OfferingResource extends JsonResource
             'verificationStatus' => $this->verification_status,
             'location' => new LocationResource($this->whenLoaded('location')),
             'coffeeInventory' => new CoffeeInventoryResource($this->whenLoaded('coffeeInventory')),
-            'sensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('offeringTastes')),
-            'cataConcordance' => $this->whenLoaded('offeringTastes', fn() => $this->groupCataByType()),
+            'sensoryTaxonomy' => OfferingTasteResource::collection($this->whenLoaded('sensoryTastes')),
+            'cataConcordance' => $this->whenLoaded('cataTastes', fn() => $this->groupCataByType()),
         ];
     }
 
     private function groupCataByType(): array
     {
-        return $this->offeringTastes
-            ->groupBy(fn($taste) => in_array($taste->type, self::AROMATIC_TYPES, true)
-                ? 'aromatics'
-                : Str::camel($taste->type))
+        return $this->cataTastes
+            ->groupBy(fn($taste) => Str::camel($taste->type))
             ->map(fn($group) => $group->map(fn($taste) => [
                 'ref' => $taste->taxonomy->ulid,
                 'count' => $taste->count,

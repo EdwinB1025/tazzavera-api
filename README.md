@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/DEV/public/favicon.svg" width="120">
+  <img src="https://raw.githubusercontent.com/EdwinB1025/tazzavera-api/PROD/public/scribeIcon.svg" width="120">
 </p>
-
-  <p align="center"><strong><em style="font-size: 24px;">TAZAVERA API</em></strong></p>
 
 
 REST backend for **Tazavera**, the specialty coffee verification platform. This API serves the data model, OAuth2/PKCE authentication, and the **consensus** engine that averages and cross-checks specialist evaluations of each coffee a specialty coffee shop offers.
@@ -36,7 +34,7 @@ The detail of the formulas, the threshold, and the reinterpretation of the deduc
 
 ## 📚 Documentation
 
-- 📖 **API docs:** [`http://localhost:8000/docs`](http://localhost:8000/docs) — replace `localhost:8000` with your deployed domain in production.
+- 📖 **API docs:** [View documentation](https://edwinb1025.github.io/tazzavera-api/public/docs/index.html)
 
 The page includes example requests (bash, JavaScript), a Postman collection (`/docs/collection.json`), and an OpenAPI spec (`/docs/openapi.yaml`).
 

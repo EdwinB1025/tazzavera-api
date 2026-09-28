@@ -29,8 +29,7 @@ class CoffeeInventoryController extends Controller
      *
      * @authenticated
      *
-     * @apiResourceCollection App\Http\Resources\CoffeeInventoryResource
-     * @apiResourceModel App\Models\CoffeeInventory with=coffee,roastery
+     * @responseFile storage/scribe/responses/coffeeinventory.index.json
      */
     public function index(FilterCoffeeInventoryRequest $request)
     {

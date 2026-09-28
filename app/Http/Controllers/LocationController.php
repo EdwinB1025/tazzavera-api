@@ -21,8 +21,7 @@ class LocationController extends Controller
      *
      * @authenticated
      *
-     * @apiResourceCollection App\Http\Resources\LocationResource
-     * @apiResourceModel App\Models\Location
+     * @responseFile storage/scribe/responses/locations.index.json
      */
     public function index(Request $request)
     {

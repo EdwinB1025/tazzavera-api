@@ -46,6 +46,7 @@
     </span>
 </a>
 <div class="tocify-wrapper">
+            <img src="../scribeIcon.svg" alt="logo" class="logo" style="padding-top: 10px;" width="100%"/>
     
             <div class="lang-selector">
                                             <button type="button" class="lang-button" data-language-name="bash">bash</button>
@@ -141,7 +142,7 @@
                 </li>
                                     <ul id="tocify-subheader-taxonomies" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="taxonomies-GETtaxonomies">
-                                <a href="#taxonomies-GETtaxonomies">GET taxonomies</a>
+                                <a href="#taxonomies-GETtaxonomies">List olfactory taxonomies</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -182,7 +183,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 23, 2026</li>
+        <li>Last updated: September 28, 2026</li>
     </ul>
 </div>
 
@@ -196,8 +197,23 @@
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
-&lt;aside&gt;As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).&lt;/aside&gt;</code></pre>
+As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).
+
+## HTTP response codes
+
+    This API uses standard HTTP status codes. The ones you'll encounter:
+
+    | Code | Meaning | When |
+    |------|---------|------|
+    | 200 | OK | Successful GET, PUT/PATCH, or a delete (returns a message body) |
+    | 201 | Created | A resource was created (register, store) — returns the created resource |
+    | 401 | Unauthorized | Missing or invalid access token |
+    | 403 | Forbidden | Authenticated but not permitted (role, scope, or ownership policy fails) |
+    | 404 | Not Found | The requested resource does not exist |
+    | 409 | Conflict | State conflict (e.g. updating or closing an already-closed evaluation, or an incomplete evaluation) |
+    | 422 | Unprocessable Entity | Validation failed — check the response body for field errors |
+    | 500 | Internal Server Error | Unhandled server error |</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {ACCESS_TOKEN}"</code></strong>.</p>
@@ -216,7 +232,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <li>The response contains <code>access_token</code>, <code>refresh_token</code>, and <code>expires_in</code>.</li>
 </ul>
 <p>Send the token as: <code>Authorization: Bearer {ACCESS_TOKEN}</code>.</p>
-<p><strong>Scopes:</strong> endpoints enforce <code>profile:read</code> and/or <code>profile:write</code>. Request the appropriate scope when obtaining your token, or the request will be rejected.</p>
+<p><strong>Scopes:</strong> endpoints enforce <code>profile:read</code> and/or <code>profile:write</code>. Request the appropriate scope when obtaining your token. When not scope parameter scope is requested, it will be defaulted to 'profile:red', in the case an unappropiate scope is requested, the authorization will be rejected.</p>
 
         <h1 id="coffee-inventory">Coffee Inventory</h1>
 
@@ -313,47 +329,54 @@ print_r(json_decode((string) $body));</code></pre></div>
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: [
         {
-            &quot;ulid&quot;: &quot;01M36SQP8PFS04WB0C15FAWKQ2&quot;,
-            &quot;roastLot&quot;: &quot;2026-08-26-552013&quot;,
-            &quot;productionDate&quot;: &quot;2026-08-26T00:00:00.000000Z&quot;,
+            &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+            &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+            &quot;productionDate&quot;: &quot;2026-09-19&quot;,
             &quot;coffee&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP8J21MK43Q7DZBH9KNF&quot;,
-                &quot;name&quot;: &quot;odio veritatis&quot;,
-                &quot;roastLevel&quot;: &quot;dark&quot;,
-                &quot;process&quot;: &quot;wet_hulled&quot;,
-                &quot;variety&quot;: &quot;Catuai&quot;,
-                &quot;producer&quot;: &quot;Cristian O&#039;Reilly&quot;,
+                &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                &quot;roastLevel&quot;: &quot;medium&quot;,
+                &quot;process&quot;: &quot;washed&quot;,
+                &quot;variety&quot;: &quot;Caturra&quot;,
+                &quot;producer&quot;: null,
                 &quot;country&quot;: &quot;Colombia&quot;,
-                &quot;region&quot;: &quot;Antioquia&quot;,
-                &quot;altitude&quot;: 1384,
-                &quot;lot&quot;: &quot;2005-01&quot;
+                &quot;region&quot;: &quot;Huila&quot;,
+                &quot;altitude&quot;: 1800,
+                &quot;lot&quot;: &quot;HM-07&quot;,
+                &quot;certifications&quot;: [
+                    {
+                        &quot;code&quot;: &quot;organic&quot;,
+                        &quot;description&quot;: &quot;Certified organic production.&quot;
+                    }
+                ]
             },
             &quot;roastery&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP855ZGDN907S11Y3V2S&quot;,
-                &quot;name&quot;: &quot;Bailey Ltd&quot;,
-                &quot;description&quot;: &quot;Fugiat sunt nihil accusantium harum mollitia. Deserunt aut ab provident perspiciatis quo omnis nostrum. Adipisci quidem nostrum qui commodi incidunt iure.&quot;
+                &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
             }
         },
         {
-            &quot;ulid&quot;: &quot;01M36SQPA9GYJWBD87JHRZ9D4W&quot;,
-            &quot;roastLot&quot;: &quot;2026-09-11-450403&quot;,
-            &quot;productionDate&quot;: &quot;2026-09-11T00:00:00.000000Z&quot;,
+            &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XD&quot;,
+            &quot;roastLot&quot;: &quot;L-2026-021&quot;,
+            &quot;productionDate&quot;: &quot;2026-09-24&quot;,
             &quot;coffee&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP9SCGWX0WKB4E54CXM4&quot;,
-                &quot;name&quot;: &quot;deserunt sint&quot;,
-                &quot;roastLevel&quot;: &quot;medium_dark&quot;,
-                &quot;process&quot;: &quot;anaerobic&quot;,
-                &quot;variety&quot;: &quot;Geisha&quot;,
-                &quot;producer&quot;: null,
-                &quot;country&quot;: &quot;Kenia&quot;,
-                &quot;region&quot;: &quot;Nyeri&quot;,
-                &quot;altitude&quot;: 1457,
-                &quot;lot&quot;: &quot;1978-08&quot;
+                &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZH&quot;,
+                &quot;name&quot;: &quot;Sidama Bensa&quot;,
+                &quot;roastLevel&quot;: &quot;light&quot;,
+                &quot;process&quot;: &quot;natural&quot;,
+                &quot;variety&quot;: &quot;Heirloom&quot;,
+                &quot;producer&quot;: &quot;Bensa Cooperative&quot;,
+                &quot;country&quot;: &quot;Ethiopia&quot;,
+                &quot;region&quot;: &quot;Sidama&quot;,
+                &quot;altitude&quot;: 2100,
+                &quot;lot&quot;: &quot;SB-12&quot;,
+                &quot;certifications&quot;: []
             },
             &quot;roastery&quot;: {
-                &quot;ulid&quot;: &quot;01M36SQP9D3T2E5MG6CTZJFXQC&quot;,
-                &quot;name&quot;: &quot;Moen-Kovacek&quot;,
-                &quot;description&quot;: &quot;Assumenda et tenetur ab reiciendis quia. Deserunt ducimus corrupti et dolores quia maiores. Odit doloribus repellat officiis corporis nesciunt ut ratione iure.&quot;
+                &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
             }
         }
     ]
@@ -535,14 +558,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/evaluations/architecto" \
+    --get "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/architecto"
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -559,7 +582,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/architecto';
+$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;get(
     $url,
     [
@@ -576,18 +599,101 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETevaluations--evaluation_ulid-">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Evaluation] architecto&quot;
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+        &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+        &quot;evaluationType&quot;: &quot;specialist&quot;,
+        &quot;status&quot;: &quot;open&quot;,
+        &quot;extractionMethod&quot;: &quot;espresso&quot;,
+        &quot;cuppingScore&quot;: null,
+        &quot;isDefective&quot;: true,
+        &quot;descriptive&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 11,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 9,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 8,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;affective&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;overall&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;extrinsics&quot;: {
+            &quot;farming&quot;: null,
+            &quot;processing&quot;: null,
+            &quot;trading&quot;: null,
+            &quot;certifications&quot;: null,
+            &quot;generalObservation&quot;: null
+        },
+        &quot;tastes&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                &quot;type&quot;: &quot;defects&quot;
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;
+            }
+        ]
+    }
 }</code>
  </pre>
     </span>
@@ -670,18 +776,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation_ulid"                data-endpoint="GETevaluations--evaluation_ulid-"
-               value="architecto"
-               data-component="url">
-    <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>evaluation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="evaluation"                data-endpoint="GETevaluations--evaluation_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -772,28 +866,232 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETevaluations">
             <blockquote>
-            <p>Example response (422):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The selected evaluator id is invalid. (and 2 more errors)&quot;,
-    &quot;errors&quot;: {
-        &quot;evaluatorId&quot;: [
-            &quot;The selected evaluator id is invalid.&quot;
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;open&quot;,
+            &quot;extractionMethod&quot;: &quot;espresso&quot;,
+            &quot;cuppingScore&quot;: null,
+            &quot;isDefective&quot;: true,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: null,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: null,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                    &quot;type&quot;: &quot;defects&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                }
+            ]
+        },
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DA&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;closed&quot;,
+            &quot;extractionMethod&quot;: &quot;v60&quot;,
+            &quot;cuppingScore&quot;: &quot;84.25&quot;,
+            &quot;isDefective&quot;: false,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 12,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: &quot;Limpio y dulce, acidez c&iacute;trica.&quot;
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: &quot;Agricultura org&aacute;nica&quot;,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: &quot;Comercio directo&quot;,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000C&quot;,
+                    &quot;type&quot;: &quot;mouthfeel&quot;
+                }
+            ]
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
         ],
-        &quot;coffeeId&quot;: [
-            &quot;The selected coffee id is invalid.&quot;
-        ],
-        &quot;locationId&quot;: [
-            &quot;The selected location id is invalid.&quot;
-        ]
+        &quot;path&quot;: &quot;http://localhost/api/evaluations&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 2,
+        &quot;total&quot;: 2
     }
 }</code>
  </pre>
@@ -1261,100 +1559,101 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-POSTevaluations">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (201):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;ulid&quot;: &quot;01M36SQPH837K5TDVX3NHB19RD&quot;,
-        &quot;offeringId&quot;: &quot;01M36SQPHKH5GFGKFABARKDAHF&quot;,
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+        &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
         &quot;evaluationType&quot;: &quot;specialist&quot;,
-        &quot;status&quot;: &quot;closed&quot;,
-        &quot;extractionMethod&quot;: &quot;v60&quot;,
-        &quot;cuppingScore&quot;: &quot;94.88&quot;,
+        &quot;status&quot;: &quot;open&quot;,
+        &quot;extractionMethod&quot;: &quot;espresso&quot;,
+        &quot;cuppingScore&quot;: null,
         &quot;isDefective&quot;: true,
         &quot;descriptive&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
             &quot;aroma&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 15
+                &quot;score&quot;: 11,
+                &quot;note&quot;: null
             },
             &quot;flavor&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 11
-            },
-            &quot;acidity&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 11
-            },
-            &quot;fragrance&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 15
-            },
-            &quot;mouthfeel&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 14
-            },
-            &quot;sweetness&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 6
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
             },
             &quot;aftertaste&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 14
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 9,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 8,
+                &quot;note&quot;: null
             }
         },
         &quot;affective&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
             &quot;aroma&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 7
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
             },
             &quot;flavor&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 8
-            },
-            &quot;acidity&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 9
-            },
-            &quot;overall&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 6
-            },
-            &quot;fragrance&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 9
-            },
-            &quot;mouthfeel&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 6
-            },
-            &quot;sweetness&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 8
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
             },
             &quot;aftertaste&quot;: {
-                &quot;note&quot;: null,
-                &quot;score&quot;: 8
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;overall&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
             }
         },
         &quot;extrinsics&quot;: {
             &quot;farming&quot;: null,
-            &quot;trading&quot;: null,
             &quot;processing&quot;: null,
+            &quot;trading&quot;: null,
             &quot;certifications&quot;: null,
-            &quot;general_observation&quot;: null
-        }
-    }
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (201, Created):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: {},
+            &quot;generalObservation&quot;: null
+        },
+        &quot;tastes&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                &quot;type&quot;: &quot;defects&quot;
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;
+            }
+        ]
+    },
     &quot;message&quot;: &quot;Evaluation created.&quot;
 }</code>
  </pre>
@@ -2251,7 +2550,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/evaluations/architecto" \
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2357,7 +2656,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/architecto"
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -2473,7 +2772,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/architecto';
+$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;put(
     $url,
     [
@@ -2537,6 +2836,105 @@ print_r(json_decode((string) $body));</code></pre></div>
 </span>
 
 <span id="example-responses-PUTevaluations--evaluation_ulid-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+        &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+        &quot;evaluationType&quot;: &quot;specialist&quot;,
+        &quot;status&quot;: &quot;open&quot;,
+        &quot;extractionMethod&quot;: &quot;espresso&quot;,
+        &quot;cuppingScore&quot;: null,
+        &quot;isDefective&quot;: true,
+        &quot;descriptive&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 11,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 9,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 8,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;affective&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;overall&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;extrinsics&quot;: {
+            &quot;farming&quot;: null,
+            &quot;processing&quot;: null,
+            &quot;trading&quot;: null,
+            &quot;certifications&quot;: null,
+            &quot;generalObservation&quot;: null
+        },
+        &quot;tastes&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                &quot;type&quot;: &quot;defects&quot;
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;
+            }
+        ]
+    },
+    &quot;message&quot;: &quot;Evaluation updated.&quot;
+}</code>
+ </pre>
             <blockquote>
             <p>Example response (403, Not the owner):</p>
         </blockquote>
@@ -2647,18 +3045,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation_ulid"                data-endpoint="PUTevaluations--evaluation_ulid-"
-               value="architecto"
-               data-component="url">
-    <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>evaluation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="evaluation"                data-endpoint="PUTevaluations--evaluation_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -3479,7 +3865,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8000/evaluations/architecto/close" \
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3487,7 +3873,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/architecto/close"
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close"
 );
 
 const headers = {
@@ -3505,7 +3891,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/architecto/close';
+$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close';
 $response = $client-&gt;patch(
     $url,
     [
@@ -3650,18 +4036,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation_ulid"                data-endpoint="PATCHevaluations--evaluation_ulid--close"
-               value="architecto"
-               data-component="url">
-    <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>evaluation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="evaluation"                data-endpoint="PATCHevaluations--evaluation_ulid--close"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -3686,7 +4060,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/evaluations/architecto" \
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3694,7 +4068,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/architecto"
+    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -3712,7 +4086,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/architecto';
+$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;delete(
     $url,
     [
@@ -3839,18 +4213,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation_ulid"                data-endpoint="DELETEevaluations--evaluation_ulid-"
-               value="architecto"
-               data-component="url">
-    <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>evaluation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="evaluation"                data-endpoint="DELETEevaluations--evaluation_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -3931,18 +4293,58 @@ print_r(json_decode((string) $body));</code></pre></div>
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: [
         {
-            &quot;ulid&quot;: &quot;01M36SQP3JW84J5TQR3SA6NNA7&quot;,
-            &quot;name&quot;: &quot;Price Ltd&quot;,
-            &quot;description&quot;: &quot;Function-based even-keeled monitoring&quot;,
-            &quot;latitud&quot;: &quot;-23.35486300&quot;,
-            &quot;longitud&quot;: &quot;-144.62930200&quot;
+            &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PA&quot;,
+            &quot;name&quot;: &quot;Tazavera Gr&agrave;cia&quot;,
+            &quot;description&quot;: &quot;Barra de especialidad en Gr&agrave;cia.&quot;,
+            &quot;latitud&quot;: &quot;41.40290000&quot;,
+            &quot;longitud&quot;: &quot;2.15650000&quot;,
+            &quot;contacts&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K5ZC0NT4C7A1H8M3Q7V1X4B9&quot;,
+                    &quot;isPrimary&quot;: true,
+                    &quot;phone&quot;: null,
+                    &quot;email&quot;: null,
+                    &quot;web&quot;: null,
+                    &quot;social&quot;: null,
+                    &quot;address&quot;: null,
+                    &quot;country&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;postalCode&quot;: null
+                },
+                {
+                    &quot;ulid&quot;: &quot;01K5ZC0NT4C7A1H8M3Q7V1X4BA&quot;,
+                    &quot;isPrimary&quot;: false,
+                    &quot;phone&quot;: null,
+                    &quot;email&quot;: &quot;pedidos@tazavera.test&quot;,
+                    &quot;web&quot;: null,
+                    &quot;social&quot;: null,
+                    &quot;address&quot;: &quot;Carrer de Verdi 12&quot;,
+                    &quot;country&quot;: &quot;Spain&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: null
+                }
+            ]
         },
         {
-            &quot;ulid&quot;: &quot;01M36SQP4REWXH76SSPCXB0W0T&quot;,
-            &quot;name&quot;: &quot;Stanton, Homenick and Schimmel&quot;,
-            &quot;description&quot;: &quot;Synergized bifurcated attitude&quot;,
-            &quot;latitud&quot;: &quot;51.55520100&quot;,
-            &quot;longitud&quot;: &quot;-160.60547300&quot;
+            &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PB&quot;,
+            &quot;name&quot;: &quot;Tazavera Born&quot;,
+            &quot;description&quot;: &quot;Tienda y barra en el Born.&quot;,
+            &quot;latitud&quot;: &quot;41.38490000&quot;,
+            &quot;longitud&quot;: &quot;2.18210000&quot;,
+            &quot;contacts&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K5ZC0NT4C7A1H8M3Q7V1X4BB&quot;,
+                    &quot;isPrimary&quot;: true,
+                    &quot;phone&quot;: &quot;+34 932 765 432&quot;,
+                    &quot;email&quot;: null,
+                    &quot;web&quot;: &quot;https://tazavera.test/born&quot;,
+                    &quot;social&quot;: &quot;@tazavera.born&quot;,
+                    &quot;address&quot;: null,
+                    &quot;country&quot;: null,
+                    &quot;city&quot;: null,
+                    &quot;postalCode&quot;: &quot;08003&quot;
+                }
+            ]
         }
     ]
 }</code>
@@ -4052,14 +4454,14 @@ alongside location, coffee, and roastery details.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings/architecto" \
+    --get "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings/architecto"
+    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
 );
 
 const headers = {
@@ -4076,7 +4478,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings/architecto';
+$url = 'http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
 $response = $client-&gt;get(
     $url,
     [
@@ -4093,18 +4495,191 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETofferings--offering_ulid-">
             <blockquote>
-            <p>Example response (404):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\Offering] architecto&quot;
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+        &quot;evaluationCount&quot;: 5,
+        &quot;defectiveEvaluationCount&quot;: 1,
+        &quot;cuppingAvg&quot;: &quot;84.25&quot;,
+        &quot;fragranceAffectiveAvg&quot;: &quot;7.2&quot;,
+        &quot;aromaAffectiveAvg&quot;: &quot;7.8&quot;,
+        &quot;flavorAffectiveAvg&quot;: &quot;7.5&quot;,
+        &quot;aftertasteAffectiveAvg&quot;: &quot;7.1&quot;,
+        &quot;acidityAffectiveAvg&quot;: &quot;7.4&quot;,
+        &quot;sweetnessAffectiveAvg&quot;: &quot;7.6&quot;,
+        &quot;mouthfeelAffectiveAvg&quot;: &quot;7.0&quot;,
+        &quot;overallAffectiveAvg&quot;: &quot;7.9&quot;,
+        &quot;concordanceAffective&quot;: &quot;0.812&quot;,
+        &quot;concordanceDescriptive&quot;: &quot;0.740&quot;,
+        &quot;verificationStatus&quot;: &quot;verified&quot;,
+        &quot;location&quot;: {
+            &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PA&quot;,
+            &quot;name&quot;: &quot;Tazavera Gr&agrave;cia&quot;,
+            &quot;description&quot;: &quot;Barra de especialidad en Gr&agrave;cia.&quot;,
+            &quot;latitud&quot;: &quot;41.40290000&quot;,
+            &quot;longitud&quot;: &quot;2.15650000&quot;
+        },
+        &quot;coffeeInventory&quot;: {
+            &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+            &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+            &quot;productionDate&quot;: &quot;2026-09-19&quot;,
+            &quot;coffee&quot;: {
+                &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                &quot;roastLevel&quot;: &quot;medium&quot;,
+                &quot;process&quot;: &quot;washed&quot;,
+                &quot;variety&quot;: &quot;Caturra&quot;,
+                &quot;producer&quot;: null,
+                &quot;country&quot;: &quot;Colombia&quot;,
+                &quot;region&quot;: &quot;Huila&quot;,
+                &quot;altitude&quot;: 1800,
+                &quot;lot&quot;: &quot;HM-07&quot;
+            },
+            &quot;roastery&quot;: {
+                &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+            }
+        },
+        &quot;sensoryTaxonomy&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                &quot;type&quot;: &quot;flavor&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 5,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                        &quot;type&quot;: &quot;flavor&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 4,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                                &quot;type&quot;: &quot;flavor&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 4
+                            }
+                        ]
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                        &quot;type&quot;: &quot;flavor&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 2,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                                &quot;type&quot;: &quot;flavor&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                &quot;type&quot;: &quot;aroma&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 3,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                        &quot;type&quot;: &quot;aroma&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 3,
+                        &quot;children&quot;: [
+                            {
+                                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                                &quot;type&quot;: &quot;aroma&quot;,
+                                &quot;level&quot;: 2,
+                                &quot;count&quot;: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 5,
+                &quot;children&quot;: []
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                &quot;type&quot;: &quot;defects&quot;,
+                &quot;level&quot;: 0,
+                &quot;count&quot;: 1,
+                &quot;children&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                        &quot;type&quot;: &quot;defects&quot;,
+                        &quot;level&quot;: 1,
+                        &quot;count&quot;: 1,
+                        &quot;children&quot;: []
+                    }
+                ]
+            }
+        ],
+        &quot;cataConcordance&quot;: {
+            &quot;aromatics&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                    &quot;count&quot;: 5
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                    &quot;count&quot;: 4
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                    &quot;count&quot;: 4
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                    &quot;count&quot;: 2
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                    &quot;count&quot;: 2
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                    &quot;count&quot;: 3
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                    &quot;count&quot;: 3
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                    &quot;count&quot;: 3
+                }
+            ],
+            &quot;mainTastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;count&quot;: 5
+                }
+            ],
+            &quot;defects&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                    &quot;count&quot;: 1
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                    &quot;count&quot;: 1
+                }
+            ]
+        }
+    }
 }</code>
  </pre>
     </span>
@@ -4187,22 +4762,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="offering_ulid"                data-endpoint="GETofferings--offering_ulid-"
-               value="architecto"
+               value="01K6A3M8Q2V7XH4T9B5N1RCW0D"
                data-component="url">
     <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>offering</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="offering"                data-endpoint="GETofferings--offering_ulid-"
-               value="01J8ZKQH3M7..."
-               data-component="url">
-    <br>
-<p>The ULID of the offering. Example: <code>01J8ZKQH3M7...</code></p>
+<p>The ULID of the offering. Example: <code>01K6A3M8Q2V7XH4T9B5N1RCW0D</code></p>
             </div>
                     </form>
 
@@ -4348,43 +4911,247 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETofferings">
             <blockquote>
-            <p>Example response (422):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The selected coffeeshop ulid is invalid. (and 7 more errors)&quot;,
-    &quot;errors&quot;: {
-        &quot;coffeeshopUlid&quot;: [
-            &quot;The selected coffeeshop ulid is invalid.&quot;
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationCount&quot;: 5,
+            &quot;defectiveEvaluationCount&quot;: 1,
+            &quot;cuppingAvg&quot;: &quot;84.25&quot;,
+            &quot;fragranceAffectiveAvg&quot;: &quot;7.2&quot;,
+            &quot;aromaAffectiveAvg&quot;: &quot;7.8&quot;,
+            &quot;flavorAffectiveAvg&quot;: &quot;7.5&quot;,
+            &quot;aftertasteAffectiveAvg&quot;: &quot;7.1&quot;,
+            &quot;acidityAffectiveAvg&quot;: &quot;7.4&quot;,
+            &quot;sweetnessAffectiveAvg&quot;: &quot;7.6&quot;,
+            &quot;mouthfeelAffectiveAvg&quot;: &quot;7.0&quot;,
+            &quot;overallAffectiveAvg&quot;: &quot;7.9&quot;,
+            &quot;concordanceAffective&quot;: &quot;0.812&quot;,
+            &quot;concordanceDescriptive&quot;: &quot;0.740&quot;,
+            &quot;verificationStatus&quot;: &quot;verified&quot;,
+            &quot;location&quot;: {
+                &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PA&quot;,
+                &quot;name&quot;: &quot;Tazavera Gr&agrave;cia&quot;,
+                &quot;description&quot;: &quot;Barra de especialidad en Gr&agrave;cia.&quot;,
+                &quot;latitud&quot;: &quot;41.40290000&quot;,
+                &quot;longitud&quot;: &quot;2.15650000&quot;
+            },
+            &quot;coffeeInventory&quot;: {
+                &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+                &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+                &quot;productionDate&quot;: &quot;2026-09-19&quot;,
+                &quot;coffee&quot;: {
+                    &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                    &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                    &quot;roastLevel&quot;: &quot;medium&quot;,
+                    &quot;process&quot;: &quot;washed&quot;,
+                    &quot;variety&quot;: &quot;Caturra&quot;,
+                    &quot;producer&quot;: null,
+                    &quot;country&quot;: &quot;Colombia&quot;,
+                    &quot;region&quot;: &quot;Huila&quot;,
+                    &quot;altitude&quot;: 1800,
+                    &quot;lot&quot;: &quot;HM-07&quot;
+                },
+                &quot;roastery&quot;: {
+                    &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                    &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                    &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+                }
+            },
+            &quot;sensoryTaxonomy&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 5
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;,
+                    &quot;level&quot;: 1,
+                    &quot;count&quot;: 4
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;,
+                    &quot;level&quot;: 2,
+                    &quot;count&quot;: 4
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;,
+                    &quot;level&quot;: 1,
+                    &quot;count&quot;: 2
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;,
+                    &quot;level&quot;: 2,
+                    &quot;count&quot;: 2
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 3
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;,
+                    &quot;level&quot;: 1,
+                    &quot;count&quot;: 3
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;,
+                    &quot;level&quot;: 2,
+                    &quot;count&quot;: 3
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 5
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                    &quot;type&quot;: &quot;defects&quot;,
+                    &quot;level&quot;: 0,
+                    &quot;count&quot;: 1
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                    &quot;type&quot;: &quot;defects&quot;,
+                    &quot;level&quot;: 1,
+                    &quot;count&quot;: 1
+                }
+            ],
+            &quot;cataConcordance&quot;: {
+                &quot;aromatics&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
+                        &quot;count&quot;: 5
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000002&quot;,
+                        &quot;count&quot;: 4
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                        &quot;count&quot;: 4
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
+                        &quot;count&quot;: 2
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
+                        &quot;count&quot;: 2
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000006&quot;,
+                        &quot;count&quot;: 3
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000007&quot;,
+                        &quot;count&quot;: 3
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                        &quot;count&quot;: 3
+                    }
+                ],
+                &quot;mainTastes&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                        &quot;count&quot;: 5
+                    }
+                ],
+                &quot;defects&quot;: [
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000A&quot;,
+                        &quot;count&quot;: 1
+                    },
+                    {
+                        &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                        &quot;count&quot;: 1
+                    }
+                ]
+            }
+        },
+        {
+            &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0E&quot;,
+            &quot;evaluationCount&quot;: 0,
+            &quot;defectiveEvaluationCount&quot;: 0,
+            &quot;verificationStatus&quot;: &quot;provisional&quot;,
+            &quot;location&quot;: {
+                &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PB&quot;,
+                &quot;name&quot;: &quot;Tazavera Born&quot;,
+                &quot;description&quot;: &quot;Tienda y barra en el Born.&quot;,
+                &quot;latitud&quot;: &quot;41.38490000&quot;,
+                &quot;longitud&quot;: &quot;2.18210000&quot;
+            },
+            &quot;coffeeInventory&quot;: {
+                &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+                &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+                &quot;productionDate&quot;: &quot;2026-09-19&quot;,
+                &quot;coffee&quot;: {
+                    &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                    &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                    &quot;roastLevel&quot;: &quot;medium&quot;,
+                    &quot;process&quot;: &quot;washed&quot;,
+                    &quot;variety&quot;: &quot;Caturra&quot;,
+                    &quot;producer&quot;: null,
+                    &quot;country&quot;: &quot;Colombia&quot;,
+                    &quot;region&quot;: &quot;Huila&quot;,
+                    &quot;altitude&quot;: 1800,
+                    &quot;lot&quot;: &quot;HM-07&quot;
+                },
+                &quot;roastery&quot;: {
+                    &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                    &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                    &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+                }
+            },
+            &quot;sensoryTaxonomy&quot;: [],
+            &quot;cataConcordance&quot;: []
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/offerings?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/offerings?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost/api/offerings?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
         ],
-        &quot;locationUlid&quot;: [
-            &quot;The selected location ulid is invalid.&quot;
-        ],
-        &quot;cataRef.0&quot;: [
-            &quot;The selected cataRef.0 is invalid.&quot;
-        ],
-        &quot;fragranceCata.0&quot;: [
-            &quot;The selected fragranceCata.0 is invalid.&quot;
-        ],
-        &quot;aromaCata.0&quot;: [
-            &quot;The selected aromaCata.0 is invalid.&quot;
-        ],
-        &quot;flavorCata.0&quot;: [
-            &quot;The selected flavorCata.0 is invalid.&quot;
-        ],
-        &quot;aftertasteCata.0&quot;: [
-            &quot;The selected aftertasteCata.0 is invalid.&quot;
-        ],
-        &quot;mouthfeelCata.0&quot;: [
-            &quot;The selected mouthfeelCata.0 is invalid.&quot;
-        ]
+        &quot;path&quot;: &quot;http://localhost/api/offerings&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 2,
+        &quot;total&quot;: 2
     }
 }</code>
  </pre>
@@ -5027,7 +5794,88 @@ print_r(json_decode((string) $body));</code></pre></div>
 </span>
 
 <span id="example-responses-POSTofferings">
-</span>
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationCount&quot;: 0,
+            &quot;defectiveEvaluationCount&quot;: 0,
+            &quot;verificationStatus&quot;: &quot;provisional&quot;,
+            &quot;location&quot;: {
+                &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PA&quot;,
+                &quot;name&quot;: &quot;Tazavera Gr&agrave;cia&quot;,
+                &quot;description&quot;: &quot;Barra de especialidad en Gr&agrave;cia.&quot;,
+                &quot;latitud&quot;: &quot;41.40290000&quot;,
+                &quot;longitud&quot;: &quot;2.15650000&quot;
+            },
+            &quot;coffeeInventory&quot;: {
+                &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+                &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+                &quot;productionDate&quot;: &quot;2026-09-19&quot;,
+                &quot;coffee&quot;: {
+                    &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                    &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                    &quot;roastLevel&quot;: &quot;medium&quot;,
+                    &quot;process&quot;: &quot;washed&quot;,
+                    &quot;variety&quot;: &quot;Caturra&quot;,
+                    &quot;producer&quot;: null,
+                    &quot;country&quot;: &quot;Colombia&quot;,
+                    &quot;region&quot;: &quot;Huila&quot;,
+                    &quot;altitude&quot;: 1800,
+                    &quot;lot&quot;: &quot;HM-07&quot;
+                },
+                &quot;roastery&quot;: {
+                    &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                    &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                    &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+                }
+            }
+        },
+        {
+            &quot;ulid&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0E&quot;,
+            &quot;evaluationCount&quot;: 0,
+            &quot;defectiveEvaluationCount&quot;: 0,
+            &quot;verificationStatus&quot;: &quot;provisional&quot;,
+            &quot;location&quot;: {
+                &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PB&quot;,
+                &quot;name&quot;: &quot;Tazavera Born&quot;,
+                &quot;description&quot;: &quot;Tienda y barra en el Born.&quot;,
+                &quot;latitud&quot;: &quot;41.38490000&quot;,
+                &quot;longitud&quot;: &quot;2.18210000&quot;
+            },
+            &quot;coffeeInventory&quot;: {
+                &quot;ulid&quot;: &quot;01K5Y4R7N2D9W6T3H8M1Q5V0XC&quot;,
+                &quot;roastLot&quot;: &quot;L-2026-014&quot;,
+                &quot;productionDate&quot;: &quot;2026-09-19&quot;,
+                &quot;coffee&quot;: {
+                    &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+                    &quot;name&quot;: &quot;Huila El Mirador&quot;,
+                    &quot;roastLevel&quot;: &quot;medium&quot;,
+                    &quot;process&quot;: &quot;washed&quot;,
+                    &quot;variety&quot;: &quot;Caturra&quot;,
+                    &quot;producer&quot;: null,
+                    &quot;country&quot;: &quot;Colombia&quot;,
+                    &quot;region&quot;: &quot;Huila&quot;,
+                    &quot;altitude&quot;: 1800,
+                    &quot;lot&quot;: &quot;HM-07&quot;
+                },
+                &quot;roastery&quot;: {
+                    &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+                    &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+                    &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+                }
+            }
+        }
+    ],
+    &quot;message&quot;: &quot;Offering(s) created.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTofferings" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTofferings"></span>:
@@ -5156,7 +6004,7 @@ scope. The authenticated user must own the offering (<code>owns.offering</code>)
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/offerings/architecto" \
+    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5164,7 +6012,7 @@ scope. The authenticated user must own the offering (<code>owns.offering</code>)
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings/architecto"
+    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
 );
 
 const headers = {
@@ -5182,7 +6030,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings/architecto';
+$url = 'http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
 $response = $client-&gt;delete(
     $url,
     [
@@ -5205,7 +6053,7 @@ print_r(json_decode((string) $body));</code></pre></div>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Offering deleted.&quot;
+    &quot;message&quot;: &quot;Offering(s) deleted.&quot;
 }</code>
  </pre>
     </span>
@@ -5300,22 +6148,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="offering_ulid"                data-endpoint="DELETEofferings--offering_ulid-"
-               value="architecto"
+               value="01K6A3M8Q2V7XH4T9B5N1RCW0D"
                data-component="url">
     <br>
-<p>Example: <code>architecto</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>offering</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="offering"                data-endpoint="DELETEofferings--offering_ulid-"
-               value="01J8ZKQH3M7..."
-               data-component="url">
-    <br>
-<p>The ULID of the offering. Example: <code>01J8ZKQH3M7...</code></p>
+<p>The ULID of the offering. Example: <code>01K6A3M8Q2V7XH4T9B5N1RCW0D</code></p>
             </div>
                     </form>
 
@@ -5401,7 +6237,7 @@ print_r(json_decode((string) $body));</code></pre></div>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Offering deleted.&quot;
+    &quot;message&quot;: &quot;Offering(s) deleted.&quot;
 }</code>
  </pre>
     </span>
@@ -5509,12 +6345,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     
 
-                                <h2 id="taxonomies-GETtaxonomies">GET taxonomies</h2>
+                                <h2 id="taxonomies-GETtaxonomies">List olfactory taxonomies</h2>
 
 <p>
 </p>
 
-
+<p>Returns the full olfactory taxonomy tree used to classify coffee aromas and
+flavors. The tree is returned as a nested structure: top-level categories
+(parent_id = null) with their children and grandchildren eager-loaded
+(two levels deep).</p>
 
 <span id="example-requests-GETtaxonomies">
 <blockquote>Example request:</blockquote>
@@ -5565,1184 +6404,59 @@ print_r(json_decode((string) $body));</code></pre></div>
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: [
         {
+            &quot;ulid&quot;: &quot;01JTAXN0DE0000000000000001&quot;,
             &quot;level&quot;: 0,
             &quot;nameEn&quot;: &quot;Fruity&quot;,
             &quot;nameEs&quot;: &quot;Frutal&quot;,
-            &quot;descriptionEn&quot;: &quot;Sweet, floral aromatic blend of a variety of ripe fruits.&quot;,
-            &quot;descriptionEs&quot;: &quot;Mezcla arom&aacute;tica dulce, floral, de una variedad de frutas maduras.&quot;,
-            &quot;color&quot;: &quot;#a4485c&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
+            &quot;descriptionEn&quot;: &quot;Aromas reminiscent of fresh, dried, or cooked fruit.&quot;,
+            &quot;descriptionEs&quot;: &quot;Aromas que recuerdan a fruta fresca, seca o cocida.&quot;,
+            &quot;color&quot;: &quot;#D9345A&quot;,
+            &quot;categories&quot;: [
+                &quot;aromatics&quot;
+            ],
             &quot;children&quot;: [
                 {
+                    &quot;ulid&quot;: &quot;01JTAXN0DE0000000000000004&quot;,
                     &quot;level&quot;: 1,
                     &quot;nameEn&quot;: &quot;Berry&quot;,
                     &quot;nameEs&quot;: &quot;Baya&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sweet, sour, floral, sometimes heavy aromatic associated with berries such as blackberries, raspberries, blueberries or strawberries.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, &aacute;cido, floral, a veces pesado, asociado a bayas como moras, frambuesas, ar&aacute;ndanos o fresas.&quot;,
-                    &quot;color&quot;: &quot;#af5e70&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
+                    &quot;descriptionEn&quot;: &quot;Notes of berry fruits.&quot;,
+                    &quot;descriptionEs&quot;: &quot;Notas de frutos del bosque.&quot;,
+                    &quot;color&quot;: &quot;#B02A4A&quot;,
+                    &quot;categories&quot;: [
+                        &quot;aromatics&quot;
+                    ],
                     &quot;children&quot;: [
                         {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Strawberry&quot;,
-                            &quot;nameEs&quot;: &quot;Fresa&quot;,
-                            &quot;descriptionEn&quot;: &quot;Somewhat sweet, slightly sour, floral, fruity, often winey aromatic associated with strawberry.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico algo dulce, ligeramente &aacute;cido, floral, frutal, frecuentemente avinado, asociado a la fresa.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Raspberry&quot;,
-                            &quot;nameEs&quot;: &quot;Frambuesa&quot;,
-                            &quot;descriptionEn&quot;: &quot;Slightly sweet, fruity, floral, slightly sour and musty aromatic associated with raspberries.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente dulce, frutal, floral, ligeramente &aacute;cido y mohoso, asociado a las frambuesas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Blueberry&quot;,
-                            &quot;nameEs&quot;: &quot;Ar&aacute;ndano&quot;,
-                            &quot;descriptionEn&quot;: &quot;Slightly dark, fruity, sweet, slightly sour, musty, dusty, floral aromatic associated with blueberry.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente oscuro, frutal, dulce, ligeramente &aacute;cido, mohoso, polvoriento, floral, asociado al ar&aacute;ndano.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
+                            &quot;ulid&quot;: &quot;01JTAXN0DE0000000000000005&quot;,
                             &quot;level&quot;: 2,
                             &quot;nameEn&quot;: &quot;Blackberry&quot;,
                             &quot;nameEs&quot;: &quot;Mora&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, dark, fruity, floral, slightly sour, somewhat woody aromatic associated with blackberries.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, oscuro, frutal, floral, ligeramente &aacute;cido, algo amaderado, asociado a las moras.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
+                            &quot;descriptionEn&quot;: &quot;Specific note of blackberry.&quot;,
+                            &quot;descriptionEs&quot;: &quot;Nota espec&iacute;fica de mora.&quot;,
+                            &quot;color&quot;: &quot;#7A1F35&quot;,
+                            &quot;categories&quot;: [
+                                &quot;aromatics&quot;
+                            ]
                         }
                     ]
                 },
                 {
+                    &quot;ulid&quot;: &quot;01JTAXN0DE000000000000000D&quot;,
                     &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Dried Fruit&quot;,
-                    &quot;nameEs&quot;: &quot;Fruta Seca&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic impression of dark, sweet, slightly brown fruit associated with prunes and raisins.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Impresi&oacute;n arom&aacute;tica de fruta oscura, dulce y ligeramente marr&oacute;n, asociada a ciruelas pasas y pasas.&quot;,
-                    &quot;color&quot;: &quot;#af5e70&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Raisin&quot;,
-                            &quot;nameEs&quot;: &quot;Pasa&quot;,
-                            &quot;descriptionEn&quot;: &quot;Concentrated, sweet, somewhat sour, brown, fruity, floral aromatic characteristic of dried grapes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico concentrado, dulce, algo &aacute;cido, marr&oacute;n, frutal, floral, caracter&iacute;stico de las uvas secas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Prune&quot;,
-                            &quot;nameEs&quot;: &quot;Ciruela Pasa&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic impression of sweet dark fruit, slightly brown, floral, musty and overripe, associated with prunes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Impresi&oacute;n arom&aacute;tica de fruta oscura dulce, ligeramente marr&oacute;n, floral, mohosa y sobremadura, asociada a las ciruelas secas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Other Fruit&quot;,
-                    &quot;nameEs&quot;: &quot;Otras Frutas&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sweet, light, fruity, somewhat floral, sour or green aromatic that may include apples, grapes, peaches, pears or cherries.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligero, frutal, algo floral, &aacute;cido o verde, que puede incluir manzanas, uvas, melocotones, peras o cerezas.&quot;,
-                    &quot;color&quot;: &quot;#af5e70&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Apple&quot;,
-                            &quot;nameEs&quot;: &quot;Manzana&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, light, fruity, somewhat floral aromatic commonly associated with fresh or processed apples.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligero, frutal, algo floral, com&uacute;nmente asociado a manzanas frescas o procesadas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Pear&quot;,
-                            &quot;nameEs&quot;: &quot;Pera&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, slightly floral, musty, woody, fruity aromatic associated with pears.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligeramente floral, mohoso, amaderado, frutal, asociado a las peras.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Peach&quot;,
-                            &quot;nameEs&quot;: &quot;Melocot&oacute;n&quot;,
-                            &quot;descriptionEn&quot;: &quot;Floral, perfumy, fruity, sweet, slightly sour aromatic associated with peaches.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico floral, perfumado, frutal, dulce, ligeramente &aacute;cido, asociado a los melocotones.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Grape&quot;,
-                            &quot;nameEs&quot;: &quot;Uva&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, fruity, floral, slightly sour, musty aromatic commonly associated with grapes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, frutal, floral, ligeramente &aacute;cido, mohoso, com&uacute;nmente asociado a las uvas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Cherry&quot;,
-                            &quot;nameEs&quot;: &quot;Cereza&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sour, fruity, slightly bitter, floral aromatic associated with cherries.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico &aacute;cido, frutal, ligeramente amargo, floral, asociado a las cerezas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Pomegranate&quot;,
-                            &quot;nameEs&quot;: &quot;Granada&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sour, sweet, fruity aromatic that may be somewhat dark, musty and earthy, reminiscent of dark fruits and roots such as beet and carrot; may have an astringent feel.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico &aacute;cido, dulce, frutal, que puede ser algo oscuro, mohoso y terroso, reminiscente de frutas oscuras y ra&iacute;ces como remolacha y zanahoria; puede tener sensaci&oacute;n astringente.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Coconut&quot;,
-                            &quot;nameEs&quot;: &quot;Coco&quot;,
-                            &quot;descriptionEn&quot;: &quot;Slightly sweet, nutty, somewhat woody aromatic associated with coconut.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente dulce, a nuez, algo amaderado, asociado al coco.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Pineapple&quot;,
-                            &quot;nameEs&quot;: &quot;Pi&ntilde;a&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, slightly sharp, fruity aromatic associated with pineapple.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligeramente agudo, frutal, asociado a la pi&ntilde;a.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Citrus Fruit&quot;,
-                    &quot;nameEs&quot;: &quot;Fruta C&iacute;trica&quot;,
-                    &quot;descriptionEn&quot;: &quot;Citric, sour, astringent, slightly sweet, peely, somewhat floral aromatic that may include lemons, limes, grapefruits or oranges.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico c&iacute;trico, &aacute;cido, astringente, ligeramente dulce, a c&aacute;scara, algo floral, que puede incluir limones, limas, pomelos o naranjas.&quot;,
-                    &quot;color&quot;: &quot;#af5e70&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Lemon&quot;,
-                            &quot;nameEs&quot;: &quot;Lim&oacute;n&quot;,
-                            &quot;descriptionEn&quot;: &quot;Citric, sour, astringent, slightly sweet, peely, somewhat floral aromatic associated with lemon.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico c&iacute;trico, &aacute;cido, astringente, ligeramente dulce, a c&aacute;scara, algo floral, asociado al lim&oacute;n.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Grapefruit&quot;,
-                            &quot;nameEs&quot;: &quot;Pomelo&quot;,
-                            &quot;descriptionEn&quot;: &quot;Citric, sour, bitter, astringent, peely, sharp, slightly sweet aromatic associated with grapefruit.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico c&iacute;trico, &aacute;cido, amargo, astringente, a c&aacute;scara, agudo, ligeramente dulce, asociado al pomelo.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Orange&quot;,
-                            &quot;nameEs&quot;: &quot;Naranja&quot;,
-                            &quot;descriptionEn&quot;: &quot;Citric, sweet, floral, slightly sour aromatic associated with oranges, which may include bitter, peely and astringent notes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico c&iacute;trico, dulce, floral, ligeramente &aacute;cido, asociado a las naranjas, que puede incluir notas amargas, a c&aacute;scara y astringentes.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Lime&quot;,
-                            &quot;nameEs&quot;: &quot;Lima&quot;,
-                            &quot;descriptionEn&quot;: &quot;Citric, sour, astringent, bitter, green, peely, sharp and somewhat floral aromatic associated with limes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico c&iacute;trico, &aacute;cido, astringente, amargo, verde, a c&aacute;scara, agudo y algo floral, asociado a las limas.&quot;,
-                            &quot;color&quot;: &quot;#ba7483&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Sour/Acid&quot;,
-            &quot;nameEs&quot;: &quot;&Aacute;cidos&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#c2b34a&quot;,
-            &quot;categories&quot;: &quot;[\&quot;main_tastes\&quot;, \&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Sour Aromatics&quot;,
-                    &quot;nameEs&quot;: &quot;&Aacute;cidos Arom&aacute;ticos&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic associated with the impression of a sour product.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a la impresi&oacute;n de un producto &aacute;cido.&quot;,
-                    &quot;color&quot;: &quot;#c9bc60&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Acetic Acid&quot;,
-                            &quot;nameEs&quot;: &quot;&Aacute;cido Ac&eacute;tico&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sour, astringent, slightly pungent aromatic associated with vinegar.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico &aacute;cido, astringente, ligeramente punzante, asociado al vinagre.&quot;,
-                            &quot;color&quot;: &quot;#d1c575&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Butyric Acid&quot;,
-                            &quot;nameEs&quot;: &quot;&Aacute;cido But&iacute;rico&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sour, fermented-dairy aromatic associated with certain aged cheeses such as parmesan.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico &aacute;cido, a l&aacute;cteo fermentado, asociado a ciertos quesos curados como el parmesano.&quot;,
-                            &quot;color&quot;: &quot;#d1c575&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Isovaleric Acid&quot;,
-                            &quot;nameEs&quot;: &quot;&Aacute;cido Isoval&eacute;rico&quot;,
-                            &quot;descriptionEn&quot;: &quot;Pungent, sour aromatic associated with the smell of sweaty feet and certain aged cheeses such as romano.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico punzante, &aacute;cido, asociado al olor a pies sudados y a ciertos quesos curados como el romano.&quot;,
-                            &quot;color&quot;: &quot;#d1c575&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Citric Acid&quot;,
-                            &quot;nameEs&quot;: &quot;&Aacute;cido C&iacute;trico&quot;,
-                            &quot;descriptionEn&quot;: &quot;Mild, clean, sour aromatic with light citrus notes accompanied by astringency.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico suave, limpio, &aacute;cido, con ligeras notas c&iacute;tricas acompa&ntilde;ado de astringencia.&quot;,
-                            &quot;color&quot;: &quot;#d1c575&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Malic Acid&quot;,
-                            &quot;nameEs&quot;: &quot;&Aacute;cido M&aacute;lico&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sour, sharp, somewhat fruity aromatic accompanied by astringency.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico &aacute;cido, agudo, algo frutal, acompa&ntilde;ado de astringencia.&quot;,
-                            &quot;color&quot;: &quot;#d1c575&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Alcohol/Fermented&quot;,
-            &quot;nameEs&quot;: &quot;Alcoholes/Fermentados&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#7d4a6f&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Alcohol&quot;,
-                    &quot;nameEs&quot;: &quot;Alcohol&quot;,
-                    &quot;descriptionEn&quot;: &quot;Colorless, pungent, chemical aromatic associated with distilled or grain products.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico incoloro, punzante, qu&iacute;mico, asociado a destilados o productos de grano.&quot;,
-                    &quot;color&quot;: &quot;#8d6080&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Whiskey&quot;,
-                            &quot;nameEs&quot;: &quot;Whisky&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with products distilled from fermented grain mash.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a productos destilados de mosto de grano fermentado.&quot;,
-                            &quot;color&quot;: &quot;#9c7592&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Winey&quot;,
-                            &quot;nameEs&quot;: &quot;Avinado&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sharp, pungent, somewhat fruity, alcohol-like aromatic associated with wine.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico agudo, punzante, algo frutal, similar al alcohol, asociado al vino.&quot;,
-                            &quot;color&quot;: &quot;#9c7592&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Fermented&quot;,
-                    &quot;nameEs&quot;: &quot;Fermentado&quot;,
-                    &quot;descriptionEn&quot;: &quot;Pungent, sweet, slightly sour, sometimes yeasty, alcohol-like aromatic characteristic of fermented fruits or sugar, or overfermented dough.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico punzante, dulce, ligeramente &aacute;cido, a veces a levadura, similar al alcohol, caracter&iacute;stico de frutas o az&uacute;car fermentados o masa sobrefermentada.&quot;,
-                    &quot;color&quot;: &quot;#8d6080&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Overripe/Near fermented&quot;,
-                            &quot;nameEs&quot;: &quot;Sobremaduro/Cerca al fermentado&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, slightly sour, damp, earthy aromatic characteristic of fruit or vegetables past their optimal ripeness.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligeramente &aacute;cido, h&uacute;medo, terroso, caracter&iacute;stico de fruta o verdura pasada de su punto &oacute;ptimo de madurez.&quot;,
-                            &quot;color&quot;: &quot;#9c7592&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Green/Vegetative&quot;,
-            &quot;nameEs&quot;: &quot;Verdes/Vegetales&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#5f8a53&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Olive Oil&quot;,
-                    &quot;nameEs&quot;: &quot;Aceite de oliva&quot;,
-                    &quot;descriptionEn&quot;: &quot;Light, oily aromatic that may have buttery, green, peppery, bitter and sweet notes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligero, aceitoso, que puede tener notas mantecosas, verdes, picantes, amargas y dulces.&quot;,
-                    &quot;color&quot;: &quot;#729868&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Raw&quot;,
-                    &quot;nameEs&quot;: &quot;Vegetal Crudo&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic associated with uncooked products.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a productos sin cocinar.&quot;,
-                    &quot;color&quot;: &quot;#729868&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Green&quot;,
-                    &quot;nameEs&quot;: &quot;Verde&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic characteristic of fresh plant material. May include leafy, viney, unripe, grassy and peapod notes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico caracter&iacute;stico de material vegetal fresco. Puede incluir notas a hoja, enredadera, inmaduro, hierba y vaina.&quot;,
-                    &quot;color&quot;: &quot;#729868&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Under-ripe&quot;,
-                            &quot;nameEs&quot;: &quot;Biche (Fruto inmaduro)&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic present in green/immature fruit.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico presente en fruta verde/inmadura.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Peapod&quot;,
-                            &quot;nameEs&quot;: &quot;Arveja&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet green, legume-like, fresh, raw and earthy aromatic.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico verde dulce, a legumbre, fresco, crudo y terroso.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Fresh&quot;,
-                            &quot;nameEs&quot;: &quot;Fresco&quot;,
-                            &quot;descriptionEn&quot;: &quot;Green aromatic associated with freshly cut grass and leafy plants, sweet and pungent in character.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico verde asociado a hierba reci&eacute;n cortada y plantas de hoja, de car&aacute;cter dulce y punzante.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Dark Green&quot;,
-                            &quot;nameEs&quot;: &quot;Verde oscuro (Espinaca, acelgas)&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with cooked green vegetables such as spinach, kale or green beans, which may include bitter, sweet, dusty, musty or earthy elements, with a dark, heavy impression.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a verduras verdes cocidas como espinaca, kale o jud&iacute;as verdes, que puede incluir elementos amargos, dulces, polvorientos, mohosos o terrosos, con impresi&oacute;n oscura y pesada.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Vegetative&quot;,
-                            &quot;nameEs&quot;: &quot;Vegetal&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sharp, slightly pungent aromatic associated with green plant matter such as parsley, spinach or peapod.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico agudo, ligeramente punzante, asociado a materia vegetal verde como perejil, espinaca o vaina.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Hay-like&quot;,
-                            &quot;nameEs&quot;: &quot;Heno, paja&quot;,
-                            &quot;descriptionEn&quot;: &quot;Slightly sweet, dry, dusty aromatic with a light green character, associated with dried grasses.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente dulce, seco, polvoriento, con ligero car&aacute;cter verde, asociado a hierbas secas.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Herb-like&quot;,
-                            &quot;nameEs&quot;: &quot;Hierbas&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with green herbs, which may be characterized as sweet, slightly pungent and slightly bitter.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a hierbas verdes, que puede caracterizarse como dulce, ligeramente punzante y ligeramente amargo.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Beany&quot;,
-                            &quot;nameEs&quot;: &quot;Granos (Frijoles)&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic characteristic of legumes and their derivatives, with earthy, dusty, sour, bitter, starchy and green/peapod, nutty or brown elements.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico caracter&iacute;stico de legumbres y derivados, con elementos terrosos, polvorientos, &aacute;cidos, amargos, almidonados y verdes/a vaina, a nuez o marrones.&quot;,
-                            &quot;color&quot;: &quot;#85a67c&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Earthy&quot;,
-            &quot;nameEs&quot;: &quot;Terrosos&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#7a5c43&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Musty/Earthy&quot;,
-                    &quot;nameEs&quot;: &quot;Humedad/Almizcle de Tierra&quot;,
-                    &quot;descriptionEn&quot;: &quot;Somewhat sweet, heavy aromatic associated with decaying vegetation and damp black soil.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico algo dulce, pesado, asociado a vegetaci&oacute;n en descomposici&oacute;n y tierra negra h&uacute;meda.&quot;,
-                    &quot;color&quot;: &quot;#8a705a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Musty/Dusty&quot;,
-                            &quot;nameEs&quot;: &quot;Humedad/Almizcle del polvo&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with dry, closed spaces such as attics and closets. May have dry, musty, papery, dry-earth or grain elements.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a espacios secos y cerrados como &aacute;ticos y armarios. Puede tener elementos secos, mohosos, a papel, tierra seca o grano.&quot;,
-                            &quot;color&quot;: &quot;#9a8370&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Moldy/Damp&quot;,
-                            &quot;nameEs&quot;: &quot;Mohoso&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with damp, closed spaces or basements. May be moldy, sharp and slightly green.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a espacios h&uacute;medos y cerrados o s&oacute;tanos. Puede ser mohoso, agudo y ligeramente verde.&quot;,
-                            &quot;color&quot;: &quot;#9a8370&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Woody&quot;,
-                    &quot;nameEs&quot;: &quot;Amaderado&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sweet, brown, musty, dark aromatic associated with tree bark.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n, mohoso, oscuro, asociado a la corteza de un &aacute;rbol.&quot;,
-                    &quot;color&quot;: &quot;#8a705a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Phenolic&quot;,
-                    &quot;nameEs&quot;: &quot;Fen&oacute;lico&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic described as damp, musty and animal-hide-like. Reminiscent of a tack room.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico descrito como h&uacute;medo, mohoso y a piel de animal. Reminiscente de una sala de arreos.&quot;,
-                    &quot;color&quot;: &quot;#8a705a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Animalic&quot;,
-                    &quot;nameEs&quot;: &quot;Animal&quot;,
-                    &quot;descriptionEn&quot;: &quot;Combination of aromatics associated with farm animals and their habitat.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Combinaci&oacute;n de arom&aacute;ticos asociados a animales de granja y su h&aacute;bitat.&quot;,
-                    &quot;color&quot;: &quot;#8a705a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Meaty/Brothy&quot;,
-                    &quot;nameEs&quot;: &quot;C&aacute;rnicos/Sopas&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic associated with boiled meat, soup or broth, with weak meaty notes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a carne hervida, sopa o caldo, con notas c&aacute;rnicas d&eacute;biles.&quot;,
-                    &quot;color&quot;: &quot;#8a705a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Roasted&quot;,
-            &quot;nameEs&quot;: &quot;Asado/Quemado&quot;,
-            &quot;descriptionEn&quot;: &quot;Dark brown impression characteristic of products cooked at high temperature by dry heat. Does not include bitter or burnt notes.&quot;,
-            &quot;descriptionEs&quot;: &quot;Impresi&oacute;n marr&oacute;n oscura caracter&iacute;stica de productos cocinados a alta temperatura por calor seco. No incluye notas amargas ni quemadas.&quot;,
-            &quot;color&quot;: &quot;#4a2510&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Tobacco&quot;,
-                    &quot;nameEs&quot;: &quot;Tabaco&quot;,
-                    &quot;descriptionEn&quot;: &quot;Brown, slightly sweet, slightly pungent aromatic associated with cured tobacco.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n, ligeramente dulce, ligeramente punzante, asociado al tabaco curado.&quot;,
-                    &quot;color&quot;: &quot;#603f2d&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Pipe Tobacco&quot;,
-                            &quot;nameEs&quot;: &quot;Pipa de Tabaco&quot;,
-                            &quot;descriptionEn&quot;: &quot;Brown, sweet, slightly pungent, fruity, floral, spicy aromatic associated with cured tobacco.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n, dulce, ligeramente punzante, frutal, floral, especiado, asociado al tabaco curado.&quot;,
-                            &quot;color&quot;: &quot;#755949&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Burnt&quot;,
-                    &quot;nameEs&quot;: &quot;Quemado&quot;,
-                    &quot;descriptionEn&quot;: &quot;Dark brown impression of an overcooked or over-roasted product, which may be sharp, bitter and sour.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Impresi&oacute;n marr&oacute;n oscura de un producto sobrecocido o sobrerrostizado, que puede ser agudo, amargo y &aacute;cido.&quot;,
-                    &quot;color&quot;: &quot;#603f2d&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Acrid&quot;,
-                            &quot;nameEs&quot;: &quot;Acre&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sharp, pungent, bitter, sour aromatic associated with excessively roasted or browned products.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico agudo, punzante, amargo, &aacute;cido, asociado a productos excesivamente asados o dorados.&quot;,
-                            &quot;color&quot;: &quot;#755949&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Ashy&quot;,
-                            &quot;nameEs&quot;: &quot;Ceniza&quot;,
-                            &quot;descriptionEn&quot;: &quot;Dry, dusty, dirty, smoky aromatic associated with the residue of burnt products.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico seco, polvoriento, sucio, ahumado, asociado al residuo de productos quemados.&quot;,
-                            &quot;color&quot;: &quot;#755949&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Smoky&quot;,
-                            &quot;nameEs&quot;: &quot;Ahumado&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sharp, pungent aromatic produced by the combustion of wood, leaves or a non-natural product.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico agudo, punzante, producto de la combusti&oacute;n de madera, hojas o un producto no natural.&quot;,
-                            &quot;color&quot;: &quot;#755949&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Roasted&quot;,
-                    &quot;nameEs&quot;: &quot;Asado&quot;,
-                    &quot;descriptionEn&quot;: &quot;Dark brown impression characteristic of products cooked at high temperature by dry heat. Does not include bitter or burnt notes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Impresi&oacute;n marr&oacute;n oscura caracter&iacute;stica de productos cocinados a alta temperatura por calor seco. No incluye notas amargas ni quemadas.&quot;,
-                    &quot;color&quot;: &quot;#603f2d&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Brown, Roast&quot;,
-                            &quot;nameEs&quot;: &quot;Muy Asado&quot;,
-                            &quot;descriptionEn&quot;: &quot;Rich, full, round aromatic impression, always with some degree of darkness, associated with attributes such as toasted, nutty, roasted and sweet.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Impresi&oacute;n arom&aacute;tica rica, plena, redonda, siempre con cierto grado de oscuridad, asociada a atributos como tostado, a nuez, asado y dulce.&quot;,
-                            &quot;color&quot;: &quot;#755949&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Spices&quot;,
-            &quot;nameEs&quot;: &quot;Especias&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#b0623a&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Pungent&quot;,
-                    &quot;nameEs&quot;: &quot;Punzante&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sharp, physically penetrating sensation in the nasal cavity.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n aguda, f&iacute;sicamente penetrante, en la cavidad nasal.&quot;,
-                    &quot;color&quot;: &quot;#b97552&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Pepper&quot;,
-                    &quot;nameEs&quot;: &quot;Pimienta&quot;,
-                    &quot;descriptionEn&quot;: &quot;Spicy, pungent, musty and woody aromatic characteristic of ground black pepper.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico especiado, punzante, mohoso y amaderado, caracter&iacute;stico de la pimienta negra molida.&quot;,
-                    &quot;color&quot;: &quot;#b97552&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Brown Spice&quot;,
-                    &quot;nameEs&quot;: &quot;Especia marr&oacute;n&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sweet, brown aromatic associated with spices such as cinnamon, clove, nutmeg and allspice.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n, asociado a especias como canela, clavo, nuez moscada y pimienta de Jamaica.&quot;,
-                    &quot;color&quot;: &quot;#b97552&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Anise&quot;,
-                            &quot;nameEs&quot;: &quot;An&iacute;s&quot;,
-                            &quot;descriptionEn&quot;: &quot;Pungent, sweet, brown, caramelized aromatic that may contain petroleum-like, medicinal and floral notes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico punzante, dulce, marr&oacute;n, caramelizado, que puede contener notas a petr&oacute;leo, medicinales y florales.&quot;,
-                            &quot;color&quot;: &quot;#c38869&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Nutmeg&quot;,
-                            &quot;nameEs&quot;: &quot;Nuez moscada&quot;,
-                            &quot;descriptionEn&quot;: &quot;Damp, brown, woody, pungent, petroleum-like, heavy aromatic with a slight lemon impression.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico h&uacute;medo, marr&oacute;n, amaderado, punzante, a petr&oacute;leo, pesado, con ligera impresi&oacute;n a lim&oacute;n.&quot;,
-                            &quot;color&quot;: &quot;#c38869&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Cinnamon&quot;,
-                            &quot;nameEs&quot;: &quot;Canela&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, brown, slightly woody, slightly pungent, spicy aromatic.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n, ligeramente amaderado, ligeramente punzante, especiado.&quot;,
-                            &quot;color&quot;: &quot;#c38869&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Clove&quot;,
-                            &quot;nameEs&quot;: &quot;Clavo&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, brown, spicy, pungent, floral, citric, medicinal and slightly mentholated aromatic.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n, especiado, punzante, floral, c&iacute;trico, medicinal y ligeramente mentolado.&quot;,
-                            &quot;color&quot;: &quot;#c38869&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Nutty&quot;,
-            &quot;nameEs&quot;: &quot;Nueces&quot;,
-            &quot;descriptionEn&quot;: &quot;Slightly sweet, brown, woody, oily, musty, astringent and bitter aromatic commonly associated with nuts, seeds, legumes and grains.&quot;,
-            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente dulce, marr&oacute;n, amaderado, aceitoso, mohoso, astringente y amargo, com&uacute;nmente asociado a frutos secos, semillas, legumbres y granos.&quot;,
-            &quot;color&quot;: &quot;#a5804f&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Nutty&quot;,
-                    &quot;nameEs&quot;: &quot;Nuez&quot;,
-                    &quot;descriptionEn&quot;: &quot;Slightly sweet, brown, woody, oily, musty, astringent and bitter aromatic commonly associated with nuts, seeds, legumes and grains.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico ligeramente dulce, marr&oacute;n, amaderado, aceitoso, mohoso, astringente y amargo, com&uacute;nmente asociado a frutos secos, semillas, legumbres y granos.&quot;,
-                    &quot;color&quot;: &quot;#b08f64&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Almond&quot;,
-                            &quot;nameEs&quot;: &quot;Almendra&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, light brown, woody and buttery aromatic with floral and fruity notes that may include rose, cherry and apricot. Also astringent and slightly smoky.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n claro, amaderado y mantecoso, con notas florales y frutales que pueden incluir rosa, cereza y albaricoque. Tambi&eacute;n astringente y ligeramente ahumado.&quot;,
-                            &quot;color&quot;: &quot;#bb9e79&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Hazelnut&quot;,
-                            &quot;nameEs&quot;: &quot;Avellana&quot;,
-                            &quot;descriptionEn&quot;: &quot;Woody, brown, sweet, earthy, slightly cedar-like aromatic. May include floral, legume-like, oily, astringent and bitter notes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico amaderado, marr&oacute;n, dulce, terroso, ligeramente a cedro. Puede incluir notas florales, a legumbre, aceitosas, astringentes y amargas.&quot;,
-                            &quot;color&quot;: &quot;#bb9e79&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Peanuts&quot;,
-                            &quot;nameEs&quot;: &quot;Man&iacute;&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, light brown, oily, somewhat dusty, legume-like aromatic that may be slightly astringent.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n claro, aceitoso, algo polvoriento, a legumbre, que puede ser ligeramente astringente.&quot;,
-                            &quot;color&quot;: &quot;#bb9e79&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Cocoa&quot;,
-            &quot;nameEs&quot;: &quot;Cocoa&quot;,
-            &quot;descriptionEn&quot;: &quot;Brown, sweet, dusty, musty, often bitter aromatic associated with cocoa beans, cocoa powder and chocolate bars.&quot;,
-            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n, dulce, polvoriento, mohoso, a menudo amargo, asociado al grano de cacao, cacao en polvo y barras de chocolate.&quot;,
-            &quot;color&quot;: &quot;#6b4226&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Cocoa&quot;,
-                    &quot;nameEs&quot;: &quot;Cocoa&quot;,
-                    &quot;descriptionEn&quot;: &quot;Brown, sweet, dusty, musty, often bitter aromatic associated with cocoa beans, cocoa powder and chocolate bars.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n, dulce, polvoriento, mohoso, a menudo amargo, asociado al grano de cacao, cacao en polvo y barras de chocolate.&quot;,
-                    &quot;color&quot;: &quot;#7d5940&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Chocolate&quot;,
-                            &quot;nameEs&quot;: &quot;Chocolate&quot;,
-                            &quot;descriptionEn&quot;: &quot;Blend of cocoa, including cocoa butter and dark-roast aromatics at varying intensities.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Mezcla de cacao, incluyendo manteca de cacao y arom&aacute;ticos de tueste oscuro en intensidades variables.&quot;,
-                            &quot;color&quot;: &quot;#8f6f5a&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Dark Chocolate&quot;,
-                            &quot;nameEs&quot;: &quot;Chocolate negro&quot;,
-                            &quot;descriptionEn&quot;: &quot;High-intensity blend of cocoa and cocoa butter that may include dark-roast, spicy, burnt and musty notes, with greater astringency and bitterness.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Mezcla de alta intensidad de cacao y manteca de cacao que puede incluir notas a tueste oscuro, especiadas, quemadas y mohosas, con mayor astringencia y amargor.&quot;,
-                            &quot;color&quot;: &quot;#8f6f5a&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Sweet&quot;,
-            &quot;nameEs&quot;: &quot;Dulces&quot;,
-            &quot;descriptionEn&quot;: &quot;See Basic Tastes.&quot;,
-            &quot;descriptionEs&quot;: &quot;Ver Sabores B&aacute;sicos.&quot;,
-            &quot;color&quot;: &quot;#c99a4b&quot;,
-            &quot;categories&quot;: &quot;[\&quot;main_tastes\&quot;, \&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Sweet&quot;,
-                    &quot;nameEs&quot;: &quot;Dulce&quot;,
-                    &quot;descriptionEn&quot;: &quot;See Basic Tastes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Ver Sabores B&aacute;sicos.&quot;,
-                    &quot;color&quot;: &quot;#cfa661&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Molasses&quot;,
-                            &quot;nameEs&quot;: &quot;Melaza&quot;,
-                            &quot;descriptionEn&quot;: &quot;Dark, caramelized notes that may include slightly sharp, acrid and sulfurous notes, characteristic of molasses.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Notas oscuras, caramelizadas, que pueden incluir notas ligeramente agudas, acres y sulfurosas, caracter&iacute;sticas de la melaza.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Maple Syrup&quot;,
-                            &quot;nameEs&quot;: &quot;Miel de maple&quot;,
-                            &quot;descriptionEn&quot;: &quot;Woody, sweet, caramelized, brown, slightly green aromatic associated with maple syrup.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico amaderado, dulce, caramelizado, marr&oacute;n, ligeramente verde, asociado al jarabe de arce.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Brown Sugar&quot;,
-                            &quot;nameEs&quot;: &quot;Az&uacute;car morena&quot;,
-                            &quot;descriptionEn&quot;: &quot;Rich, full, round, sweet aromatic impression characterized by some degree of darkness.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Impresi&oacute;n arom&aacute;tica rica, plena, redonda, dulce, caracterizada por cierto grado de oscuridad.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Caramelized&quot;,
-                            &quot;nameEs&quot;: &quot;Caramelo&quot;,
-                            &quot;descriptionEn&quot;: &quot;Round, full-bodied, medium brown, sweet aromatic associated with cooked sugars and other carbohydrates. Does not include burnt or scorched notes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico redondo, con cuerpo, marr&oacute;n medio, dulce, asociado a az&uacute;cares cocidos y otros carbohidratos. No incluye notas quemadas ni chamuscadas.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Honey&quot;,
-                            &quot;nameEs&quot;: &quot;Miel&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, light brown, slightly spicy aromatic associated with honey.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, marr&oacute;n claro, ligeramente especiado, asociado a la miel.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Vanilla&quot;,
-                    &quot;nameEs&quot;: &quot;Vainilla&quot;,
-                    &quot;descriptionEn&quot;: &quot;Woody, slightly chemical aromatic associated with vanilla bean, which may include brown, legume-like, floral and spicy notes.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico amaderado, ligeramente qu&iacute;mico, asociado a la vaina de vainilla, que puede incluir notas marrones, a legumbre, florales y especiadas.&quot;,
-                    &quot;color&quot;: &quot;#cfa661&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Vanillin&quot;,
-                            &quot;nameEs&quot;: &quot;Vainillina&quot;,
-                            &quot;descriptionEn&quot;: &quot;Extremely sweet, unnatural aromatic associated with vanilla, cotton candy and marshmallows.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico extremadamente dulce, no natural, asociado a la vainilla, algod&oacute;n de az&uacute;car y malvaviscos.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Sweet Aromatics&quot;,
-                    &quot;nameEs&quot;: &quot;Arom&aacute;ticos Dulces&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic associated with the impression of a sweet substance.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a la impresi&oacute;n de una sustancia dulce.&quot;,
-                    &quot;color&quot;: &quot;#cfa661&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Overall Sweet&quot;,
-                            &quot;nameEs&quot;: &quot;Generalmente dulce&quot;,
-                            &quot;descriptionEn&quot;: &quot;Perception of a combination of sweet taste and aromatics.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Percepci&oacute;n de una combinaci&oacute;n de gusto dulce y arom&aacute;ticos.&quot;,
-                            &quot;color&quot;: &quot;#d6b276&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Floral&quot;,
-            &quot;nameEs&quot;: &quot;Florales&quot;,
-            &quot;descriptionEn&quot;: &quot;Sweet, light, slightly fragrant aromatic associated with fresh flowers.&quot;,
-            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligero, ligeramente fragante, asociado a flores frescas.&quot;,
-            &quot;color&quot;: &quot;#c489a0&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Floral&quot;,
-                    &quot;nameEs&quot;: &quot;Flores&quot;,
-                    &quot;descriptionEn&quot;: &quot;Sweet, light, slightly fragrant aromatic associated with fresh flowers.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico dulce, ligero, ligeramente fragante, asociado a flores frescas.&quot;,
-                    &quot;color&quot;: &quot;#cb97ab&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Rose&quot;,
-                            &quot;nameEs&quot;: &quot;Rosas&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet, soft, slightly musty/dusty floral fragrance associated with fresh or dried roses.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Fragancia floral dulce, suave, ligeramente mohosa/polvorienta, asociada a rosas frescas o secas.&quot;,
-                            &quot;color&quot;: &quot;#d2a5b7&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Jasmine&quot;,
-                            &quot;nameEs&quot;: &quot;Jazm&iacute;n&quot;,
-                            &quot;descriptionEn&quot;: &quot;Intense, slightly pungent, sweet, floral aromatic with underlying green, musty/dusty notes.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico intenso, ligeramente punzante, dulce, floral, con notas verdes, mohosas/polvorientas subyacentes.&quot;,
-                            &quot;color&quot;: &quot;#d2a5b7&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Chamomile&quot;,
-                            &quot;nameEs&quot;: &quot;Manzanilla&quot;,
-                            &quot;descriptionEn&quot;: &quot;Sweet green, slightly floral/fruity, somewhat woody aromatic associated with chamomile.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Verde dulce, ligeramente floral/frutal, algo amaderado, asociado a la manzanilla.&quot;,
-                            &quot;color&quot;: &quot;#d2a5b7&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Black Tea&quot;,
-                            &quot;nameEs&quot;: &quot;T&eacute; Negro&quot;,
-                            &quot;descriptionEn&quot;: &quot;Somewhat brown, musty, dried-plant and dried-bark aromatic associated with the oxidation of tea leaves.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico algo marr&oacute;n, mohoso, a planta seca y corteza seca, asociado a la oxidaci&oacute;n de las hojas de t&eacute;.&quot;,
-                            &quot;color&quot;: &quot;#d2a5b7&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Stale/Papery&quot;,
-            &quot;nameEs&quot;: &quot;Rancios/Papel&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#8a8577&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Stale&quot;,
-                    &quot;nameEs&quot;: &quot;Rancio&quot;,
-                    &quot;descriptionEn&quot;: &quot;Aromatic characterized by a lack of freshness.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico caracterizado por la falta de frescura.&quot;,
-                    &quot;color&quot;: &quot;#989487&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Papery&quot;,
-                            &quot;nameEs&quot;: &quot;Papel&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with white paper cups.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado a vasos de papel blanco.&quot;,
-                            &quot;color&quot;: &quot;#a6a298&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        },
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Cardboard&quot;,
-                            &quot;nameEs&quot;: &quot;Cartulina&quot;,
-                            &quot;descriptionEn&quot;: &quot;Aromatic associated with cardboard or paper packaging.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico asociado al cart&oacute;n o embalaje de papel.&quot;,
-                            &quot;color&quot;: &quot;#a6a298&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Chemical&quot;,
-            &quot;nameEs&quot;: &quot;Qu&iacute;micos&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#5c7080&quot;,
-            &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Medicinal&quot;,
-                    &quot;nameEs&quot;: &quot;Medicina&quot;,
-                    &quot;descriptionEn&quot;: &quot;Clean, sterile aromatic characteristic of antiseptic products such as band-aids, alcohol and iodine.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico limpio, est&eacute;ril, caracter&iacute;stico de productos antis&eacute;pticos como tiritas, alcohol y yodo.&quot;,
-                    &quot;color&quot;: &quot;#70818f&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Rubber&quot;,
-                    &quot;nameEs&quot;: &quot;Caucho&quot;,
-                    &quot;descriptionEn&quot;: &quot;Dark, heavy, slightly sharp and pungent aromatic associated with rubber.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico oscuro, pesado, ligeramente agudo y punzante, asociado al caucho.&quot;,
-                    &quot;color&quot;: &quot;#83929e&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Petroleum&quot;,
-                    &quot;nameEs&quot;: &quot;Petr&oacute;leo&quot;,
-                    &quot;descriptionEn&quot;: &quot;Specific chemical aromatic associated with crude oil and its refined products, with heavy-oil characteristics.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico qu&iacute;mico espec&iacute;fico asociado al crudo y sus refinados, con caracter&iacute;sticas de aceite pesado.&quot;,
-                    &quot;color&quot;: &quot;#83929e&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Skunky&quot;,
-                    &quot;nameEs&quot;: &quot;Mofeta&quot;,
-                    &quot;descriptionEn&quot;: &quot;Combination of aromatics associated with skunks.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Combinaci&oacute;n de arom&aacute;ticos asociados a las mofetas.&quot;,
-                    &quot;color&quot;: &quot;#83929e&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;defects\&quot;]&quot;,
-                    &quot;children&quot;: []
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Bitter&quot;,
-            &quot;nameEs&quot;: &quot;Amargo&quot;,
-            &quot;descriptionEn&quot;: &quot;See Basic Tastes.&quot;,
-            &quot;descriptionEs&quot;: &quot;Ver Sabores B&aacute;sicos.&quot;,
-            &quot;color&quot;: &quot;#7e8a4c&quot;,
-            &quot;categories&quot;: &quot;[\&quot;main_tastes\&quot;, \&quot;defects\&quot;]&quot;,
-            &quot;children&quot;: []
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Salty&quot;,
-            &quot;nameEs&quot;: &quot;Salado&quot;,
-            &quot;descriptionEn&quot;: &quot;See Basic Tastes.&quot;,
-            &quot;descriptionEs&quot;: &quot;Ver Sabores B&aacute;sicos.&quot;,
-            &quot;color&quot;: &quot;#a1b2b6&quot;,
-            &quot;categories&quot;: &quot;[\&quot;main_tastes\&quot;]&quot;,
-            &quot;children&quot;: []
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Cereal&quot;,
-            &quot;nameEs&quot;: &quot;Cereales&quot;,
-            &quot;descriptionEn&quot;: null,
-            &quot;descriptionEs&quot;: null,
-            &quot;color&quot;: &quot;#b8a06a&quot;,
-            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Grain&quot;,
-                    &quot;nameEs&quot;: &quot;Granos&quot;,
-                    &quot;descriptionEn&quot;: &quot;Light brown, dusty, musty, sweet aromatic associated with grains.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n claro, polvoriento, mohoso, dulce, asociado a los granos.&quot;,
-                    &quot;color&quot;: &quot;#c1ab7c&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;,
-                    &quot;children&quot;: [
-                        {
-                            &quot;level&quot;: 2,
-                            &quot;nameEn&quot;: &quot;Malt&quot;,
-                            &quot;nameEs&quot;: &quot;Malta&quot;,
-                            &quot;descriptionEn&quot;: &quot;Light brown, dusty, musty, sweet, sour and/or slightly fermented aromatic associated with grains.&quot;,
-                            &quot;descriptionEs&quot;: &quot;Arom&aacute;tico marr&oacute;n claro, polvoriento, mohoso, dulce, &aacute;cido y/o ligeramente fermentado, asociado a los granos.&quot;,
-                            &quot;color&quot;: &quot;#c9b78e&quot;,
-                            &quot;categories&quot;: &quot;[\&quot;aromatics\&quot;]&quot;
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Umami&quot;,
-            &quot;nameEs&quot;: &quot;Umami&quot;,
-            &quot;descriptionEn&quot;: &quot;Savory, brothy basic taste associated with glutamate; reminiscent of broth, soy sauce or ripe tomato, adding body and lingering depth.&quot;,
-            &quot;descriptionEs&quot;: &quot;Gusto b&aacute;sico sabroso y carnoso, asociado al glutamato; sensaci&oacute;n de caldo, salsa de soja o tomate maduro que aporta cuerpo y persistencia.&quot;,
-            &quot;color&quot;: &quot;#ae7d6b&quot;,
-            &quot;categories&quot;: &quot;[\&quot;main_tastes\&quot;]&quot;,
-            &quot;children&quot;: []
-        },
-        {
-            &quot;level&quot;: 0,
-            &quot;nameEn&quot;: &quot;Mouthfeel&quot;,
-            &quot;nameEs&quot;: &quot;Sensaci&oacute;n en boca&quot;,
-            &quot;descriptionEn&quot;: &quot;Root category for tactile mouthfeel descriptors.&quot;,
-            &quot;descriptionEs&quot;: &quot;Categor&iacute;a ra&iacute;z para los descriptores t&aacute;ctiles de sensaci&oacute;n en boca.&quot;,
-            &quot;color&quot;: &quot;#6b6f76&quot;,
-            &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
-            &quot;children&quot;: [
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Rough&quot;,
-                    &quot;nameEs&quot;: &quot;Rugoso&quot;,
-                    &quot;descriptionEn&quot;: &quot;Coarse or abrasive tactile sensation in the mouth, with a dry or gritty texture.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n &aacute;spera o abrasiva en boca, con textura seca o granulosa.&quot;,
-                    &quot;color&quot;: &quot;#7d818a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Oily&quot;,
-                    &quot;nameEs&quot;: &quot;Aceitoso&quot;,
-                    &quot;descriptionEn&quot;: &quot;Fatty, unctuous, lingering sensation that coats the palate.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n grasa, untuosa y persistente que recubre el paladar.&quot;,
-                    &quot;color&quot;: &quot;#7d818a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Smooth&quot;,
-                    &quot;nameEs&quot;: &quot;Sedoso&quot;,
-                    &quot;descriptionEn&quot;: &quot;Soft, round, velvety sensation, free of edges or roughness.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n suave, redonda y aterciopelada, sin aristas ni aspereza.&quot;,
-                    &quot;color&quot;: &quot;#7d818a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Mouth-drying&quot;,
-                    &quot;nameEs&quot;: &quot;Astringente&quot;,
-                    &quot;descriptionEn&quot;: &quot;Drying, puckering sensation in the mouth, characteristic of astringency.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n de sequedad y contracci&oacute;n en boca, t&iacute;pica de la astringencia.&quot;,
-                    &quot;color&quot;: &quot;#7d818a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
-                    &quot;children&quot;: []
-                },
-                {
-                    &quot;level&quot;: 1,
-                    &quot;nameEn&quot;: &quot;Metallic&quot;,
-                    &quot;nameEs&quot;: &quot;Met&aacute;lico&quot;,
-                    &quot;descriptionEn&quot;: &quot;Metallic sensation, sometimes with an iron- or copper-like taste impression.&quot;,
-                    &quot;descriptionEs&quot;: &quot;Sensaci&oacute;n met&aacute;lica, a veces con impresi&oacute;n de sabor a hierro o cobre.&quot;,
-                    &quot;color&quot;: &quot;#7d818a&quot;,
-                    &quot;categories&quot;: &quot;[\&quot;mouthfeel\&quot;]&quot;,
+                    &quot;nameEn&quot;: &quot;Dried fruit&quot;,
+                    &quot;nameEs&quot;: &quot;Fruta seca&quot;,
+                    &quot;descriptionEn&quot;: &quot;Notes of dried or dehydrated fruit.&quot;,
+                    &quot;descriptionEs&quot;: &quot;Notas de fruta seca o deshidratada.&quot;,
+                    &quot;color&quot;: &quot;#C4562F&quot;,
+                    &quot;categories&quot;: [
+                        &quot;aromatics&quot;
+                    ],
                     &quot;children&quot;: []
                 }
             ]
@@ -7062,34 +6776,18 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-POSTregister">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (201):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 66,
-        &quot;ulid&quot;: &quot;01M36SQNA0WSGQCDKFZ26WSAYM&quot;,
-        &quot;name&quot;: &quot;Ms. Audra Crooks II&quot;,
-        &quot;surname&quot;: &quot;Rempel&quot;,
-        &quot;email&quot;: &quot;okon.justina@example.com&quot;,
-        &quot;email_verified_at&quot;: &quot;2026-09-23T09:32:16.000000Z&quot;,
-        &quot;two_factor_secret&quot;: null,
-        &quot;two_factor_recovery_codes&quot;: null,
-        &quot;two_factor_confirmed_at&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;deleted_at&quot;: null
-    }
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (201, Created):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: {},
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
+        &quot;name&quot;: &quot;Laura&quot;,
+        &quot;surname&quot;: &quot;G&oacute;mez&quot;,
+        &quot;email&quot;: &quot;laura@tazavera.test&quot;,
+        &quot;role&quot;: &quot;coffeeshop&quot;
+    },
     &quot;message&quot;: &quot;Profile created.&quot;
 }</code>
  </pre>
@@ -7295,18 +6993,11 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 67,
-        &quot;ulid&quot;: &quot;01M36SQP06Z7Y51YRP3NMSNK33&quot;,
-        &quot;name&quot;: &quot;Morgan Hirthe&quot;,
-        &quot;surname&quot;: &quot;Cronin&quot;,
-        &quot;email&quot;: &quot;emelie.baumbach@example.net&quot;,
-        &quot;email_verified_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;two_factor_secret&quot;: null,
-        &quot;two_factor_recovery_codes&quot;: null,
-        &quot;two_factor_confirmed_at&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-23T09:32:17.000000Z&quot;,
-        &quot;deleted_at&quot;: null
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DD&quot;,
+        &quot;name&quot;: &quot;Andr&eacute;s&quot;,
+        &quot;surname&quot;: &quot;G&oacute;mez&quot;,
+        &quot;email&quot;: &quot;andres@tazavera.test&quot;,
+        &quot;role&quot;: &quot;specialist&quot;
     }
 }</code>
  </pre>
@@ -7413,7 +7104,7 @@ update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D" \
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -7427,7 +7118,7 @@ update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D"
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -7451,7 +7142,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D';
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;put(
     $url,
     [
@@ -7474,12 +7165,18 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-PUTusers--user_ulid-">
             <blockquote>
-            <p>Example response (200, Updated):</p>
+            <p>Example response (200):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: {},
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
+        &quot;name&quot;: &quot;Laura&quot;,
+        &quot;surname&quot;: &quot;G&oacute;mez Ruiz&quot;,
+        &quot;email&quot;: &quot;laura@tazavera.test&quot;,
+        &quot;role&quot;: &quot;coffeeshop&quot;
+    },
     &quot;message&quot;: &quot;Profile updated.&quot;
 }</code>
  </pre>
@@ -7584,18 +7281,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_ulid"                data-endpoint="PUTusers--user_ulid-"
-               value="01M35EKKNQT2NCB7QMBW0YR13D"
-               data-component="url">
-    <br>
-<p>Example: <code>01M35EKKNQT2NCB7QMBW0YR13D</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user"                data-endpoint="PUTusers--user_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -7657,7 +7342,7 @@ update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/password" \
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -7671,7 +7356,7 @@ update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/password"
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password"
 );
 
 const headers = {
@@ -7695,7 +7380,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/password';
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password';
 $response = $client-&gt;put(
     $url,
     [
@@ -7827,18 +7512,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_ulid"                data-endpoint="PUTusers--user_ulid--password"
-               value="01M35EKKNQT2NCB7QMBW0YR13D"
-               data-component="url">
-    <br>
-<p>Example: <code>01M35EKKNQT2NCB7QMBW0YR13D</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user"                data-endpoint="PUTusers--user_ulid--password"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -7900,7 +7573,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D" \
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7908,7 +7581,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D"
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -7926,7 +7599,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D';
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;delete(
     $url,
     [
@@ -8053,18 +7726,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_ulid"                data-endpoint="DELETEusers--user_ulid-"
-               value="01M35EKKNQT2NCB7QMBW0YR13D"
-               data-component="url">
-    <br>
-<p>Example: <code>01M35EKKNQT2NCB7QMBW0YR13D</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user"                data-endpoint="DELETEusers--user_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -8089,7 +7750,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/force" \
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -8097,7 +7758,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/force"
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force"
 );
 
 const headers = {
@@ -8115,7 +7776,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35EKKNQT2NCB7QMBW0YR13D/force';
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force';
 $response = $client-&gt;delete(
     $url,
     [
@@ -8242,18 +7903,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_ulid"                data-endpoint="DELETEusers--user_ulid--force"
-               value="01M35EKKNQT2NCB7QMBW0YR13D"
-               data-component="url">
-    <br>
-<p>Example: <code>01M35EKKNQT2NCB7QMBW0YR13D</code></p>
-            </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user"                data-endpoint="DELETEusers--user_ulid--force"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>

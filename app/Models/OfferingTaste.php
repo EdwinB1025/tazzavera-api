@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Traits\HasPublicUlid;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +17,22 @@ class OfferingTaste extends Model
         'level' => 'integer',
         'count' => 'integer',
     ];
+
+    public const AROMATIC_TYPES = ['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'];
+    public const AROMATIC_GROUP = 'aromatics';
+
+    /** Query scopes */
+    #[Scope]
+    protected function sensoryAxes(Builder $query): void
+    {
+        $query->where('type', '!=', self::AROMATIC_GROUP);
+    }
+
+    #[Scope]
+    protected function cataAggregate(Builder $query): void
+    {
+        $query->whereNotIn('type', self::AROMATIC_TYPES);
+    }
 
     /**Relationships */
 

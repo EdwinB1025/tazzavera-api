@@ -1,0 +1,55 @@
+{
+    "data": [
+        {
+            "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XC",
+            "roastLot": "L-2026-014",
+            "productionDate": "2026-09-19",
+            "coffee": {
+                "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
+                "name": "Huila El Mirador",
+                "roastLevel": "medium",
+                "process": "washed",
+                "variety": "Caturra",
+                "producer": null,
+                "country": "Colombia",
+                "region": "Huila",
+                "altitude": 1800,
+                "lot": "HM-07",
+                "certifications": [
+                    {
+                        "code": "organic",
+                        "description": "Certified organic production."
+                    }
+                ]
+            },
+            "roastery": {
+                "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                "name": "Nómada Roasters",
+                "description": "Tostador de especialidad en Barcelona."
+            }
+        },
+        {
+            "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XD",
+            "roastLot": "L-2026-021",
+            "productionDate": "2026-09-24",
+            "coffee": {
+                "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZH",
+                "name": "Sidama Bensa",
+                "roastLevel": "light",
+                "process": "natural",
+                "variety": "Heirloom",
+                "producer": "Bensa Cooperative",
+                "country": "Ethiopia",
+                "region": "Sidama",
+                "altitude": 2100,
+                "lot": "SB-12",
+                "certifications": []
+            },
+            "roastery": {
+                "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                "name": "Nómada Roasters",
+                "description": "Tostador de especialidad en Barcelona."
+            }
+        }
+    ]
+}
