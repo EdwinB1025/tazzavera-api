@@ -32,7 +32,17 @@ class OfferingController extends Controller
     {
         $offerings = Offering::query()
             ->filter($request->validated())
-            ->with('sensoryTastes.taxonomy', 'cataTastes.taxonomy', 'coffeeInventory.roastery', 'coffeeInventory.coffee', 'location')
+            ->with([
+                'location',
+                'coffeeInventory.coffee',
+                'coffeeInventory.roastery',
+                'sensoryTastes.taxonomy',
+                'sensoryTastes.children.taxonomy',
+                'sensoryTastes.children.children.taxonomy',
+                'cataTastes.taxonomy',
+                'cataTastes.children.taxonomy',
+                'cataTastes.children.children.taxonomy',
+            ])
             ->paginate();
 
         return OfferingResource::collection($offerings);
@@ -106,11 +116,12 @@ class OfferingController extends Controller
             'location',
             'coffeeInventory.coffee',
             'coffeeInventory.roastery',
-            'sensoryTastes' => fn($q) => $q->whereNull('parent_id'),
             'sensoryTastes.taxonomy',
             'sensoryTastes.children.taxonomy',
             'sensoryTastes.children.children.taxonomy',
             'cataTastes.taxonomy',
+            'cataTastes.children.taxonomy',
+            'cataTastes.children.children.taxonomy',
         ]);
 
         return new OfferingResource($offering);

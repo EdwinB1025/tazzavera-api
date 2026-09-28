@@ -34,6 +34,12 @@ class OfferingTaste extends Model
         $query->whereNotIn('type', self::AROMATIC_TYPES);
     }
 
+    #[Scope]
+    protected function roots(Builder $query): void
+    {
+        $query->whereNull('parent_id');
+    }
+
     /**Relationships */
 
     public function offering(): BelongsTo

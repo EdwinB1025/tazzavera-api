@@ -42,10 +42,7 @@ class OfferingResource extends JsonResource
     {
         return $this->cataTastes
             ->groupBy(fn($taste) => Str::camel($taste->type))
-            ->map(fn($group) => $group->map(fn($taste) => [
-                'ref' => $taste->taxonomy->ulid,
-                'count' => $taste->count,
-            ])->values())
+            ->map(fn($group) => OfferingTasteResource::collection($group->values()))
             ->all();
     }
 }

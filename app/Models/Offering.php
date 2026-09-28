@@ -296,7 +296,7 @@ class Offering extends Model
 
     public function cataTastes(): HasMany
     {
-        return $this->offeringTastes()->cataAggregate();
+        return $this->offeringTastes()->cataAggregate()->roots();
     }
 
     public function coffeeInventory(): BelongsTo
@@ -311,7 +311,7 @@ class Offering extends Model
 
     public function sensoryTastes(): HasMany
     {
-        return $this->offeringTastes()->sensoryAxes();
+        return $this->offeringTastes()->sensoryAxes()->roots();
     }
 
     public function evaluations(): HasMany
