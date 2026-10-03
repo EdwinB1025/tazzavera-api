@@ -6,11 +6,13 @@ use App\Contracts\EvaluationServiceContract;
 use App\Models\Passport\Client;
 use App\Models\User;
 use App\Services\EvaluationService;
+use App\Session\WebGuardDatabaseSessionHandler;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Laravel\Passport\Passport;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->passwordDefaults();
+        $this->webGuardSessions();
         //FormRequest::failOnUnknownFields(); EDB 09/01/2026: This fields fails request with _token and _method fields embeded, discarded, not usefull.
 
         Blade::anonymousComponentNamespace('layouts', 'layouts');
@@ -83,5 +86,23 @@ class AppServiceProvider extends ServiceProvider
                 return app()->isProduction() ? $rule->uncompromised() : $rule;
             }
         );
+    }
+
+    /**
+     * The database session driver records the web guard's user in user_id
+     * (the default guard is api), so the API logout can end the web sessions.
+     */
+    private function webGuardSessions(): void
+    {
+        Session::extend('database', function ($app) {
+            $connection = $app['db']->connection($app['config']->get('session.connection'));
+
+            return new WebGuardDatabaseSessionHandler(
+                $connection,
+                $app['config']->get('session.table'),
+                $app['config']->get('session.lifetime'),
+                $app
+            );
+        });
     }
 }

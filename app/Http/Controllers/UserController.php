@@ -10,7 +10,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Laravel\Passport\Token;
 use Spatie\Permission\Models\Role;
 use Throwable;
@@ -185,7 +187,10 @@ class UserController extends Controller
      * Log out
      *
      * Revokes all of the authenticated user's access tokens and their refresh
-     * tokens, ending the session.
+     * tokens, and ends every web session of the user on the server (the ones
+     * opened by the OAuth login): their rows are deleted from the sessions
+     * table and the remember token is regenerated, so a later authorization
+     * asks for the login again.
      *
      * **Authorization:** requires the `profile:read` or `profile:write` scope.
      *
@@ -205,6 +210,14 @@ class UserController extends Controller
             $token->revoke();
             $token->refreshToken?->revoke();
         });
+
+        //Ending the web sessions (session driver: database) and the remember-me cookie
+        DB::connection(config('session.connection'))
+            ->table(config('session.table', 'sessions'))
+            ->where('user_id', $user->getKey())
+            ->delete();
+
+        Auth::guard('api')->getProvider()->updateRememberToken($user, Str::random(60));
 
         return response()->json(['message' => __('auth.logged_out')], 200);
     }
