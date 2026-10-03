@@ -1,5 +1,5 @@
 <x-layouts::auth :title="__('Confirmar contraseña')">
-    <div class="flex flex-col gap-6 p-2">
+    <div class="flex flex-col gap-6">
         <x-auth.header
             :title="__('Confirmar contraseña')"
             :description="__('Esta es un área segura de la aplicación. Por favor confirma tu contraseña antes de continuar.')" />
@@ -16,18 +16,16 @@
         <form method="POST" action="{{ route('password.confirm.store') }}" class="flex flex-col gap-6">
             @csrf
 
-            <flux:input class="tz-input"
+            <x-ui.password-input
                 name="password"
                 :label="__('Contraseña')"
-                type="password"
                 required
                 autocomplete="current-password"
-                :placeholder="__('Contraseña')"
-                viewable />
+                :placeholder="__('Contraseña')" />
 
-            <flux:button variant="primary" type="submit" class="w-full" data-test="confirm-password-button">
+            <x-ui.button variant="primary" type="submit" class="w-full" data-test="confirm-password-button">
                 {{ __('Confirmar') }}
-            </flux:button>
+            </x-ui.button>
         </form>
     </div>
 </x-layouts::auth>

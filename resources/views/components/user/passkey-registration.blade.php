@@ -1,9 +1,6 @@
 @props([
-'optionsRoute' => 'passkey.login-options',
-'submitRoute' => 'passkey.login',
-'label' => __('Sign in with a passkey'),
-'loadingLabel' => __('Authenticating...'),
-'separator' => __('Or continue with email'),
+'optionsRoute' => 'passkey.registration-options',
+'submitRoute' => 'passkey.store',
 ])
 
 @assets
@@ -14,6 +11,7 @@
     x-data="{
         supported: false,
         loading: false,
+        name: '',
         error: null,
         updateSupport() {
             this.supported = Boolean(window.Passkeys?.isSupported());
@@ -23,17 +21,23 @@
 
             window.addEventListener('passkeys:ready', () => this.updateSupport(), { once: true });
         },
-        async verify() {
-            this.loading = true;
+        async register() {
+            if (this.loading) return;
             this.error = null;
+            if (this.name.trim() === '') {
+                this.error = @js(__('Escribe un nombre para la passkey.'));
+                return;
+            }
+            this.loading = true;
             try {
-                const response = await window.Passkeys.verify({
+                await window.Passkeys.register({
+                    name: this.name.trim(),
                     routes: {
                         options: '{{ route($optionsRoute) }}',
                         submit: '{{ route($submitRoute) }}',
                     },
                 });
-                Livewire.navigate(response.redirect || '/dashboard');
+                window.location.reload();
             } catch (e) {
                 if (e.constructor?.name !== 'UserCancelledError') {
                     this.error = e.message;
@@ -43,32 +47,27 @@
             }
         },
     }">
-    <template x-if="supported">
-        <div>
-            <div class="grid gap-2">
-                <flux:button
-                    variant="outline"
-                    icon="finger-print"
-                    class="w-full"
-                    x-on:click="verify()"
-                    x-bind:disabled="loading">
-                    <span x-show="!loading">{{ $label }}</span>
-                    <span x-show="loading" x-cloak>{{ $loadingLabel }}</span>
-                </flux:button>
-                <p x-show="error" x-text="error" x-cloak
-                    class="text-sm text-center"></p>
-            </div>
+    <p x-show="!supported" class="type-body">
+        {{ __('Este navegador no admite passkeys.') }}
+    </p>
 
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t"></div>
-                </div>
-                <div class="relative flex justify-center text-xs uppercase">
-                    <span class="px-2">
-                        {{ $separator }}
-                    </span>
-                </div>
-            </div>
-        </div>
-    </template>
+    <form x-show="supported" x-cloak x-on:submit.prevent="register()" class="flex flex-col gap-4">
+        <x-ui.field :label="__('Nombre de la passkey')" id="passkey-name">
+            <input
+                id="passkey-name"
+                type="text"
+                x-model="name"
+                autocomplete="off"
+                placeholder="{{ __('Ej.: portátil del trabajo') }}"
+                x-bind:aria-invalid="error ? 'true' : null"
+                x-bind:aria-describedby="error ? 'passkey-name-error' : null"
+                x-bind:class="error ? 'border-feedback-error' : 'border-border-strong'"
+                class="h-10 w-full px-3 rounded-field border-2 bg-surface-input type-control placeholder:italic placeholder:text-text-placeholder focus-visible:focus-ring disabled:opacity-50 disabled:cursor-not-allowed" />
+            <p id="passkey-name-error" x-show="error" x-text="error" x-cloak role="alert" class="type-error mt-1"></p>
+        </x-ui.field>
+
+        <x-ui.button variant="primary" type="submit" busy="loading" class="w-full">
+            {{ __('Añadir passkey') }}
+        </x-ui.button>
+    </form>
 </div>

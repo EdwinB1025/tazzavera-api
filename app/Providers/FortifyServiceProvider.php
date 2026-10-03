@@ -48,7 +48,10 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::loginView(
             function () {
-                if (! str_contains(session('url.intended', ''), 'oauth/authorize')) {
+                $intended = session('url.intended', '');
+
+                if (! str_contains($intended, 'oauth/authorize')
+                    && parse_url($intended, PHP_URL_PATH) !== '/user/security') {
                     abort(403, __('auth.web_not_directed_request'));
                 }
                 return view('livewire.auth.login');

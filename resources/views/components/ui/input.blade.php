@@ -1,16 +1,18 @@
 {{-- Text input inside the field contract, classes copied from
      tazavera-front/src/shared/ui/Input.tsx. The border swaps to the error
-     treatment when the field has a validation error. --}}
+     treatment when the field has a validation error; `errorBag` reads the
+     error from a named bag (e.g. Fortify's confirmTwoFactorAuthentication). --}}
 @props([
     'label',
     'name',
     'id' => null,
     'required' => false,
+    'errorBag' => 'default',
 ])
 
 @php
     $id ??= $name;
-    $error = $errors->first($name);
+    $error = $errors->getBag($errorBag)->first($name);
     $invalid = filled($error);
 
     $box = 'h-10 w-full px-3 rounded-field border-2 bg-surface-input type-control placeholder:italic placeholder:text-text-placeholder focus-visible:focus-ring disabled:opacity-50 disabled:cursor-not-allowed';
