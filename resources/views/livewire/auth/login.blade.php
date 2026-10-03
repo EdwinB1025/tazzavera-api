@@ -53,11 +53,5 @@
                 </flux:button>
             </div>
         </form>
-
-
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span class="tz-subtitle2">{{ __('No tienes una cuenta?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Registrate') }}</flux:link>
-        </div>
     </div>
 </x-layouts::auth>
