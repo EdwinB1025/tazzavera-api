@@ -6,11 +6,16 @@ use App\Contracts\EvaluationServiceContract;
 use App\Models\Passport\Client;
 use App\Models\User;
 use App\Services\EvaluationService;
+use App\Session\WebGuardDatabaseSessionHandler;
 use Carbon\CarbonInterval;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Laravel\Passport\Passport;
@@ -31,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->passwordDefaults();
+        $this->webGuardSessions();
+        $this->resetPasswordMail();
         //FormRequest::failOnUnknownFields(); EDB 09/01/2026: This fields fails request with _token and _method fields embeded, discarded, not usefull.
 
         Blade::anonymousComponentNamespace('layouts', 'layouts');
@@ -83,5 +90,52 @@ class AppServiceProvider extends ServiceProvider
                 return app()->isProduction() ? $rule->uncompromised() : $rule;
             }
         );
+    }
+
+    /**
+     * The database session driver records the web guard's user in user_id
+     * (the default guard is api), so the API logout can end the web sessions.
+     */
+    private function webGuardSessions(): void
+    {
+        Session::extend('database', function ($app) {
+            $connection = $app['db']->connection($app['config']->get('session.connection'));
+
+            return new WebGuardDatabaseSessionHandler(
+                $connection,
+                $app['config']->get('session.table'),
+                $app['config']->get('session.lifetime'),
+                $app
+            );
+        });
+    }
+
+    /**
+     * Password reset e-mail: texts from lang/{locale}/notifications.php in the
+     * locale of the request that asked for it (set by SetWebThemeAndLocale),
+     * and a link that keeps that locale and the theme on the reset page.
+     */
+    private function resetPasswordMail(): void
+    {
+        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
+            return url(route('password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+                'lang' => App::getLocale(),
+                'theme' => session('ui.theme'),
+            ], false));
+        });
+
+        ResetPassword::toMailUsing(function ($notifiable, string $token) {
+            $url = call_user_func(ResetPassword::$createUrlCallback, $notifiable, $token);
+            $expire = config('auth.passwords.'.config('auth.defaults.passwords').'.expire');
+
+            return (new MailMessage)
+                ->subject(__('notifications.reset_password.subject'))
+                ->line(__('notifications.reset_password.intro'))
+                ->action(__('notifications.reset_password.action'), $url)
+                ->line(__('notifications.reset_password.expire', ['count' => $expire]))
+                ->line(__('notifications.reset_password.outro'));
+        });
     }
 }

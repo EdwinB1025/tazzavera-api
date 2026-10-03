@@ -66,7 +66,7 @@ class UserFactory extends Factory
             'surname' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => $password,
-            'password_confirmation' => $password,
+            'passwordConfirmation' => $password,
             'role' => $role,
         ];
     }

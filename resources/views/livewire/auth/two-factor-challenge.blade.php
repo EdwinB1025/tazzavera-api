@@ -1,95 +1,78 @@
-<x-layouts::auth :title="__('Autenticación de dos factores')">
-    <div class="flex flex-col gap-6 p-2">
-        <div
-            class="relative w-full h-auto"
-            x-cloak
-            x-data="{
-                showRecoveryInput: @js($errors->has('recovery_code')),
-                code: '',
-                recovery_code: '',
-                focusOtp() {
-                    this.$nextTick(() => this.$refs.otp?.querySelector('input')?.focus());
-                },
-                init() {
-                    if (! this.showRecoveryInput) {
-                        this.focusOtp();
-                    }
-                },
-                toggleInput() {
-                    this.showRecoveryInput = !this.showRecoveryInput;
+<x-layouts::auth :title="__('auth_ui.two_factor.page_title')">
+    <div
+        class="flex flex-col gap-6"
+        x-cloak
+        x-data="{
+            showRecoveryInput: @js($errors->has('recovery_code')),
+            code: '',
+            recovery_code: '',
+            init() {
+                if (! this.showRecoveryInput) {
+                    this.$nextTick(() => this.$refs.code?.focus());
+                }
+            },
+            toggleInput() {
+                this.showRecoveryInput = !this.showRecoveryInput;
 
-                    this.code = '';
-                    this.recovery_code = '';
+                this.code = '';
+                this.recovery_code = '';
 
-                    $nextTick(() => {
-                        this.showRecoveryInput
-                            ? this.$refs.recovery_code?.focus()
-                            : this.focusOtp();
-                    });
-                },
-            }">
+                this.$nextTick(() => {
+                    this.showRecoveryInput
+                        ? this.$refs.recovery_code?.focus()
+                        : this.$refs.code?.focus();
+                });
+            },
+        }">
+        <div x-show="!showRecoveryInput">
+            <x-auth.header
+                :title="__('auth_ui.two_factor.code_title')"
+                :description="__('auth_ui.two_factor.code_description')" />
+        </div>
+
+        <div x-show="showRecoveryInput">
+            <x-auth.header
+                :title="__('auth_ui.two_factor.recovery_title')"
+                :description="__('auth_ui.two_factor.recovery_description')" />
+        </div>
+
+        <form method="POST" action="{{ route('two-factor.login.store') }}" class="flex flex-col gap-6">
+            @csrf
+
             <div x-show="!showRecoveryInput">
-                <x-auth.header
-                    :title="__('Código de autenticación')"
-                    :description="__('Ingresa el código de autenticación proporcionado por tu aplicación de autenticación.')" />
+                <x-ui.input
+                    name="code"
+                    :label="__('auth_ui.two_factor.code')"
+                    x-ref="code"
+                    x-model="code"
+                    x-bind:required="!showRecoveryInput"
+                    x-bind:disabled="showRecoveryInput"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    autocomplete="one-time-code" />
             </div>
 
             <div x-show="showRecoveryInput">
-                <x-auth.header
-                    :title="__('Código de recuperación')"
-                    :description="__('Por favor confirma el acceso a tu cuenta ingresando uno de tus códigos de recuperación de emergencia.')" />
+                <x-ui.input
+                    name="recovery_code"
+                    :label="__('auth_ui.two_factor.recovery_code')"
+                    x-ref="recovery_code"
+                    x-model="recovery_code"
+                    x-bind:required="showRecoveryInput"
+                    x-bind:disabled="!showRecoveryInput"
+                    autocomplete="one-time-code" />
             </div>
 
-            <form method="POST" action="{{ route('two-factor.login.store') }}">
-                @csrf
+            <x-ui.button variant="primary" type="submit" class="w-full">
+                {{ __('auth_ui.two_factor.submit') }}
+            </x-ui.button>
 
-                <div class="space-y-5 text-center">
-                    <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5" x-ref="otp">
-                            <flux:otp
-                                x-model="code"
-                                length="6"
-                                name="code"
-                                label="OTP Code"
-                                label:sr-only
-                                class="mx-auto" />
-                        </div>
-                    </div>
-
-                    <div x-show="showRecoveryInput">
-                        <div class="my-5">
-                            <flux:input class="tz-input"
-                                type="text"
-                                name="recovery_code"
-                                x-ref="recovery_code"
-                                x-bind:required="showRecoveryInput"
-                                autocomplete="one-time-code"
-                                x-model="recovery_code" />
-                        </div>
-
-                        @error('recovery_code')
-                        <flux:text color="red">
-                            {{ $message }}
-                        </flux:text>
-                        @enderror
-                    </div>
-
-                    <flux:button
-                        variant="primary"
-                        type="submit"
-                        class="w-full">
-                        {{ __('Continuar') }}
-                    </flux:button>
-                </div>
-
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('o puedes') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('iniciar sesión con un código de recuperación') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('iniciar sesión con un código de autenticación') }}</span>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <p class="type-body text-center">
+                {{ __('auth_ui.two_factor.or') }}
+                <button type="button" x-show="!showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('auth_ui.two_factor.use_recovery') }}</button>
+                <button type="button" x-show="showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('auth_ui.two_factor.use_code') }}</button>
+            </p>
+        </form>
     </div>
 </x-layouts::auth>

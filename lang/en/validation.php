@@ -166,5 +166,9 @@ return [
         'email'    => 'email',
         'password' => 'password',
         'role'     => 'role',
+        'password_confirmation' => 'password confirmation',
+        'code'          => 'authentication code',
+        'recovery_code' => 'recovery code',
+        'token'         => 'reset link',
     ],
 ];

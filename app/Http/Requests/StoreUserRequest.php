@@ -30,7 +30,8 @@ class StoreUserRequest extends FormRequest
             'name' => ['required', 'string'],
             'surname' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['required', 'same:passwordConfirmation', Password::defaults()],
+            'passwordConfirmation' => ['required'],
             'role' => ['sometimes', Rule::enum(Roles::class)],
         ];
     }
@@ -41,7 +42,8 @@ class StoreUserRequest extends FormRequest
             'name' => ['description' => 'User first name.', 'example' => 'Augusto'],
             'surname' => ['description' => 'User last name.', 'example' => 'Restrepo'],
             'email' => ['description' => 'Email address. Must be unique.', 'example' => 'augusto@example.com'],
-            'password' => ['description' => 'Password. Must meet the default strength rules and be confirmed via password_confirmation.', 'example' => 'Str0ngP@ss!'],
+            'password' => ['description' => 'Password. Must meet the default strength rules and be confirmed via passwordConfirmation.', 'example' => 'Str0ngP@ss!'],
+            'passwordConfirmation' => ['description' => 'Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation.', 'example' => 'NewStr0ng!'],
             'role' => ['description' => 'Optional. Role to assign at registration. One of: coffeeshop, specialist, user.', 'example' => 'coffeeshop'],
         ];
     }

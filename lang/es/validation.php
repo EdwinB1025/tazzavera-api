@@ -167,5 +167,9 @@ return [
         'email'    => 'correo electrónico',
         'password' => 'contraseña',
         'role'     => 'rol',
+        'password_confirmation' => 'confirmación de la contraseña',
+        'code'          => 'código de autenticación',
+        'recovery_code' => 'código de recuperación',
+        'token'         => 'enlace de restablecimiento',
     ],
 ];
