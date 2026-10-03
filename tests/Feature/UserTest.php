@@ -143,7 +143,7 @@ test('authenticated_user_gets_profile_data', function () {
     $this->withToken($token)
         ->getJson('/user')
         ->assertOk()
-        ->assertJsonPath('data.id', $user->id);
+        ->assertJsonPath('data.ulid', $user->ulid);
 });
 
 test('authenticated_user_deactivates_profile', function () {
