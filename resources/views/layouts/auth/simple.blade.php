@@ -5,26 +5,17 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white antialiased">
-    <div class="tz-bg-inverse flex min-h-svh flex-col items-center justify-center">
-        <div class="tz-logincard flex w-ful  max-w-sm sm:max-w-lg flex-col gap-2">
-            <div class="flex flex-col items-center gap-2 font-medium">
-                <span class="flex h-full w-full mb-1 items-center justify-center rounded-md">
-                    <x-logo.app-logo class="size-20 fill-current mx-auto h-full" />
-                </span>
-                <span class="sr-only">{{ config('app.name', 'TAZAVERA') }}</span>
-            </div>
-            <div class="flex flex-col gap-6">
-                {{ $slot }}
-            </div>
+<body class="bg-surface-inverse antialiased">
+    <div class="flex min-h-dvh flex-col items-center gap-6 px-4 py-8 sm:justify-center">
+        <div class="flex flex-col items-center gap-2">
+            <x-logo.app-logo class="size-20 fill-current mx-auto h-full" />
+            <span class="type-brand">TAZAVERA</span>
         </div>
-    </div>
 
-    @persist('toast')
-    <flux:toast.group>
-        <flux:toast />
-    </flux:toast.group>
-    @endpersist
+        <main class="w-full max-w-md bg-surface-card border border-border-strong rounded-container p-6 sm:p-8">
+            {{ $slot }}
+        </main>
+    </div>
 
     @fluxScripts
 </body>

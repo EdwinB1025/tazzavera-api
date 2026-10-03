@@ -1,5 +1,5 @@
 <x-layouts::auth :title="__('Log in')">
-    <div class="flex flex-col gap-6 p-2">
+    <div class="flex flex-col gap-6">
         <x-auth.header :title="__('Accede a tu cuenta')" :description="__('Ingresa tu e-mail y cotraseña para acceder a tu cuenta!')" />
 
         <!-- Session Status -->
@@ -9,16 +9,9 @@
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
-            @if ($errors->any())
-            <div>
-                @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-                @endforeach
-            </div>
-            @endif
 
             <!-- Email Address -->
-            <flux:input class="tz-input"
+            <x-ui.input
                 name="email"
                 :label="__('Email')"
                 :value="old('email')"
@@ -30,28 +23,26 @@
 
             <!-- Password -->
             <div class="relative">
-                <flux:input class="tz-input"
+                <x-ui.password-input
                     name="password"
                     :label="__('Contraseña')"
-                    type="password"
                     required
                     autocomplete="current-password"
-                    :placeholder="__('*************')"
-                    viewable />
+                    :placeholder="__('*************')" />
                 @if (Route::has('password.request'))
-                <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                    {{ __('Olvidaste tu contraseña?') }}
-                </flux:link>
+                <p class="type-body absolute top-0 end-0">
+                    <x-ui.link :href="route('password.request')" wire:navigate>
+                        {{ __('Olvidaste tu contraseña?') }}
+                    </x-ui.link>
+                </p>
                 @endif
             </div>
 
+            <x-ui.checkbox name="remember" value="1" :label="__('Recuerdame')" :checked="old('remember')" />
 
-            <flux:checkbox name="remember" :label="__('Recuerdame')" :checked="old('remember')" />
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
+            <x-ui.button variant="primary" type="submit" class="w-full" data-test="login-button">
+                {{ __('Log in') }}
+            </x-ui.button>
         </form>
     </div>
 </x-layouts::auth>
