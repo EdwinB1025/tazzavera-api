@@ -23,8 +23,8 @@
 
 /* =========================================================
    The sections below are copied verbatim from
-   tazavera-front/src/app/styles/globals.css (traditional theme only:
-   no night-* primitives, no [data-theme="dark"], no variant-inverse).
+   tazavera-front/src/app/styles/globals.css (traditional and dark themes;
+   no variant-inverse).
    ========================================================= */
 
 /* =========================================================
@@ -250,6 +250,207 @@
     --radius-container: 16px;
     --radius-field: 8px;
     --radius-check: 4px;
+}
+
+/* =========================================================
+   TAZAVERA — NIGHT PRIMITIVES (dark theme)
+   Dark zone (L < 0.40): numbered by order (950 darkest → 750).
+   Lighter steps follow the traditional lightness rule.
+   ========================================================= */
+
+@theme {
+    /* ─── NIGHT PETROL (surfaces and neutrals) ─── */
+    --color-night-petrol-100: #d0d9dc;
+    --color-night-petrol-200: #c0d1d6;
+    --color-night-petrol-400: #a0b1b6;
+    --color-night-petrol-500: #9aa7ab;
+    --color-night-petrol-600: #738488;
+    --color-night-petrol-700: #49585c;
+    --color-night-petrol-800: #202e32;
+    --color-night-petrol-850: #162428;
+    --color-night-petrol-900: #0d1b1e;
+    --color-night-petrol-950: #051215;
+
+    /* ─── NIGHT SAGE ─── */
+    --color-night-sage-100: #c9e5e0;
+    --color-night-sage-200: #c6ddd9;
+    --color-night-sage-400: #89ada7;
+    --color-night-sage-600: #5e8a83;
+    --color-night-sage-700: #335f58;
+    --color-night-sage-750: #264742;
+    --color-night-sage-800: #1f3b37;
+    --color-night-sage-850: #19302d;
+    --color-night-sage-900: #142b28;
+    --color-night-sage-950: #112320;
+
+    /* ─── NIGHT MOSS ─── */
+    --color-night-moss-200: #d8dbb6;
+    --color-night-moss-300: #bec387;
+    --color-night-moss-400: #a5aa6f;
+    --color-night-moss-600: #82863a;
+    --color-night-moss-700: #575a00;
+    --color-night-moss-800: #434528;
+    --color-night-moss-850: #333519;
+    --color-night-moss-900: #272817;
+    --color-night-moss-950: #191a09;
+
+    /* ─── NIGHT OXBLOOD ─── */
+    --color-night-oxblood-200: #ffc8c2;
+    --color-night-oxblood-400: #dc8c85;
+    --color-night-oxblood-500: #ef675c;
+    --color-night-oxblood-600: #c8635d;
+    --color-night-oxblood-700: #a03f3c;
+    --color-night-oxblood-800: #90302e;
+    --color-night-oxblood-950: #47211e;
+
+    /* ─── NIGHT CREAM ─── */
+    --color-night-cream-100: #f2eadd;
+}
+
+/* =========================================================
+   TAZAVERA — SEMANTIC LAYER (dark theme)
+   Contract: [data-theme="dark"] on the document root.
+   ========================================================= */
+
+@layer base {
+    [data-theme="dark"] {
+        /* ─── SURFACE ─── */
+        --color-surface-page: var(--color-night-petrol-950);
+        --color-surface-card: var(--color-night-petrol-900);
+        --color-surface-section: var(--color-night-petrol-850);
+        --color-surface-section-hover: var(--color-night-petrol-800);
+        --color-surface-form: var(--color-night-petrol-900);
+        --color-surface-inverse: var(--color-night-sage-900);
+        --color-surface-input: var(--color-night-petrol-950);
+        --color-surface-textarea: var(--color-night-petrol-950);
+        --color-surface-checked: var(--color-night-moss-600);
+        --color-surface-filter: var(--color-night-moss-900);
+        --color-surface-filter-field-hover: var(--color-night-moss-850);
+        --color-surface-filter-control: var(--color-night-moss-950);
+        --color-surface-filter-option: var(--color-night-moss-850);
+        --color-surface-filter-panel: var(--color-night-moss-850);
+
+        /* ─── TEXT ─── */
+        --color-text-primary: var(--color-night-sage-100);
+        --color-text-secondary: var(--color-night-petrol-400);
+        --color-text-accent: var(--color-night-oxblood-400);
+        --color-text-label: var(--color-night-moss-300);
+        --color-text-inverse: var(--color-night-petrol-950);
+        --color-text-strong: var(--color-night-cream-100);
+        --color-text-placeholder: var(--color-night-petrol-400);
+        --color-text-link: var(--color-night-sage-100);
+        --color-text-link-hover: var(--color-night-cream-100);
+        --color-text-input-icon: var(--color-night-sage-100);
+
+        /* ─── BORDER ─── */
+        --color-border-strong: var(--color-night-petrol-600);
+        --color-border-subtle: color-mix(in srgb, var(--color-night-sage-100) 15%, transparent);
+        --color-border-muted: var(--color-night-petrol-600);
+        --color-border-accent: var(--color-night-oxblood-600);
+        --color-border-filter-separator: color-mix(in srgb, var(--color-night-sage-100) 15%, transparent);
+
+        /* ─── PRIMARY ACTION ─── */
+        --color-action-primary: var(--color-night-oxblood-700);
+        --color-action-primary-hover: var(--color-night-oxblood-800);
+        --color-action-primary-text: var(--color-night-cream-100);
+
+        /* ─── POSITIONAL ACTIONS ───
+           Opaque bg: tint mixed with card surface (night-petrol-900). */
+        --color-action-1-bg: color-mix(in srgb, var(--color-night-moss-600) 20%, var(--color-night-petrol-900));
+        --color-action-1-text: var(--color-night-moss-400);
+        --color-action-1-bg-hover: var(--color-night-moss-700);
+        --color-action-1-text-hover: var(--color-night-moss-200);
+
+        --color-action-2-bg: color-mix(in srgb, var(--color-night-oxblood-600) 20%, var(--color-night-petrol-900));
+        --color-action-2-text: var(--color-night-oxblood-400);
+        --color-action-2-bg-hover: var(--color-night-oxblood-800);
+        --color-action-2-text-hover: var(--color-night-oxblood-200);
+
+        --color-action-3-bg: color-mix(in srgb, var(--color-night-sage-600) 20%, var(--color-night-petrol-900));
+        --color-action-3-text: var(--color-night-sage-400);
+        --color-action-3-bg-hover: var(--color-night-sage-700);
+        --color-action-3-text-hover: var(--color-night-sage-200);
+
+        --color-action-4-bg: color-mix(in srgb, var(--color-night-petrol-600) 20%, var(--color-night-petrol-900));
+        --color-action-4-text: var(--color-night-petrol-500);
+        --color-action-4-bg-hover: var(--color-night-petrol-700);
+        --color-action-4-text-hover: var(--color-night-petrol-100);
+
+        /* ─── NAVIGATION ─── */
+        --color-nav-header: var(--color-night-sage-950);
+        --color-nav-surface: var(--color-night-sage-900);
+        --color-nav-surface-dark: var(--color-night-sage-950);
+        --color-nav-text: var(--color-night-sage-100);
+        --color-nav-text-dark: var(--color-night-sage-100);
+        --color-nav-text-hover: var(--color-night-oxblood-400);
+        --color-nav-icon: var(--color-night-sage-100);
+        --color-nav-hover: var(--color-night-sage-800);
+        --color-nav-current: var(--color-night-sage-750);
+        --color-nav-current-dark: var(--color-night-sage-850);
+        --color-nav-indicator: var(--color-night-oxblood-600);
+        --color-nav-underline: var(--color-night-moss-300);
+        --color-nav-toggle-bg: color-mix(in srgb, var(--color-night-sage-100) 15%, transparent);
+        --color-nav-toggle-icon: var(--color-night-sage-100);
+        --color-nav-avatar: var(--color-night-sage-600);
+        --color-nav-avatar-hover: var(--color-night-oxblood-600);
+        --color-nav-hover-shadow: color-mix(in srgb, rgb(0 0 0) 18%, transparent);
+
+        /* ─── NAVIGATION — TABS ─── */
+        --color-nav-tabs-surface: var(--color-night-moss-900);
+        --color-nav-tabs-hover: var(--color-night-moss-850);
+        --color-nav-tabs-current: var(--color-night-moss-800);
+        --color-nav-tabs-current-border: var(--color-night-sage-100);
+        --color-nav-tabs-border: color-mix(in srgb, var(--color-night-sage-100) 15%, transparent);
+
+        /* ─── NAVIGATION — BUTTON ─── */
+        --color-nav-button-bg: var(--color-night-oxblood-700);
+        --color-nav-button-text: var(--color-night-cream-100);
+        --color-nav-button-border: var(--color-night-cream-100);
+        --color-nav-button-bg-hover: var(--color-night-oxblood-800);
+        --color-nav-button-text-hover: var(--color-night-cream-100);
+        --color-nav-button-border-hover: var(--color-night-cream-100);
+
+        /* ─── FEEDBACK ─── */
+        --color-feedback-error: var(--color-night-oxblood-500);
+
+        /* ─── FOCUS ─── */
+        --color-focus-ring: var(--color-night-sage-100);
+        --color-focus-offset: var(--color-night-petrol-950);
+
+        /* ─── EVALUATION ─── */
+        --color-evaluation-rating-exceptional: color-mix(in srgb, var(--color-score-green) 30%, transparent);
+        --color-evaluation-rating-excellent: color-mix(in srgb, var(--color-score-lime) 30%, transparent);
+        --color-evaluation-rating-good: color-mix(in srgb, var(--color-score-citron) 30%, transparent);
+        --color-evaluation-rating-commercial: color-mix(in srgb, var(--color-score-gold) 30%, transparent);
+        --color-evaluation-bean-on: var(--color-night-oxblood-600);
+        --color-evaluation-bean-off: var(--color-night-moss-800);
+        --color-evaluation-slider-track: var(--color-night-oxblood-950);
+        --color-evaluation-slider-start: var(--color-night-moss-600);
+        --color-evaluation-slider-end: var(--color-night-sage-100);
+        --color-evaluation-slider-thumb: var(--color-night-sage-100);
+        --color-evaluation-slider-thumb-border: var(--color-night-petrol-950);
+
+        /* ─── BADGE STATE ─── */
+        --color-badge-text: var(--color-night-sage-100);
+        --color-badge-provisional-bg: var(--color-night-petrol-800);
+        --color-badge-provisional-text: var(--color-night-sage-100);
+        --color-badge-verified-bg: var(--color-night-moss-850);
+        --color-badge-verified-text: var(--color-night-moss-300);
+
+        /* ─── FORM FIELDS (checked state and inverse variant) ─── */
+        --color-checked-mark: var(--color-night-petrol-950);
+        --color-focus-ring-inverse: var(--color-night-sage-100);
+        --color-focus-offset-inverse: var(--color-night-petrol-950);
+        --color-border-inverse: var(--color-night-petrol-600);
+        --color-text-placeholder-inverse: var(--color-night-petrol-400);
+        --color-feedback-error-inverse: var(--color-night-oxblood-500);
+
+        /* ─── RADIUS ─── */
+        --radius-pill: 0;
+        --radius-container: 0;
+        --radius-field: 0;
+        --radius-check: 0;
+    }
 }
 
 /* =========================================================

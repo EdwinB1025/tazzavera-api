@@ -25,7 +25,7 @@
             if (this.loading) return;
             this.error = null;
             if (this.name.trim() === '') {
-                this.error = @js(__('Escribe un nombre para la passkey.'));
+                this.error = @js(__('auth_ui.passkey.name_required'));
                 return;
             }
             this.loading = true;
@@ -48,17 +48,17 @@
         },
     }">
     <p x-show="!supported" class="type-body">
-        {{ __('Este navegador no admite passkeys.') }}
+        {{ __('auth_ui.passkey.unsupported') }}
     </p>
 
     <form x-show="supported" x-cloak x-on:submit.prevent="register()" class="flex flex-col gap-4">
-        <x-ui.field :label="__('Nombre de la passkey')" id="passkey-name">
+        <x-ui.field :label="__('auth_ui.passkey.name')" id="passkey-name">
             <input
                 id="passkey-name"
                 type="text"
                 x-model="name"
                 autocomplete="off"
-                placeholder="{{ __('Ej.: portátil del trabajo') }}"
+                placeholder="{{ __('auth_ui.passkey.name_placeholder') }}"
                 x-bind:aria-invalid="error ? 'true' : null"
                 x-bind:aria-describedby="error ? 'passkey-name-error' : null"
                 x-bind:class="error ? 'border-feedback-error' : 'border-border-strong'"
@@ -67,7 +67,7 @@
         </x-ui.field>
 
         <x-ui.button variant="primary" type="submit" busy="loading" class="w-full">
-            {{ __('Añadir passkey') }}
+            {{ __('auth_ui.passkey.add') }}
         </x-ui.button>
     </form>
 </div>

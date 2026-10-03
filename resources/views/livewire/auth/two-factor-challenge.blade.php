@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Autenticación de dos factores')">
+<x-layouts::auth :title="__('auth_ui.two_factor.page_title')">
     <div
         class="flex flex-col gap-6"
         x-cloak
@@ -26,14 +26,14 @@
         }">
         <div x-show="!showRecoveryInput">
             <x-auth.header
-                :title="__('Código de autenticación')"
-                :description="__('Ingresa el código de autenticación proporcionado por tu aplicación de autenticación.')" />
+                :title="__('auth_ui.two_factor.code_title')"
+                :description="__('auth_ui.two_factor.code_description')" />
         </div>
 
         <div x-show="showRecoveryInput">
             <x-auth.header
-                :title="__('Código de recuperación')"
-                :description="__('Por favor confirma el acceso a tu cuenta ingresando uno de tus códigos de recuperación de emergencia.')" />
+                :title="__('auth_ui.two_factor.recovery_title')"
+                :description="__('auth_ui.two_factor.recovery_description')" />
         </div>
 
         <form method="POST" action="{{ route('two-factor.login.store') }}" class="flex flex-col gap-6">
@@ -42,7 +42,7 @@
             <div x-show="!showRecoveryInput">
                 <x-ui.input
                     name="code"
-                    :label="__('Código de autenticación')"
+                    :label="__('auth_ui.two_factor.code')"
                     x-ref="code"
                     x-model="code"
                     x-bind:required="!showRecoveryInput"
@@ -56,7 +56,7 @@
             <div x-show="showRecoveryInput">
                 <x-ui.input
                     name="recovery_code"
-                    :label="__('Código de recuperación')"
+                    :label="__('auth_ui.two_factor.recovery_code')"
                     x-ref="recovery_code"
                     x-model="recovery_code"
                     x-bind:required="showRecoveryInput"
@@ -65,13 +65,13 @@
             </div>
 
             <x-ui.button variant="primary" type="submit" class="w-full">
-                {{ __('Continuar') }}
+                {{ __('auth_ui.two_factor.submit') }}
             </x-ui.button>
 
             <p class="type-body text-center">
-                {{ __('o puedes') }}
-                <button type="button" x-show="!showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('iniciar sesión con un código de recuperación') }}</button>
-                <button type="button" x-show="showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('iniciar sesión con un código de autenticación') }}</button>
+                {{ __('auth_ui.two_factor.or') }}
+                <button type="button" x-show="!showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('auth_ui.two_factor.use_recovery') }}</button>
+                <button type="button" x-show="showRecoveryInput" x-on:click="toggleInput()" class="underline text-text-link hover:text-text-link-hover focus-visible:focus-ring">{{ __('auth_ui.two_factor.use_code') }}</button>
             </p>
         </form>
     </div>

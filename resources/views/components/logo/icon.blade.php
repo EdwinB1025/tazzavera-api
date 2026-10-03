@@ -1,2 +1,2 @@
-<img {{ $attributes->merge(['alt' => 'Tazavera']) }}
+<img {{ $attributes->merge(['alt' => __('auth_ui.brand')]) }}
     src="{{ asset('favicon.svg') }}" />

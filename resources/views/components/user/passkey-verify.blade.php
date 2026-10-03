@@ -1,9 +1,9 @@
 @props([
 'optionsRoute' => 'passkey.login-options',
 'submitRoute' => 'passkey.login',
-'label' => __('Sign in with a passkey'),
-'loadingLabel' => __('Authenticating...'),
-'separator' => __('Or continue with email'),
+'label' => __('auth_ui.passkey.sign_in'),
+'loadingLabel' => __('auth_ui.passkey.signing_in'),
+'separator' => __('auth_ui.passkey.or_email'),
 ])
 
 @assets

@@ -1,6 +1,6 @@
-<x-layouts::auth :title="__('Log in')">
+<x-layouts::auth :title="__('auth_ui.login.page_title')">
     <div class="flex flex-col gap-6">
-        <x-auth.header :title="__('Accede a tu cuenta')" :description="__('Ingresa tu e-mail y contraseña para acceder a tu cuenta!')" />
+        <x-auth.header :title="__('auth_ui.login.title')" :description="__('auth_ui.login.description')" />
 
         <!-- Session Status -->
         <x-auth.session-status class="text-center" :status="session('status')" />
@@ -13,34 +13,34 @@
             <!-- Email Address -->
             <x-ui.input
                 name="email"
-                :label="__('Email')"
+                :label="__('auth_ui.fields.email')"
                 :value="old('email')"
                 type="email"
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="email@example.com" />
+                :placeholder="__('auth_ui.fields.email_placeholder')" />
 
             <!-- Password -->
             <div class="relative">
                 <x-ui.password-input
                     name="password"
-                    :label="__('Contraseña')"
+                    :label="__('auth_ui.fields.password')"
                     required
                     autocomplete="current-password" />
                 @if (Route::has('password.request'))
-                <p class="type-body absolute top-0 end-0">
+                <p class="type-body mt-2 text-end sm:absolute sm:top-0 sm:end-0 sm:mt-0">
                     <x-ui.link :href="route('password.request')" wire:navigate>
-                        {{ __('Olvidaste tu contraseña?') }}
+                        {{ __('auth_ui.login.forgot_password') }}
                     </x-ui.link>
                 </p>
                 @endif
             </div>
 
-            <x-ui.checkbox name="remember" value="1" :label="__('Recuerdame')" :checked="old('remember')" />
+            <x-ui.checkbox name="remember" value="1" :label="__('auth_ui.login.remember')" :checked="old('remember')" />
 
             <x-ui.button variant="primary" type="submit" class="w-full" data-test="login-button">
-                {{ __('Log in') }}
+                {{ __('auth_ui.login.submit') }}
             </x-ui.button>
         </form>
     </div>

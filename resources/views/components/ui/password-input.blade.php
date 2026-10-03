@@ -8,8 +8,8 @@
     'id' => null,
     'required' => false,
     'disabled' => false,
-    'showPasswordLabel' => __('Mostrar contraseña'),
-    'hidePasswordLabel' => __('Ocultar contraseña'),
+    'showPasswordLabel' => __('auth_ui.fields.show_password'),
+    'hidePasswordLabel' => __('auth_ui.fields.hide_password'),
 ])
 
 @php
