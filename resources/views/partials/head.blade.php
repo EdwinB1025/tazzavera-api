@@ -13,7 +13,5 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap">
 
-@fonts
-
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 {{--@fluxAppearance--}}

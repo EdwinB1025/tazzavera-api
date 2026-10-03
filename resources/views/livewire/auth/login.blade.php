@@ -1,6 +1,6 @@
 <x-layouts::auth :title="__('Log in')">
     <div class="flex flex-col gap-6">
-        <x-auth.header :title="__('Accede a tu cuenta')" :description="__('Ingresa tu e-mail y cotraseña para acceder a tu cuenta!')" />
+        <x-auth.header :title="__('Accede a tu cuenta')" :description="__('Ingresa tu e-mail y contraseña para acceder a tu cuenta!')" />
 
         <!-- Session Status -->
         <x-auth.session-status class="text-center" :status="session('status')" />
@@ -27,8 +27,7 @@
                     name="password"
                     :label="__('Contraseña')"
                     required
-                    autocomplete="current-password"
-                    :placeholder="__('*************')" />
+                    autocomplete="current-password" />
                 @if (Route::has('password.request'))
                 <p class="type-body absolute top-0 end-0">
                     <x-ui.link :href="route('password.request')" wire:navigate>
