@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Laravel\Passport\Guards\TokenGuard;
 use Laravel\Passport\Token;
 use Spatie\Permission\Models\Role;
 use Throwable;
@@ -217,7 +218,9 @@ class UserController extends Controller
             ->where('user_id', $user->getKey())
             ->delete();
 
-        Auth::guard('api')->getProvider()->updateRememberToken($user, Str::random(60));
+        /** @var TokenGuard $apiGuard */
+        $apiGuard = Auth::guard('api');
+        $apiGuard->getProvider()->updateRememberToken($user, Str::random(60));
 
         return response()->json(['message' => __('auth.logged_out')], 200);
     }
