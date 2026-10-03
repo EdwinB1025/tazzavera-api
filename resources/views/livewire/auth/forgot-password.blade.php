@@ -1,6 +1,6 @@
-<x-layouts::auth :title="__('Recuperar contraseña')">
-    <div class="flex flex-col gap-6 p-2">
-        <x-auth.header :title="__('Recuperar contraseña')" :description="__('Ingresa tu e-mail para recibir un enlace de recuperación de contraseña')" />
+<x-layouts::auth :title="__('auth_ui.forgot.title')">
+    <div class="flex flex-col gap-6">
+        <x-auth.header :title="__('auth_ui.forgot.title')" :description="__('auth_ui.forgot.description')" />
 
         <!-- Session Status -->
         <x-auth.session-status class="text-center" :status="session('status')" />
@@ -9,22 +9,22 @@
             @csrf
 
             <!-- Email Address -->
-            <flux:input class="tz-input"
+            <x-ui.input
                 name="email"
-                :label="__('Email')"
+                :label="__('auth_ui.fields.email')"
                 type="email"
                 required
                 autofocus
-                placeholder="email@example.com" />
+                :placeholder="__('auth_ui.fields.email_placeholder')" />
 
-            <flux:button variant="primary" type="submit" class="w-full" data-test="email-password-reset-link-button">
-                {{ __('Enviar enlace de recuperación') }}
-            </flux:button>
+            <x-ui.button variant="primary" type="submit" class="w-full" data-test="email-password-reset-link-button">
+                {{ __('auth_ui.forgot.submit') }}
+            </x-ui.button>
         </form>
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
-            <span class="tz-subtitle2">{{ __('O regresa a') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Iniciar sesión') }}</flux:link>
-        </div>
+        <p class="type-body text-center">
+            {{ __('auth_ui.forgot.back') }}
+            <x-ui.link :href="route('login')" wire:navigate>{{ __('auth_ui.forgot.back_link') }}</x-ui.link>
+        </p>
     </div>
 </x-layouts::auth>

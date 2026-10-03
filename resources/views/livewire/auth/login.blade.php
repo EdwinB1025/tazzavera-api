@@ -1,6 +1,6 @@
-<x-layouts::auth :title="__('Log in')">
-    <div class="flex flex-col gap-6 p-2">
-        <x-auth.header :title="__('Accede a tu cuenta')" :description="__('Ingresa tu e-mail y cotraseña para acceder a tu cuenta!')" />
+<x-layouts::auth :title="__('auth_ui.login.page_title')">
+    <div class="flex flex-col gap-6">
+        <x-auth.header :title="__('auth_ui.login.title')" :description="__('auth_ui.login.description')" />
 
         <!-- Session Status -->
         <x-auth.session-status class="text-center" :status="session('status')" />
@@ -9,55 +9,39 @@
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
-            @if ($errors->any())
-            <div style="color:red; padding:1rem;">
-                @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-                @endforeach
-            </div>
-            @endif
 
             <!-- Email Address -->
-            <flux:input class="tz-input"
+            <x-ui.input
                 name="email"
-                :label="__('Email')"
+                :label="__('auth_ui.fields.email')"
                 :value="old('email')"
                 type="email"
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="email@example.com" />
+                :placeholder="__('auth_ui.fields.email_placeholder')" />
 
             <!-- Password -->
             <div class="relative">
-                <flux:input
+                <x-ui.password-input
                     name="password"
-                    :label="__('Contraseña')"
-                    type="password"
+                    :label="__('auth_ui.fields.password')"
                     required
-                    autocomplete="current-password"
-                    :placeholder="__('*************')"
-                    viewable />
+                    autocomplete="current-password" />
                 @if (Route::has('password.request'))
-                <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                    {{ __('Olvidaste tu contraseña?') }}
-                </flux:link>
+                <p class="type-body mt-2 text-end sm:absolute sm:top-0 sm:end-0 sm:mt-0">
+                    <x-ui.link :href="route('password.request')" wire:navigate>
+                        {{ __('auth_ui.login.forgot_password') }}
+                    </x-ui.link>
+                </p>
                 @endif
             </div>
 
+            <x-ui.checkbox name="remember" value="1" :label="__('auth_ui.login.remember')" :checked="old('remember')" />
 
-            <flux:checkbox name="remember" :label="__('Recuerdame')" :checked="old('remember')" />
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
+            <x-ui.button variant="primary" type="submit" class="w-full" data-test="login-button">
+                {{ __('auth_ui.login.submit') }}
+            </x-ui.button>
         </form>
-
-
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span class="tz-subtitle2">{{ __('No tienes una cuenta?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Registrate') }}</flux:link>
-        </div>
     </div>
 </x-layouts::auth>

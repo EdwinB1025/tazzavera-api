@@ -308,3 +308,31 @@ function createEvaluationPayload(
 
     return $payLoad;
 }
+
+/** Builds a PKCE authorization URL for the given scope. */
+function authorizeUrl(string $clientId, string $scope, array $extra = []): string
+{
+    $challenge = strtr(rtrim(base64_encode(hash('sha256', \Illuminate\Support\Str::random(128), true)), '='), '+/', '-_');
+
+    return 'oauth/authorize?' . http_build_query([
+        'client_id' => $clientId,
+        'redirect_uri' => 'http://localhost/callback',
+        'response_type' => 'code',
+        'scope' => $scope,
+        'state' => \Illuminate\Support\Str::random(40),
+        'code_challenge' => $challenge,
+        'code_challenge_method' => 'S256',
+    ] + $extra);
+}
+
+/** Asserts the response redirects to the client's callback carrying a code. */
+function assertRedirectsWithCode($response): void
+{
+    $response->assertStatus(302);
+
+    $location = $response->headers->get('Location');
+    expect($location)->toStartWith('http://localhost/callback');
+
+    parse_str(parse_url($location, PHP_URL_QUERY), $params);
+    expect($params)->toHaveKey('code');
+}

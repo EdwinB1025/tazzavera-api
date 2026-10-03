@@ -4,12 +4,15 @@ use App\Exceptions\ApiCustomException;
 use App\Http\Middleware\OwnLocation;
 use App\Http\Middleware\OwnsOffering;
 use App\Http\Middleware\RejectWildcardScope;
+use App\Http\Middleware\RequireLoginForWriteScope;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\SetWebThemeAndLocale;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -29,8 +32,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'owns.location' => OwnLocation::class,
             'owns.offering' => OwnsOffering::class,
         ]);
+        // Theme and language go first in the web group; the priority list
+        // keeps them right after StartSession, which they need to read and
+        // store the values in the session.
+        $middleware->web(prepend: [
+            SetWebThemeAndLocale::class,
+        ]);
+        $middleware->appendToPriorityList(StartSession::class, SetWebThemeAndLocale::class);
         $middleware->web(append: [
             RejectWildcardScope::class,
+            RequireLoginForWriteScope::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

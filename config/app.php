@@ -56,6 +56,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Front-end URL
+    |--------------------------------------------------------------------------
+    |
+    | URL of the tazavera-front client. Web flows that do not end in the
+    | OAuth authorization (e.g. password reset) redirect the user here.
+    |
+    */
+
+    'front_url' => env('FRONT_URL', 'http://localhost:3000'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

@@ -1,6 +1,6 @@
-<x-layouts::auth :title="__('Restablecer contraseña')">
-    <div class="flex flex-col gap-6 p-2">
-        <x-auth.header :title="__('Restablecer contraseña')" :description="__('Ingresa tu nueva contraseña a continuación')" />
+<x-layouts::auth :title="__('auth_ui.reset.title')">
+    <div class="flex flex-col gap-6">
+        <x-auth.header :title="__('auth_ui.reset.title')" :description="__('auth_ui.reset.description')" />
 
         <!-- Session Status -->
         <x-auth.session-status class="text-center" :status="session('status')" />
@@ -11,41 +11,36 @@
             <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
             <!-- Email Address -->
-            <flux:input class="tz-input"
+            <x-ui.input
                 name="email"
                 value="{{ request('email') }}"
-                :label="__('Email')"
+                :label="__('auth_ui.fields.email')"
                 type="email"
                 required
                 autocomplete="email" />
 
             <!-- Password -->
-            <flux:input class="tz-input"
+            <x-ui.password-input
                 name="password"
-                :label="__('Contraseña')"
-                type="password"
+                :label="__('auth_ui.fields.password')"
                 required
                 autocomplete="new-password"
-                :placeholder="__('Contraseña')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable />
+                :placeholder="__('auth_ui.fields.password')"
+                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}" />
 
             <!-- Confirm Password -->
-            <flux:input class="tz-input"
+            <x-ui.password-input
+                id="password_confirmation"
                 name="password_confirmation"
-                :label="__('Confirmar contraseña')"
-                type="password"
+                :label="__('auth_ui.fields.password_confirmation')"
                 required
                 autocomplete="new-password"
-                :placeholder="__('Confirmar contraseña')"
-                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}"
-                viewable />
+                :placeholder="__('auth_ui.fields.password_confirmation')"
+                passwordrules="{{ \Illuminate\Validation\Rules\Password::defaults()->toPasswordRulesString() }}" />
 
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="reset-password-button">
-                    {{ __('Restablecer contraseña') }}
-                </flux:button>
-            </div>
+            <x-ui.button variant="primary" type="submit" class="w-full" data-test="reset-password-button">
+                {{ __('auth_ui.reset.submit') }}
+            </x-ui.button>
         </form>
     </div>
 </x-layouts::auth>
