@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** Texts of the web authentication views (OAuth login, 2FA, password reset, /user/security). */
 return [
     'brand' => 'TAZAVERA',
+    'brand_name' => 'Tazavera',
 
     'fields' => [
         'email' => 'Email',
