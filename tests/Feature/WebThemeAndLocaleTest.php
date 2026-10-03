@@ -53,3 +53,21 @@ test('authorize_with_theme_and_lang_returns_the_code', function () {
         $this->get(authorizeUrl($this->client->id, 'profile:read', ['theme' => 'dark', 'lang' => 'ca']))
     );
 });
+
+test('password_reset_email_uses_the_language_of_the_request', function () {
+    Illuminate\Support\Facades\Notification::fake();
+    $user = User::factory()->create();
+
+    $this->post('/forgot-password?lang=ca', ['email' => $user->email]);
+
+    Illuminate\Support\Facades\Notification::assertSentTo(
+        $user,
+        Illuminate\Auth\Notifications\ResetPassword::class,
+        function ($notification) use ($user) {
+            $mail = $notification->toMail($user);
+
+            return $mail->subject === 'Restableix la teva contrasenya de Tazavera'
+                && str_contains($mail->actionUrl, 'lang=ca');
+        }
+    );
+});
