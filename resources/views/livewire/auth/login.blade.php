@@ -10,7 +10,7 @@
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
             @if ($errors->any())
-            <div style="color:red; padding:1rem;">
+            <div>
                 @foreach ($errors->all() as $error)
                 <p>{{ $error }}</p>
                 @endforeach
@@ -30,7 +30,7 @@
 
             <!-- Password -->
             <div class="relative">
-                <flux:input
+                <flux:input class="tz-input"
                     name="password"
                     :label="__('Contraseña')"
                     type="password"
