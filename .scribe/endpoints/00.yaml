@@ -101,7 +101,7 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Email address. Must be unique. El campo value no es un correo válido.'
+        description: 'Email address. Must be unique. Must be a valid email address.'
         required: true
         example: augusto@example.com
         type: string
@@ -294,7 +294,7 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Email address. Must be unique (excluding the current user). El campo value no es un correo válido.'
+        description: 'Email address. Must be unique (excluding the current user). Must be a valid email address.'
         required: false
         example: augusto@example.com
         type: string

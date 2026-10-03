@@ -69,6 +69,11 @@ return [
                 'user/two-factor-qr-code',
                 'user/two-factor-recovery-codes',
                 'user/two-factor-secret-key',
+                // Fortify (reseteo de contraseña) y página de seguridad
+                'forgot-password',
+                'reset-password',
+                'reset-password/*',
+                'user/security',
 
                 // Passkeys
                 'passkeys/*',
