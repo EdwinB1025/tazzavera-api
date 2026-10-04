@@ -380,3 +380,60 @@ test('filter_offerings_by_invalid_verification_status', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors('verified');
 });
+
+test('filter_offerings_by_roastery_name', function (string $roasteryName, int $expected) {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $roastery = createRoastery(['name' => 'Tostadores Zzyxx Norte']);
+    $inventory = CoffeeInventory::factory()->create(['roastery_id' => $roastery->id]);
+    $match = Offering::factory()->create(['coffee_inventory_id' => $inventory->id]);
+
+    $response = $this->getJson('/offerings?' . http_build_query(['roasteryName' => $roasteryName]));
+
+    $response
+        ->assertOk()
+        ->assertJsonCount($expected, 'data');
+
+    if ($expected > 0) {
+        $response->assertJsonPath('data.0.ulid', $match->ulid);
+    }
+})->with([
+    'partial match' => ['zzyxx', 1],
+    'no match'      => ['qwvbn', 0],
+]);
+
+test('filter_offerings_by_roastery_name_combined', function () {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $roastery = createRoastery(['name' => 'Tostadores Zzyxx Norte']);
+    $inventory = CoffeeInventory::factory()->create(['roastery_id' => $roastery->id]);
+    $match = Offering::factory()->create([
+        'coffee_inventory_id' => $inventory->id,
+        'verification_status' => 'verified',
+    ]);
+    Offering::factory()->create([
+        'coffee_inventory_id' => $inventory->id,
+        'verification_status' => 'provisional',
+    ]);
+
+    $otherInventory = CoffeeInventory::factory()->create(['roastery_id' => createRoastery(['name' => 'Otro Tostador'])->id]);
+    Offering::factory()->create([
+        'coffee_inventory_id' => $otherInventory->id,
+        'verification_status' => 'verified',
+    ]);
+
+    $this->getJson('/offerings?' . http_build_query(['roasteryName' => 'zzyxx', 'verified' => 1]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.ulid', $match->ulid);
+});
+
+test('filter_offerings_by_too_long_roastery_name', function () {
+    $this->getJson('/offerings?roasteryName=' . str_repeat('a', 151))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('roasteryName');
+});
