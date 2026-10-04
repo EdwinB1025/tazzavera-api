@@ -303,6 +303,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      roasteryName:
+        custom: []
+        name: roasteryName
+        description: 'Filter by roastery name (partial match). Must not be greater than 150 characters.'
+        required: false
+        example: Nómada
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       originCountry:
         custom: []
         name: originCountry
@@ -745,6 +756,7 @@ endpoints:
         deprecated: false
     cleanQueryParameters:
       coffeeName: Geisha
+      roasteryName: Nómada
       originCountry: Colombia
       originRegion: Huila
       process: Washed

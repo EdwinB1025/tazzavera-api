@@ -568,15 +568,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 <h2 id="coffees-GETcoffees">List coffees</h2>
 
 <p>
-<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Returns the coffee catalog, each coffee with its currently valid
 certifications. Supports filtering by name via query parameters.</p>
 <p>Only non-expired certifications are included (those with no expiry, or an
 expiry date in the future).</p>
-<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope.
-Available to any authenticated user, regardless of role.</p>
 
 <span id="example-requests-GETcoffees">
 <blockquote>Example request:</blockquote>
@@ -585,7 +582,6 @@ Available to any authenticated user, regardless of role.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost:8000/coffees?name=Huila" \
-    --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -602,7 +598,6 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {ACCESS_TOKEN}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -621,7 +616,6 @@ $response = $client-&gt;get(
     $url,
     [
         'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
@@ -695,7 +689,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-GETcoffees" data-method="GET"
       data-path="coffees"
-      data-authed="1"
+      data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
@@ -725,18 +719,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <b><code>coffees</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="GETcoffees"
-               value="Bearer {ACCESS_TOKEN}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
-            </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
 &nbsp;
@@ -5050,7 +5032,7 @@ parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01J8ZK...&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
+    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;roasteryName=N%C3%B3mada&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01J8ZK...&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5062,6 +5044,7 @@ parameters.</p>
 
 const params = {
     "coffeeName": "Geisha",
+    "roasteryName": "Nómada",
     "originCountry": "Colombia",
     "originRegion": "Huila",
     "process": "Washed",
@@ -5129,6 +5112,7 @@ $response = $client-&gt;get(
         ],
         'query' =&gt; [
             'coffeeName' =&gt; 'Geisha',
+            'roasteryName' =&gt; 'Nómada',
             'originCountry' =&gt; 'Colombia',
             'originRegion' =&gt; 'Huila',
             'process' =&gt; 'Washed',
@@ -5550,6 +5534,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>Filter by coffee name (partial match). Must not be greater than 150 characters. Example: <code>Geisha</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>roasteryName</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="roasteryName"                data-endpoint="GETofferings"
+               value="Nómada"
+               data-component="query">
+    <br>
+<p>Filter by roastery name (partial match). Must not be greater than 150 characters. Example: <code>Nómada</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>originCountry</code></b>&nbsp;&nbsp;
@@ -6681,13 +6677,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 <h2 id="roasteries-GETroasteries">List roasteries</h2>
 
 <p>
-<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Returns the roastery catalog. Supports filtering by name via query
 parameters.</p>
-<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope.
-Available to any authenticated user, regardless of role.</p>
 
 <span id="example-requests-GETroasteries">
 <blockquote>Example request:</blockquote>
@@ -6696,7 +6689,6 @@ Available to any authenticated user, regardless of role.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "http://localhost:8000/roasteries?name=N%C3%B3mada" \
-    --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6713,7 +6705,6 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {ACCESS_TOKEN}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6732,7 +6723,6 @@ $response = $client-&gt;get(
     $url,
     [
         'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
@@ -6780,7 +6770,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-GETroasteries" data-method="GET"
       data-path="roasteries"
-      data-authed="1"
+      data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
@@ -6810,18 +6800,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <b><code>roasteries</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="GETroasteries"
-               value="Bearer {ACCESS_TOKEN}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
-            </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
 &nbsp;
