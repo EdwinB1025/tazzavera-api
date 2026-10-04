@@ -1,0 +1,35 @@
+{
+    "data": [
+        {
+            "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
+            "name": "Huila El Mirador",
+            "roastLevel": "medium",
+            "process": "washed",
+            "variety": "Caturra",
+            "producer": null,
+            "country": "Colombia",
+            "region": "Huila",
+            "altitude": 1800,
+            "lot": "HM-07",
+            "certifications": [
+                {
+                    "code": "organic",
+                    "description": "Certified organic production."
+                }
+            ]
+        },
+        {
+            "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZH",
+            "name": "Sidama Bensa",
+            "roastLevel": "light",
+            "process": "natural",
+            "variety": "Heirloom",
+            "producer": "Bensa Cooperative",
+            "country": "Ethiopia",
+            "region": "Sidama",
+            "altitude": 2100,
+            "lot": "SB-12",
+            "certifications": []
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\CoffeeInventoryController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
@@ -26,6 +27,9 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
 
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
+
+        /**EDB 10/04/26: Catalog routes for any authenticated user, no role required */
+        Route::get('/coffees', [CoffeeController::class, 'index']);
 
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
