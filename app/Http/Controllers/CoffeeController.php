@@ -18,13 +18,9 @@ class CoffeeController extends Controller
      * Only non-expired certifications are included (those with no expiry, or an
      * expiry date in the future).
      *
-     * **Authorization:** requires the `profile:read` or `profile:write` scope.
-     * Available to any authenticated user, regardless of role.
-     *
      * @group Coffees
      *
-     * @authenticated
-     *
+     * @unauthenticated
      * @responseFile storage/scribe/responses/coffees.index.json
      */
     public function index(FilterCoffeeRequest $request)

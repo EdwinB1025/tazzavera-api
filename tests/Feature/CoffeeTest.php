@@ -10,10 +10,13 @@ beforeEach(
     }
 );
 
-test('guest_cannot_list_coffees', function () {
+test('public_lists_coffees_without_token', function () {
+
+    createCoffee([], 2);
 
     $this->getJson('/coffees')
-        ->assertUnauthorized();
+        ->assertOk()
+        ->assertJsonCount(2, 'data');
 });
 
 test('authenticated_user_lists_coffees', function () {

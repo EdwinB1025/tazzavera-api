@@ -19,6 +19,8 @@ Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 Route::get('/offerings', [OfferingController::class, 'index']);
 Route::get('/evaluations/{evaluation}', [EvaluationController::class, 'show']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
+Route::get('/coffees', [CoffeeController::class, 'index']);
+Route::get('/roasteries', [RoasteryController::class, 'index']);
 
 
 Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
@@ -28,10 +30,6 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
 
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
-
-        /**EDB 10/04/26: Catalog routes for any authenticated user, no role required */
-        Route::get('/coffees', [CoffeeController::class, 'index']);
-        Route::get('/roasteries', [RoasteryController::class, 'index']);
 
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
