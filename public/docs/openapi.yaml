@@ -11,6 +11,9 @@ tags:
     name: 'Coffee Inventory'
     description: ''
   -
+    name: Coffees
+    description: ''
+  -
     name: Evaluations
     description: ''
   -
@@ -18,6 +21,9 @@ tags:
     description: ''
   -
     name: Offerings
+    description: ''
+  -
+    name: Roasteries
     description: ''
   -
     name: Taxonomies
@@ -281,6 +287,141 @@ paths:
                               example: 'Tostador de especialidad en Barcelona.'
       tags:
         - 'Coffee Inventory'
+  /coffees:
+    get:
+      summary: 'List coffees'
+      operationId: listCoffees
+      description: "Returns the coffee catalog, each coffee with its currently valid\ncertifications. Supports filtering by name via query parameters.\n\nOnly non-expired certifications are included (those with no expiry, or an\nexpiry date in the future).\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+      parameters:
+        -
+          in: query
+          name: name
+          description: 'Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters.'
+          example: Huila
+          required: false
+          schema:
+            type: string
+            description: 'Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters.'
+            example: Huila
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01K5X2B8P4F7J3N9R6T1W5Y0ZG
+                      name: 'Huila El Mirador'
+                      roastLevel: medium
+                      process: washed
+                      variety: Caturra
+                      producer: null
+                      country: Colombia
+                      region: Huila
+                      altitude: 1800
+                      lot: HM-07
+                      certifications:
+                        -
+                          code: organic
+                          description: 'Certified organic production.'
+                    -
+                      ulid: 01K5X2B8P4F7J3N9R6T1W5Y0ZH
+                      name: 'Sidama Bensa'
+                      roastLevel: light
+                      process: natural
+                      variety: Heirloom
+                      producer: 'Bensa Cooperative'
+                      country: Ethiopia
+                      region: Sidama
+                      altitude: 2100
+                      lot: SB-12
+                      certifications: []
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01K5X2B8P4F7J3N9R6T1W5Y0ZG
+                        name: 'Huila El Mirador'
+                        roastLevel: medium
+                        process: washed
+                        variety: Caturra
+                        producer: null
+                        country: Colombia
+                        region: Huila
+                        altitude: 1800
+                        lot: HM-07
+                        certifications:
+                          -
+                            code: organic
+                            description: 'Certified organic production.'
+                      -
+                        ulid: 01K5X2B8P4F7J3N9R6T1W5Y0ZH
+                        name: 'Sidama Bensa'
+                        roastLevel: light
+                        process: natural
+                        variety: Heirloom
+                        producer: 'Bensa Cooperative'
+                        country: Ethiopia
+                        region: Sidama
+                        altitude: 2100
+                        lot: SB-12
+                        certifications: []
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01K5X2B8P4F7J3N9R6T1W5Y0ZG
+                        name:
+                          type: string
+                          example: 'Huila El Mirador'
+                        roastLevel:
+                          type: string
+                          example: medium
+                        process:
+                          type: string
+                          example: washed
+                        variety:
+                          type: string
+                          example: Caturra
+                        producer:
+                          type: string
+                          example: null
+                          nullable: true
+                        country:
+                          type: string
+                          example: Colombia
+                        region:
+                          type: string
+                          example: Huila
+                        altitude:
+                          type: integer
+                          example: 1800
+                        lot:
+                          type: string
+                          example: HM-07
+                        certifications:
+                          type: array
+                          example:
+                            -
+                              code: organic
+                              description: 'Certified organic production.'
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                                example: organic
+                              description:
+                                type: string
+                                example: 'Certified organic production.'
+      tags:
+        - Coffees
   '/evaluations/{evaluation_ulid}':
     get:
       summary: 'Get an evaluation'
@@ -3683,6 +3824,16 @@ paths:
             example: 01J8ZK...
         -
           in: query
+          name: verified
+          description: 'Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.'
+            example: true
+        -
+          in: query
           name: cuppingAvgMin
           description: 'Minimum average cupping score (0–100). Must be at least 0. Must not be greater than 100.'
           example: 80.0
@@ -5174,6 +5325,58 @@ paths:
                     type: string
               required:
                 - offerings
+  /roasteries:
+    get:
+      summary: 'List roasteries'
+      operationId: listRoasteries
+      description: "Returns the roastery catalog. Supports filtering by name via query\nparameters.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+      parameters:
+        -
+          in: query
+          name: name
+          description: 'Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters.'
+          example: Nómada
+          required: false
+          schema:
+            type: string
+            description: 'Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters.'
+            example: Nómada
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01K5W7H3M9Q2T6X4B8N1R5V0CE
+                      name: 'Nómada Roasters'
+                      description: 'Tostador de especialidad en Barcelona.'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01K5W7H3M9Q2T6X4B8N1R5V0CE
+                        name: 'Nómada Roasters'
+                        description: 'Tostador de especialidad en Barcelona.'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01K5W7H3M9Q2T6X4B8N1R5V0CE
+                        name:
+                          type: string
+                          example: 'Nómada Roasters'
+                        description:
+                          type: string
+                          example: 'Tostador de especialidad en Barcelona.'
+      tags:
+        - Roasteries
   /taxonomies:
     get:
       summary: 'List olfactory taxonomies'
@@ -5194,8 +5397,10 @@ paths:
                       level: 0
                       nameEn: Fruity
                       nameEs: Frutal
+                      nameCa: Fruitat
                       descriptionEn: 'Aromas reminiscent of fresh, dried, or cooked fruit.'
                       descriptionEs: 'Aromas que recuerdan a fruta fresca, seca o cocida.'
+                      descriptionCa: 'Aromes que recorden la fruita fresca, seca o cuita.'
                       color: '#D9345A'
                       categories:
                         - aromatics
@@ -5205,8 +5410,10 @@ paths:
                           level: 1
                           nameEn: Berry
                           nameEs: Baya
+                          nameCa: Baia
                           descriptionEn: 'Notes of berry fruits.'
                           descriptionEs: 'Notas de frutos del bosque.'
+                          descriptionCa: 'Notes de fruits del bosc.'
                           color: '#B02A4A'
                           categories:
                             - aromatics
@@ -5216,8 +5423,10 @@ paths:
                               level: 2
                               nameEn: Blackberry
                               nameEs: Mora
+                              nameCa: Móra
                               descriptionEn: 'Specific note of blackberry.'
                               descriptionEs: 'Nota específica de mora.'
+                              descriptionCa: 'Nota específica de móra.'
                               color: '#7A1F35'
                               categories:
                                 - aromatics
@@ -5226,8 +5435,10 @@ paths:
                           level: 1
                           nameEn: 'Dried fruit'
                           nameEs: 'Fruta seca'
+                          nameCa: 'Fruita seca'
                           descriptionEn: 'Notes of dried or dehydrated fruit.'
                           descriptionEs: 'Notas de fruta seca o deshidratada.'
+                          descriptionCa: 'Notes de fruita seca o deshidratada.'
                           color: '#C4562F'
                           categories:
                             - aromatics
@@ -5241,8 +5452,10 @@ paths:
                         level: 0
                         nameEn: Fruity
                         nameEs: Frutal
+                        nameCa: Fruitat
                         descriptionEn: 'Aromas reminiscent of fresh, dried, or cooked fruit.'
                         descriptionEs: 'Aromas que recuerdan a fruta fresca, seca o cocida.'
+                        descriptionCa: 'Aromes que recorden la fruita fresca, seca o cuita.'
                         color: '#D9345A'
                         categories:
                           - aromatics
@@ -5252,8 +5465,10 @@ paths:
                             level: 1
                             nameEn: Berry
                             nameEs: Baya
+                            nameCa: Baia
                             descriptionEn: 'Notes of berry fruits.'
                             descriptionEs: 'Notas de frutos del bosque.'
+                            descriptionCa: 'Notes de fruits del bosc.'
                             color: '#B02A4A'
                             categories:
                               - aromatics
@@ -5263,8 +5478,10 @@ paths:
                                 level: 2
                                 nameEn: Blackberry
                                 nameEs: Mora
+                                nameCa: Móra
                                 descriptionEn: 'Specific note of blackberry.'
                                 descriptionEs: 'Nota específica de mora.'
+                                descriptionCa: 'Nota específica de móra.'
                                 color: '#7A1F35'
                                 categories:
                                   - aromatics
@@ -5273,8 +5490,10 @@ paths:
                             level: 1
                             nameEn: 'Dried fruit'
                             nameEs: 'Fruta seca'
+                            nameCa: 'Fruita seca'
                             descriptionEn: 'Notes of dried or dehydrated fruit.'
                             descriptionEs: 'Notas de fruta seca o deshidratada.'
+                            descriptionCa: 'Notes de fruita seca o deshidratada.'
                             color: '#C4562F'
                             categories:
                               - aromatics
@@ -5294,12 +5513,18 @@ paths:
                         nameEs:
                           type: string
                           example: Frutal
+                        nameCa:
+                          type: string
+                          example: Fruitat
                         descriptionEn:
                           type: string
                           example: 'Aromas reminiscent of fresh, dried, or cooked fruit.'
                         descriptionEs:
                           type: string
                           example: 'Aromas que recuerdan a fruta fresca, seca o cocida.'
+                        descriptionCa:
+                          type: string
+                          example: 'Aromes que recorden la fruita fresca, seca o cuita.'
                         color:
                           type: string
                           example: '#D9345A'
@@ -5317,8 +5542,10 @@ paths:
                               level: 1
                               nameEn: Berry
                               nameEs: Baya
+                              nameCa: Baia
                               descriptionEn: 'Notes of berry fruits.'
                               descriptionEs: 'Notas de frutos del bosque.'
+                              descriptionCa: 'Notes de fruits del bosc.'
                               color: '#B02A4A'
                               categories:
                                 - aromatics
@@ -5328,8 +5555,10 @@ paths:
                                   level: 2
                                   nameEn: Blackberry
                                   nameEs: Mora
+                                  nameCa: Móra
                                   descriptionEn: 'Specific note of blackberry.'
                                   descriptionEs: 'Nota específica de mora.'
+                                  descriptionCa: 'Nota específica de móra.'
                                   color: '#7A1F35'
                                   categories:
                                     - aromatics
@@ -5338,8 +5567,10 @@ paths:
                               level: 1
                               nameEn: 'Dried fruit'
                               nameEs: 'Fruta seca'
+                              nameCa: 'Fruita seca'
                               descriptionEn: 'Notes of dried or dehydrated fruit.'
                               descriptionEs: 'Notas de fruta seca o deshidratada.'
+                              descriptionCa: 'Notes de fruita seca o deshidratada.'
                               color: '#C4562F'
                               categories:
                                 - aromatics
@@ -5359,12 +5590,18 @@ paths:
                               nameEs:
                                 type: string
                                 example: Baya
+                              nameCa:
+                                type: string
+                                example: Baia
                               descriptionEn:
                                 type: string
                                 example: 'Notes of berry fruits.'
                               descriptionEs:
                                 type: string
                                 example: 'Notas de frutos del bosque.'
+                              descriptionCa:
+                                type: string
+                                example: 'Notes de fruits del bosc.'
                               color:
                                 type: string
                                 example: '#B02A4A'
@@ -5382,8 +5619,10 @@ paths:
                                     level: 2
                                     nameEn: Blackberry
                                     nameEs: Mora
+                                    nameCa: Móra
                                     descriptionEn: 'Specific note of blackberry.'
                                     descriptionEs: 'Nota específica de mora.'
+                                    descriptionCa: 'Nota específica de móra.'
                                     color: '#7A1F35'
                                     categories:
                                       - aromatics
@@ -5402,12 +5641,18 @@ paths:
                                     nameEs:
                                       type: string
                                       example: Mora
+                                    nameCa:
+                                      type: string
+                                      example: Móra
                                     descriptionEn:
                                       type: string
                                       example: 'Specific note of blackberry.'
                                     descriptionEs:
                                       type: string
                                       example: 'Nota específica de mora.'
+                                    descriptionCa:
+                                      type: string
+                                      example: 'Nota específica de móra.'
                                     color:
                                       type: string
                                       example: '#7A1F35'
@@ -5422,7 +5667,7 @@ paths:
     post:
       summary: 'Log out'
       operationId: logOut
-      description: "Revokes all of the authenticated user's access tokens and their refresh\ntokens, ending the session.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope."
+      description: "Revokes all of the authenticated user's access tokens and their refresh\ntokens, and ends every web session of the user on the server (the ones\nopened by the OAuth login): their rows are deleted from the sessions\ntable and the remember token is regenerated, so a later authorization\nasks for the login again.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope."
       parameters: []
       responses:
         200:
@@ -5505,8 +5750,12 @@ paths:
                   example: augusto@example.com
                 password:
                   type: string
-                  description: 'Password. Must meet the default strength rules and be confirmed via password_confirmation.'
+                  description: 'Password. Must meet the default strength rules and be confirmed via passwordConfirmation. The value and <code>passwordConfirmation</code> must match.'
                   example: Str0ngP@ss!
+                passwordConfirmation:
+                  type: string
+                  description: 'Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation.'
+                  example: NewStr0ng!
                 role:
                   type: string
                   description: 'Optional. Role to assign at registration. One of: coffeeshop, specialist, user.'
@@ -5520,6 +5769,7 @@ paths:
                 - surname
                 - email
                 - password
+                - passwordConfirmation
       security: []
   /user:
     get:

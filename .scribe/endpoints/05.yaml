@@ -1,29 +1,24 @@
-name: 'Coffee Inventory'
+name: Roasteries
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: coffeeInventory
+    uri: roasteries
     metadata:
       custom: []
-      groupName: 'Coffee Inventory'
+      groupName: Roasteries
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List coffee inventory'
+      title: 'List roasteries'
       description: |-
-        Returns coffee inventory items, each with coffee details (including
-        currently valid certifications) and roastery. Used by coffeeshops to
-        retrieve available coffees when creating an offering. Supports filtering
-        via query parameters.
+        Returns the roastery catalog. Supports filtering by name via query
+        parameters.
 
-        Only non-expired certifications are included (those with no expiry, or an
-        expiry date in the future).
-
-        **Authorization:** requires the `coffeeshop` role and the `profile:read`
-        or `profile:write` scope.
+        **Authorization:** requires the `profile:read` or `profile:write` scope.
+        Available to any authenticated user, regardless of role.
       authenticated: true
       deprecated: false
     headers:
@@ -33,79 +28,19 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      coffeeName:
+      name:
         custom: []
-        name: coffeeName
-        description: 'Filter by coffee name (max 150 chars). Must not be greater than 150 characters.'
+        name: name
+        description: 'Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters.'
         required: false
-        example: Geisha
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      originCountry:
-        custom: []
-        name: originCountry
-        description: 'Filter by country of origin (max 60 chars). Must not be greater than 60 characters.'
-        required: false
-        example: Colombia
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      originRegion:
-        custom: []
-        name: originRegion
-        description: 'Filter by region of origin (max 90 chars). Must not be greater than 90 characters.'
-        required: false
-        example: Huila
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      process:
-        custom: []
-        name: process
-        description: 'Filter by processing method (max 60 chars). Must not be greater than 60 characters.'
-        required: false
-        example: Washed
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      producer:
-        custom: []
-        name: producer
-        description: 'Filter by producer name (max 150 chars). Must not be greater than 150 characters.'
-        required: false
-        example: 'Finca La Esperanza'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      city:
-        custom: []
-        name: city
-        description: 'Filter by city (max 90 chars). Must not be greater than 90 characters.'
-        required: false
-        example: Barcelona
+        example: Nómada
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanQueryParameters:
-      coffeeName: Geisha
-      originCountry: Colombia
-      originRegion: Huila
-      process: Washed
-      producer: 'Finca La Esperanza'
-      city: Barcelona
+      name: Nómada
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -113,7 +48,16 @@ endpoints:
       -
         custom: []
         status: 200
-        content: "{\r\n    \"data\": [\r\n        {\r\n            \"ulid\": \"01K5Y4R7N2D9W6T3H8M1Q5V0XC\",\r\n            \"roastLot\": \"L-2026-014\",\r\n            \"productionDate\": \"2026-09-19\",\r\n            \"coffee\": {\r\n                \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZG\",\r\n                \"name\": \"Huila El Mirador\",\r\n                \"roastLevel\": \"medium\",\r\n                \"process\": \"washed\",\r\n                \"variety\": \"Caturra\",\r\n                \"producer\": null,\r\n                \"country\": \"Colombia\",\r\n                \"region\": \"Huila\",\r\n                \"altitude\": 1800,\r\n                \"lot\": \"HM-07\",\r\n                \"certifications\": [\r\n                    {\r\n                        \"code\": \"organic\",\r\n                        \"description\": \"Certified organic production.\"\r\n                    }\r\n                ]\r\n            },\r\n            \"roastery\": {\r\n                \"ulid\": \"01K5W7H3M9Q2T6X4B8N1R5V0CE\",\r\n                \"name\": \"Nómada Roasters\",\r\n                \"description\": \"Tostador de especialidad en Barcelona.\"\r\n            }\r\n        },\r\n        {\r\n            \"ulid\": \"01K5Y4R7N2D9W6T3H8M1Q5V0XD\",\r\n            \"roastLot\": \"L-2026-021\",\r\n            \"productionDate\": \"2026-09-24\",\r\n            \"coffee\": {\r\n                \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZH\",\r\n                \"name\": \"Sidama Bensa\",\r\n                \"roastLevel\": \"light\",\r\n                \"process\": \"natural\",\r\n                \"variety\": \"Heirloom\",\r\n                \"producer\": \"Bensa Cooperative\",\r\n                \"country\": \"Ethiopia\",\r\n                \"region\": \"Sidama\",\r\n                \"altitude\": 2100,\r\n                \"lot\": \"SB-12\",\r\n                \"certifications\": []\r\n            },\r\n            \"roastery\": {\r\n                \"ulid\": \"01K5W7H3M9Q2T6X4B8N1R5V0CE\",\r\n                \"name\": \"Nómada Roasters\",\r\n                \"description\": \"Tostador de especialidad en Barcelona.\"\r\n            }\r\n        }\r\n    ]\r\n}"
+        content: |-
+          {
+              "data": [
+                  {
+                      "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                      "name": "Nómada Roasters",
+                      "description": "Tostador de especialidad en Barcelona."
+                  }
+              ]
+          }
         headers: []
         description: ''
     responseFields: []

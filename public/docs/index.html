@@ -79,6 +79,16 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-coffees" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="coffees">
+                    <a href="#coffees">Coffees</a>
+                </li>
+                                    <ul id="tocify-subheader-coffees" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="coffees-GETcoffees">
+                                <a href="#coffees-GETcoffees">List coffees</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-evaluations" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="evaluations">
                     <a href="#evaluations">Evaluations</a>
@@ -136,6 +146,16 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-roasteries" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="roasteries">
+                    <a href="#roasteries">Roasteries</a>
+                </li>
+                                    <ul id="tocify-subheader-roasteries" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="roasteries-GETroasteries">
+                                <a href="#roasteries-GETroasteries">List roasteries</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-taxonomies" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="taxonomies">
                     <a href="#taxonomies">Taxonomies</a>
@@ -183,7 +203,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 28, 2026</li>
+        <li>Last updated: October 4, 2026</li>
     </ul>
 </div>
 
@@ -538,6 +558,221 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>Filter by city (max 90 chars). Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+            </div>
+                </form>
+
+                <h1 id="coffees">Coffees</h1>
+
+    
+
+                                <h2 id="coffees-GETcoffees">List coffees</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns the coffee catalog, each coffee with its currently valid
+certifications. Supports filtering by name via query parameters.</p>
+<p>Only non-expired certifications are included (those with no expiry, or an
+expiry date in the future).</p>
+<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope.
+Available to any authenticated user, regardless of role.</p>
+
+<span id="example-requests-GETcoffees">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/coffees?name=Huila" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/coffees"
+);
+
+const params = {
+    "name": "Huila",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/coffees';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'name' =&gt; 'Huila',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETcoffees">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZG&quot;,
+            &quot;name&quot;: &quot;Huila El Mirador&quot;,
+            &quot;roastLevel&quot;: &quot;medium&quot;,
+            &quot;process&quot;: &quot;washed&quot;,
+            &quot;variety&quot;: &quot;Caturra&quot;,
+            &quot;producer&quot;: null,
+            &quot;country&quot;: &quot;Colombia&quot;,
+            &quot;region&quot;: &quot;Huila&quot;,
+            &quot;altitude&quot;: 1800,
+            &quot;lot&quot;: &quot;HM-07&quot;,
+            &quot;certifications&quot;: [
+                {
+                    &quot;code&quot;: &quot;organic&quot;,
+                    &quot;description&quot;: &quot;Certified organic production.&quot;
+                }
+            ]
+        },
+        {
+            &quot;ulid&quot;: &quot;01K5X2B8P4F7J3N9R6T1W5Y0ZH&quot;,
+            &quot;name&quot;: &quot;Sidama Bensa&quot;,
+            &quot;roastLevel&quot;: &quot;light&quot;,
+            &quot;process&quot;: &quot;natural&quot;,
+            &quot;variety&quot;: &quot;Heirloom&quot;,
+            &quot;producer&quot;: &quot;Bensa Cooperative&quot;,
+            &quot;country&quot;: &quot;Ethiopia&quot;,
+            &quot;region&quot;: &quot;Sidama&quot;,
+            &quot;altitude&quot;: 2100,
+            &quot;lot&quot;: &quot;SB-12&quot;,
+            &quot;certifications&quot;: []
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETcoffees" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETcoffees"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETcoffees"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETcoffees" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETcoffees">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETcoffees" data-method="GET"
+      data-path="coffees"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETcoffees', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETcoffees"
+                    onclick="tryItOut('GETcoffees');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETcoffees"
+                    onclick="cancelTryOut('GETcoffees');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETcoffees"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>coffees</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETcoffees"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETcoffees"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETcoffees"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="GETcoffees"
+               value="Huila"
+               data-component="query">
+    <br>
+<p>Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters. Example: <code>Huila</code></p>
             </div>
                 </form>
 
@@ -4815,7 +5050,7 @@ parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01J8ZK...&amp;locationUlid=01J8ZK...&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
+    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01J8ZK...&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4835,6 +5070,7 @@ const params = {
     "city": "Barcelona",
     "coffeeshopUlid": "01J8ZK...",
     "locationUlid": "01J8ZK...",
+    "verified": "1",
     "cuppingAvgMin": "80",
     "cuppingAvgMax": "95",
     "evaluationCountMin": "1",
@@ -4901,6 +5137,7 @@ $response = $client-&gt;get(
             'city' =&gt; 'Barcelona',
             'coffeeshopUlid' =&gt; '01J8ZK...',
             'locationUlid' =&gt; '01J8ZK...',
+            'verified' =&gt; '1',
             'cuppingAvgMin' =&gt; '80',
             'cuppingAvgMax' =&gt; '95',
             'evaluationCountMin' =&gt; '1',
@@ -5409,6 +5646,28 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>Filter by location ULID. Must match an existing stored value. Example: <code>01J8ZK...</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>verified</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETofferings" style="display: none">
+            <input type="radio" name="verified"
+                   value="1"
+                   data-endpoint="GETofferings"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETofferings" style="display: none">
+            <input type="radio" name="verified"
+                   value="0"
+                   data-endpoint="GETofferings"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both. Example: <code>true</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>cuppingAvgMin</code></b>&nbsp;&nbsp;
@@ -6415,6 +6674,193 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                <h1 id="roasteries">Roasteries</h1>
+
+    
+
+                                <h2 id="roasteries-GETroasteries">List roasteries</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns the roastery catalog. Supports filtering by name via query
+parameters.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope.
+Available to any authenticated user, regardless of role.</p>
+
+<span id="example-requests-GETroasteries">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/roasteries?name=N%C3%B3mada" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/roasteries"
+);
+
+const params = {
+    "name": "Nómada",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/roasteries';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'name' =&gt; 'Nómada',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETroasteries">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K5W7H3M9Q2T6X4B8N1R5V0CE&quot;,
+            &quot;name&quot;: &quot;N&oacute;mada Roasters&quot;,
+            &quot;description&quot;: &quot;Tostador de especialidad en Barcelona.&quot;
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETroasteries" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETroasteries"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETroasteries"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETroasteries" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETroasteries">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETroasteries" data-method="GET"
+      data-path="roasteries"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETroasteries', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETroasteries"
+                    onclick="tryItOut('GETroasteries');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETroasteries"
+                    onclick="cancelTryOut('GETroasteries');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETroasteries"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>roasteries</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETroasteries"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETroasteries"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETroasteries"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="GETroasteries"
+               value="Nómada"
+               data-component="query">
+    <br>
+<p>Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters. Example: <code>Nómada</code></p>
+            </div>
+                </form>
+
                 <h1 id="taxonomies">Taxonomies</h1>
 
     
@@ -6487,8 +6933,10 @@ print_r(json_decode((string) $body));</code></pre></div>
             &quot;level&quot;: 0,
             &quot;nameEn&quot;: &quot;Fruity&quot;,
             &quot;nameEs&quot;: &quot;Frutal&quot;,
+            &quot;nameCa&quot;: &quot;Fruitat&quot;,
             &quot;descriptionEn&quot;: &quot;Aromas reminiscent of fresh, dried, or cooked fruit.&quot;,
             &quot;descriptionEs&quot;: &quot;Aromas que recuerdan a fruta fresca, seca o cocida.&quot;,
+            &quot;descriptionCa&quot;: &quot;Aromes que recorden la fruita fresca, seca o cuita.&quot;,
             &quot;color&quot;: &quot;#D9345A&quot;,
             &quot;categories&quot;: [
                 &quot;aromatics&quot;
@@ -6499,8 +6947,10 @@ print_r(json_decode((string) $body));</code></pre></div>
                     &quot;level&quot;: 1,
                     &quot;nameEn&quot;: &quot;Berry&quot;,
                     &quot;nameEs&quot;: &quot;Baya&quot;,
+                    &quot;nameCa&quot;: &quot;Baia&quot;,
                     &quot;descriptionEn&quot;: &quot;Notes of berry fruits.&quot;,
                     &quot;descriptionEs&quot;: &quot;Notas de frutos del bosque.&quot;,
+                    &quot;descriptionCa&quot;: &quot;Notes de fruits del bosc.&quot;,
                     &quot;color&quot;: &quot;#B02A4A&quot;,
                     &quot;categories&quot;: [
                         &quot;aromatics&quot;
@@ -6511,8 +6961,10 @@ print_r(json_decode((string) $body));</code></pre></div>
                             &quot;level&quot;: 2,
                             &quot;nameEn&quot;: &quot;Blackberry&quot;,
                             &quot;nameEs&quot;: &quot;Mora&quot;,
+                            &quot;nameCa&quot;: &quot;M&oacute;ra&quot;,
                             &quot;descriptionEn&quot;: &quot;Specific note of blackberry.&quot;,
                             &quot;descriptionEs&quot;: &quot;Nota espec&iacute;fica de mora.&quot;,
+                            &quot;descriptionCa&quot;: &quot;Nota espec&iacute;fica de m&oacute;ra.&quot;,
                             &quot;color&quot;: &quot;#7A1F35&quot;,
                             &quot;categories&quot;: [
                                 &quot;aromatics&quot;
@@ -6525,8 +6977,10 @@ print_r(json_decode((string) $body));</code></pre></div>
                     &quot;level&quot;: 1,
                     &quot;nameEn&quot;: &quot;Dried fruit&quot;,
                     &quot;nameEs&quot;: &quot;Fruta seca&quot;,
+                    &quot;nameCa&quot;: &quot;Fruita seca&quot;,
                     &quot;descriptionEn&quot;: &quot;Notes of dried or dehydrated fruit.&quot;,
                     &quot;descriptionEs&quot;: &quot;Notas de fruta seca o deshidratada.&quot;,
+                    &quot;descriptionCa&quot;: &quot;Notes de fruita seca o deshidratada.&quot;,
                     &quot;color&quot;: &quot;#C4562F&quot;,
                     &quot;categories&quot;: [
                         &quot;aromatics&quot;
@@ -6623,7 +7077,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </p>
 
 <p>Revokes all of the authenticated user's access tokens and their refresh
-tokens, ending the session.</p>
+tokens, and ends every web session of the user on the server (the ones
+opened by the OAuth login): their rows are deleted from the sessions
+table and the remember token is regenerated, so a later authorization
+asks for the login again.</p>
 <p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope.</p>
 
 <span id="example-requests-POSTlogout">
@@ -6794,6 +7251,7 @@ rolled back.</p>
     \"surname\": \"Restrepo\",
     \"email\": \"augusto@example.com\",
     \"password\": \"Str0ngP@ss!\",
+    \"passwordConfirmation\": \"NewStr0ng!\",
     \"role\": \"coffeeshop\"
 }"
 </code></pre></div>
@@ -6814,6 +7272,7 @@ let body = {
     "surname": "Restrepo",
     "email": "augusto@example.com",
     "password": "Str0ngP@ss!",
+    "passwordConfirmation": "NewStr0ng!",
     "role": "coffeeshop"
 };
 
@@ -6839,6 +7298,7 @@ $response = $client-&gt;post(
             'surname' =&gt; 'Restrepo',
             'email' =&gt; 'augusto@example.com',
             'password' =&gt; 'Str0ngP@ss!',
+            'passwordConfirmation' =&gt; 'NewStr0ng!',
             'role' =&gt; 'coffeeshop',
         ],
     ]
@@ -6984,7 +7444,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="Str0ngP@ss!"
                data-component="body">
     <br>
-<p>Password. Must meet the default strength rules and be confirmed via password_confirmation. Example: <code>Str0ngP@ss!</code></p>
+<p>Password. Must meet the default strength rules and be confirmed via passwordConfirmation. The value and <code>passwordConfirmation</code> must match. Example: <code>Str0ngP@ss!</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>passwordConfirmation</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="passwordConfirmation"                data-endpoint="POSTregister"
+               value="NewStr0ng!"
+               data-component="body">
+    <br>
+<p>Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation. Example: <code>NewStr0ng!</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>role</code></b>&nbsp;&nbsp;
