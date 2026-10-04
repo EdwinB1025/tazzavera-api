@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "adf1683f-20b4-4725-8642-81ae8536be60",
+        "_postman_id": "3f453253-5cc4-4440-bb53-61cfff6efaaf",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -84,6 +84,51 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01K5Y4R7N2D9W6T3H8M1Q5V0XC\",\n            \"roastLot\": \"L-2026-014\",\n            \"productionDate\": \"2026-09-19\",\n            \"coffee\": {\n                \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZG\",\n                \"name\": \"Huila El Mirador\",\n                \"roastLevel\": \"medium\",\n                \"process\": \"washed\",\n                \"variety\": \"Caturra\",\n                \"producer\": null,\n                \"country\": \"Colombia\",\n                \"region\": \"Huila\",\n                \"altitude\": 1800,\n                \"lot\": \"HM-07\",\n                \"certifications\": [\n                    {\n                        \"code\": \"organic\",\n                        \"description\": \"Certified organic production.\"\n                    }\n                ]\n            },\n            \"roastery\": {\n                \"ulid\": \"01K5W7H3M9Q2T6X4B8N1R5V0CE\",\n                \"name\": \"N\u00f3mada Roasters\",\n                \"description\": \"Tostador de especialidad en Barcelona.\"\n            }\n        },\n        {\n            \"ulid\": \"01K5Y4R7N2D9W6T3H8M1Q5V0XD\",\n            \"roastLot\": \"L-2026-021\",\n            \"productionDate\": \"2026-09-24\",\n            \"coffee\": {\n                \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZH\",\n                \"name\": \"Sidama Bensa\",\n                \"roastLevel\": \"light\",\n                \"process\": \"natural\",\n                \"variety\": \"Heirloom\",\n                \"producer\": \"Bensa Cooperative\",\n                \"country\": \"Ethiopia\",\n                \"region\": \"Sidama\",\n                \"altitude\": 2100,\n                \"lot\": \"SB-12\",\n                \"certifications\": []\n            },\n            \"roastery\": {\n                \"ulid\": \"01K5W7H3M9Q2T6X4B8N1R5V0CE\",\n                \"name\": \"N\u00f3mada Roasters\",\n                \"description\": \"Tostador de especialidad en Barcelona.\"\n            }\n        }\n    ]\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Coffees",
+            "description": "",
+            "item": [
+                {
+                    "name": "List coffees",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "coffees",
+                            "query": [
+                                {
+                                    "key": "name",
+                                    "value": "Huila",
+                                    "description": "Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/coffees?name=Huila"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the coffee catalog, each coffee with its currently valid\ncertifications. Supports filtering by name via query parameters.\n\nOnly non-expired certifications are included (those with no expiry, or an\nexpiry date in the future).\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZG\",\n            \"name\": \"Huila El Mirador\",\n            \"roastLevel\": \"medium\",\n            \"process\": \"washed\",\n            \"variety\": \"Caturra\",\n            \"producer\": null,\n            \"country\": \"Colombia\",\n            \"region\": \"Huila\",\n            \"altitude\": 1800,\n            \"lot\": \"HM-07\",\n            \"certifications\": [\n                {\n                    \"code\": \"organic\",\n                    \"description\": \"Certified organic production.\"\n                }\n            ]\n        },\n        {\n            \"ulid\": \"01K5X2B8P4F7J3N9R6T1W5Y0ZH\",\n            \"name\": \"Sidama Bensa\",\n            \"roastLevel\": \"light\",\n            \"process\": \"natural\",\n            \"variety\": \"Heirloom\",\n            \"producer\": \"Bensa Cooperative\",\n            \"country\": \"Ethiopia\",\n            \"region\": \"Sidama\",\n            \"altitude\": 2100,\n            \"lot\": \"SB-12\",\n            \"certifications\": []\n        }\n    ]\n}",
                             "name": ""
                         }
                     ]
@@ -576,6 +621,12 @@
                                     "disabled": false
                                 },
                                 {
+                                    "key": "verified",
+                                    "value": "1",
+                                    "description": "Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.",
+                                    "disabled": false
+                                },
+                                {
                                     "key": "cuppingAvgMin",
                                     "value": "80",
                                     "description": "Minimum average cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
@@ -756,7 +807,7 @@
                                     "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/offerings?coffeeName=Geisha&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&variety=Caturra&city=Barcelona&coffeeshopUlid=01J8ZK...&locationUlid=01J8ZK...&cuppingAvgMin=80&cuppingAvgMax=95&evaluationCountMin=1&evaluationCountMax=50&defectiveCountMin=0&defectiveCountMax=5&fragranceMin=6&fragranceMax=8&aromaMin=6&aromaMax=8&flavorMin=6&flavorMax=8&aftertasteMin=6&aftertasteMax=8&acidityMin=6&acidityMax=8&sweetnessMin=6&sweetnessMax=8&mouthfeelMin=6&mouthfeelMax=8&overallMin=6&overallMax=8&cataRef%5B0%5D=architecto&fragranceCata%5B0%5D=architecto&aromaCata%5B0%5D=architecto&flavorCata%5B0%5D=architecto&aftertasteCata%5B0%5D=architecto&mouthfeelCata%5B0%5D=architecto&orderBy=cupping_avg&orderDirection=desc"
+                            "raw": "{{baseUrl}}\/offerings?coffeeName=Geisha&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&variety=Caturra&city=Barcelona&coffeeshopUlid=01J8ZK...&locationUlid=01J8ZK...&verified=1&cuppingAvgMin=80&cuppingAvgMax=95&evaluationCountMin=1&evaluationCountMax=50&defectiveCountMin=0&defectiveCountMax=5&fragranceMin=6&fragranceMax=8&aromaMin=6&aromaMax=8&flavorMin=6&flavorMax=8&aftertasteMin=6&aftertasteMax=8&acidityMin=6&acidityMax=8&sweetnessMin=6&sweetnessMax=8&mouthfeelMin=6&mouthfeelMax=8&overallMin=6&overallMax=8&cataRef%5B0%5D=architecto&fragranceCata%5B0%5D=architecto&aromaCata%5B0%5D=architecto&flavorCata%5B0%5D=architecto&aftertasteCata%5B0%5D=architecto&mouthfeelCata%5B0%5D=architecto&orderBy=cupping_avg&orderDirection=desc"
                         },
                         "method": "GET",
                         "header": [
@@ -897,6 +948,51 @@
             ]
         },
         {
+            "name": "Roasteries",
+            "description": "",
+            "item": [
+                {
+                    "name": "List roasteries",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "roasteries",
+                            "query": [
+                                {
+                                    "key": "name",
+                                    "value": "N\u00f3mada",
+                                    "description": "Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/roasteries?name=N%C3%B3mada"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the roastery catalog. Supports filtering by name via query\nparameters.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01K5W7H3M9Q2T6X4B8N1R5V0CE\",\n            \"name\": \"N\u00f3mada Roasters\",\n            \"description\": \"Tostador de especialidad en Barcelona.\"\n        }\n    ]\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Taxonomies",
             "description": "",
             "item": [
@@ -930,7 +1026,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01JTAXN0DE0000000000000001\",\n            \"level\": 0,\n            \"nameEn\": \"Fruity\",\n            \"nameEs\": \"Frutal\",\n            \"descriptionEn\": \"Aromas reminiscent of fresh, dried, or cooked fruit.\",\n            \"descriptionEs\": \"Aromas que recuerdan a fruta fresca, seca o cocida.\",\n            \"color\": \"#D9345A\",\n            \"categories\": [\n                \"aromatics\"\n            ],\n            \"children\": [\n                {\n                    \"ulid\": \"01JTAXN0DE0000000000000004\",\n                    \"level\": 1,\n                    \"nameEn\": \"Berry\",\n                    \"nameEs\": \"Baya\",\n                    \"descriptionEn\": \"Notes of berry fruits.\",\n                    \"descriptionEs\": \"Notas de frutos del bosque.\",\n                    \"color\": \"#B02A4A\",\n                    \"categories\": [\n                        \"aromatics\"\n                    ],\n                    \"children\": [\n                        {\n                            \"ulid\": \"01JTAXN0DE0000000000000005\",\n                            \"level\": 2,\n                            \"nameEn\": \"Blackberry\",\n                            \"nameEs\": \"Mora\",\n                            \"descriptionEn\": \"Specific note of blackberry.\",\n                            \"descriptionEs\": \"Nota espec\u00edfica de mora.\",\n                            \"color\": \"#7A1F35\",\n                            \"categories\": [\n                                \"aromatics\"\n                            ]\n                        }\n                    ]\n                },\n                {\n                    \"ulid\": \"01JTAXN0DE000000000000000D\",\n                    \"level\": 1,\n                    \"nameEn\": \"Dried fruit\",\n                    \"nameEs\": \"Fruta seca\",\n                    \"descriptionEn\": \"Notes of dried or dehydrated fruit.\",\n                    \"descriptionEs\": \"Notas de fruta seca o deshidratada.\",\n                    \"color\": \"#C4562F\",\n                    \"categories\": [\n                        \"aromatics\"\n                    ],\n                    \"children\": []\n                }\n            ]\n        }\n    ]\n}",
+                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01JTAXN0DE0000000000000001\",\n            \"level\": 0,\n            \"nameEn\": \"Fruity\",\n            \"nameEs\": \"Frutal\",\n            \"nameCa\": \"Fruitat\",\n            \"descriptionEn\": \"Aromas reminiscent of fresh, dried, or cooked fruit.\",\n            \"descriptionEs\": \"Aromas que recuerdan a fruta fresca, seca o cocida.\",\n            \"descriptionCa\": \"Aromes que recorden la fruita fresca, seca o cuita.\",\n            \"color\": \"#D9345A\",\n            \"categories\": [\n                \"aromatics\"\n            ],\n            \"children\": [\n                {\n                    \"ulid\": \"01JTAXN0DE0000000000000004\",\n                    \"level\": 1,\n                    \"nameEn\": \"Berry\",\n                    \"nameEs\": \"Baya\",\n                    \"nameCa\": \"Baia\",\n                    \"descriptionEn\": \"Notes of berry fruits.\",\n                    \"descriptionEs\": \"Notas de frutos del bosque.\",\n                    \"descriptionCa\": \"Notes de fruits del bosc.\",\n                    \"color\": \"#B02A4A\",\n                    \"categories\": [\n                        \"aromatics\"\n                    ],\n                    \"children\": [\n                        {\n                            \"ulid\": \"01JTAXN0DE0000000000000005\",\n                            \"level\": 2,\n                            \"nameEn\": \"Blackberry\",\n                            \"nameEs\": \"Mora\",\n                            \"nameCa\": \"M\u00f3ra\",\n                            \"descriptionEn\": \"Specific note of blackberry.\",\n                            \"descriptionEs\": \"Nota espec\u00edfica de mora.\",\n                            \"descriptionCa\": \"Nota espec\u00edfica de m\u00f3ra.\",\n                            \"color\": \"#7A1F35\",\n                            \"categories\": [\n                                \"aromatics\"\n                            ]\n                        }\n                    ]\n                },\n                {\n                    \"ulid\": \"01JTAXN0DE000000000000000D\",\n                    \"level\": 1,\n                    \"nameEn\": \"Dried fruit\",\n                    \"nameEs\": \"Fruta seca\",\n                    \"nameCa\": \"Fruita seca\",\n                    \"descriptionEn\": \"Notes of dried or dehydrated fruit.\",\n                    \"descriptionEs\": \"Notas de fruta seca o deshidratada.\",\n                    \"descriptionCa\": \"Notes de fruita seca o deshidratada.\",\n                    \"color\": \"#C4562F\",\n                    \"categories\": [\n                        \"aromatics\"\n                    ],\n                    \"children\": []\n                }\n            ]\n        }\n    ]\n}",
                             "name": ""
                         }
                     ]

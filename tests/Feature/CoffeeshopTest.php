@@ -344,3 +344,39 @@ test('filter_offerings_by_cata_ref', function () {
         ->assertJsonCount(1, 'data')
         ->assertJsonPath('data.0.ulid', $match->ulid);
 });
+
+test('filter_offerings_by_verification_status', function (?string $verified, array $expected) {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    Offering::query()->delete();
+
+    $offerings = [
+        'verified'    => Offering::factory()->create(['verification_status' => 'verified']),
+        'provisional' => Offering::factory()->create(['verification_status' => 'provisional']),
+    ];
+
+    $query = $verified === null ? '' : '?' . http_build_query(['verified' => $verified]);
+
+    $response = $this->getJson("/offerings{$query}");
+
+    $response
+        ->assertOk()
+        ->assertJsonCount(count($expected), 'data');
+
+    $ulids = collect($response->json('data'))->pluck('ulid');
+    foreach ($expected as $status) {
+        expect($ulids)->toContain($offerings[$status]->ulid);
+    }
+})->with([
+    'verified=1' => ['1', ['verified']],
+    'verified=0' => ['0', ['provisional']],
+    'absent'     => [null, ['verified', 'provisional']],
+]);
+
+test('filter_offerings_by_invalid_verification_status', function () {
+    $this->getJson('/offerings?verified=yes')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('verified');
+});
