@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "8ba8f62d-eb42-47bd-ac8c-0d0798faa995",
+        "_postman_id": "c3b14ecc-1e90-4087-b62e-123be0596e7c",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
