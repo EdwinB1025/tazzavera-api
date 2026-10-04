@@ -45,6 +45,7 @@ class Offering extends Model
             'city',
             'coffeeshopUlid',
             'locationUlid',
+            'verified',
             'cuppingAvg',
             'evaluationCount',
             'defectiveCount',
@@ -149,6 +150,15 @@ class Offering extends Model
         $query->when(
             $validated['locationUlid'] ?? null,
             fn($q, $v) => $q->whereHas('location', fn($q) => $q->where('ulid', $v))
+        );
+    }
+
+    #[Scope]
+    protected function verified(Builder $query, array $validated): void
+    {
+        $query->when(
+            isset($validated['verified']), // isset: verified=0 is a valid filter value, not an absent one
+            fn($q) => $q->where('verification_status', $validated['verified'] ? 'verified' : 'provisional')
         );
     }
 
