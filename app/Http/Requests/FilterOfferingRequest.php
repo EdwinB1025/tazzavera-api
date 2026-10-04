@@ -24,6 +24,7 @@ class FilterOfferingRequest extends FormRequest
     {
         return [
             'coffeeName'    => ['sometimes', 'string', 'max:150'],
+            'roasteryName'  => ['sometimes', 'string', 'max:150'],
             'originCountry' => ['sometimes', 'string', 'max:90'],
             'originRegion'  => ['sometimes', 'string', 'max:90'],
             'process'       => ['sometimes', 'string', 'max:90'],
@@ -85,6 +86,7 @@ class FilterOfferingRequest extends FormRequest
     {
         return [
             'coffeeName'    => ['description' => 'Filter by coffee name (partial match).', 'example' => 'Geisha'],
+            'roasteryName'  => ['description' => 'Filter by roastery name (partial match).', 'example' => 'Nómada'],
             'originCountry' => ['description' => 'Filter by country of origin.', 'example' => 'Colombia'],
             'originRegion'  => ['description' => 'Filter by region of origin.', 'example' => 'Huila'],
             'process'       => ['description' => 'Filter by processing method.', 'example' => 'Washed'],

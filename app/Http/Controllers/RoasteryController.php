@@ -15,13 +15,9 @@ class RoasteryController extends Controller
      * Returns the roastery catalog. Supports filtering by name via query
      * parameters.
      *
-     * **Authorization:** requires the `profile:read` or `profile:write` scope.
-     * Available to any authenticated user, regardless of role.
-     *
      * @group Roasteries
      *
-     * @authenticated
-     *
+     * @unauthenticated
      * @responseFile storage/scribe/responses/roasteries.index.json
      */
     public function index(FilterRoasteryRequest $request)

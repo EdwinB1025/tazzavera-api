@@ -291,7 +291,7 @@ paths:
     get:
       summary: 'List coffees'
       operationId: listCoffees
-      description: "Returns the coffee catalog, each coffee with its currently valid\ncertifications. Supports filtering by name via query parameters.\n\nOnly non-expired certifications are included (those with no expiry, or an\nexpiry date in the future).\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+      description: "Returns the coffee catalog, each coffee with its currently valid\ncertifications. Supports filtering by name via query parameters.\n\nOnly non-expired certifications are included (those with no expiry, or an\nexpiry date in the future)."
       parameters:
         -
           in: query
@@ -422,6 +422,7 @@ paths:
                                 example: 'Certified organic production.'
       tags:
         - Coffees
+      security: []
   '/evaluations/{evaluation_ulid}':
     get:
       summary: 'Get an evaluation'
@@ -3744,6 +3745,16 @@ paths:
             example: Geisha
         -
           in: query
+          name: roasteryName
+          description: 'Filter by roastery name (partial match). Must not be greater than 150 characters.'
+          example: Nómada
+          required: false
+          schema:
+            type: string
+            description: 'Filter by roastery name (partial match). Must not be greater than 150 characters.'
+            example: Nómada
+        -
+          in: query
           name: originCountry
           description: 'Filter by country of origin. Must not be greater than 90 characters.'
           example: Colombia
@@ -5329,7 +5340,7 @@ paths:
     get:
       summary: 'List roasteries'
       operationId: listRoasteries
-      description: "Returns the roastery catalog. Supports filtering by name via query\nparameters.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope.\nAvailable to any authenticated user, regardless of role."
+      description: "Returns the roastery catalog. Supports filtering by name via query\nparameters."
       parameters:
         -
           in: query
@@ -5377,6 +5388,7 @@ paths:
                           example: 'Tostador de especialidad en Barcelona.'
       tags:
         - Roasteries
+      security: []
   /taxonomies:
     get:
       summary: 'List olfactory taxonomies'

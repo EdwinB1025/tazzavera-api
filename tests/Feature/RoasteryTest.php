@@ -8,10 +8,13 @@ beforeEach(
     }
 );
 
-test('guest_cannot_list_roasteries', function () {
+test('public_lists_roasteries_without_token', function () {
+
+    createRoastery([], [], 2);
 
     $this->getJson('/roasteries')
-        ->assertUnauthorized();
+        ->assertOk()
+        ->assertJsonCount(2, 'data');
 });
 
 test('authenticated_user_lists_roasteries', function () {

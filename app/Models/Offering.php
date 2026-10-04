@@ -37,6 +37,7 @@ class Offering extends Model
     {
         $scopes = [
             'coffeeName',
+            'roasteryName',
             'originCountry',
             'originRegion',
             'process',
@@ -78,6 +79,15 @@ class Offering extends Model
         $query->when(
             $validated['coffeeName'] ?? null,
             fn($q, $v) => $q->whereHas('coffeeInventory.coffee', fn($q) => $q->where('name', 'like', "%{$v}%"))
+        );
+    }
+
+    #[Scope]
+    protected function roasteryName(Builder $query, array $validated): void
+    {
+        $query->when(
+            $validated['roasteryName'] ?? null,
+            fn($q, $v) => $q->whereHas('coffeeInventory.roastery', fn($q) => $q->where('name', 'like', "%{$v}%"))
         );
     }
 
