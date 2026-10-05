@@ -303,6 +303,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      roasteryName:
+        custom: []
+        name: roasteryName
+        description: 'Filter by roastery name (partial match). Must not be greater than 150 characters.'
+        required: false
+        example: Nómada
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       originCountry:
         custom: []
         name: originCountry
@@ -387,6 +398,17 @@ endpoints:
         required: false
         example: 01J8ZK...
         type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      verified:
+        custom: []
+        name: verified
+        description: 'Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.'
+        required: false
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -734,6 +756,7 @@ endpoints:
         deprecated: false
     cleanQueryParameters:
       coffeeName: Geisha
+      roasteryName: Nómada
       originCountry: Colombia
       originRegion: Huila
       process: Washed
@@ -742,6 +765,7 @@ endpoints:
       city: Barcelona
       coffeeshopUlid: 01J8ZK...
       locationUlid: 01J8ZK...
+      verified: true
       cuppingAvgMin: 80.0
       cuppingAvgMax: 95.0
       evaluationCountMin: 1

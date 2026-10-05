@@ -24,6 +24,7 @@ class FilterOfferingRequest extends FormRequest
     {
         return [
             'coffeeName'    => ['sometimes', 'string', 'max:150'],
+            'roasteryName'  => ['sometimes', 'string', 'max:150'],
             'originCountry' => ['sometimes', 'string', 'max:90'],
             'originRegion'  => ['sometimes', 'string', 'max:90'],
             'process'       => ['sometimes', 'string', 'max:90'],
@@ -32,6 +33,7 @@ class FilterOfferingRequest extends FormRequest
             'city'          => ['sometimes', 'string', 'max:90'],
             'coffeeshopUlid' => ['sometimes', 'string', 'exists:users,ulid'],
             'locationUlid'   => ['sometimes', 'string', 'exists:locations,ulid'],
+            'verified'       => ['sometimes', 'boolean'],
 
             'cuppingAvgMin' => ['sometimes', 'numeric', 'min:0', 'max:100'],
             'cuppingAvgMax' => ['sometimes', 'numeric', 'min:0', 'max:100', 'gte:cuppingAvgMin'],
@@ -84,6 +86,7 @@ class FilterOfferingRequest extends FormRequest
     {
         return [
             'coffeeName'    => ['description' => 'Filter by coffee name (partial match).', 'example' => 'Geisha'],
+            'roasteryName'  => ['description' => 'Filter by roastery name (partial match).', 'example' => 'Nómada'],
             'originCountry' => ['description' => 'Filter by country of origin.', 'example' => 'Colombia'],
             'originRegion'  => ['description' => 'Filter by region of origin.', 'example' => 'Huila'],
             'process'       => ['description' => 'Filter by processing method.', 'example' => 'Washed'],
@@ -92,6 +95,7 @@ class FilterOfferingRequest extends FormRequest
             'city'          => ['description' => 'Filter by the city of the offering location.', 'example' => 'Barcelona'],
             'coffeeshopUlid' => ['description' => 'Filter by coffeeshop (user) ULID.', 'example' => '01J8ZK...'],
             'locationUlid'   => ['description' => 'Filter by location ULID.', 'example' => '01J8ZK...'],
+            'verified'       => ['description' => 'Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.', 'example' => 1],
 
             'cuppingAvgMin' => ['description' => 'Minimum average cupping score (0–100).', 'example' => 80],
             'cuppingAvgMax' => ['description' => 'Maximum average cupping score (0–100). Must be ≥ cuppingAvgMin.', 'example' => 95],

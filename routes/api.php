@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\CoffeeInventoryController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfferingController;
+use App\Http\Controllers\RoasteryController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -17,6 +19,8 @@ Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 Route::get('/offerings', [OfferingController::class, 'index']);
 Route::get('/evaluations/{evaluation}', [EvaluationController::class, 'show']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
+Route::get('/coffees', [CoffeeController::class, 'index']);
+Route::get('/roasteries', [RoasteryController::class, 'index']);
 
 
 Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.

@@ -344,3 +344,96 @@ test('filter_offerings_by_cata_ref', function () {
         ->assertJsonCount(1, 'data')
         ->assertJsonPath('data.0.ulid', $match->ulid);
 });
+
+test('filter_offerings_by_verification_status', function (?string $verified, array $expected) {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    Offering::query()->delete();
+
+    $offerings = [
+        'verified'    => Offering::factory()->create(['verification_status' => 'verified']),
+        'provisional' => Offering::factory()->create(['verification_status' => 'provisional']),
+    ];
+
+    $query = $verified === null ? '' : '?' . http_build_query(['verified' => $verified]);
+
+    $response = $this->getJson("/offerings{$query}");
+
+    $response
+        ->assertOk()
+        ->assertJsonCount(count($expected), 'data');
+
+    $ulids = collect($response->json('data'))->pluck('ulid');
+    foreach ($expected as $status) {
+        expect($ulids)->toContain($offerings[$status]->ulid);
+    }
+})->with([
+    'verified=1' => ['1', ['verified']],
+    'verified=0' => ['0', ['provisional']],
+    'absent'     => [null, ['verified', 'provisional']],
+]);
+
+test('filter_offerings_by_invalid_verification_status', function () {
+    $this->getJson('/offerings?verified=yes')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('verified');
+});
+
+test('filter_offerings_by_roastery_name', function (string $roasteryName, int $expected) {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $roastery = createRoastery(['name' => 'Tostadores Zzyxx Norte']);
+    $inventory = CoffeeInventory::factory()->create(['roastery_id' => $roastery->id]);
+    $match = Offering::factory()->create(['coffee_inventory_id' => $inventory->id]);
+
+    $response = $this->getJson('/offerings?' . http_build_query(['roasteryName' => $roasteryName]));
+
+    $response
+        ->assertOk()
+        ->assertJsonCount($expected, 'data');
+
+    if ($expected > 0) {
+        $response->assertJsonPath('data.0.ulid', $match->ulid);
+    }
+})->with([
+    'partial match' => ['zzyxx', 1],
+    'no match'      => ['qwvbn', 0],
+]);
+
+test('filter_offerings_by_roastery_name_combined', function () {
+    [$owner] = authenticate('coffeeshop');
+
+    $this->seed(GetAnOfferingSeeder::class);
+
+    $roastery = createRoastery(['name' => 'Tostadores Zzyxx Norte']);
+    $inventory = CoffeeInventory::factory()->create(['roastery_id' => $roastery->id]);
+    $match = Offering::factory()->create([
+        'coffee_inventory_id' => $inventory->id,
+        'verification_status' => 'verified',
+    ]);
+    Offering::factory()->create([
+        'coffee_inventory_id' => $inventory->id,
+        'verification_status' => 'provisional',
+    ]);
+
+    $otherInventory = CoffeeInventory::factory()->create(['roastery_id' => createRoastery(['name' => 'Otro Tostador'])->id]);
+    Offering::factory()->create([
+        'coffee_inventory_id' => $otherInventory->id,
+        'verification_status' => 'verified',
+    ]);
+
+    $this->getJson('/offerings?' . http_build_query(['roasteryName' => 'zzyxx', 'verified' => 1]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.ulid', $match->ulid);
+});
+
+test('filter_offerings_by_too_long_roastery_name', function () {
+    $this->getJson('/offerings?roasteryName=' . str_repeat('a', 151))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('roasteryName');
+});

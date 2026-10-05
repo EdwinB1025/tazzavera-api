@@ -1,6 +1,9 @@
 {{-- Tazavera mark, inlined from public/favicon.svg without the Inkscape
-     metadata. Colors come from the semantic logo-* tokens, so the mark
-     switches with the theme; the gradient id is unique per instance. --}}
+     metadata. Colors come from the semantic logo-* tokens (same as
+     tazavera-front's Logo), so the mark switches with the theme: the cup
+     and coffee through fill-logo-*, the leaf through a gradient whose stops
+     use --color-logo-leaf, which keeps its fade. The gradient id is unique
+     per instance. --}}
 @php
     $gradientId = 'logo-leaf-'.\Illuminate\Support\Str::random(8);
 @endphp
@@ -8,8 +11,8 @@
 <svg {{ $attributes }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98.107468 84.827301" aria-hidden="true" focusable="false">
     <defs>
         <linearGradient id="{{ $gradientId }}" x1="11.640124" y1="46.043945" x2="100.80192" y2="46.043945" gradientUnits="userSpaceOnUse">
-            <stop offset="0.56751055" style="stop-color: var(--color-logo-leaf); stop-opacity: 1" />
-            <stop offset="1" style="stop-color: var(--color-logo-leaf); stop-opacity: 0" />
+            <stop offset="0.56751055" class="[stop-color:var(--color-logo-leaf)]" stop-opacity="1" />
+            <stop offset="1" class="[stop-color:var(--color-logo-leaf)]" stop-opacity="0" />
         </linearGradient>
     </defs>
     <g transform="translate(-11.242462,-15.494141)">

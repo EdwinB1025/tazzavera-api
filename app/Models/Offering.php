@@ -37,6 +37,7 @@ class Offering extends Model
     {
         $scopes = [
             'coffeeName',
+            'roasteryName',
             'originCountry',
             'originRegion',
             'process',
@@ -45,6 +46,7 @@ class Offering extends Model
             'city',
             'coffeeshopUlid',
             'locationUlid',
+            'verified',
             'cuppingAvg',
             'evaluationCount',
             'defectiveCount',
@@ -77,6 +79,15 @@ class Offering extends Model
         $query->when(
             $validated['coffeeName'] ?? null,
             fn($q, $v) => $q->whereHas('coffeeInventory.coffee', fn($q) => $q->where('name', 'like', "%{$v}%"))
+        );
+    }
+
+    #[Scope]
+    protected function roasteryName(Builder $query, array $validated): void
+    {
+        $query->when(
+            $validated['roasteryName'] ?? null,
+            fn($q, $v) => $q->whereHas('coffeeInventory.roastery', fn($q) => $q->where('name', 'like', "%{$v}%"))
         );
     }
 
@@ -149,6 +160,15 @@ class Offering extends Model
         $query->when(
             $validated['locationUlid'] ?? null,
             fn($q, $v) => $q->whereHas('location', fn($q) => $q->where('ulid', $v))
+        );
+    }
+
+    #[Scope]
+    protected function verified(Builder $query, array $validated): void
+    {
+        $query->when(
+            isset($validated['verified']), // isset: verified=0 is a valid filter value, not an absent one
+            fn($q) => $q->where('verification_status', $validated['verified'] ? 'verified' : 'provisional')
         );
     }
 
