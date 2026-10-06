@@ -33,6 +33,8 @@ class EvaluationResource extends JsonResource
                     'type' => $t->type,
                 ])
             ),
+            'createdAt' => $this->created_at,
+            'closedAt' => $this->status === 'closed' ? $this->updated_at : null,
         ];
     }
 }
