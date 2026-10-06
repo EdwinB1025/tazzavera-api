@@ -93,7 +93,7 @@ class FilterOfferingRequest extends FormRequest
             'producer'      => ['description' => 'Filter by producer name.', 'example' => 'Finca La Esperanza'],
             'variety'       => ['description' => 'Filter by coffee variety.', 'example' => 'Caturra'],
             'city'          => ['description' => 'Filter by the city of the offering location.', 'example' => 'Barcelona'],
-            'coffeeshopUlid' => ['description' => 'Filter by coffeeshop (user) ULID.', 'example' => '01J8ZK...'],
+            'coffeeshopUlid' => ['description' => 'Filter by coffee shop: the `ulid` returned by GET /coffeeshops (the coffee shop user ULID). Returns the offerings of all its locations; used by the Offerings tab of the coffee shop detail.', 'example' => '01M35F5RX4ADGC3CSDXXYB08DA'],
             'locationUlid'   => ['description' => 'Filter by location ULID.', 'example' => '01J8ZK...'],
             'verified'       => ['description' => 'Filter by verification status: 1 returns only verified offerings, 0 only provisional ones. Omit it to return both.', 'example' => 1],
 
