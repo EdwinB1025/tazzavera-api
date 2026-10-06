@@ -32,7 +32,7 @@ class Evaluation extends Model
     #[Scope]
     protected function filter(Builder $query, array $validated): void
     {
-        $scopes = ['evaluatorId', 'coffeeId', 'city', 'locationId', 'process', 'score', 'status'];
+        $scopes = ['evaluatorId', 'offeringId', 'evaluationType', 'coffeeId', 'city', 'locationId', 'process', 'score', 'status'];
 
         foreach ($scopes as $scope) {
             $query->{$scope}($validated);
@@ -50,6 +50,27 @@ class Evaluation extends Model
                 'evaluator',
                 fn($q) => $q->where('ulid', $v)
             )
+        );
+    }
+
+    #[Scope]
+    protected function offeringId(Builder $query, array $validated): void
+    {
+        $query->when(
+            $validated['offeringId'] ?? null,
+            fn($q, $v) => $q->whereHas(
+                'offering',
+                fn($q) => $q->where('ulid', $v)
+            )
+        );
+    }
+
+    #[Scope]
+    protected function evaluationType(Builder $query, array $validated): void
+    {
+        $query->when(
+            $validated['evaluationType'] ?? null,
+            fn($q, $v) => $q->where('evaluation_type', $v)
         );
     }
 
