@@ -1026,7 +1026,7 @@ Supports filtering and sorting via query parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "http://localhost:8000/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&amp;offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=baseline&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -1038,6 +1038,8 @@ Supports filtering and sorting via query parameters.</p>
 
 const params = {
     "evaluatorId": "01M35F5RX4ADGC3CSDXXYB08DA",
+    "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+    "evaluationType": "baseline",
     "coffeeId": "01M35F5JEZMS845TNPAEM1V8PF",
     "locationId": "01M35F5JDFXM13R1CA06FFWTNG",
     "city": "Barcelona",
@@ -1075,6 +1077,8 @@ $response = $client-&gt;get(
         ],
         'query' =&gt; [
             'evaluatorId' =&gt; '01M35F5RX4ADGC3CSDXXYB08DA',
+            'offeringId' =&gt; '01K6A3M8Q2V7XH4T9B5N1RCW0D',
+            'evaluationType' =&gt; 'baseline',
             'coffeeId' =&gt; '01M35F5JEZMS845TNPAEM1V8PF',
             'locationId' =&gt; '01M35F5JDFXM13R1CA06FFWTNG',
             'city' =&gt; 'Barcelona',
@@ -1413,6 +1417,32 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Filter by the evaluating specialist (user) ULID. Must match an existing stored value. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>offeringId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="offeringId"                data-endpoint="GETevaluations"
+               value="01K6A3M8Q2V7XH4T9B5N1RCW0D"
+               data-component="query">
+    <br>
+<p>Filter by offering ULID. Must match an existing stored value. Example: <code>01K6A3M8Q2V7XH4T9B5N1RCW0D</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>evaluationType</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="evaluationType"                data-endpoint="GETevaluations"
+               value="baseline"
+               data-component="query">
+    <br>
+<p>Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering). Example: <code>baseline</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>specialist</code></li> <li><code>baseline</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>coffeeId</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
@@ -1545,7 +1575,7 @@ evaluator, which is the user in the path. An unknown user ULID returns
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -1556,6 +1586,8 @@ evaluator, which is the user in the path. An unknown user ULID returns
 );
 
 const params = {
+    "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+    "evaluationType": "specialist",
     "coffeeId": "01M35F5JEZMS845TNPAEM1V8PF",
     "locationId": "01M35F5JDFXM13R1CA06FFWTNG",
     "city": "Barcelona",
@@ -1592,6 +1624,8 @@ $response = $client-&gt;get(
             'Accept' =&gt; 'application/json',
         ],
         'query' =&gt; [
+            'offeringId' =&gt; '01K6A3M8Q2V7XH4T9B5N1RCW0D',
+            'evaluationType' =&gt; 'specialist',
             'coffeeId' =&gt; '01M35F5JEZMS845TNPAEM1V8PF',
             'locationId' =&gt; '01M35F5JDFXM13R1CA06FFWTNG',
             'city' =&gt; 'Barcelona',
@@ -1931,6 +1965,32 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
                                     <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>offeringId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="offeringId"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="01K6A3M8Q2V7XH4T9B5N1RCW0D"
+               data-component="query">
+    <br>
+<p>Filter by offering ULID. Must match an existing stored value. Example: <code>01K6A3M8Q2V7XH4T9B5N1RCW0D</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>evaluationType</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="evaluationType"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="specialist"
+               data-component="query">
+    <br>
+<p>Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering). Example: <code>specialist</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>specialist</code></li> <li><code>baseline</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>coffeeId</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
@@ -2066,7 +2126,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "http://localhost:8000/user/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2078,6 +2138,8 @@ or <code>profile:write</code> scope.</p>
 );
 
 const params = {
+    "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+    "evaluationType": "specialist",
     "coffeeId": "01M35F5JEZMS845TNPAEM1V8PF",
     "locationId": "01M35F5JDFXM13R1CA06FFWTNG",
     "city": "Barcelona",
@@ -2116,6 +2178,8 @@ $response = $client-&gt;get(
             'Accept' =&gt; 'application/json',
         ],
         'query' =&gt; [
+            'offeringId' =&gt; '01K6A3M8Q2V7XH4T9B5N1RCW0D',
+            'evaluationType' =&gt; 'specialist',
             'coffeeId' =&gt; '01M35F5JEZMS845TNPAEM1V8PF',
             'locationId' =&gt; '01M35F5JDFXM13R1CA06FFWTNG',
             'city' =&gt; 'Barcelona',
@@ -2453,6 +2517,32 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>offeringId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="offeringId"                data-endpoint="GETuser-evaluations"
+               value="01K6A3M8Q2V7XH4T9B5N1RCW0D"
+               data-component="query">
+    <br>
+<p>Filter by offering ULID. Must match an existing stored value. Example: <code>01K6A3M8Q2V7XH4T9B5N1RCW0D</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>evaluationType</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="evaluationType"                data-endpoint="GETuser-evaluations"
+               value="specialist"
+               data-component="query">
+    <br>
+<p>Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering). Example: <code>specialist</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>specialist</code></li> <li><code>baseline</code></li></ul>
+            </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>coffeeId</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
