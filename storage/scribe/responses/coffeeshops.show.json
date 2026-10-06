@@ -1,0 +1,39 @@
+{
+    "data": {
+        "ulid": "01K9C0FFEE0NMD000000000001",
+        "name": "Nomad Coffee",
+        "locationsCount": 2,
+        "offeringsCount": 4,
+        "verifiedOfferingsCount": 1,
+        "locations": [
+            {
+                "ulid": "01K9C0FFEE0NMD0L0C00000001",
+                "name": "Nomad Coffee Born",
+                "description": "Nomad Coffee al Born.",
+                "latitud": "41.38610000",
+                "longitud": "2.17940000",
+                "address": "Passatge Sert 12",
+                "city": "Barcelona",
+                "postalCode": "08003",
+                "country": "España",
+                "phone": "+34 933 000 001",
+                "web": "https://nomad.example",
+                "social": "@nomad.bcn"
+            },
+            {
+                "ulid": "01K9C0FFEE0NMD0L0C00000002",
+                "name": "Nomad Coffee Raval",
+                "description": "Nomad Coffee al Raval.",
+                "latitud": "41.37990000",
+                "longitud": "2.16770000",
+                "address": "Carrer de la Riereta 13",
+                "city": "Barcelona",
+                "postalCode": "08001",
+                "country": "España",
+                "phone": null,
+                "web": "https://nomad.example",
+                "social": "@nomad.bcn"
+            }
+        ]
+    }
+}

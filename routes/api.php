@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\CoffeeInventoryController;
+use App\Http\Controllers\CoffeeshopController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
@@ -24,6 +25,8 @@ Route::get('/evaluations', [EvaluationController::class, 'index']);
 Route::get('/users/{user}/evaluations', [EvaluationController::class, 'indexByUser']); //EDB 10/06/26: public evaluations of a given user (evaluator)
 Route::get('/coffees', [CoffeeController::class, 'index']);
 Route::get('/roasteries', [RoasteryController::class, 'index']);
+Route::get('/coffeeshops', [CoffeeshopController::class, 'index']); //EDB 10/06/26: public coffee shop directory (business data only)
+Route::get('/coffeeshops/{user}', [CoffeeshopController::class, 'show']);
 
 
 Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
