@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\CoffeeInventoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfferingController;
@@ -32,6 +33,11 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
 
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
+
+        /**EDB 10/06/26: Routes for user to read their own contacts (personal data) */
+        Route::middleware('can:view,user')->group(function () {
+            Route::get('/users/{user}/contacts', [ContactController::class, 'index']);
+        });
 
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
@@ -75,6 +81,8 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
                 ->middleware('can:update,user');
             Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
                 ->middleware('can:update,user');
+            Route::post('/users/{user}/contacts', [ContactController::class, 'store'])
+                ->middleware('can:update,user'); //EDB 10/06/26: the user's single primary contact
             Route::delete('/users/{user}', [UserController::class, 'destroy'])
                 ->middleware('can:delete,user');
             Route::delete('/users/{user}/force', [UserController::class, 'forceDestroy'])

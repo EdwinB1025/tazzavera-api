@@ -1,0 +1,15 @@
+{
+    "data": {
+        "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NP",
+        "isPrimary": true,
+        "phone": "+34 932 123 456",
+        "email": "hola@cafeteria.example",
+        "web": "https://cafeteria.example",
+        "social": "@cafeteria.bcn",
+        "address": "Carrer de Verdi 12",
+        "country": "España",
+        "city": "Barcelona",
+        "postalCode": "08012"
+    },
+    "message": "Contact created."
+}
