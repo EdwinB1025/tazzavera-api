@@ -341,3 +341,94 @@ test('filter_evaluations_returns_multiple_locations', function () {
     $response->assertOk()
         ->assertJsonCount(3, 'data');
 });
+
+/**EDB 10/06/26: own evaluations under /user/evaluations (UserEvaluationController) */
+test('specialist_lists_only_own_evaluations', function () {
+    [$user, $token] = authenticate('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $own = Evaluation::factory()
+        ->withTastes()
+        ->count(2)
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id]);
+
+    //Evaluation of another specialist (factory evaluator)
+    Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
+
+    $response = $this->withToken($token)
+        ->getJson('/user/evaluations');
+
+    $response->assertOk()
+        ->assertJsonCount(2, 'data');
+
+    expect(collect($response->json('data'))->pluck('ulid')->sort()->values()->all())
+        ->toBe($own->pluck('ulid')->sort()->values()->all());
+});
+
+test('specialist_filters_own_evaluations', function () {
+    [$user, $token] = authenticate('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $target = Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id, 'status' => 'closed']);
+
+    Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id, 'status' => 'open']);
+
+    $this->withToken($token)
+        ->getJson('/user/evaluations?status=closed')
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.ulid', $target->ulid);
+});
+
+test('specialist_gets_own_evaluation', function () {
+    [$user, $token] = authenticate('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $evaluation = Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id]);
+
+    $this->withToken($token)
+        ->getJson("/user/evaluations/{$evaluation->ulid}")
+        ->assertOk()
+        ->assertJsonPath('data.ulid', $evaluation->ulid);
+});
+
+test('specialist_gets_404_for_another_specialist_evaluation', function () {
+    [$user, $token] = authenticate('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $foreign = Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
+
+    $this->withToken($token)
+        ->getJson("/user/evaluations/{$foreign->ulid}")
+        ->assertNotFound();
+});
+
+test('user_evaluations_require_authentication', function () {
+    $this->getJson('/user/evaluations')
+        ->assertUnauthorized();
+});
+
+test('specialist_deletes_own_evaluation_through_user_path', function () {
+    [$user, $token] = authenticateWithWriteScope('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $evaluation = Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id]);
+
+    $this->withToken($token)
+        ->deleteJson("/user/evaluations/{$evaluation->ulid}")
+        ->assertOk();
+
+    $this->assertDatabaseMissing('evaluations', ['id' => $evaluation->id]);
+});

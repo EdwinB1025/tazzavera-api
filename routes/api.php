@@ -8,6 +8,7 @@ use App\Http\Controllers\OfferingController;
 use App\Http\Controllers\RoasteryController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserEvaluationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
@@ -45,13 +46,26 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
 
         /**EDB 09/17/26: Routes for specialist to manage evaluations */
         Route::middleware('role:specialist')->group(function () {
-            Route::post('/evaluations', [EvaluationController::class, 'store']);
+
+            /**EDB 10/06/26: Routes for specialist to read and manage their own evaluations */
+            Route::get('/user/evaluations', [UserEvaluationController::class, 'index']);
+            Route::get('/user/evaluations/{evaluation}', [UserEvaluationController::class, 'show']);
+            Route::post('/user/evaluations', [UserEvaluationController::class, 'store']);
             Route::middleware('can:update,evaluation')->group(function () {
-                Route::put('/evaluations/{evaluation}', [EvaluationController::class, 'update']);
-                Route::patch('/evaluations/{evaluation}/close', [EvaluationController::class, 'close']);
+                Route::put('/user/evaluations/{evaluation}', [UserEvaluationController::class, 'update']);
+                Route::patch('/user/evaluations/{evaluation}/close', [UserEvaluationController::class, 'close']);
             });
-            Route::delete('/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])
+            Route::delete('/user/evaluations/{evaluation}', [UserEvaluationController::class, 'destroy'])
                 ->middleware('can:delete,evaluation');
+
+            /**EDB 10/06/26: Previous paths kept active, same controller; named legacy.* and left out of the API docs */
+            Route::post('/evaluations', [UserEvaluationController::class, 'store'])->name('legacy.evaluations.store');
+            Route::middleware('can:update,evaluation')->group(function () {
+                Route::put('/evaluations/{evaluation}', [UserEvaluationController::class, 'update'])->name('legacy.evaluations.update');
+                Route::patch('/evaluations/{evaluation}/close', [UserEvaluationController::class, 'close'])->name('legacy.evaluations.close');
+            });
+            Route::delete('/evaluations/{evaluation}', [UserEvaluationController::class, 'destroy'])
+                ->middleware('can:delete,evaluation')->name('legacy.evaluations.destroy');
         });
 
         /**EDB 09/10/26: Routes for user to administer theri own profile*/

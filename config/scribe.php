@@ -55,6 +55,9 @@ return [
                 // Passport (OAuth)
                 'oauth/*',
 
+                // EDB 10/06/26: previous evaluation write paths, kept active; documented under /user/evaluations
+                'legacy.evaluations.*',
+
                 // Livewire and flux (asset endpoints con hash)
                 'livewire-*',
                 'flux/*',
