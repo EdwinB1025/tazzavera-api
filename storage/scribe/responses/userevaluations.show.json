@@ -1,0 +1,94 @@
+{
+    "data": {
+        "ulid": "01M35F5RX4ADGC3CSDXXYB08DB",
+        "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+        "evaluationType": "specialist",
+        "status": "open",
+        "extractionMethod": "espresso",
+        "cuppingScore": null,
+        "isDefective": true,
+        "descriptive": {
+            "fragrance": {
+                "score": 10,
+                "note": null
+            },
+            "aroma": {
+                "score": 11,
+                "note": null
+            },
+            "flavor": {
+                "score": 0,
+                "note": null
+            },
+            "aftertaste": {
+                "score": 0,
+                "note": null
+            },
+            "acidity": {
+                "score": 9,
+                "note": null
+            },
+            "sweetness": {
+                "score": 10,
+                "note": null
+            },
+            "mouthfeel": {
+                "score": 8,
+                "note": null
+            }
+        },
+        "affective": {
+            "fragrance": {
+                "score": 6,
+                "note": null
+            },
+            "aroma": {
+                "score": 7,
+                "note": null
+            },
+            "flavor": {
+                "score": 0,
+                "note": null
+            },
+            "aftertaste": {
+                "score": 0,
+                "note": null
+            },
+            "acidity": {
+                "score": 6,
+                "note": null
+            },
+            "sweetness": {
+                "score": 7,
+                "note": null
+            },
+            "mouthfeel": {
+                "score": 6,
+                "note": null
+            },
+            "overall": {
+                "score": 0,
+                "note": null
+            }
+        },
+        "extrinsics": {
+            "farming": null,
+            "processing": null,
+            "trading": null,
+            "certifications": null,
+            "generalObservation": null
+        },
+        "tastes": [
+            {
+                "ref": "01JTAXN0DE000000000000000B",
+                "type": "defects"
+            },
+            {
+                "ref": "01JTAXN0DE0000000000000009",
+                "type": "main_tastes"
+            }
+        ],
+        "createdAt": "2026-10-06T09:12:45.000000Z",
+        "closedAt": null
+    }
+}

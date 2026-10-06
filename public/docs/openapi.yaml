@@ -740,739 +740,6 @@ paths:
       tags:
         - Evaluations
       security: []
-    put:
-      summary: 'Update an evaluation'
-      operationId: updateAnEvaluation
-      description: "Updates an existing evaluation. Returns the updated evaluation with a\nconfirmation message. The body structure matches the create endpoint,\nexcept `offeringId` is prohibited — an evaluation cannot be reassigned to\nanother offering.\n\nA **closed** evaluation cannot be updated; attempting to do so returns\n`409 Conflict`.\n\n**Authorization:** requires the `specialist` role and permission to update\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data:
-                    ulid: 01M35F5RX4ADGC3CSDXXYB08DB
-                    offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
-                    evaluationType: specialist
-                    status: open
-                    extractionMethod: espresso
-                    cuppingScore: null
-                    isDefective: true
-                    descriptive:
-                      fragrance:
-                        score: 10
-                        note: null
-                      aroma:
-                        score: 11
-                        note: null
-                      flavor:
-                        score: 0
-                        note: null
-                      aftertaste:
-                        score: 0
-                        note: null
-                      acidity:
-                        score: 9
-                        note: null
-                      sweetness:
-                        score: 10
-                        note: null
-                      mouthfeel:
-                        score: 8
-                        note: null
-                    affective:
-                      fragrance:
-                        score: 6
-                        note: null
-                      aroma:
-                        score: 7
-                        note: null
-                      flavor:
-                        score: 0
-                        note: null
-                      aftertaste:
-                        score: 0
-                        note: null
-                      acidity:
-                        score: 6
-                        note: null
-                      sweetness:
-                        score: 7
-                        note: null
-                      mouthfeel:
-                        score: 6
-                        note: null
-                      overall:
-                        score: 0
-                        note: null
-                    extrinsics:
-                      farming: null
-                      processing: null
-                      trading: null
-                      certifications: null
-                      generalObservation: null
-                    tastes:
-                      -
-                        ref: 01JTAXN0DE000000000000000B
-                        type: defects
-                      -
-                        ref: 01JTAXN0DE0000000000000009
-                        type: main_tastes
-                    createdAt: '2026-10-06T09:12:45.000000Z'
-                    closedAt: null
-                  message: 'Evaluation updated.'
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      ulid:
-                        type: string
-                        example: 01M35F5RX4ADGC3CSDXXYB08DB
-                      offeringId:
-                        type: string
-                        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
-                      evaluationType:
-                        type: string
-                        example: specialist
-                      status:
-                        type: string
-                        example: open
-                      extractionMethod:
-                        type: string
-                        example: espresso
-                      cuppingScore:
-                        type: string
-                        example: null
-                        nullable: true
-                      isDefective:
-                        type: boolean
-                        example: true
-                      descriptive:
-                        type: object
-                        properties:
-                          fragrance:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 10
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          aroma:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 11
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          flavor:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 0
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          aftertaste:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 0
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          acidity:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 9
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          sweetness:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 10
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          mouthfeel:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 8
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                      affective:
-                        type: object
-                        properties:
-                          fragrance:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 6
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          aroma:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 7
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          flavor:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 0
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          aftertaste:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 0
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          acidity:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 6
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          sweetness:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 7
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          mouthfeel:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 6
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                          overall:
-                            type: object
-                            properties:
-                              score:
-                                type: integer
-                                example: 0
-                              note:
-                                type: string
-                                example: null
-                                nullable: true
-                      extrinsics:
-                        type: object
-                        properties:
-                          farming:
-                            type: string
-                            example: null
-                            nullable: true
-                          processing:
-                            type: string
-                            example: null
-                            nullable: true
-                          trading:
-                            type: string
-                            example: null
-                            nullable: true
-                          certifications:
-                            type: string
-                            example: null
-                            nullable: true
-                          generalObservation:
-                            type: string
-                            example: null
-                            nullable: true
-                      tastes:
-                        type: array
-                        example:
-                          -
-                            ref: 01JTAXN0DE000000000000000B
-                            type: defects
-                          -
-                            ref: 01JTAXN0DE0000000000000009
-                            type: main_tastes
-                        items:
-                          type: object
-                          properties:
-                            ref:
-                              type: string
-                              example: 01JTAXN0DE000000000000000B
-                            type:
-                              type: string
-                              example: defects
-                      createdAt:
-                        type: string
-                        example: '2026-10-06T09:12:45.000000Z'
-                      closedAt:
-                        type: string
-                        example: null
-                        nullable: true
-                  message:
-                    type: string
-                    example: 'Evaluation updated.'
-        403:
-          description: 'Not the owner'
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'One or more evaluations do not belong to the user.'
-                properties:
-                  message:
-                    type: string
-                    example: 'One or more evaluations do not belong to the user.'
-        409:
-          description: 'Evaluation already closed'
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'Evaluation cannot be updated.'
-                properties:
-                  message:
-                    type: string
-                    example: 'Evaluation cannot be updated.'
-      tags:
-        - Evaluations
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                offeringId:
-                  type: string
-                  description: 'Prohibited on update — an evaluation cannot be reassigned to another offering. Sending this field returns 422.'
-                  example: null
-                status:
-                  type: string
-                  description: ''
-                  example: architecto
-                  nullable: true
-                extractionMethod:
-                  type: string
-                  description: 'Brewing/extraction method used (max 60 chars). Must not be greater than 60 characters.'
-                  example: v60
-                  nullable: true
-                descriptive:
-                  type: object
-                  description: 'Objective assessment. Same structure as the create endpoint: roastLevel plus per-axis objects with score (0–15), optional note, and cata arrays where applicable, plus mainTastes.'
-                  example: null
-                  properties:
-                    roastLevel:
-                      type: string
-                      description: 'Roast level. One of: light, medium_light, medium, medium_dark, dark.'
-                      example: medium
-                      enum:
-                        - light
-                        - medium_light
-                        - medium
-                        - medium_dark
-                        - dark
-                    fragrance:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                        cata:
-                          type: array
-                          description: 'Must match an existing stored value.'
-                          example:
-                            - architecto
-                          items:
-                            type: string
-                      nullable: true
-                    aroma:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                        cata:
-                          type: array
-                          description: 'Must match an existing stored value.'
-                          example:
-                            - architecto
-                          items:
-                            type: string
-                      nullable: true
-                    flavor:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                        cata:
-                          type: array
-                          description: 'Must match an existing stored value.'
-                          example:
-                            - architecto
-                          items:
-                            type: string
-                      nullable: true
-                    acidity:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                      nullable: true
-                    sweetness:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                      nullable: true
-                    mouthfeel:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                        cata:
-                          type: array
-                          description: 'Must match an existing stored value.'
-                          example:
-                            - architecto
-                          items:
-                            type: string
-                      nullable: true
-                    aftertaste:
-                      type: object
-                      description: ''
-                      example: null
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 0 and 15.'
-                          example: 1
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                        cata:
-                          type: array
-                          description: 'Must match an existing stored value.'
-                          example:
-                            - architecto
-                          items:
-                            type: string
-                      nullable: true
-                    mainTastes:
-                      type: array
-                      description: 'Must match an existing stored value.'
-                      example:
-                        - architecto
-                      items:
-                        type: string
-                  required:
-                    - roastLevel
-                affective:
-                  type: object
-                  description: 'Preference assessment. Same structure as the create endpoint: per-axis objects with score (1–9) and optional note, plus defects.'
-                  example: null
-                  properties:
-                    overall:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    fragrance:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    aroma:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    flavor:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    aftertaste:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    acidity:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    sweetness:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    mouthfeel:
-                      type: object
-                      description: ''
-                      example: []
-                      properties:
-                        score:
-                          type: integer
-                          description: 'Must be between 1 and 9.'
-                          example: 2
-                          nullable: true
-                        note:
-                          type: string
-                          description: ''
-                          example: architecto
-                          nullable: true
-                    defects:
-                      type: array
-                      description: 'Must match an existing stored value.'
-                      example:
-                        - architecto
-                      items:
-                        type: string
-                extrinsics:
-                  type: object
-                  description: 'Optional contextual metadata: farming, processing, trading, certifications, generalObservation.'
-                  example: null
-                  properties:
-                    farming:
-                      type: string
-                      description: ''
-                      example: architecto
-                      nullable: true
-                    processing:
-                      type: string
-                      description: ''
-                      example: architecto
-                      nullable: true
-                    trading:
-                      type: string
-                      description: ''
-                      example: architecto
-                      nullable: true
-                    certifications:
-                      type: string
-                      description: ''
-                      example: architecto
-                      nullable: true
-                    generalObservation:
-                      type: string
-                      description: ''
-                      example: architecto
-                      nullable: true
-                  nullable: true
-              required:
-                - descriptive
-                - affective
-    delete:
-      summary: 'Delete an evaluation'
-      operationId: deleteAnEvaluation
-      description: "Permanently deletes an evaluation. This action cannot be undone.\n\n**Authorization:** requires the `specialist` role and permission to delete\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
-      parameters: []
-      responses:
-        200:
-          description: Deleted
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'Evaluation(s) deleted.'
-                properties:
-                  message:
-                    type: string
-                    example: 'Evaluation(s) deleted.'
-        403:
-          description: 'Not the owner'
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  message: 'One or more evaluations do not belong to the user.'
-                properties:
-                  message:
-                    type: string
-                    example: 'One or more evaluations do not belong to the user.'
-      tags:
-        - Evaluations
     parameters:
       -
         in: path
@@ -2230,6 +1497,1490 @@ paths:
       tags:
         - Evaluations
       security: []
+  '/users/{user_ulid}/evaluations':
+    get:
+      summary: 'List the evaluations of a user'
+      operationId: listTheEvaluationsOfAUser
+      description: "Returns a paginated list of the evaluations made by the given user\n(specialist), each including its taste notes and the offering it belongs\nto. Supports the same filtering and sorting as the public list, except the\nevaluator, which is the user in the path. An unknown user ULID returns\n`404 Not Found`."
+      parameters:
+        -
+          in: query
+          name: coffeeId
+          description: 'Filter by coffee ULID. Must match an existing stored value.'
+          example: 01M35F5JEZMS845TNPAEM1V8PF
+          required: false
+          schema:
+            type: string
+            description: 'Filter by coffee ULID. Must match an existing stored value.'
+            example: 01M35F5JEZMS845TNPAEM1V8PF
+        -
+          in: query
+          name: locationId
+          description: 'Filter by location ULID. Must match an existing stored value.'
+          example: 01M35F5JDFXM13R1CA06FFWTNG
+          required: false
+          schema:
+            type: string
+            description: 'Filter by location ULID. Must match an existing stored value.'
+            example: 01M35F5JDFXM13R1CA06FFWTNG
+        -
+          in: query
+          name: city
+          description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+          example: Barcelona
+          required: false
+          schema:
+            type: string
+            description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+            example: Barcelona
+        -
+          in: query
+          name: process
+          description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+          example: Washed
+          required: false
+          schema:
+            type: string
+            description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+            example: Washed
+        -
+          in: query
+          name: status
+          description: 'Filter by evaluation status. One of: open, closed.'
+          example: closed
+          required: false
+          schema:
+            type: string
+            description: 'Filter by evaluation status. One of: open, closed.'
+            example: closed
+            enum:
+              - open
+              - closed
+        -
+          in: query
+          name: scoreMin
+          description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+          example: 80.0
+          required: false
+          schema:
+            type: number
+            description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+            example: 80.0
+        -
+          in: query
+          name: scoreMax
+          description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+          example: 95.0
+          required: false
+          schema:
+            type: number
+            description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+            example: 95.0
+        -
+          in: query
+          name: orderBy
+          description: 'Sort field. One of: cupping_score, created_at, status.'
+          example: cupping_score
+          required: false
+          schema:
+            type: string
+            description: 'Sort field. One of: cupping_score, created_at, status.'
+            example: cupping_score
+            enum:
+              - cupping_score
+              - created_at
+              - status
+        -
+          in: query
+          name: orderDirection
+          description: 'Sort direction. One of: asc, desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Sort direction. One of: asc, desc.'
+            example: desc
+            enum:
+              - asc
+              - desc
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType: specialist
+                      status: open
+                      extractionMethod: espresso
+                      cuppingScore: null
+                      isDefective: true
+                      descriptive:
+                        fragrance:
+                          score: 10
+                          note: null
+                        aroma:
+                          score: 11
+                          note: null
+                        flavor:
+                          score: 0
+                          note: null
+                        aftertaste:
+                          score: 0
+                          note: null
+                        acidity:
+                          score: 9
+                          note: null
+                        sweetness:
+                          score: 10
+                          note: null
+                        mouthfeel:
+                          score: 8
+                          note: null
+                      affective:
+                        fragrance:
+                          score: 6
+                          note: null
+                        aroma:
+                          score: 7
+                          note: null
+                        flavor:
+                          score: 0
+                          note: null
+                        aftertaste:
+                          score: 0
+                          note: null
+                        acidity:
+                          score: 6
+                          note: null
+                        sweetness:
+                          score: 7
+                          note: null
+                        mouthfeel:
+                          score: 6
+                          note: null
+                        overall:
+                          score: 0
+                          note: null
+                      extrinsics:
+                        farming: null
+                        processing: null
+                        trading: null
+                        certifications: null
+                        generalObservation: null
+                      tastes:
+                        -
+                          ref: 01JTAXN0DE000000000000000B
+                          type: defects
+                        -
+                          ref: 01JTAXN0DE0000000000000009
+                          type: main_tastes
+                      createdAt: '2026-10-06T09:12:45.000000Z'
+                      closedAt: null
+                    -
+                      ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+                      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType: specialist
+                      status: closed
+                      extractionMethod: v60
+                      cuppingScore: '84.25'
+                      isDefective: false
+                      descriptive:
+                        fragrance:
+                          score: 11
+                          note: null
+                        aroma:
+                          score: 12
+                          note: null
+                        flavor:
+                          score: 10
+                          note: null
+                        aftertaste:
+                          score: 9
+                          note: null
+                        acidity:
+                          score: 11
+                          note: null
+                        sweetness:
+                          score: 10
+                          note: null
+                        mouthfeel:
+                          score: 8
+                          note: null
+                      affective:
+                        fragrance:
+                          score: 7
+                          note: null
+                        aroma:
+                          score: 8
+                          note: null
+                        flavor:
+                          score: 8
+                          note: null
+                        aftertaste:
+                          score: 7
+                          note: null
+                        acidity:
+                          score: 7
+                          note: null
+                        sweetness:
+                          score: 8
+                          note: null
+                        mouthfeel:
+                          score: 7
+                          note: null
+                        overall:
+                          score: 8
+                          note: 'Limpio y dulce, acidez cítrica.'
+                      extrinsics:
+                        farming: 'Agricultura orgánica'
+                        processing: null
+                        trading: 'Comercio directo'
+                        certifications: null
+                        generalObservation: null
+                      tastes:
+                        -
+                          ref: 01JTAXN0DE0000000000000003
+                          type: flavor
+                        -
+                          ref: 01JTAXN0DE0000000000000008
+                          type: aroma
+                        -
+                          ref: 01JTAXN0DE0000000000000009
+                          type: main_tastes
+                        -
+                          ref: 01JTAXN0DE000000000000000C
+                          type: mouthfeel
+                      createdAt: '2026-10-01T16:40:00.000000Z'
+                      closedAt: '2026-10-02T11:05:30.000000Z'
+                  links:
+                    first: 'http://localhost/api/evaluations?page=1'
+                    last: 'http://localhost/api/evaluations?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://localhost/api/evaluations?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    path: 'http://localhost/api/evaluations'
+                    per_page: 15
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                        offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType: specialist
+                        status: open
+                        extractionMethod: espresso
+                        cuppingScore: null
+                        isDefective: true
+                        descriptive:
+                          fragrance:
+                            score: 10
+                            note: null
+                          aroma:
+                            score: 11
+                            note: null
+                          flavor:
+                            score: 0
+                            note: null
+                          aftertaste:
+                            score: 0
+                            note: null
+                          acidity:
+                            score: 9
+                            note: null
+                          sweetness:
+                            score: 10
+                            note: null
+                          mouthfeel:
+                            score: 8
+                            note: null
+                        affective:
+                          fragrance:
+                            score: 6
+                            note: null
+                          aroma:
+                            score: 7
+                            note: null
+                          flavor:
+                            score: 0
+                            note: null
+                          aftertaste:
+                            score: 0
+                            note: null
+                          acidity:
+                            score: 6
+                            note: null
+                          sweetness:
+                            score: 7
+                            note: null
+                          mouthfeel:
+                            score: 6
+                            note: null
+                          overall:
+                            score: 0
+                            note: null
+                        extrinsics:
+                          farming: null
+                          processing: null
+                          trading: null
+                          certifications: null
+                          generalObservation: null
+                        tastes:
+                          -
+                            ref: 01JTAXN0DE000000000000000B
+                            type: defects
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                        createdAt: '2026-10-06T09:12:45.000000Z'
+                        closedAt: null
+                      -
+                        ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+                        offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType: specialist
+                        status: closed
+                        extractionMethod: v60
+                        cuppingScore: '84.25'
+                        isDefective: false
+                        descriptive:
+                          fragrance:
+                            score: 11
+                            note: null
+                          aroma:
+                            score: 12
+                            note: null
+                          flavor:
+                            score: 10
+                            note: null
+                          aftertaste:
+                            score: 9
+                            note: null
+                          acidity:
+                            score: 11
+                            note: null
+                          sweetness:
+                            score: 10
+                            note: null
+                          mouthfeel:
+                            score: 8
+                            note: null
+                        affective:
+                          fragrance:
+                            score: 7
+                            note: null
+                          aroma:
+                            score: 8
+                            note: null
+                          flavor:
+                            score: 8
+                            note: null
+                          aftertaste:
+                            score: 7
+                            note: null
+                          acidity:
+                            score: 7
+                            note: null
+                          sweetness:
+                            score: 8
+                            note: null
+                          mouthfeel:
+                            score: 7
+                            note: null
+                          overall:
+                            score: 8
+                            note: 'Limpio y dulce, acidez cítrica.'
+                        extrinsics:
+                          farming: 'Agricultura orgánica'
+                          processing: null
+                          trading: 'Comercio directo'
+                          certifications: null
+                          generalObservation: null
+                        tastes:
+                          -
+                            ref: 01JTAXN0DE0000000000000003
+                            type: flavor
+                          -
+                            ref: 01JTAXN0DE0000000000000008
+                            type: aroma
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                          -
+                            ref: 01JTAXN0DE000000000000000C
+                            type: mouthfeel
+                        createdAt: '2026-10-01T16:40:00.000000Z'
+                        closedAt: '2026-10-02T11:05:30.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01M35F5RX4ADGC3CSDXXYB08DB
+                        offeringId:
+                          type: string
+                          example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType:
+                          type: string
+                          example: specialist
+                        status:
+                          type: string
+                          example: open
+                        extractionMethod:
+                          type: string
+                          example: espresso
+                        cuppingScore:
+                          type: string
+                          example: null
+                          nullable: true
+                        isDefective:
+                          type: boolean
+                          example: true
+                        descriptive:
+                          type: object
+                          properties:
+                            fragrance:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 10
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aroma:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 11
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            flavor:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aftertaste:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            acidity:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 9
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            sweetness:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 10
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            mouthfeel:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 8
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                        affective:
+                          type: object
+                          properties:
+                            fragrance:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aroma:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 7
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            flavor:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aftertaste:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            acidity:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            sweetness:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 7
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            mouthfeel:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            overall:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                        extrinsics:
+                          type: object
+                          properties:
+                            farming:
+                              type: string
+                              example: null
+                              nullable: true
+                            processing:
+                              type: string
+                              example: null
+                              nullable: true
+                            trading:
+                              type: string
+                              example: null
+                              nullable: true
+                            certifications:
+                              type: string
+                              example: null
+                              nullable: true
+                            generalObservation:
+                              type: string
+                              example: null
+                              nullable: true
+                        tastes:
+                          type: array
+                          example:
+                            -
+                              ref: 01JTAXN0DE000000000000000B
+                              type: defects
+                            -
+                              ref: 01JTAXN0DE0000000000000009
+                              type: main_tastes
+                          items:
+                            type: object
+                            properties:
+                              ref:
+                                type: string
+                                example: 01JTAXN0DE000000000000000B
+                              type:
+                                type: string
+                                example: defects
+                        createdAt:
+                          type: string
+                          example: '2026-10-06T09:12:45.000000Z'
+                        closedAt:
+                          type: string
+                          example: null
+                          nullable: true
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/evaluations?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/evaluations?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            active: false
+                          -
+                            url: 'http://localhost/api/evaluations?page=1'
+                            label: '1'
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                              nullable: true
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://localhost/api/evaluations'
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Evaluations
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_ulid
+        description: 'The ULID of the user (evaluator).'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
+  /user/evaluations:
+    get:
+      summary: 'List my evaluations'
+      operationId: listMyEvaluations
+      description: "Returns a paginated list of the evaluations created by the authenticated\nspecialist, each including its taste notes (olfactory taxonomy references)\nand the offering it belongs to. Supports the same filtering and sorting as\nthe public list, except the evaluator, which is always the authenticated\nuser.\n\n**Authorization:** requires the `specialist` role and the `profile:read`\nor `profile:write` scope."
+      parameters:
+        -
+          in: query
+          name: coffeeId
+          description: 'Filter by coffee ULID. Must match an existing stored value.'
+          example: 01M35F5JEZMS845TNPAEM1V8PF
+          required: false
+          schema:
+            type: string
+            description: 'Filter by coffee ULID. Must match an existing stored value.'
+            example: 01M35F5JEZMS845TNPAEM1V8PF
+        -
+          in: query
+          name: locationId
+          description: 'Filter by location ULID. Must match an existing stored value.'
+          example: 01M35F5JDFXM13R1CA06FFWTNG
+          required: false
+          schema:
+            type: string
+            description: 'Filter by location ULID. Must match an existing stored value.'
+            example: 01M35F5JDFXM13R1CA06FFWTNG
+        -
+          in: query
+          name: city
+          description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+          example: Barcelona
+          required: false
+          schema:
+            type: string
+            description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+            example: Barcelona
+        -
+          in: query
+          name: process
+          description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+          example: Washed
+          required: false
+          schema:
+            type: string
+            description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+            example: Washed
+        -
+          in: query
+          name: status
+          description: 'Filter by evaluation status. One of: open, closed.'
+          example: closed
+          required: false
+          schema:
+            type: string
+            description: 'Filter by evaluation status. One of: open, closed.'
+            example: closed
+            enum:
+              - open
+              - closed
+        -
+          in: query
+          name: scoreMin
+          description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+          example: 80.0
+          required: false
+          schema:
+            type: number
+            description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+            example: 80.0
+        -
+          in: query
+          name: scoreMax
+          description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+          example: 95.0
+          required: false
+          schema:
+            type: number
+            description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+            example: 95.0
+        -
+          in: query
+          name: orderBy
+          description: 'Sort field. One of: cupping_score, created_at, status.'
+          example: cupping_score
+          required: false
+          schema:
+            type: string
+            description: 'Sort field. One of: cupping_score, created_at, status.'
+            example: cupping_score
+            enum:
+              - cupping_score
+              - created_at
+              - status
+        -
+          in: query
+          name: orderDirection
+          description: 'Sort direction. One of: asc, desc.'
+          example: desc
+          required: false
+          schema:
+            type: string
+            description: 'Sort direction. One of: asc, desc.'
+            example: desc
+            enum:
+              - asc
+              - desc
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType: specialist
+                      status: open
+                      extractionMethod: espresso
+                      cuppingScore: null
+                      isDefective: true
+                      descriptive:
+                        fragrance:
+                          score: 10
+                          note: null
+                        aroma:
+                          score: 11
+                          note: null
+                        flavor:
+                          score: 0
+                          note: null
+                        aftertaste:
+                          score: 0
+                          note: null
+                        acidity:
+                          score: 9
+                          note: null
+                        sweetness:
+                          score: 10
+                          note: null
+                        mouthfeel:
+                          score: 8
+                          note: null
+                      affective:
+                        fragrance:
+                          score: 6
+                          note: null
+                        aroma:
+                          score: 7
+                          note: null
+                        flavor:
+                          score: 0
+                          note: null
+                        aftertaste:
+                          score: 0
+                          note: null
+                        acidity:
+                          score: 6
+                          note: null
+                        sweetness:
+                          score: 7
+                          note: null
+                        mouthfeel:
+                          score: 6
+                          note: null
+                        overall:
+                          score: 0
+                          note: null
+                      extrinsics:
+                        farming: null
+                        processing: null
+                        trading: null
+                        certifications: null
+                        generalObservation: null
+                      tastes:
+                        -
+                          ref: 01JTAXN0DE000000000000000B
+                          type: defects
+                        -
+                          ref: 01JTAXN0DE0000000000000009
+                          type: main_tastes
+                      createdAt: '2026-10-06T09:12:45.000000Z'
+                      closedAt: null
+                    -
+                      ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+                      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType: specialist
+                      status: closed
+                      extractionMethod: v60
+                      cuppingScore: '84.25'
+                      isDefective: false
+                      descriptive:
+                        fragrance:
+                          score: 11
+                          note: null
+                        aroma:
+                          score: 12
+                          note: null
+                        flavor:
+                          score: 10
+                          note: null
+                        aftertaste:
+                          score: 9
+                          note: null
+                        acidity:
+                          score: 11
+                          note: null
+                        sweetness:
+                          score: 10
+                          note: null
+                        mouthfeel:
+                          score: 8
+                          note: null
+                      affective:
+                        fragrance:
+                          score: 7
+                          note: null
+                        aroma:
+                          score: 8
+                          note: null
+                        flavor:
+                          score: 8
+                          note: null
+                        aftertaste:
+                          score: 7
+                          note: null
+                        acidity:
+                          score: 7
+                          note: null
+                        sweetness:
+                          score: 8
+                          note: null
+                        mouthfeel:
+                          score: 7
+                          note: null
+                        overall:
+                          score: 8
+                          note: 'Limpio y dulce, acidez cítrica.'
+                      extrinsics:
+                        farming: 'Agricultura orgánica'
+                        processing: null
+                        trading: 'Comercio directo'
+                        certifications: null
+                        generalObservation: null
+                      tastes:
+                        -
+                          ref: 01JTAXN0DE0000000000000003
+                          type: flavor
+                        -
+                          ref: 01JTAXN0DE0000000000000008
+                          type: aroma
+                        -
+                          ref: 01JTAXN0DE0000000000000009
+                          type: main_tastes
+                        -
+                          ref: 01JTAXN0DE000000000000000C
+                          type: mouthfeel
+                      createdAt: '2026-10-01T16:40:00.000000Z'
+                      closedAt: '2026-10-02T11:05:30.000000Z'
+                  links:
+                    first: 'http://localhost/api/user/evaluations?page=1'
+                    last: 'http://localhost/api/user/evaluations?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://localhost/api/user/evaluations?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    path: 'http://localhost/api/user/evaluations'
+                    per_page: 15
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                        offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType: specialist
+                        status: open
+                        extractionMethod: espresso
+                        cuppingScore: null
+                        isDefective: true
+                        descriptive:
+                          fragrance:
+                            score: 10
+                            note: null
+                          aroma:
+                            score: 11
+                            note: null
+                          flavor:
+                            score: 0
+                            note: null
+                          aftertaste:
+                            score: 0
+                            note: null
+                          acidity:
+                            score: 9
+                            note: null
+                          sweetness:
+                            score: 10
+                            note: null
+                          mouthfeel:
+                            score: 8
+                            note: null
+                        affective:
+                          fragrance:
+                            score: 6
+                            note: null
+                          aroma:
+                            score: 7
+                            note: null
+                          flavor:
+                            score: 0
+                            note: null
+                          aftertaste:
+                            score: 0
+                            note: null
+                          acidity:
+                            score: 6
+                            note: null
+                          sweetness:
+                            score: 7
+                            note: null
+                          mouthfeel:
+                            score: 6
+                            note: null
+                          overall:
+                            score: 0
+                            note: null
+                        extrinsics:
+                          farming: null
+                          processing: null
+                          trading: null
+                          certifications: null
+                          generalObservation: null
+                        tastes:
+                          -
+                            ref: 01JTAXN0DE000000000000000B
+                            type: defects
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                        createdAt: '2026-10-06T09:12:45.000000Z'
+                        closedAt: null
+                      -
+                        ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+                        offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType: specialist
+                        status: closed
+                        extractionMethod: v60
+                        cuppingScore: '84.25'
+                        isDefective: false
+                        descriptive:
+                          fragrance:
+                            score: 11
+                            note: null
+                          aroma:
+                            score: 12
+                            note: null
+                          flavor:
+                            score: 10
+                            note: null
+                          aftertaste:
+                            score: 9
+                            note: null
+                          acidity:
+                            score: 11
+                            note: null
+                          sweetness:
+                            score: 10
+                            note: null
+                          mouthfeel:
+                            score: 8
+                            note: null
+                        affective:
+                          fragrance:
+                            score: 7
+                            note: null
+                          aroma:
+                            score: 8
+                            note: null
+                          flavor:
+                            score: 8
+                            note: null
+                          aftertaste:
+                            score: 7
+                            note: null
+                          acidity:
+                            score: 7
+                            note: null
+                          sweetness:
+                            score: 8
+                            note: null
+                          mouthfeel:
+                            score: 7
+                            note: null
+                          overall:
+                            score: 8
+                            note: 'Limpio y dulce, acidez cítrica.'
+                        extrinsics:
+                          farming: 'Agricultura orgánica'
+                          processing: null
+                          trading: 'Comercio directo'
+                          certifications: null
+                          generalObservation: null
+                        tastes:
+                          -
+                            ref: 01JTAXN0DE0000000000000003
+                            type: flavor
+                          -
+                            ref: 01JTAXN0DE0000000000000008
+                            type: aroma
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                          -
+                            ref: 01JTAXN0DE000000000000000C
+                            type: mouthfeel
+                        createdAt: '2026-10-01T16:40:00.000000Z'
+                        closedAt: '2026-10-02T11:05:30.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01M35F5RX4ADGC3CSDXXYB08DB
+                        offeringId:
+                          type: string
+                          example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        evaluationType:
+                          type: string
+                          example: specialist
+                        status:
+                          type: string
+                          example: open
+                        extractionMethod:
+                          type: string
+                          example: espresso
+                        cuppingScore:
+                          type: string
+                          example: null
+                          nullable: true
+                        isDefective:
+                          type: boolean
+                          example: true
+                        descriptive:
+                          type: object
+                          properties:
+                            fragrance:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 10
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aroma:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 11
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            flavor:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aftertaste:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            acidity:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 9
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            sweetness:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 10
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            mouthfeel:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 8
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                        affective:
+                          type: object
+                          properties:
+                            fragrance:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aroma:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 7
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            flavor:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            aftertaste:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            acidity:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            sweetness:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 7
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            mouthfeel:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 6
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                            overall:
+                              type: object
+                              properties:
+                                score:
+                                  type: integer
+                                  example: 0
+                                note:
+                                  type: string
+                                  example: null
+                                  nullable: true
+                        extrinsics:
+                          type: object
+                          properties:
+                            farming:
+                              type: string
+                              example: null
+                              nullable: true
+                            processing:
+                              type: string
+                              example: null
+                              nullable: true
+                            trading:
+                              type: string
+                              example: null
+                              nullable: true
+                            certifications:
+                              type: string
+                              example: null
+                              nullable: true
+                            generalObservation:
+                              type: string
+                              example: null
+                              nullable: true
+                        tastes:
+                          type: array
+                          example:
+                            -
+                              ref: 01JTAXN0DE000000000000000B
+                              type: defects
+                            -
+                              ref: 01JTAXN0DE0000000000000009
+                              type: main_tastes
+                          items:
+                            type: object
+                            properties:
+                              ref:
+                                type: string
+                                example: 01JTAXN0DE000000000000000B
+                              type:
+                                type: string
+                                example: defects
+                        createdAt:
+                          type: string
+                          example: '2026-10-06T09:12:45.000000Z'
+                        closedAt:
+                          type: string
+                          example: null
+                          nullable: true
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/api/user/evaluations?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/api/user/evaluations?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            active: false
+                          -
+                            url: 'http://localhost/api/user/evaluations?page=1'
+                            label: '1'
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                              nullable: true
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://localhost/api/user/evaluations'
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Evaluations
     post:
       summary: 'Create an evaluation'
       operationId: createAnEvaluation
@@ -2908,7 +3659,1095 @@ paths:
                 - offeringId
                 - descriptive
                 - affective
-  '/evaluations/{evaluation_ulid}/close':
+  '/user/evaluations/{evaluation}':
+    get:
+      summary: 'Get my evaluation'
+      operationId: getMyEvaluation
+      description: "Returns a single evaluation of the authenticated specialist with its taste\nnotes and associated offering. An evaluation that does not exist, or that\nbelongs to another user, returns `404 Not Found`, so the response never\nreveals whether another user's evaluation exists.\n\n**Authorization:** requires the `specialist` role and the `profile:read`\nor `profile:write` scope."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                    offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                    evaluationType: specialist
+                    status: open
+                    extractionMethod: espresso
+                    cuppingScore: null
+                    isDefective: true
+                    descriptive:
+                      fragrance:
+                        score: 10
+                        note: null
+                      aroma:
+                        score: 11
+                        note: null
+                      flavor:
+                        score: 0
+                        note: null
+                      aftertaste:
+                        score: 0
+                        note: null
+                      acidity:
+                        score: 9
+                        note: null
+                      sweetness:
+                        score: 10
+                        note: null
+                      mouthfeel:
+                        score: 8
+                        note: null
+                    affective:
+                      fragrance:
+                        score: 6
+                        note: null
+                      aroma:
+                        score: 7
+                        note: null
+                      flavor:
+                        score: 0
+                        note: null
+                      aftertaste:
+                        score: 0
+                        note: null
+                      acidity:
+                        score: 6
+                        note: null
+                      sweetness:
+                        score: 7
+                        note: null
+                      mouthfeel:
+                        score: 6
+                        note: null
+                      overall:
+                        score: 0
+                        note: null
+                    extrinsics:
+                      farming: null
+                      processing: null
+                      trading: null
+                      certifications: null
+                      generalObservation: null
+                    tastes:
+                      -
+                        ref: 01JTAXN0DE000000000000000B
+                        type: defects
+                      -
+                        ref: 01JTAXN0DE0000000000000009
+                        type: main_tastes
+                    createdAt: '2026-10-06T09:12:45.000000Z'
+                    closedAt: null
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ulid:
+                        type: string
+                        example: 01M35F5RX4ADGC3CSDXXYB08DB
+                      offeringId:
+                        type: string
+                        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType:
+                        type: string
+                        example: specialist
+                      status:
+                        type: string
+                        example: open
+                      extractionMethod:
+                        type: string
+                        example: espresso
+                      cuppingScore:
+                        type: string
+                        example: null
+                        nullable: true
+                      isDefective:
+                        type: boolean
+                        example: true
+                      descriptive:
+                        type: object
+                        properties:
+                          fragrance:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 10
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aroma:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 11
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          flavor:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aftertaste:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          acidity:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 9
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          sweetness:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 10
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          mouthfeel:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 8
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                      affective:
+                        type: object
+                        properties:
+                          fragrance:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aroma:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 7
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          flavor:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aftertaste:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          acidity:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          sweetness:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 7
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          mouthfeel:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          overall:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                      extrinsics:
+                        type: object
+                        properties:
+                          farming:
+                            type: string
+                            example: null
+                            nullable: true
+                          processing:
+                            type: string
+                            example: null
+                            nullable: true
+                          trading:
+                            type: string
+                            example: null
+                            nullable: true
+                          certifications:
+                            type: string
+                            example: null
+                            nullable: true
+                          generalObservation:
+                            type: string
+                            example: null
+                            nullable: true
+                      tastes:
+                        type: array
+                        example:
+                          -
+                            ref: 01JTAXN0DE000000000000000B
+                            type: defects
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                        items:
+                          type: object
+                          properties:
+                            ref:
+                              type: string
+                              example: 01JTAXN0DE000000000000000B
+                            type:
+                              type: string
+                              example: defects
+                      createdAt:
+                        type: string
+                        example: '2026-10-06T09:12:45.000000Z'
+                      closedAt:
+                        type: string
+                        example: null
+                        nullable: true
+        404:
+          description: 'Not found or not the owner'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Evaluation].'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Evaluation].'
+      tags:
+        - Evaluations
+    parameters:
+      -
+        in: path
+        name: evaluation
+        description: 'The evaluation.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: evaluation_ulid
+        description: 'The ULID of the evaluation.'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
+  '/user/evaluations/{evaluation_ulid}':
+    put:
+      summary: 'Update an evaluation'
+      operationId: updateAnEvaluation
+      description: "Updates an existing evaluation. Returns the updated evaluation with a\nconfirmation message. The body structure matches the create endpoint,\nexcept `offeringId` is prohibited — an evaluation cannot be reassigned to\nanother offering.\n\nA **closed** evaluation cannot be updated; attempting to do so returns\n`409 Conflict`.\n\n**Authorization:** requires the `specialist` role and permission to update\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    ulid: 01M35F5RX4ADGC3CSDXXYB08DB
+                    offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                    evaluationType: specialist
+                    status: open
+                    extractionMethod: espresso
+                    cuppingScore: null
+                    isDefective: true
+                    descriptive:
+                      fragrance:
+                        score: 10
+                        note: null
+                      aroma:
+                        score: 11
+                        note: null
+                      flavor:
+                        score: 0
+                        note: null
+                      aftertaste:
+                        score: 0
+                        note: null
+                      acidity:
+                        score: 9
+                        note: null
+                      sweetness:
+                        score: 10
+                        note: null
+                      mouthfeel:
+                        score: 8
+                        note: null
+                    affective:
+                      fragrance:
+                        score: 6
+                        note: null
+                      aroma:
+                        score: 7
+                        note: null
+                      flavor:
+                        score: 0
+                        note: null
+                      aftertaste:
+                        score: 0
+                        note: null
+                      acidity:
+                        score: 6
+                        note: null
+                      sweetness:
+                        score: 7
+                        note: null
+                      mouthfeel:
+                        score: 6
+                        note: null
+                      overall:
+                        score: 0
+                        note: null
+                    extrinsics:
+                      farming: null
+                      processing: null
+                      trading: null
+                      certifications: null
+                      generalObservation: null
+                    tastes:
+                      -
+                        ref: 01JTAXN0DE000000000000000B
+                        type: defects
+                      -
+                        ref: 01JTAXN0DE0000000000000009
+                        type: main_tastes
+                    createdAt: '2026-10-06T09:12:45.000000Z'
+                    closedAt: null
+                  message: 'Evaluation updated.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ulid:
+                        type: string
+                        example: 01M35F5RX4ADGC3CSDXXYB08DB
+                      offeringId:
+                        type: string
+                        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                      evaluationType:
+                        type: string
+                        example: specialist
+                      status:
+                        type: string
+                        example: open
+                      extractionMethod:
+                        type: string
+                        example: espresso
+                      cuppingScore:
+                        type: string
+                        example: null
+                        nullable: true
+                      isDefective:
+                        type: boolean
+                        example: true
+                      descriptive:
+                        type: object
+                        properties:
+                          fragrance:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 10
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aroma:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 11
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          flavor:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aftertaste:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          acidity:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 9
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          sweetness:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 10
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          mouthfeel:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 8
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                      affective:
+                        type: object
+                        properties:
+                          fragrance:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aroma:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 7
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          flavor:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          aftertaste:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          acidity:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          sweetness:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 7
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          mouthfeel:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 6
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                          overall:
+                            type: object
+                            properties:
+                              score:
+                                type: integer
+                                example: 0
+                              note:
+                                type: string
+                                example: null
+                                nullable: true
+                      extrinsics:
+                        type: object
+                        properties:
+                          farming:
+                            type: string
+                            example: null
+                            nullable: true
+                          processing:
+                            type: string
+                            example: null
+                            nullable: true
+                          trading:
+                            type: string
+                            example: null
+                            nullable: true
+                          certifications:
+                            type: string
+                            example: null
+                            nullable: true
+                          generalObservation:
+                            type: string
+                            example: null
+                            nullable: true
+                      tastes:
+                        type: array
+                        example:
+                          -
+                            ref: 01JTAXN0DE000000000000000B
+                            type: defects
+                          -
+                            ref: 01JTAXN0DE0000000000000009
+                            type: main_tastes
+                        items:
+                          type: object
+                          properties:
+                            ref:
+                              type: string
+                              example: 01JTAXN0DE000000000000000B
+                            type:
+                              type: string
+                              example: defects
+                      createdAt:
+                        type: string
+                        example: '2026-10-06T09:12:45.000000Z'
+                      closedAt:
+                        type: string
+                        example: null
+                        nullable: true
+                  message:
+                    type: string
+                    example: 'Evaluation updated.'
+        403:
+          description: 'Not the owner'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'One or more evaluations do not belong to the user.'
+                properties:
+                  message:
+                    type: string
+                    example: 'One or more evaluations do not belong to the user.'
+        409:
+          description: 'Evaluation already closed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Evaluation cannot be updated.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Evaluation cannot be updated.'
+      tags:
+        - Evaluations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                offeringId:
+                  type: string
+                  description: 'Prohibited on update — an evaluation cannot be reassigned to another offering. Sending this field returns 422.'
+                  example: null
+                status:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: true
+                extractionMethod:
+                  type: string
+                  description: 'Brewing/extraction method used (max 60 chars). Must not be greater than 60 characters.'
+                  example: v60
+                  nullable: true
+                descriptive:
+                  type: object
+                  description: 'Objective assessment. Same structure as the create endpoint: roastLevel plus per-axis objects with score (0–15), optional note, and cata arrays where applicable, plus mainTastes.'
+                  example: null
+                  properties:
+                    roastLevel:
+                      type: string
+                      description: 'Roast level. One of: light, medium_light, medium, medium_dark, dark.'
+                      example: medium
+                      enum:
+                        - light
+                        - medium_light
+                        - medium
+                        - medium_dark
+                        - dark
+                    fragrance:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                        cata:
+                          type: array
+                          description: 'Must match an existing stored value.'
+                          example:
+                            - architecto
+                          items:
+                            type: string
+                      nullable: true
+                    aroma:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                        cata:
+                          type: array
+                          description: 'Must match an existing stored value.'
+                          example:
+                            - architecto
+                          items:
+                            type: string
+                      nullable: true
+                    flavor:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                        cata:
+                          type: array
+                          description: 'Must match an existing stored value.'
+                          example:
+                            - architecto
+                          items:
+                            type: string
+                      nullable: true
+                    acidity:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                      nullable: true
+                    sweetness:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                      nullable: true
+                    mouthfeel:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                        cata:
+                          type: array
+                          description: 'Must match an existing stored value.'
+                          example:
+                            - architecto
+                          items:
+                            type: string
+                      nullable: true
+                    aftertaste:
+                      type: object
+                      description: ''
+                      example: null
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 0 and 15.'
+                          example: 1
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                        cata:
+                          type: array
+                          description: 'Must match an existing stored value.'
+                          example:
+                            - architecto
+                          items:
+                            type: string
+                      nullable: true
+                    mainTastes:
+                      type: array
+                      description: 'Must match an existing stored value.'
+                      example:
+                        - architecto
+                      items:
+                        type: string
+                  required:
+                    - roastLevel
+                affective:
+                  type: object
+                  description: 'Preference assessment. Same structure as the create endpoint: per-axis objects with score (1–9) and optional note, plus defects.'
+                  example: null
+                  properties:
+                    overall:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    fragrance:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    aroma:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    flavor:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    aftertaste:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    acidity:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    sweetness:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    mouthfeel:
+                      type: object
+                      description: ''
+                      example: []
+                      properties:
+                        score:
+                          type: integer
+                          description: 'Must be between 1 and 9.'
+                          example: 2
+                          nullable: true
+                        note:
+                          type: string
+                          description: ''
+                          example: architecto
+                          nullable: true
+                    defects:
+                      type: array
+                      description: 'Must match an existing stored value.'
+                      example:
+                        - architecto
+                      items:
+                        type: string
+                extrinsics:
+                  type: object
+                  description: 'Optional contextual metadata: farming, processing, trading, certifications, generalObservation.'
+                  example: null
+                  properties:
+                    farming:
+                      type: string
+                      description: ''
+                      example: architecto
+                      nullable: true
+                    processing:
+                      type: string
+                      description: ''
+                      example: architecto
+                      nullable: true
+                    trading:
+                      type: string
+                      description: ''
+                      example: architecto
+                      nullable: true
+                    certifications:
+                      type: string
+                      description: ''
+                      example: architecto
+                      nullable: true
+                    generalObservation:
+                      type: string
+                      description: ''
+                      example: architecto
+                      nullable: true
+                  nullable: true
+              required:
+                - descriptive
+                - affective
+    delete:
+      summary: 'Delete an evaluation'
+      operationId: deleteAnEvaluation
+      description: "Permanently deletes an evaluation. This action cannot be undone.\n\n**Authorization:** requires the `specialist` role and permission to delete\nthe evaluation (enforced by the evaluation policy). A specialist who does\nnot own the evaluation receives `403 Forbidden`."
+      parameters: []
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Evaluation(s) deleted.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Evaluation(s) deleted.'
+        403:
+          description: 'Not the owner'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'One or more evaluations do not belong to the user.'
+                properties:
+                  message:
+                    type: string
+                    example: 'One or more evaluations do not belong to the user.'
+      tags:
+        - Evaluations
+    parameters:
+      -
+        in: path
+        name: evaluation_ulid
+        description: 'The ULID of the evaluation.'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
+  '/user/evaluations/{evaluation_ulid}/close':
     patch:
       summary: 'Close an evaluation'
       operationId: closeAnEvaluation

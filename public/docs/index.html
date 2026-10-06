@@ -100,17 +100,26 @@
                                                                                 <li class="tocify-item level-2" data-unique="evaluations-GETevaluations">
                                 <a href="#evaluations-GETevaluations">List evaluations</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="evaluations-POSTevaluations">
-                                <a href="#evaluations-POSTevaluations">Create an evaluation</a>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-GETusers--user_ulid--evaluations">
+                                <a href="#evaluations-GETusers--user_ulid--evaluations">List the evaluations of a user</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="evaluations-PUTevaluations--evaluation_ulid-">
-                                <a href="#evaluations-PUTevaluations--evaluation_ulid-">Update an evaluation</a>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-GETuser-evaluations">
+                                <a href="#evaluations-GETuser-evaluations">List my evaluations</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="evaluations-PATCHevaluations--evaluation_ulid--close">
-                                <a href="#evaluations-PATCHevaluations--evaluation_ulid--close">Close an evaluation</a>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-GETuser-evaluations--evaluation-">
+                                <a href="#evaluations-GETuser-evaluations--evaluation-">Get my evaluation</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="evaluations-DELETEevaluations--evaluation_ulid-">
-                                <a href="#evaluations-DELETEevaluations--evaluation_ulid-">Delete an evaluation</a>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-POSTuser-evaluations">
+                                <a href="#evaluations-POSTuser-evaluations">Create an evaluation</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-PUTuser-evaluations--evaluation_ulid-">
+                                <a href="#evaluations-PUTuser-evaluations--evaluation_ulid-">Update an evaluation</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-PATCHuser-evaluations--evaluation_ulid--close">
+                                <a href="#evaluations-PATCHuser-evaluations--evaluation_ulid--close">Close an evaluation</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="evaluations-DELETEuser-evaluations--evaluation_ulid-">
+                                <a href="#evaluations-DELETEuser-evaluations--evaluation_ulid-">Delete an evaluation</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -1519,7 +1528,1330 @@ Must be one of:
             </div>
                 </form>
 
-                    <h2 id="evaluations-POSTevaluations">Create an evaluation</h2>
+                    <h2 id="evaluations-GETusers--user_ulid--evaluations">List the evaluations of a user</h2>
+
+<p>
+</p>
+
+<p>Returns a paginated list of the evaluations made by the given user
+(specialist), each including its taste notes and the offering it belongs
+to. Supports the same filtering and sorting as the public list, except the
+evaluator, which is the user in the path. An unknown user ULID returns
+<code>404 Not Found</code>.</p>
+
+<span id="example-requests-GETusers--user_ulid--evaluations">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations"
+);
+
+const params = {
+    "coffeeId": "01M35F5JEZMS845TNPAEM1V8PF",
+    "locationId": "01M35F5JDFXM13R1CA06FFWTNG",
+    "city": "Barcelona",
+    "process": "Washed",
+    "status": "closed",
+    "scoreMin": "80",
+    "scoreMax": "95",
+    "orderBy": "cupping_score",
+    "orderDirection": "desc",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'coffeeId' =&gt; '01M35F5JEZMS845TNPAEM1V8PF',
+            'locationId' =&gt; '01M35F5JDFXM13R1CA06FFWTNG',
+            'city' =&gt; 'Barcelona',
+            'process' =&gt; 'Washed',
+            'status' =&gt; 'closed',
+            'scoreMin' =&gt; '80',
+            'scoreMax' =&gt; '95',
+            'orderBy' =&gt; 'cupping_score',
+            'orderDirection' =&gt; 'desc',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETusers--user_ulid--evaluations">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;open&quot;,
+            &quot;extractionMethod&quot;: &quot;espresso&quot;,
+            &quot;cuppingScore&quot;: null,
+            &quot;isDefective&quot;: true,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: null,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: null,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                    &quot;type&quot;: &quot;defects&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                }
+            ],
+            &quot;createdAt&quot;: &quot;2026-10-06T09:12:45.000000Z&quot;,
+            &quot;closedAt&quot;: null
+        },
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DA&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;closed&quot;,
+            &quot;extractionMethod&quot;: &quot;v60&quot;,
+            &quot;cuppingScore&quot;: &quot;84.25&quot;,
+            &quot;isDefective&quot;: false,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 12,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: &quot;Limpio y dulce, acidez c&iacute;trica.&quot;
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: &quot;Agricultura org&aacute;nica&quot;,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: &quot;Comercio directo&quot;,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000C&quot;,
+                    &quot;type&quot;: &quot;mouthfeel&quot;
+                }
+            ],
+            &quot;createdAt&quot;: &quot;2026-10-01T16:40:00.000000Z&quot;,
+            &quot;closedAt&quot;: &quot;2026-10-02T11:05:30.000000Z&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost/api/evaluations?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;path&quot;: &quot;http://localhost/api/evaluations&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 2,
+        &quot;total&quot;: 2
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETusers--user_ulid--evaluations" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETusers--user_ulid--evaluations"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETusers--user_ulid--evaluations"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETusers--user_ulid--evaluations" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETusers--user_ulid--evaluations">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETusers--user_ulid--evaluations" data-method="GET"
+      data-path="users/{user_ulid}/evaluations"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETusers--user_ulid--evaluations', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETusers--user_ulid--evaluations"
+                    onclick="tryItOut('GETusers--user_ulid--evaluations');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETusers--user_ulid--evaluations"
+                    onclick="cancelTryOut('GETusers--user_ulid--evaluations');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETusers--user_ulid--evaluations"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>users/{user_ulid}/evaluations</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the user (evaluator). Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>coffeeId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="coffeeId"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="01M35F5JEZMS845TNPAEM1V8PF"
+               data-component="query">
+    <br>
+<p>Filter by coffee ULID. Must match an existing stored value. Example: <code>01M35F5JEZMS845TNPAEM1V8PF</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>locationId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="locationId"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="01M35F5JDFXM13R1CA06FFWTNG"
+               data-component="query">
+    <br>
+<p>Filter by location ULID. Must match an existing stored value. Example: <code>01M35F5JDFXM13R1CA06FFWTNG</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="city"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="Barcelona"
+               data-component="query">
+    <br>
+<p>Filter by the city of the evaluation location. Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>process</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="process"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="Washed"
+               data-component="query">
+    <br>
+<p>Filter by coffee processing method. Must not be greater than 90 characters. Example: <code>Washed</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="closed"
+               data-component="query">
+    <br>
+<p>Filter by evaluation status. One of: open, closed. Example: <code>closed</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>open</code></li> <li><code>closed</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>scoreMin</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="scoreMin"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="80"
+               data-component="query">
+    <br>
+<p>Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100. Example: <code>80</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>scoreMax</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="scoreMax"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="95"
+               data-component="query">
+    <br>
+<p>Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100. Example: <code>95</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderBy</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderBy"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="cupping_score"
+               data-component="query">
+    <br>
+<p>Sort field. One of: cupping_score, created_at, status. Example: <code>cupping_score</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>cupping_score</code></li> <li><code>created_at</code></li> <li><code>status</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderDirection</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderDirection"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="desc"
+               data-component="query">
+    <br>
+<p>Sort direction. One of: asc, desc. Example: <code>desc</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
+            </div>
+                </form>
+
+                    <h2 id="evaluations-GETuser-evaluations">List my evaluations</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a paginated list of the evaluations created by the authenticated
+specialist, each including its taste notes (olfactory taxonomy references)
+and the offering it belongs to. Supports the same filtering and sorting as
+the public list, except the evaluator, which is always the authenticated
+user.</p>
+<p><strong>Authorization:</strong> requires the <code>specialist</code> role and the <code>profile:read</code>
+or <code>profile:write</code> scope.</p>
+
+<span id="example-requests-GETuser-evaluations">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/user/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/user/evaluations"
+);
+
+const params = {
+    "coffeeId": "01M35F5JEZMS845TNPAEM1V8PF",
+    "locationId": "01M35F5JDFXM13R1CA06FFWTNG",
+    "city": "Barcelona",
+    "process": "Washed",
+    "status": "closed",
+    "scoreMin": "80",
+    "scoreMax": "95",
+    "orderBy": "cupping_score",
+    "orderDirection": "desc",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/user/evaluations';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'coffeeId' =&gt; '01M35F5JEZMS845TNPAEM1V8PF',
+            'locationId' =&gt; '01M35F5JDFXM13R1CA06FFWTNG',
+            'city' =&gt; 'Barcelona',
+            'process' =&gt; 'Washed',
+            'status' =&gt; 'closed',
+            'scoreMin' =&gt; '80',
+            'scoreMax' =&gt; '95',
+            'orderBy' =&gt; 'cupping_score',
+            'orderDirection' =&gt; 'desc',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETuser-evaluations">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;open&quot;,
+            &quot;extractionMethod&quot;: &quot;espresso&quot;,
+            &quot;cuppingScore&quot;: null,
+            &quot;isDefective&quot;: true,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 6,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 0,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: null,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: null,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                    &quot;type&quot;: &quot;defects&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                }
+            ],
+            &quot;createdAt&quot;: &quot;2026-10-06T09:12:45.000000Z&quot;,
+            &quot;closedAt&quot;: null
+        },
+        {
+            &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DA&quot;,
+            &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+            &quot;evaluationType&quot;: &quot;specialist&quot;,
+            &quot;status&quot;: &quot;closed&quot;,
+            &quot;extractionMethod&quot;: &quot;v60&quot;,
+            &quot;cuppingScore&quot;: &quot;84.25&quot;,
+            &quot;isDefective&quot;: false,
+            &quot;descriptive&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 12,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 9,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 11,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 10,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                }
+            },
+            &quot;affective&quot;: {
+                &quot;fragrance&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;aroma&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;flavor&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;aftertaste&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;acidity&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;sweetness&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: null
+                },
+                &quot;mouthfeel&quot;: {
+                    &quot;score&quot;: 7,
+                    &quot;note&quot;: null
+                },
+                &quot;overall&quot;: {
+                    &quot;score&quot;: 8,
+                    &quot;note&quot;: &quot;Limpio y dulce, acidez c&iacute;trica.&quot;
+                }
+            },
+            &quot;extrinsics&quot;: {
+                &quot;farming&quot;: &quot;Agricultura org&aacute;nica&quot;,
+                &quot;processing&quot;: null,
+                &quot;trading&quot;: &quot;Comercio directo&quot;,
+                &quot;certifications&quot;: null,
+                &quot;generalObservation&quot;: null
+            },
+            &quot;tastes&quot;: [
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000003&quot;,
+                    &quot;type&quot;: &quot;flavor&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000008&quot;,
+                    &quot;type&quot;: &quot;aroma&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                    &quot;type&quot;: &quot;main_tastes&quot;
+                },
+                {
+                    &quot;ref&quot;: &quot;01JTAXN0DE000000000000000C&quot;,
+                    &quot;type&quot;: &quot;mouthfeel&quot;
+                }
+            ],
+            &quot;createdAt&quot;: &quot;2026-10-01T16:40:00.000000Z&quot;,
+            &quot;closedAt&quot;: &quot;2026-10-02T11:05:30.000000Z&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/api/user/evaluations?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/api/user/evaluations?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost/api/user/evaluations?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;path&quot;: &quot;http://localhost/api/user/evaluations&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 2,
+        &quot;total&quot;: 2
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETuser-evaluations" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETuser-evaluations"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETuser-evaluations"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETuser-evaluations" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETuser-evaluations">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETuser-evaluations" data-method="GET"
+      data-path="user/evaluations"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETuser-evaluations', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETuser-evaluations"
+                    onclick="tryItOut('GETuser-evaluations');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETuser-evaluations"
+                    onclick="cancelTryOut('GETuser-evaluations');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETuser-evaluations"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>user/evaluations</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETuser-evaluations"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETuser-evaluations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETuser-evaluations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>coffeeId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="coffeeId"                data-endpoint="GETuser-evaluations"
+               value="01M35F5JEZMS845TNPAEM1V8PF"
+               data-component="query">
+    <br>
+<p>Filter by coffee ULID. Must match an existing stored value. Example: <code>01M35F5JEZMS845TNPAEM1V8PF</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>locationId</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="locationId"                data-endpoint="GETuser-evaluations"
+               value="01M35F5JDFXM13R1CA06FFWTNG"
+               data-component="query">
+    <br>
+<p>Filter by location ULID. Must match an existing stored value. Example: <code>01M35F5JDFXM13R1CA06FFWTNG</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="city"                data-endpoint="GETuser-evaluations"
+               value="Barcelona"
+               data-component="query">
+    <br>
+<p>Filter by the city of the evaluation location. Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>process</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="process"                data-endpoint="GETuser-evaluations"
+               value="Washed"
+               data-component="query">
+    <br>
+<p>Filter by coffee processing method. Must not be greater than 90 characters. Example: <code>Washed</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETuser-evaluations"
+               value="closed"
+               data-component="query">
+    <br>
+<p>Filter by evaluation status. One of: open, closed. Example: <code>closed</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>open</code></li> <li><code>closed</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>scoreMin</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="scoreMin"                data-endpoint="GETuser-evaluations"
+               value="80"
+               data-component="query">
+    <br>
+<p>Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100. Example: <code>80</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>scoreMax</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="scoreMax"                data-endpoint="GETuser-evaluations"
+               value="95"
+               data-component="query">
+    <br>
+<p>Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100. Example: <code>95</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderBy</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderBy"                data-endpoint="GETuser-evaluations"
+               value="cupping_score"
+               data-component="query">
+    <br>
+<p>Sort field. One of: cupping_score, created_at, status. Example: <code>cupping_score</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>cupping_score</code></li> <li><code>created_at</code></li> <li><code>status</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderDirection</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderDirection"                data-endpoint="GETuser-evaluations"
+               value="desc"
+               data-component="query">
+    <br>
+<p>Sort direction. One of: asc, desc. Example: <code>desc</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
+            </div>
+                </form>
+
+                    <h2 id="evaluations-GETuser-evaluations--evaluation-">Get my evaluation</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a single evaluation of the authenticated specialist with its taste
+notes and associated offering. An evaluation that does not exist, or that
+belongs to another user, returns <code>404 Not Found</code>, so the response never
+reveals whether another user's evaluation exists.</p>
+<p><strong>Authorization:</strong> requires the <code>specialist</code> role and the <code>profile:read</code>
+or <code>profile:write</code> scope.</p>
+
+<span id="example-requests-GETuser-evaluations--evaluation-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/user/evaluations/architecto" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/user/evaluations/architecto"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/user/evaluations/architecto';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETuser-evaluations--evaluation-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DB&quot;,
+        &quot;offeringId&quot;: &quot;01K6A3M8Q2V7XH4T9B5N1RCW0D&quot;,
+        &quot;evaluationType&quot;: &quot;specialist&quot;,
+        &quot;status&quot;: &quot;open&quot;,
+        &quot;extractionMethod&quot;: &quot;espresso&quot;,
+        &quot;cuppingScore&quot;: null,
+        &quot;isDefective&quot;: true,
+        &quot;descriptive&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 11,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 9,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 10,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 8,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;affective&quot;: {
+            &quot;fragrance&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;aroma&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;flavor&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;aftertaste&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            },
+            &quot;acidity&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;sweetness&quot;: {
+                &quot;score&quot;: 7,
+                &quot;note&quot;: null
+            },
+            &quot;mouthfeel&quot;: {
+                &quot;score&quot;: 6,
+                &quot;note&quot;: null
+            },
+            &quot;overall&quot;: {
+                &quot;score&quot;: 0,
+                &quot;note&quot;: null
+            }
+        },
+        &quot;extrinsics&quot;: {
+            &quot;farming&quot;: null,
+            &quot;processing&quot;: null,
+            &quot;trading&quot;: null,
+            &quot;certifications&quot;: null,
+            &quot;generalObservation&quot;: null
+        },
+        &quot;tastes&quot;: [
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE000000000000000B&quot;,
+                &quot;type&quot;: &quot;defects&quot;
+            },
+            {
+                &quot;ref&quot;: &quot;01JTAXN0DE0000000000000009&quot;,
+                &quot;type&quot;: &quot;main_tastes&quot;
+            }
+        ],
+        &quot;createdAt&quot;: &quot;2026-10-06T09:12:45.000000Z&quot;,
+        &quot;closedAt&quot;: null
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, Not found or not the owner):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [App\\Models\\Evaluation].&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETuser-evaluations--evaluation-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETuser-evaluations--evaluation-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETuser-evaluations--evaluation-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETuser-evaluations--evaluation-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETuser-evaluations--evaluation-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETuser-evaluations--evaluation-" data-method="GET"
+      data-path="user/evaluations/{evaluation}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETuser-evaluations--evaluation-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETuser-evaluations--evaluation-"
+                    onclick="tryItOut('GETuser-evaluations--evaluation-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETuser-evaluations--evaluation-"
+                    onclick="cancelTryOut('GETuser-evaluations--evaluation-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETuser-evaluations--evaluation-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>user/evaluations/{evaluation}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETuser-evaluations--evaluation-"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETuser-evaluations--evaluation-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETuser-evaluations--evaluation-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>evaluation</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
+               value="architecto"
+               data-component="url">
+    <br>
+<p>The evaluation. Example: <code>architecto</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="evaluation_ulid"                data-endpoint="GETuser-evaluations--evaluation-"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the evaluation. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="evaluations-POSTuser-evaluations">Create an evaluation</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -1534,13 +2866,13 @@ and <code>extrinsics</code> (contextual metadata). See the body parameters and e
 below for the full nested structure.</p>
 <p><strong>Authorization:</strong> requires the <code>specialist</code> role.</p>
 
-<span id="example-requests-POSTevaluations">
+<span id="example-requests-POSTuser-evaluations">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/evaluations" \
+    "http://localhost:8000/user/evaluations" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1626,7 +2958,7 @@ below for the full nested structure.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations"
+    "http://localhost:8000/user/evaluations"
 );
 
 const headers = {
@@ -1722,7 +3054,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations';
+$url = 'http://localhost:8000/user/evaluations';
 $response = $client-&gt;post(
     $url,
     [
@@ -1780,7 +3112,7 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-POSTevaluations">
+<span id="example-responses-POSTuser-evaluations">
             <blockquote>
             <p>Example response (201):</p>
         </blockquote>
@@ -1883,43 +3215,43 @@ print_r(json_decode((string) $body));</code></pre></div>
 }</code>
  </pre>
     </span>
-<span id="execution-results-POSTevaluations" hidden>
+<span id="execution-results-POSTuser-evaluations" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-POSTevaluations"></span>:
+                id="execution-response-status-POSTuser-evaluations"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-POSTevaluations"
+    <pre class="json"><code id="execution-response-content-POSTuser-evaluations"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-POSTevaluations" hidden>
+<span id="execution-error-POSTuser-evaluations" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTevaluations">
+    <pre><code id="execution-error-message-POSTuser-evaluations">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-POSTevaluations" data-method="POST"
-      data-path="evaluations"
+<form id="form-POSTuser-evaluations" data-method="POST"
+      data-path="user/evaluations"
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('POSTevaluations', this);">
+      onsubmit="event.preventDefault(); executeTryOut('POSTuser-evaluations', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-POSTevaluations"
-                    onclick="tryItOut('POSTevaluations');">Try it out ⚡
+                    id="btn-tryout-POSTuser-evaluations"
+                    onclick="tryItOut('POSTuser-evaluations');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-POSTevaluations"
-                    onclick="cancelTryOut('POSTevaluations');" hidden>Cancel 🛑
+                    id="btn-canceltryout-POSTuser-evaluations"
+                    onclick="cancelTryOut('POSTuser-evaluations');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-POSTevaluations"
+                    id="btn-executetryout-POSTuser-evaluations"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -1927,7 +3259,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-black">POST</small>
-            <b><code>evaluations</code></b>
+            <b><code>user/evaluations</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -1936,7 +3268,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="POSTevaluations"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTuser-evaluations"
                value="Bearer {ACCESS_TOKEN}"
                data-component="header">
     <br>
@@ -1948,7 +3280,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="POSTevaluations"
+                              name="Content-Type"                data-endpoint="POSTuser-evaluations"
                value="application/json"
                data-component="header">
     <br>
@@ -1960,7 +3292,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="POSTevaluations"
+                              name="Accept"                data-endpoint="POSTuser-evaluations"
                value="application/json"
                data-component="header">
     <br>
@@ -1973,7 +3305,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="offeringId"                data-endpoint="POSTevaluations"
+                              name="offeringId"                data-endpoint="POSTuser-evaluations"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="body">
     <br>
@@ -1985,7 +3317,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="status"                data-endpoint="POSTevaluations"
+                              name="status"                data-endpoint="POSTuser-evaluations"
                value="architecto"
                data-component="body">
     <br>
@@ -1997,7 +3329,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extractionMethod"                data-endpoint="POSTevaluations"
+                              name="extractionMethod"                data-endpoint="POSTuser-evaluations"
                value="v60"
                data-component="body">
     <br>
@@ -2019,7 +3351,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.roastLevel"                data-endpoint="POSTevaluations"
+                              name="descriptive.roastLevel"                data-endpoint="POSTuser-evaluations"
                value="medium"
                data-component="body">
     <br>
@@ -2043,7 +3375,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.fragrance.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.fragrance.score"                data-endpoint="POSTuser-evaluations"
                value="11"
                data-component="body">
     <br>
@@ -2055,7 +3387,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.fragrance.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.fragrance.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2067,10 +3399,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.fragrance.cata[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.fragrance.cata[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.fragrance.cata[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.fragrance.cata[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2093,7 +3425,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.aroma.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.aroma.score"                data-endpoint="POSTuser-evaluations"
                value="5"
                data-component="body">
     <br>
@@ -2105,7 +3437,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aroma.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.aroma.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2117,10 +3449,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aroma.cata[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.aroma.cata[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.aroma.cata[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.aroma.cata[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2143,7 +3475,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.flavor.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.flavor.score"                data-endpoint="POSTuser-evaluations"
                value="12"
                data-component="body">
     <br>
@@ -2155,7 +3487,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.flavor.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.flavor.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2167,10 +3499,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.flavor.cata[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.flavor.cata[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.flavor.cata[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.flavor.cata[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2193,7 +3525,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.acidity.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.acidity.score"                data-endpoint="POSTuser-evaluations"
                value="12"
                data-component="body">
     <br>
@@ -2205,7 +3537,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.acidity.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.acidity.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2229,7 +3561,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.sweetness.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.sweetness.score"                data-endpoint="POSTuser-evaluations"
                value="6"
                data-component="body">
     <br>
@@ -2241,7 +3573,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.sweetness.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.sweetness.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2265,7 +3597,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.mouthfeel.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.mouthfeel.score"                data-endpoint="POSTuser-evaluations"
                value="11"
                data-component="body">
     <br>
@@ -2277,7 +3609,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mouthfeel.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.mouthfeel.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2289,10 +3621,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mouthfeel.cata[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.mouthfeel.cata[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.mouthfeel.cata[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.mouthfeel.cata[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2315,7 +3647,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.aftertaste.score"                data-endpoint="POSTevaluations"
+               step="any"               name="descriptive.aftertaste.score"                data-endpoint="POSTuser-evaluations"
                value="5"
                data-component="body">
     <br>
@@ -2327,7 +3659,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aftertaste.note"                data-endpoint="POSTevaluations"
+                              name="descriptive.aftertaste.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2339,10 +3671,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aftertaste.cata[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.aftertaste.cata[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.aftertaste.cata[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.aftertaste.cata[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2355,10 +3687,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mainTastes[0]"                data-endpoint="POSTevaluations"
+                              name="descriptive.mainTastes[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.mainTastes[1]"                data-endpoint="POSTevaluations"
+               name="descriptive.mainTastes[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2391,7 +3723,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.overall.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.overall.score"                data-endpoint="POSTuser-evaluations"
                value="8"
                data-component="body">
     <br>
@@ -2403,7 +3735,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.overall.note"                data-endpoint="POSTevaluations"
+                              name="affective.overall.note"                data-endpoint="POSTuser-evaluations"
                value="Balanced, clean finish."
                data-component="body">
     <br>
@@ -2427,7 +3759,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.fragrance.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.fragrance.score"                data-endpoint="POSTuser-evaluations"
                value="7"
                data-component="body">
     <br>
@@ -2439,7 +3771,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.fragrance.note"                data-endpoint="POSTevaluations"
+                              name="affective.fragrance.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2463,7 +3795,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.aroma.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.aroma.score"                data-endpoint="POSTuser-evaluations"
                value="7"
                data-component="body">
     <br>
@@ -2475,7 +3807,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.aroma.note"                data-endpoint="POSTevaluations"
+                              name="affective.aroma.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2499,7 +3831,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.flavor.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.flavor.score"                data-endpoint="POSTuser-evaluations"
                value="9"
                data-component="body">
     <br>
@@ -2511,7 +3843,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.flavor.note"                data-endpoint="POSTevaluations"
+                              name="affective.flavor.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2535,7 +3867,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.aftertaste.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.aftertaste.score"                data-endpoint="POSTuser-evaluations"
                value="9"
                data-component="body">
     <br>
@@ -2547,7 +3879,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.aftertaste.note"                data-endpoint="POSTevaluations"
+                              name="affective.aftertaste.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2571,7 +3903,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.acidity.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.acidity.score"                data-endpoint="POSTuser-evaluations"
                value="9"
                data-component="body">
     <br>
@@ -2583,7 +3915,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.acidity.note"                data-endpoint="POSTevaluations"
+                              name="affective.acidity.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2607,7 +3939,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.sweetness.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.sweetness.score"                data-endpoint="POSTuser-evaluations"
                value="9"
                data-component="body">
     <br>
@@ -2619,7 +3951,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.sweetness.note"                data-endpoint="POSTevaluations"
+                              name="affective.sweetness.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2643,7 +3975,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.mouthfeel.score"                data-endpoint="POSTevaluations"
+               step="any"               name="affective.mouthfeel.score"                data-endpoint="POSTuser-evaluations"
                value="8"
                data-component="body">
     <br>
@@ -2655,7 +3987,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.mouthfeel.note"                data-endpoint="POSTevaluations"
+                              name="affective.mouthfeel.note"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2669,10 +4001,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.defects[0]"                data-endpoint="POSTevaluations"
+                              name="affective.defects[0]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
         <input type="text" style="display: none"
-               name="affective.defects[1]"                data-endpoint="POSTevaluations"
+               name="affective.defects[1]"                data-endpoint="POSTuser-evaluations"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -2695,7 +4027,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.farming"                data-endpoint="POSTevaluations"
+                              name="extrinsics.farming"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2707,7 +4039,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.processing"                data-endpoint="POSTevaluations"
+                              name="extrinsics.processing"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2719,7 +4051,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.trading"                data-endpoint="POSTevaluations"
+                              name="extrinsics.trading"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2731,7 +4063,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.certifications"                data-endpoint="POSTevaluations"
+                              name="extrinsics.certifications"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2743,7 +4075,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.generalObservation"                data-endpoint="POSTevaluations"
+                              name="extrinsics.generalObservation"                data-endpoint="POSTuser-evaluations"
                value=""
                data-component="body">
     <br>
@@ -2753,7 +4085,7 @@ Must be one of:
         </div>
         </form>
 
-                    <h2 id="evaluations-PUTevaluations--evaluation_ulid-">Update an evaluation</h2>
+                    <h2 id="evaluations-PUTuser-evaluations--evaluation_ulid-">Update an evaluation</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -2769,13 +4101,13 @@ another offering.</p>
 the evaluation (enforced by the evaluation policy). A specialist who does
 not own the evaluation receives <code>403 Forbidden</code>.</p>
 
-<span id="example-requests-PUTevaluations--evaluation_ulid-">
+<span id="example-requests-PUTuser-evaluations--evaluation_ulid-">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2881,7 +4213,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -2997,7 +4329,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;put(
     $url,
     [
@@ -3060,7 +4392,7 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-PUTevaluations--evaluation_ulid-">
+<span id="example-responses-PUTuser-evaluations--evaluation_ulid-">
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
@@ -3181,43 +4513,43 @@ print_r(json_decode((string) $body));</code></pre></div>
 }</code>
  </pre>
     </span>
-<span id="execution-results-PUTevaluations--evaluation_ulid-" hidden>
+<span id="execution-results-PUTuser-evaluations--evaluation_ulid-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-PUTevaluations--evaluation_ulid-"></span>:
+                id="execution-response-status-PUTuser-evaluations--evaluation_ulid-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTevaluations--evaluation_ulid-"
+    <pre class="json"><code id="execution-response-content-PUTuser-evaluations--evaluation_ulid-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-PUTevaluations--evaluation_ulid-" hidden>
+<span id="execution-error-PUTuser-evaluations--evaluation_ulid-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTevaluations--evaluation_ulid-">
+    <pre><code id="execution-error-message-PUTuser-evaluations--evaluation_ulid-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-PUTevaluations--evaluation_ulid-" data-method="PUT"
-      data-path="evaluations/{evaluation_ulid}"
+<form id="form-PUTuser-evaluations--evaluation_ulid-" data-method="PUT"
+      data-path="user/evaluations/{evaluation_ulid}"
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTevaluations--evaluation_ulid-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('PUTuser-evaluations--evaluation_ulid-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTevaluations--evaluation_ulid-"
-                    onclick="tryItOut('PUTevaluations--evaluation_ulid-');">Try it out ⚡
+                    id="btn-tryout-PUTuser-evaluations--evaluation_ulid-"
+                    onclick="tryItOut('PUTuser-evaluations--evaluation_ulid-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTevaluations--evaluation_ulid-"
-                    onclick="cancelTryOut('PUTevaluations--evaluation_ulid-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-PUTuser-evaluations--evaluation_ulid-"
+                    onclick="cancelTryOut('PUTuser-evaluations--evaluation_ulid-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTevaluations--evaluation_ulid-"
+                    id="btn-executetryout-PUTuser-evaluations--evaluation_ulid-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -3225,7 +4557,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-darkblue">PUT</small>
-            <b><code>evaluations/{evaluation_ulid}</code></b>
+            <b><code>user/evaluations/{evaluation_ulid}</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -3234,7 +4566,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="Bearer {ACCESS_TOKEN}"
                data-component="header">
     <br>
@@ -3246,7 +4578,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="Content-Type"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -3258,7 +4590,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="Accept"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -3271,7 +4603,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="evaluation_ulid"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="evaluation_ulid"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -3284,7 +4616,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="offeringId"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="offeringId"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value=""
                data-component="body">
     <br>
@@ -3296,7 +4628,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="status"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="status"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3308,7 +4640,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extractionMethod"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extractionMethod"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="v60"
                data-component="body">
     <br>
@@ -3330,7 +4662,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.roastLevel"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.roastLevel"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="medium"
                data-component="body">
     <br>
@@ -3354,7 +4686,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.fragrance.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.fragrance.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3366,7 +4698,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.fragrance.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.fragrance.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3378,10 +4710,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.fragrance.cata[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.fragrance.cata[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.fragrance.cata[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.fragrance.cata[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3404,7 +4736,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.aroma.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.aroma.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3416,7 +4748,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aroma.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.aroma.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3428,10 +4760,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aroma.cata[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.aroma.cata[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.aroma.cata[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.aroma.cata[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3454,7 +4786,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.flavor.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.flavor.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3466,7 +4798,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.flavor.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.flavor.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3478,10 +4810,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.flavor.cata[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.flavor.cata[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.flavor.cata[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.flavor.cata[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3504,7 +4836,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.acidity.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.acidity.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3516,7 +4848,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.acidity.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.acidity.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3540,7 +4872,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.sweetness.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.sweetness.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3552,7 +4884,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.sweetness.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.sweetness.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3576,7 +4908,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.mouthfeel.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.mouthfeel.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3588,7 +4920,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mouthfeel.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.mouthfeel.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3600,10 +4932,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mouthfeel.cata[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.mouthfeel.cata[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.mouthfeel.cata[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.mouthfeel.cata[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3626,7 +4958,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="descriptive.aftertaste.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="descriptive.aftertaste.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="1"
                data-component="body">
     <br>
@@ -3638,7 +4970,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aftertaste.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.aftertaste.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3650,10 +4982,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.aftertaste.cata[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.aftertaste.cata[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.aftertaste.cata[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.aftertaste.cata[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3666,10 +4998,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="descriptive.mainTastes[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="descriptive.mainTastes[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="descriptive.mainTastes[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="descriptive.mainTastes[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -3702,7 +5034,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.overall.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.overall.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3714,7 +5046,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.overall.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.overall.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3738,7 +5070,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.fragrance.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.fragrance.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3750,7 +5082,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.fragrance.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.fragrance.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3774,7 +5106,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.aroma.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.aroma.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3786,7 +5118,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.aroma.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.aroma.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3810,7 +5142,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.flavor.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.flavor.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3822,7 +5154,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.flavor.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.flavor.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3846,7 +5178,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.aftertaste.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.aftertaste.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3858,7 +5190,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.aftertaste.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.aftertaste.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3882,7 +5214,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.acidity.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.acidity.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3894,7 +5226,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.acidity.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.acidity.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3918,7 +5250,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.sweetness.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.sweetness.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3930,7 +5262,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.sweetness.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.sweetness.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3954,7 +5286,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="affective.mouthfeel.score"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               step="any"               name="affective.mouthfeel.score"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="2"
                data-component="body">
     <br>
@@ -3966,7 +5298,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.mouthfeel.note"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.mouthfeel.note"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -3980,10 +5312,10 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="affective.defects[0]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="affective.defects[0]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
         <input type="text" style="display: none"
-               name="affective.defects[1]"                data-endpoint="PUTevaluations--evaluation_ulid-"
+               name="affective.defects[1]"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                data-component="body">
     <br>
 <p>Must match an existing stored value.</p>
@@ -4006,7 +5338,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.farming"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extrinsics.farming"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -4018,7 +5350,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.processing"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extrinsics.processing"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -4030,7 +5362,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.trading"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extrinsics.trading"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -4042,7 +5374,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.certifications"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extrinsics.certifications"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -4054,7 +5386,7 @@ Must be one of:
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="extrinsics.generalObservation"                data-endpoint="PUTevaluations--evaluation_ulid-"
+                              name="extrinsics.generalObservation"                data-endpoint="PUTuser-evaluations--evaluation_ulid-"
                value="architecto"
                data-component="body">
     <br>
@@ -4064,7 +5396,7 @@ Must be one of:
         </div>
         </form>
 
-                    <h2 id="evaluations-PATCHevaluations--evaluation_ulid--close">Close an evaluation</h2>
+                    <h2 id="evaluations-PATCHuser-evaluations--evaluation_ulid--close">Close an evaluation</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -4086,13 +5418,13 @@ offering's aggregate scores and concordance (via OfferingConsensusService).</p>
 the evaluation (enforced by the evaluation policy). A specialist who does
 not own the evaluation receives <code>403 Forbidden</code>.</p>
 
-<span id="example-requests-PATCHevaluations--evaluation_ulid--close">
+<span id="example-requests-PATCHuser-evaluations--evaluation_ulid--close">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close" \
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4100,7 +5432,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close"
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close"
 );
 
 const headers = {
@@ -4118,7 +5450,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close';
+$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close';
 $response = $client-&gt;patch(
     $url,
     [
@@ -4134,7 +5466,7 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-PATCHevaluations--evaluation_ulid--close">
+<span id="example-responses-PATCHuser-evaluations--evaluation_ulid--close">
             <blockquote>
             <p>Example response (200, Closed successfully):</p>
         </blockquote>
@@ -4172,43 +5504,43 @@ print_r(json_decode((string) $body));</code></pre></div>
 }</code>
  </pre>
     </span>
-<span id="execution-results-PATCHevaluations--evaluation_ulid--close" hidden>
+<span id="execution-results-PATCHuser-evaluations--evaluation_ulid--close" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-PATCHevaluations--evaluation_ulid--close"></span>:
+                id="execution-response-status-PATCHuser-evaluations--evaluation_ulid--close"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-PATCHevaluations--evaluation_ulid--close"
+    <pre class="json"><code id="execution-response-content-PATCHuser-evaluations--evaluation_ulid--close"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-PATCHevaluations--evaluation_ulid--close" hidden>
+<span id="execution-error-PATCHuser-evaluations--evaluation_ulid--close" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PATCHevaluations--evaluation_ulid--close">
+    <pre><code id="execution-error-message-PATCHuser-evaluations--evaluation_ulid--close">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-PATCHevaluations--evaluation_ulid--close" data-method="PATCH"
-      data-path="evaluations/{evaluation_ulid}/close"
+<form id="form-PATCHuser-evaluations--evaluation_ulid--close" data-method="PATCH"
+      data-path="user/evaluations/{evaluation_ulid}/close"
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PATCHevaluations--evaluation_ulid--close', this);">
+      onsubmit="event.preventDefault(); executeTryOut('PATCHuser-evaluations--evaluation_ulid--close', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PATCHevaluations--evaluation_ulid--close"
-                    onclick="tryItOut('PATCHevaluations--evaluation_ulid--close');">Try it out ⚡
+                    id="btn-tryout-PATCHuser-evaluations--evaluation_ulid--close"
+                    onclick="tryItOut('PATCHuser-evaluations--evaluation_ulid--close');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PATCHevaluations--evaluation_ulid--close"
-                    onclick="cancelTryOut('PATCHevaluations--evaluation_ulid--close');" hidden>Cancel 🛑
+                    id="btn-canceltryout-PATCHuser-evaluations--evaluation_ulid--close"
+                    onclick="cancelTryOut('PATCHuser-evaluations--evaluation_ulid--close');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PATCHevaluations--evaluation_ulid--close"
+                    id="btn-executetryout-PATCHuser-evaluations--evaluation_ulid--close"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -4216,7 +5548,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-purple">PATCH</small>
-            <b><code>evaluations/{evaluation_ulid}/close</code></b>
+            <b><code>user/evaluations/{evaluation_ulid}/close</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -4225,7 +5557,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="PATCHevaluations--evaluation_ulid--close"
+                              name="Authorization" class="auth-value"               data-endpoint="PATCHuser-evaluations--evaluation_ulid--close"
                value="Bearer {ACCESS_TOKEN}"
                data-component="header">
     <br>
@@ -4237,7 +5569,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PATCHevaluations--evaluation_ulid--close"
+                              name="Content-Type"                data-endpoint="PATCHuser-evaluations--evaluation_ulid--close"
                value="application/json"
                data-component="header">
     <br>
@@ -4249,7 +5581,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PATCHevaluations--evaluation_ulid--close"
+                              name="Accept"                data-endpoint="PATCHuser-evaluations--evaluation_ulid--close"
                value="application/json"
                data-component="header">
     <br>
@@ -4262,7 +5594,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="evaluation_ulid"                data-endpoint="PATCHevaluations--evaluation_ulid--close"
+                              name="evaluation_ulid"                data-endpoint="PATCHuser-evaluations--evaluation_ulid--close"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -4270,7 +5602,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="evaluations-DELETEevaluations--evaluation_ulid-">Delete an evaluation</h2>
+                    <h2 id="evaluations-DELETEuser-evaluations--evaluation_ulid-">Delete an evaluation</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -4281,13 +5613,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
 the evaluation (enforced by the evaluation policy). A specialist who does
 not own the evaluation receives <code>403 Forbidden</code>.</p>
 
-<span id="example-requests-DELETEevaluations--evaluation_ulid-">
+<span id="example-requests-DELETEuser-evaluations--evaluation_ulid-">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4295,7 +5627,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
+    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -4313,7 +5645,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;delete(
     $url,
     [
@@ -4329,7 +5661,7 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-DELETEevaluations--evaluation_ulid-">
+<span id="example-responses-DELETEuser-evaluations--evaluation_ulid-">
             <blockquote>
             <p>Example response (200, Deleted):</p>
         </blockquote>
@@ -4349,43 +5681,43 @@ print_r(json_decode((string) $body));</code></pre></div>
 }</code>
  </pre>
     </span>
-<span id="execution-results-DELETEevaluations--evaluation_ulid-" hidden>
+<span id="execution-results-DELETEuser-evaluations--evaluation_ulid-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-DELETEevaluations--evaluation_ulid-"></span>:
+                id="execution-response-status-DELETEuser-evaluations--evaluation_ulid-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-DELETEevaluations--evaluation_ulid-"
+    <pre class="json"><code id="execution-response-content-DELETEuser-evaluations--evaluation_ulid-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-DELETEevaluations--evaluation_ulid-" hidden>
+<span id="execution-error-DELETEuser-evaluations--evaluation_ulid-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-DELETEevaluations--evaluation_ulid-">
+    <pre><code id="execution-error-message-DELETEuser-evaluations--evaluation_ulid-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-DELETEevaluations--evaluation_ulid-" data-method="DELETE"
-      data-path="evaluations/{evaluation_ulid}"
+<form id="form-DELETEuser-evaluations--evaluation_ulid-" data-method="DELETE"
+      data-path="user/evaluations/{evaluation_ulid}"
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('DELETEevaluations--evaluation_ulid-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('DELETEuser-evaluations--evaluation_ulid-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-DELETEevaluations--evaluation_ulid-"
-                    onclick="tryItOut('DELETEevaluations--evaluation_ulid-');">Try it out ⚡
+                    id="btn-tryout-DELETEuser-evaluations--evaluation_ulid-"
+                    onclick="tryItOut('DELETEuser-evaluations--evaluation_ulid-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-DELETEevaluations--evaluation_ulid-"
-                    onclick="cancelTryOut('DELETEevaluations--evaluation_ulid-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-DELETEuser-evaluations--evaluation_ulid-"
+                    onclick="cancelTryOut('DELETEuser-evaluations--evaluation_ulid-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-DELETEevaluations--evaluation_ulid-"
+                    id="btn-executetryout-DELETEuser-evaluations--evaluation_ulid-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -4393,7 +5725,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-red">DELETE</small>
-            <b><code>evaluations/{evaluation_ulid}</code></b>
+            <b><code>user/evaluations/{evaluation_ulid}</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -4402,7 +5734,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="DELETEevaluations--evaluation_ulid-"
+                              name="Authorization" class="auth-value"               data-endpoint="DELETEuser-evaluations--evaluation_ulid-"
                value="Bearer {ACCESS_TOKEN}"
                data-component="header">
     <br>
@@ -4414,7 +5746,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="DELETEevaluations--evaluation_ulid-"
+                              name="Content-Type"                data-endpoint="DELETEuser-evaluations--evaluation_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -4426,7 +5758,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="DELETEevaluations--evaluation_ulid-"
+                              name="Accept"                data-endpoint="DELETEuser-evaluations--evaluation_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -4439,7 +5771,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="evaluation_ulid"                data-endpoint="DELETEevaluations--evaluation_ulid-"
+                              name="evaluation_ulid"                data-endpoint="DELETEuser-evaluations--evaluation_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
