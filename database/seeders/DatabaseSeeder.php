@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 //LocationSeeder::class,
                 OlfactoryTaxonomySeeder::class,
                 CertificationTypeSeeder::class,
+                FrontClientSeeder::class,
             ]
         );
 
