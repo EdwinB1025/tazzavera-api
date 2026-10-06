@@ -179,6 +179,30 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      offeringId:
+        custom: []
+        name: offeringId
+        description: 'Filter by offering ULID. Must match an existing stored value.'
+        required: false
+        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      evaluationType:
+        custom: []
+        name: evaluationType
+        description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+        required: false
+        example: baseline
+        type: string
+        enumValues:
+          - specialist
+          - baseline
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       coffeeId:
         custom: []
         name: coffeeId
@@ -287,6 +311,8 @@ endpoints:
         deprecated: false
     cleanQueryParameters:
       evaluatorId: 01M35F5RX4ADGC3CSDXXYB08DA
+      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+      evaluationType: baseline
       coffeeId: 01M35F5JEZMS845TNPAEM1V8PF
       locationId: 01M35F5JDFXM13R1CA06FFWTNG
       city: Barcelona
@@ -577,6 +603,30 @@ endpoints:
     cleanUrlParameters:
       user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters:
+      offeringId:
+        custom: []
+        name: offeringId
+        description: 'Filter by offering ULID. Must match an existing stored value.'
+        required: false
+        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      evaluationType:
+        custom: []
+        name: evaluationType
+        description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+        required: false
+        example: specialist
+        type: string
+        enumValues:
+          - specialist
+          - baseline
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       coffeeId:
         custom: []
         name: coffeeId
@@ -684,6 +734,8 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
+      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+      evaluationType: specialist
       coffeeId: 01M35F5JEZMS845TNPAEM1V8PF
       locationId: 01M35F5JDFXM13R1CA06FFWTNG
       city: Barcelona
@@ -966,6 +1018,30 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
+      offeringId:
+        custom: []
+        name: offeringId
+        description: 'Filter by offering ULID. Must match an existing stored value.'
+        required: false
+        example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      evaluationType:
+        custom: []
+        name: evaluationType
+        description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+        required: false
+        example: specialist
+        type: string
+        enumValues:
+          - specialist
+          - baseline
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
       coffeeId:
         custom: []
         name: coffeeId
@@ -1073,6 +1149,8 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
+      offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+      evaluationType: specialist
       coffeeId: 01M35F5JEZMS845TNPAEM1V8PF
       locationId: 01M35F5JDFXM13R1CA06FFWTNG
       city: Barcelona

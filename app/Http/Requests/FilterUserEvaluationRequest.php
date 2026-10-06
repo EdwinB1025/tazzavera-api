@@ -24,6 +24,8 @@ class FilterUserEvaluationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'offeringId'     => ['sometimes', 'string', 'exists:offerings,ulid'],
+            'evaluationType' => ['sometimes', 'in:specialist,baseline'],
             'coffeeId'       => ['sometimes', 'string', 'exists:coffees,ulid'],
             'locationId'     => ['sometimes', 'string', 'exists:locations,ulid'],
             'city'           => ['sometimes', 'string', 'max:90'],
@@ -38,6 +40,8 @@ class FilterUserEvaluationRequest extends FormRequest
     public function queryParameters(): array
     {
         return [
+            'offeringId'     => ['description' => 'Filter by offering ULID.', 'example' => '01K6A3M8Q2V7XH4T9B5N1RCW0D'],
+            'evaluationType' => ['description' => 'Filter by evaluation type. One of: specialist, baseline (the coffee shop\'s own provisional evaluation of its offering).', 'example' => 'specialist'],
             'coffeeId'       => ['description' => 'Filter by coffee ULID.', 'example' => '01M35F5JEZMS845TNPAEM1V8PF'],
             'locationId'     => ['description' => 'Filter by location ULID.', 'example' => '01M35F5JDFXM13R1CA06FFWTNG'],
             'city'           => ['description' => 'Filter by the city of the evaluation location.', 'example' => 'Barcelona'],

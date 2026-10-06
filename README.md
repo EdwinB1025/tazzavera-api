@@ -5,7 +5,7 @@
 
 REST backend for **Tazavera**, the specialty coffee verification platform. This API serves the data model, OAuth2/PKCE authentication, and the **consensus** engine that averages and cross-checks specialist evaluations of each coffee a specialty coffee shop offers.
 
-> This repository is **the API only**. The front end (Livewire, D3, Leaflet, flavor wheel) lives in a separate repository.
+> This repository is **the API only**. The front end that consumes this REST API is `tazavera-front` (Next.js, separate repository).
 
 ## 🕵️ The problem it tackles
 
@@ -117,7 +117,10 @@ php artisan passport:client --public
 php artisan migrate --seed
 ```
 
-🌱 The seeder populates the olfactory taxonomy (from CSV, source WCR Sensory Lexicon), the coffee catalog, roasters, inventory, and base data to test the flow end to end.
+🌱 The seeder populates the olfactory taxonomy (from CSV, source WCR Sensory Lexicon), the coffee catalog, roasters, inventory, and base data to test the flow end to end:
+
+- `OfferingBaselineSeeder` — 1 to 5 offerings per coffee shop, spread over its locations, each with the coffee shop's closed **baseline** evaluation (its provisional evaluation of the offering).
+- `VerifiedOfferingSeeder` — a sample of 15 offerings, each with 5 to 9 closed specialist evaluations from a pool of 10 specialists; it dispatches `EvaluationClosed` per offering, so the consensus runs and those offerings end up `verified`.
 
 ## ▶️ Running the project
 
@@ -168,6 +171,8 @@ The `access_token` authenticates the `auth:api` routes via `Authorization: Beare
 | User CRUD (soft + hard delete) | ✅ Implemented |
 | Offerings (batch create, delete single/batch, filtered index, show) | ✅ Implemented |
 | Evaluations (create, update, close, delete, filtered index, show) | ✅ Implemented |
+| Evaluation filters by offering (`offeringId`) and type (`evaluationType`: specialist / baseline) on the public, per-user and own lists | ✅ Implemented |
+| Coffee shop baseline (provisional evaluation): seeded per offering, read through `GET /evaluations?offeringId=…&evaluationType=baseline` | ✅ Seeded and readable (creation endpoint in the backlog) |
 | Individual cupping score (0–100, 8 real axes) | ✅ Implemented |
 | Aggregate consensus (event-driven worker on **close**) | ✅ Implemented |
 | Inter-specialist concordance (normalized dispersion) | ✅ Implemented (columns + `axis_concordances`) |
@@ -179,9 +184,8 @@ The `access_token` authenticates the `auth:api` routes via `Authorization: Beare
 
 What was **deliberately left out of the MVP** to keep the scope manageable — future product functionality, not technical debt.
 
-- 🖥️ **Front end / user interface** — this API is currently consumed from the `tazavera-app` monolith; a dedicated front end consuming this REST API (SPA or mobile) is yet to be developed.
 - 👤 **Consumer evaluation** — the role exists in the ENUM, but its form, validation, and own structure (CATA restricted to the upper taxonomy levels) remain to be defined; likely a separate entity.
-- 🏪 **Coffee shop baseline** — a dedicated endpoint for the provisional evaluation a coffee shop declares about its own offering (one per offering, with ownership and uniqueness). Designed, not built.
+- 🏪 **Coffee shop baseline — creation endpoint** — a dedicated endpoint for the coffee shop to create its provisional evaluation of its own offering (one per offering, with ownership and uniqueness). Today baselines are seeded and read through the evaluation filters; creating them through the API is designed, not built.
 - 🔀 **Consensus segregated by extraction method** — today the consensus mixes espresso, V60, French press, etc. Split the calculation by method once there's enough volume to avoid losing sample size.
 - ⏱️ **Automatic evaluation-close cron** — bulk-close evaluations left open beyond a certain time (Laravel scheduler), instead of relying on manual closing. Distinct from the reactive consensus worker.
 - 🎯 **Q calibration tag on acidity** — cross the tag with the evaluator's certification to detect whether Q-certified specialists agree more with each other on acidity descriptors.

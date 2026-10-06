@@ -767,6 +767,29 @@ paths:
             example: 01M35F5RX4ADGC3CSDXXYB08DA
         -
           in: query
+          name: offeringId
+          description: 'Filter by offering ULID. Must match an existing stored value.'
+          example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+          required: false
+          schema:
+            type: string
+            description: 'Filter by offering ULID. Must match an existing stored value.'
+            example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        -
+          in: query
+          name: evaluationType
+          description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+          example: baseline
+          required: false
+          schema:
+            type: string
+            description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+            example: baseline
+            enum:
+              - specialist
+              - baseline
+        -
+          in: query
           name: coffeeId
           description: 'Filter by coffee ULID. Must match an existing stored value.'
           example: 01M35F5JEZMS845TNPAEM1V8PF
@@ -1503,6 +1526,29 @@ paths:
       operationId: listTheEvaluationsOfAUser
       description: "Returns a paginated list of the evaluations made by the given user\n(specialist), each including its taste notes and the offering it belongs\nto. Supports the same filtering and sorting as the public list, except the\nevaluator, which is the user in the path. An unknown user ULID returns\n`404 Not Found`."
       parameters:
+        -
+          in: query
+          name: offeringId
+          description: 'Filter by offering ULID. Must match an existing stored value.'
+          example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+          required: false
+          schema:
+            type: string
+            description: 'Filter by offering ULID. Must match an existing stored value.'
+            example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        -
+          in: query
+          name: evaluationType
+          description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+          example: specialist
+          required: false
+          schema:
+            type: string
+            description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+            example: specialist
+            enum:
+              - specialist
+              - baseline
         -
           in: query
           name: coffeeId
@@ -2250,6 +2296,29 @@ paths:
       operationId: listMyEvaluations
       description: "Returns a paginated list of the evaluations created by the authenticated\nspecialist, each including its taste notes (olfactory taxonomy references)\nand the offering it belongs to. Supports the same filtering and sorting as\nthe public list, except the evaluator, which is always the authenticated\nuser.\n\n**Authorization:** requires the `specialist` role and the `profile:read`\nor `profile:write` scope."
       parameters:
+        -
+          in: query
+          name: offeringId
+          description: 'Filter by offering ULID. Must match an existing stored value.'
+          example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+          required: false
+          schema:
+            type: string
+            description: 'Filter by offering ULID. Must match an existing stored value.'
+            example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+        -
+          in: query
+          name: evaluationType
+          description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+          example: specialist
+          required: false
+          schema:
+            type: string
+            description: "Filter by evaluation type. One of: specialist, baseline (the coffee shop's own provisional evaluation of its offering)."
+            example: specialist
+            enum:
+              - specialist
+              - baseline
         -
           in: query
           name: coffeeId
