@@ -544,8 +544,969 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - GET
+    uri: 'users/{user_ulid}/evaluations'
+    metadata:
+      custom: []
+      groupName: Evaluations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List the evaluations of a user'
+      description: |-
+        Returns a paginated list of the evaluations made by the given user
+        (specialist), each including its taste notes and the offering it belongs
+        to. Supports the same filtering and sorting as the public list, except the
+        evaluator, which is the user in the path. An unknown user ULID returns
+        `404 Not Found`.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_ulid:
+        custom: []
+        name: user_ulid
+        description: 'The ULID of the user (evaluator).'
+        required: true
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+    queryParameters:
+      coffeeId:
+        custom: []
+        name: coffeeId
+        description: 'Filter by coffee ULID. Must match an existing stored value.'
+        required: false
+        example: 01M35F5JEZMS845TNPAEM1V8PF
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      locationId:
+        custom: []
+        name: locationId
+        description: 'Filter by location ULID. Must match an existing stored value.'
+        required: false
+        example: 01M35F5JDFXM13R1CA06FFWTNG
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+        required: false
+        example: Barcelona
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      process:
+        custom: []
+        name: process
+        description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+        required: false
+        example: Washed
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Filter by evaluation status. One of: open, closed.'
+        required: false
+        example: closed
+        type: string
+        enumValues:
+          - open
+          - closed
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      scoreMin:
+        custom: []
+        name: scoreMin
+        description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 80.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      scoreMax:
+        custom: []
+        name: scoreMax
+        description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 95.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      orderBy:
+        custom: []
+        name: orderBy
+        description: 'Sort field. One of: cupping_score, created_at, status.'
+        required: false
+        example: cupping_score
+        type: string
+        enumValues:
+          - cupping_score
+          - created_at
+          - status
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      orderDirection:
+        custom: []
+        name: orderDirection
+        description: 'Sort direction. One of: asc, desc.'
+        required: false
+        example: desc
+        type: string
+        enumValues:
+          - asc
+          - desc
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      coffeeId: 01M35F5JEZMS845TNPAEM1V8PF
+      locationId: 01M35F5JDFXM13R1CA06FFWTNG
+      city: Barcelona
+      process: Washed
+      status: closed
+      scoreMin: 80.0
+      scoreMax: 95.0
+      orderBy: cupping_score
+      orderDirection: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+              "data": [
+                  {
+                      "ulid": "01M35F5RX4ADGC3CSDXXYB08DB",
+                      "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+                      "evaluationType": "specialist",
+                      "status": "open",
+                      "extractionMethod": "espresso",
+                      "cuppingScore": null,
+                      "isDefective": true,
+                      "descriptive": {
+                          "fragrance": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 9,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 8,
+                              "note": null
+                          }
+                      },
+                      "affective": {
+                          "fragrance": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "overall": {
+                              "score": 0,
+                              "note": null
+                          }
+                      },
+                      "extrinsics": {
+                          "farming": null,
+                          "processing": null,
+                          "trading": null,
+                          "certifications": null,
+                          "generalObservation": null
+                      },
+                      "tastes": [
+                          {
+                              "ref": "01JTAXN0DE000000000000000B",
+                              "type": "defects"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000009",
+                              "type": "main_tastes"
+                          }
+                      ],
+                      "createdAt": "2026-10-06T09:12:45.000000Z",
+                      "closedAt": null
+                  },
+                  {
+                      "ulid": "01M35F5RX4ADGC3CSDXXYB08DA",
+                      "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+                      "evaluationType": "specialist",
+                      "status": "closed",
+                      "extractionMethod": "v60",
+                      "cuppingScore": "84.25",
+                      "isDefective": false,
+                      "descriptive": {
+                          "fragrance": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 12,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 9,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 8,
+                              "note": null
+                          }
+                      },
+                      "affective": {
+                          "fragrance": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "overall": {
+                              "score": 8,
+                              "note": "Limpio y dulce, acidez cítrica."
+                          }
+                      },
+                      "extrinsics": {
+                          "farming": "Agricultura orgánica",
+                          "processing": null,
+                          "trading": "Comercio directo",
+                          "certifications": null,
+                          "generalObservation": null
+                      },
+                      "tastes": [
+                          {
+                              "ref": "01JTAXN0DE0000000000000003",
+                              "type": "flavor"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000008",
+                              "type": "aroma"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000009",
+                              "type": "main_tastes"
+                          },
+                          {
+                              "ref": "01JTAXN0DE000000000000000C",
+                              "type": "mouthfeel"
+                          }
+                      ],
+                      "createdAt": "2026-10-01T16:40:00.000000Z",
+                      "closedAt": "2026-10-02T11:05:30.000000Z"
+                  }
+              ],
+              "links": {
+                  "first": "http://localhost/api/evaluations?page=1",
+                  "last": "http://localhost/api/evaluations?page=1",
+                  "prev": null,
+                  "next": null
+              },
+              "meta": {
+                  "current_page": 1,
+                  "from": 1,
+                  "last_page": 1,
+                  "links": [
+                      {
+                          "url": null,
+                          "label": "&laquo; Previous",
+                          "active": false
+                      },
+                      {
+                          "url": "http://localhost/api/evaluations?page=1",
+                          "label": "1",
+                          "active": true
+                      },
+                      {
+                          "url": null,
+                          "label": "Next &raquo;",
+                          "active": false
+                      }
+                  ],
+                  "path": "http://localhost/api/evaluations",
+                  "per_page": 15,
+                  "to": 2,
+                  "total": 2
+              }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: user/evaluations
+    metadata:
+      custom: []
+      groupName: Evaluations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List my evaluations'
+      description: |-
+        Returns a paginated list of the evaluations created by the authenticated
+        specialist, each including its taste notes (olfactory taxonomy references)
+        and the offering it belongs to. Supports the same filtering and sorting as
+        the public list, except the evaluator, which is always the authenticated
+        user.
+
+        **Authorization:** requires the `specialist` role and the `profile:read`
+        or `profile:write` scope.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      coffeeId:
+        custom: []
+        name: coffeeId
+        description: 'Filter by coffee ULID. Must match an existing stored value.'
+        required: false
+        example: 01M35F5JEZMS845TNPAEM1V8PF
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      locationId:
+        custom: []
+        name: locationId
+        description: 'Filter by location ULID. Must match an existing stored value.'
+        required: false
+        example: 01M35F5JDFXM13R1CA06FFWTNG
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: 'Filter by the city of the evaluation location. Must not be greater than 90 characters.'
+        required: false
+        example: Barcelona
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      process:
+        custom: []
+        name: process
+        description: 'Filter by coffee processing method. Must not be greater than 90 characters.'
+        required: false
+        example: Washed
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: 'Filter by evaluation status. One of: open, closed.'
+        required: false
+        example: closed
+        type: string
+        enumValues:
+          - open
+          - closed
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      scoreMin:
+        custom: []
+        name: scoreMin
+        description: 'Minimum cupping score (0–100). Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 80.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      scoreMax:
+        custom: []
+        name: scoreMax
+        description: 'Maximum cupping score (0–100). Must be ≥ scoreMin. Must be at least 0. Must not be greater than 100.'
+        required: false
+        example: 95.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      orderBy:
+        custom: []
+        name: orderBy
+        description: 'Sort field. One of: cupping_score, created_at, status.'
+        required: false
+        example: cupping_score
+        type: string
+        enumValues:
+          - cupping_score
+          - created_at
+          - status
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      orderDirection:
+        custom: []
+        name: orderDirection
+        description: 'Sort direction. One of: asc, desc.'
+        required: false
+        example: desc
+        type: string
+        enumValues:
+          - asc
+          - desc
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      coffeeId: 01M35F5JEZMS845TNPAEM1V8PF
+      locationId: 01M35F5JDFXM13R1CA06FFWTNG
+      city: Barcelona
+      process: Washed
+      status: closed
+      scoreMin: 80.0
+      scoreMax: 95.0
+      orderBy: cupping_score
+      orderDirection: desc
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |
+          {
+              "data": [
+                  {
+                      "ulid": "01M35F5RX4ADGC3CSDXXYB08DB",
+                      "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+                      "evaluationType": "specialist",
+                      "status": "open",
+                      "extractionMethod": "espresso",
+                      "cuppingScore": null,
+                      "isDefective": true,
+                      "descriptive": {
+                          "fragrance": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 9,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 8,
+                              "note": null
+                          }
+                      },
+                      "affective": {
+                          "fragrance": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 0,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 6,
+                              "note": null
+                          },
+                          "overall": {
+                              "score": 0,
+                              "note": null
+                          }
+                      },
+                      "extrinsics": {
+                          "farming": null,
+                          "processing": null,
+                          "trading": null,
+                          "certifications": null,
+                          "generalObservation": null
+                      },
+                      "tastes": [
+                          {
+                              "ref": "01JTAXN0DE000000000000000B",
+                              "type": "defects"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000009",
+                              "type": "main_tastes"
+                          }
+                      ],
+                      "createdAt": "2026-10-06T09:12:45.000000Z",
+                      "closedAt": null
+                  },
+                  {
+                      "ulid": "01M35F5RX4ADGC3CSDXXYB08DA",
+                      "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+                      "evaluationType": "specialist",
+                      "status": "closed",
+                      "extractionMethod": "v60",
+                      "cuppingScore": "84.25",
+                      "isDefective": false,
+                      "descriptive": {
+                          "fragrance": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 12,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 9,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 11,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 10,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 8,
+                              "note": null
+                          }
+                      },
+                      "affective": {
+                          "fragrance": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "aroma": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "flavor": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "aftertaste": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "acidity": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "sweetness": {
+                              "score": 8,
+                              "note": null
+                          },
+                          "mouthfeel": {
+                              "score": 7,
+                              "note": null
+                          },
+                          "overall": {
+                              "score": 8,
+                              "note": "Limpio y dulce, acidez cítrica."
+                          }
+                      },
+                      "extrinsics": {
+                          "farming": "Agricultura orgánica",
+                          "processing": null,
+                          "trading": "Comercio directo",
+                          "certifications": null,
+                          "generalObservation": null
+                      },
+                      "tastes": [
+                          {
+                              "ref": "01JTAXN0DE0000000000000003",
+                              "type": "flavor"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000008",
+                              "type": "aroma"
+                          },
+                          {
+                              "ref": "01JTAXN0DE0000000000000009",
+                              "type": "main_tastes"
+                          },
+                          {
+                              "ref": "01JTAXN0DE000000000000000C",
+                              "type": "mouthfeel"
+                          }
+                      ],
+                      "createdAt": "2026-10-01T16:40:00.000000Z",
+                      "closedAt": "2026-10-02T11:05:30.000000Z"
+                  }
+              ],
+              "links": {
+                  "first": "http://localhost/api/user/evaluations?page=1",
+                  "last": "http://localhost/api/user/evaluations?page=1",
+                  "prev": null,
+                  "next": null
+              },
+              "meta": {
+                  "current_page": 1,
+                  "from": 1,
+                  "last_page": 1,
+                  "links": [
+                      {
+                          "url": null,
+                          "label": "&laquo; Previous",
+                          "active": false
+                      },
+                      {
+                          "url": "http://localhost/api/user/evaluations?page=1",
+                          "label": "1",
+                          "active": true
+                      },
+                      {
+                          "url": null,
+                          "label": "Next &raquo;",
+                          "active": false
+                      }
+                  ],
+                  "path": "http://localhost/api/user/evaluations",
+                  "per_page": 15,
+                  "to": 2,
+                  "total": 2
+              }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'user/evaluations/{evaluation}'
+    metadata:
+      custom: []
+      groupName: Evaluations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get my evaluation'
+      description: |-
+        Returns a single evaluation of the authenticated specialist with its taste
+        notes and associated offering. An evaluation that does not exist, or that
+        belongs to another user, returns `404 Not Found`, so the response never
+        reveals whether another user's evaluation exists.
+
+        **Authorization:** requires the `specialist` role and the `profile:read`
+        or `profile:write` scope.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      evaluation:
+        custom: []
+        name: evaluation
+        description: 'The evaluation.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      evaluation_ulid:
+        custom: []
+        name: evaluation_ulid
+        description: 'The ULID of the evaluation.'
+        required: true
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      evaluation: architecto
+      evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |
+          {
+              "data": {
+                  "ulid": "01M35F5RX4ADGC3CSDXXYB08DB",
+                  "offeringId": "01K6A3M8Q2V7XH4T9B5N1RCW0D",
+                  "evaluationType": "specialist",
+                  "status": "open",
+                  "extractionMethod": "espresso",
+                  "cuppingScore": null,
+                  "isDefective": true,
+                  "descriptive": {
+                      "fragrance": {
+                          "score": 10,
+                          "note": null
+                      },
+                      "aroma": {
+                          "score": 11,
+                          "note": null
+                      },
+                      "flavor": {
+                          "score": 0,
+                          "note": null
+                      },
+                      "aftertaste": {
+                          "score": 0,
+                          "note": null
+                      },
+                      "acidity": {
+                          "score": 9,
+                          "note": null
+                      },
+                      "sweetness": {
+                          "score": 10,
+                          "note": null
+                      },
+                      "mouthfeel": {
+                          "score": 8,
+                          "note": null
+                      }
+                  },
+                  "affective": {
+                      "fragrance": {
+                          "score": 6,
+                          "note": null
+                      },
+                      "aroma": {
+                          "score": 7,
+                          "note": null
+                      },
+                      "flavor": {
+                          "score": 0,
+                          "note": null
+                      },
+                      "aftertaste": {
+                          "score": 0,
+                          "note": null
+                      },
+                      "acidity": {
+                          "score": 6,
+                          "note": null
+                      },
+                      "sweetness": {
+                          "score": 7,
+                          "note": null
+                      },
+                      "mouthfeel": {
+                          "score": 6,
+                          "note": null
+                      },
+                      "overall": {
+                          "score": 0,
+                          "note": null
+                      }
+                  },
+                  "extrinsics": {
+                      "farming": null,
+                      "processing": null,
+                      "trading": null,
+                      "certifications": null,
+                      "generalObservation": null
+                  },
+                  "tastes": [
+                      {
+                          "ref": "01JTAXN0DE000000000000000B",
+                          "type": "defects"
+                      },
+                      {
+                          "ref": "01JTAXN0DE0000000000000009",
+                          "type": "main_tastes"
+                      }
+                  ],
+                  "createdAt": "2026-10-06T09:12:45.000000Z",
+                  "closedAt": null
+              }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Evaluation]."}'
+        headers: []
+        description: 'Not found or not the owner'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - POST
-    uri: evaluations
+    uri: user/evaluations
     metadata:
       custom: []
       groupName: Evaluations
@@ -1458,7 +2419,7 @@ endpoints:
     custom: []
     httpMethods:
       - PUT
-    uri: 'evaluations/{evaluation_ulid}'
+    uri: 'user/evaluations/{evaluation_ulid}'
     metadata:
       custom: []
       groupName: Evaluations
@@ -2415,7 +3376,7 @@ endpoints:
     custom: []
     httpMethods:
       - PATCH
-    uri: 'evaluations/{evaluation_ulid}/close'
+    uri: 'user/evaluations/{evaluation_ulid}/close'
     metadata:
       custom: []
       groupName: Evaluations
@@ -2505,7 +3466,7 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'evaluations/{evaluation_ulid}'
+    uri: 'user/evaluations/{evaluation_ulid}'
     metadata:
       custom: []
       groupName: Evaluations

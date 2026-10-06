@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "78b6dac5-dcd9-46b8-806e-d4a1c2ece5e9",
+        "_postman_id": "6de229f4-5b89-452a-84ab-3d01e3f0d393",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -282,13 +282,250 @@
                     ]
                 },
                 {
+                    "name": "List the evaluations of a user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid\/evaluations",
+                            "query": [
+                                {
+                                    "key": "coffeeId",
+                                    "value": "01M35F5JEZMS845TNPAEM1V8PF",
+                                    "description": "Filter by coffee ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "locationId",
+                                    "value": "01M35F5JDFXM13R1CA06FFWTNG",
+                                    "description": "Filter by location ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Barcelona",
+                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "process",
+                                    "value": "Washed",
+                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "closed",
+                                    "description": "Filter by evaluation status. One of: open, closed.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMin",
+                                    "value": "80",
+                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMax",
+                                    "value": "95",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "cupping_score",
+                                    "description": "Sort field. One of: cupping_score, created_at, status.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderDirection",
+                                    "value": "desc",
+                                    "description": "Sort direction. One of: asc, desc.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid\/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the user (evaluator)."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of the evaluations made by the given user\n(specialist), each including its taste notes and the offering it belongs\nto. Supports the same filtering and sorting as the public list, except the\nevaluator, which is the user in the path. An unknown user ULID returns\n`404 Not Found`.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\n            \"evaluationType\": \"specialist\",\n            \"status\": \"open\",\n            \"extractionMethod\": \"espresso\",\n            \"cuppingScore\": null,\n            \"isDefective\": true,\n            \"descriptive\": {\n                \"fragrance\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 9,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 8,\n                    \"note\": null\n                }\n            },\n            \"affective\": {\n                \"fragrance\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"overall\": {\n                    \"score\": 0,\n                    \"note\": null\n                }\n            },\n            \"extrinsics\": {\n                \"farming\": null,\n                \"processing\": null,\n                \"trading\": null,\n                \"certifications\": null,\n                \"generalObservation\": null\n            },\n            \"tastes\": [\n                {\n                    \"ref\": \"01JTAXN0DE000000000000000B\",\n                    \"type\": \"defects\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\n                    \"type\": \"main_tastes\"\n                }\n            ],\n            \"createdAt\": \"2026-10-06T09:12:45.000000Z\",\n            \"closedAt\": null\n        },\n        {\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DA\",\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\n            \"evaluationType\": \"specialist\",\n            \"status\": \"closed\",\n            \"extractionMethod\": \"v60\",\n            \"cuppingScore\": \"84.25\",\n            \"isDefective\": false,\n            \"descriptive\": {\n                \"fragrance\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 12,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 9,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 8,\n                    \"note\": null\n                }\n            },\n            \"affective\": {\n                \"fragrance\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"overall\": {\n                    \"score\": 8,\n                    \"note\": \"Limpio y dulce, acidez c\u00edtrica.\"\n                }\n            },\n            \"extrinsics\": {\n                \"farming\": \"Agricultura org\u00e1nica\",\n                \"processing\": null,\n                \"trading\": \"Comercio directo\",\n                \"certifications\": null,\n                \"generalObservation\": null\n            },\n            \"tastes\": [\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000003\",\n                    \"type\": \"flavor\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000008\",\n                    \"type\": \"aroma\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\n                    \"type\": \"main_tastes\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE000000000000000C\",\n                    \"type\": \"mouthfeel\"\n                }\n            ],\n            \"createdAt\": \"2026-10-01T16:40:00.000000Z\",\n            \"closedAt\": \"2026-10-02T11:05:30.000000Z\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http:\/\/localhost\/api\/evaluations?page=1\",\n        \"last\": \"http:\/\/localhost\/api\/evaluations?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http:\/\/localhost\/api\/evaluations?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http:\/\/localhost\/api\/evaluations\",\n        \"per_page\": 15,\n        \"to\": 2,\n        \"total\": 2\n    }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List my evaluations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "user\/evaluations",
+                            "query": [
+                                {
+                                    "key": "coffeeId",
+                                    "value": "01M35F5JEZMS845TNPAEM1V8PF",
+                                    "description": "Filter by coffee ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "locationId",
+                                    "value": "01M35F5JDFXM13R1CA06FFWTNG",
+                                    "description": "Filter by location ULID. Must match an existing stored value.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Barcelona",
+                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "process",
+                                    "value": "Washed",
+                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "closed",
+                                    "description": "Filter by evaluation status. One of: open, closed.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMin",
+                                    "value": "80",
+                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "scoreMax",
+                                    "value": "95",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "cupping_score",
+                                    "description": "Sort field. One of: cupping_score, created_at, status.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "orderDirection",
+                                    "value": "desc",
+                                    "description": "Sort direction. One of: asc, desc.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/user\/evaluations?coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of the evaluations created by the authenticated\nspecialist, each including its taste notes (olfactory taxonomy references)\nand the offering it belongs to. Supports the same filtering and sorting as\nthe public list, except the evaluator, which is always the authenticated\nuser.\n\n**Authorization:** requires the `specialist` role and the `profile:read`\nor `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": [\n        {\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\n            \"evaluationType\": \"specialist\",\n            \"status\": \"open\",\n            \"extractionMethod\": \"espresso\",\n            \"cuppingScore\": null,\n            \"isDefective\": true,\n            \"descriptive\": {\n                \"fragrance\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 9,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 8,\n                    \"note\": null\n                }\n            },\n            \"affective\": {\n                \"fragrance\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 0,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 6,\n                    \"note\": null\n                },\n                \"overall\": {\n                    \"score\": 0,\n                    \"note\": null\n                }\n            },\n            \"extrinsics\": {\n                \"farming\": null,\n                \"processing\": null,\n                \"trading\": null,\n                \"certifications\": null,\n                \"generalObservation\": null\n            },\n            \"tastes\": [\n                {\n                    \"ref\": \"01JTAXN0DE000000000000000B\",\n                    \"type\": \"defects\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\n                    \"type\": \"main_tastes\"\n                }\n            ],\n            \"createdAt\": \"2026-10-06T09:12:45.000000Z\",\n            \"closedAt\": null\n        },\n        {\n            \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DA\",\n            \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\n            \"evaluationType\": \"specialist\",\n            \"status\": \"closed\",\n            \"extractionMethod\": \"v60\",\n            \"cuppingScore\": \"84.25\",\n            \"isDefective\": false,\n            \"descriptive\": {\n                \"fragrance\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 12,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 9,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 11,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 10,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 8,\n                    \"note\": null\n                }\n            },\n            \"affective\": {\n                \"fragrance\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"aroma\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"flavor\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"aftertaste\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"acidity\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"sweetness\": {\n                    \"score\": 8,\n                    \"note\": null\n                },\n                \"mouthfeel\": {\n                    \"score\": 7,\n                    \"note\": null\n                },\n                \"overall\": {\n                    \"score\": 8,\n                    \"note\": \"Limpio y dulce, acidez c\u00edtrica.\"\n                }\n            },\n            \"extrinsics\": {\n                \"farming\": \"Agricultura org\u00e1nica\",\n                \"processing\": null,\n                \"trading\": \"Comercio directo\",\n                \"certifications\": null,\n                \"generalObservation\": null\n            },\n            \"tastes\": [\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000003\",\n                    \"type\": \"flavor\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000008\",\n                    \"type\": \"aroma\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE0000000000000009\",\n                    \"type\": \"main_tastes\"\n                },\n                {\n                    \"ref\": \"01JTAXN0DE000000000000000C\",\n                    \"type\": \"mouthfeel\"\n                }\n            ],\n            \"createdAt\": \"2026-10-01T16:40:00.000000Z\",\n            \"closedAt\": \"2026-10-02T11:05:30.000000Z\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http:\/\/localhost\/api\/user\/evaluations?page=1\",\n        \"last\": \"http:\/\/localhost\/api\/user\/evaluations?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http:\/\/localhost\/api\/user\/evaluations?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http:\/\/localhost\/api\/user\/evaluations\",\n        \"per_page\": 15,\n        \"to\": 2,\n        \"total\": 2\n    }\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get my evaluation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "user\/evaluations\/:evaluation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/user\/evaluations\/:evaluation",
+                            "variable": [
+                                {
+                                    "id": "evaluation",
+                                    "key": "evaluation",
+                                    "value": "architecto",
+                                    "description": "The evaluation."
+                                },
+                                {
+                                    "id": "evaluation_ulid",
+                                    "key": "evaluation_ulid",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the evaluation."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single evaluation of the authenticated specialist with its taste\nnotes and associated offering. An evaluation that does not exist, or that\nbelongs to another user, returns `404 Not Found`, so the response never\nreveals whether another user's evaluation exists.\n\n**Authorization:** requires the `specialist` role and the `profile:read`\nor `profile:write` scope."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DB\",\n        \"offeringId\": \"01K6A3M8Q2V7XH4T9B5N1RCW0D\",\n        \"evaluationType\": \"specialist\",\n        \"status\": \"open\",\n        \"extractionMethod\": \"espresso\",\n        \"cuppingScore\": null,\n        \"isDefective\": true,\n        \"descriptive\": {\n            \"fragrance\": {\n                \"score\": 10,\n                \"note\": null\n            },\n            \"aroma\": {\n                \"score\": 11,\n                \"note\": null\n            },\n            \"flavor\": {\n                \"score\": 0,\n                \"note\": null\n            },\n            \"aftertaste\": {\n                \"score\": 0,\n                \"note\": null\n            },\n            \"acidity\": {\n                \"score\": 9,\n                \"note\": null\n            },\n            \"sweetness\": {\n                \"score\": 10,\n                \"note\": null\n            },\n            \"mouthfeel\": {\n                \"score\": 8,\n                \"note\": null\n            }\n        },\n        \"affective\": {\n            \"fragrance\": {\n                \"score\": 6,\n                \"note\": null\n            },\n            \"aroma\": {\n                \"score\": 7,\n                \"note\": null\n            },\n            \"flavor\": {\n                \"score\": 0,\n                \"note\": null\n            },\n            \"aftertaste\": {\n                \"score\": 0,\n                \"note\": null\n            },\n            \"acidity\": {\n                \"score\": 6,\n                \"note\": null\n            },\n            \"sweetness\": {\n                \"score\": 7,\n                \"note\": null\n            },\n            \"mouthfeel\": {\n                \"score\": 6,\n                \"note\": null\n            },\n            \"overall\": {\n                \"score\": 0,\n                \"note\": null\n            }\n        },\n        \"extrinsics\": {\n            \"farming\": null,\n            \"processing\": null,\n            \"trading\": null,\n            \"certifications\": null,\n            \"generalObservation\": null\n        },\n        \"tastes\": [\n            {\n                \"ref\": \"01JTAXN0DE000000000000000B\",\n                \"type\": \"defects\"\n            },\n            {\n                \"ref\": \"01JTAXN0DE0000000000000009\",\n                \"type\": \"main_tastes\"\n            }\n        ],\n        \"createdAt\": \"2026-10-06T09:12:45.000000Z\",\n        \"closedAt\": null\n    }\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"message\": \"No query results for model [App\\\\Models\\\\Evaluation].\"}",
+                            "name": "Not found or not the owner"
+                        }
+                    ]
+                },
+                {
                     "name": "Create an evaluation",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "evaluations",
+                            "path": "user\/evaluations",
                             "query": [],
-                            "raw": "{{baseUrl}}\/evaluations"
+                            "raw": "{{baseUrl}}\/user\/evaluations"
                         },
                         "method": "POST",
                         "header": [
@@ -321,9 +558,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "evaluations\/:evaluation_ulid",
+                            "path": "user\/evaluations\/:evaluation_ulid",
                             "query": [],
-                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid",
+                            "raw": "{{baseUrl}}\/user\/evaluations\/:evaluation_ulid",
                             "variable": [
                                 {
                                     "id": "evaluation_ulid",
@@ -376,9 +613,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "evaluations\/:evaluation_ulid\/close",
+                            "path": "user\/evaluations\/:evaluation_ulid\/close",
                             "query": [],
-                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid\/close",
+                            "raw": "{{baseUrl}}\/user\/evaluations\/:evaluation_ulid\/close",
                             "variable": [
                                 {
                                     "id": "evaluation_ulid",
@@ -434,9 +671,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "evaluations\/:evaluation_ulid",
+                            "path": "user\/evaluations\/:evaluation_ulid",
                             "query": [],
-                            "raw": "{{baseUrl}}\/evaluations\/:evaluation_ulid",
+                            "raw": "{{baseUrl}}\/user\/evaluations\/:evaluation_ulid",
                             "variable": [
                                 {
                                     "id": "evaluation_ulid",
