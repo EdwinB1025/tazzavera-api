@@ -1,0 +1,46 @@
+{
+    "data": [
+        {
+            "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PA",
+            "name": "Nomad Coffee Born",
+            "description": "Nomad Coffee al Born.",
+            "latitud": "41.38610000",
+            "longitud": "2.17940000",
+            "contacts": [
+                {
+                    "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4B9",
+                    "isPrimary": true,
+                    "phone": "+34 932 123 456",
+                    "email": "hola@cafeteria.example",
+                    "web": "https://cafeteria.example",
+                    "social": "@cafeteria.bcn",
+                    "address": "Carrer de la Riereta 1",
+                    "country": "España",
+                    "city": "Barcelona",
+                    "postalCode": "08001"
+                }
+            ]
+        },
+        {
+            "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PB",
+            "name": "Nomad Coffee Gràcia",
+            "description": null,
+            "latitud": null,
+            "longitud": null,
+            "contacts": [
+                {
+                    "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4BB",
+                    "isPrimary": true,
+                    "phone": null,
+                    "email": null,
+                    "web": null,
+                    "social": null,
+                    "address": "Carrer de Verdi 12",
+                    "country": "España",
+                    "city": "Barcelona",
+                    "postalCode": "08012"
+                }
+            ]
+        }
+    ]
+}

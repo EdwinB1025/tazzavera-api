@@ -34,14 +34,17 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
 
-        /**EDB 10/06/26: Routes for user to read their own contacts (personal data) */
+        /**EDB 10/06/26: Routes for user to read their own contacts and locations (personal and management data) */
         Route::middleware('can:view,user')->group(function () {
             Route::get('/users/{user}/contacts', [ContactController::class, 'index']);
+            Route::get('/users/{user}/locations', [LocationController::class, 'indexByUser']);
         });
 
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
+            Route::post('/locations', [LocationController::class, 'store'])
+                ->middleware(CheckTokenForAnyScope::using('profile:write')); //EDB 10/06/26: location + primary contact
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
             Route::post('/offerings', [OfferingController::class, 'store'])
                 ->middleware('owns.location:locations');
