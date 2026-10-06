@@ -413,6 +413,33 @@ test('specialist_gets_404_for_another_specialist_evaluation', function () {
         ->assertNotFound();
 });
 
+test('public_lists_evaluations_of_a_given_user', function () {
+    [$user] = authenticate('specialist');
+    $offering = createOfferingsForUser($user, 1, 1)->first();
+
+    $own = Evaluation::factory()
+        ->withTastes()
+        ->count(2)
+        ->create(['offering_id' => $offering->id, 'evaluator_id' => $user->id]);
+
+    Evaluation::factory()
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
+
+    $response = $this->getJson("/users/{$user->ulid}/evaluations");
+
+    $response->assertOk()
+        ->assertJsonCount(2, 'data');
+
+    expect(collect($response->json('data'))->pluck('ulid')->sort()->values()->all())
+        ->toBe($own->pluck('ulid')->sort()->values()->all());
+});
+
+test('public_evaluations_of_unknown_user_is_404', function () {
+    $this->getJson('/users/01M35F5RX4ADGC3CSDXXYB0000/evaluations')
+        ->assertNotFound();
+});
+
 test('user_evaluations_require_authentication', function () {
     $this->getJson('/user/evaluations')
         ->assertUnauthorized();

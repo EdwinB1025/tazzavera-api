@@ -20,6 +20,7 @@ Route::get('/offerings/{offering}', [OfferingController::class, 'show']);
 Route::get('/offerings', [OfferingController::class, 'index']);
 Route::get('/evaluations/{evaluation}', [EvaluationController::class, 'show']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
+Route::get('/users/{user}/evaluations', [EvaluationController::class, 'indexByUser']); //EDB 10/06/26: public evaluations of a given user (evaluator)
 Route::get('/coffees', [CoffeeController::class, 'index']);
 Route::get('/roasteries', [RoasteryController::class, 'index']);
 
