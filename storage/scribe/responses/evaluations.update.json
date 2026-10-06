@@ -87,7 +87,9 @@
                 "ref": "01JTAXN0DE0000000000000009",
                 "type": "main_tastes"
             }
-        ]
+        ],
+        "createdAt": "2026-10-06T09:12:45.000000Z",
+        "closedAt": null
     },
     "message": "Evaluation updated."
 }

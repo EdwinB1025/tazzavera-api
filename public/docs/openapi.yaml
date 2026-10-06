@@ -505,6 +505,8 @@ paths:
                       -
                         ref: 01JTAXN0DE0000000000000009
                         type: main_tastes
+                    createdAt: '2026-10-06T09:12:45.000000Z'
+                    closedAt: null
                 properties:
                   data:
                     type: object
@@ -728,6 +730,13 @@ paths:
                             type:
                               type: string
                               example: defects
+                      createdAt:
+                        type: string
+                        example: '2026-10-06T09:12:45.000000Z'
+                      closedAt:
+                        type: string
+                        example: null
+                        nullable: true
       tags:
         - Evaluations
       security: []
@@ -812,6 +821,8 @@ paths:
                       -
                         ref: 01JTAXN0DE0000000000000009
                         type: main_tastes
+                    createdAt: '2026-10-06T09:12:45.000000Z'
+                    closedAt: null
                   message: 'Evaluation updated.'
                 properties:
                   data:
@@ -1036,6 +1047,13 @@ paths:
                             type:
                               type: string
                               example: defects
+                      createdAt:
+                        type: string
+                        example: '2026-10-06T09:12:45.000000Z'
+                      closedAt:
+                        type: string
+                        example: null
+                        nullable: true
                   message:
                     type: string
                     example: 'Evaluation updated.'
@@ -1657,6 +1675,8 @@ paths:
                         -
                           ref: 01JTAXN0DE0000000000000009
                           type: main_tastes
+                      createdAt: '2026-10-06T09:12:45.000000Z'
+                      closedAt: null
                     -
                       ulid: 01M35F5RX4ADGC3CSDXXYB08DA
                       offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
@@ -1731,6 +1751,8 @@ paths:
                         -
                           ref: 01JTAXN0DE000000000000000C
                           type: mouthfeel
+                      createdAt: '2026-10-01T16:40:00.000000Z'
+                      closedAt: '2026-10-02T11:05:30.000000Z'
                   links:
                     first: 'http://localhost/api/evaluations?page=1'
                     last: 'http://localhost/api/evaluations?page=1'
@@ -1829,6 +1851,8 @@ paths:
                           -
                             ref: 01JTAXN0DE0000000000000009
                             type: main_tastes
+                        createdAt: '2026-10-06T09:12:45.000000Z'
+                        closedAt: null
                       -
                         ulid: 01M35F5RX4ADGC3CSDXXYB08DA
                         offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
@@ -1903,6 +1927,8 @@ paths:
                           -
                             ref: 01JTAXN0DE000000000000000C
                             type: mouthfeel
+                        createdAt: '2026-10-01T16:40:00.000000Z'
+                        closedAt: '2026-10-02T11:05:30.000000Z'
                     items:
                       type: object
                       properties:
@@ -2125,6 +2151,13 @@ paths:
                               type:
                                 type: string
                                 example: defects
+                        createdAt:
+                          type: string
+                          example: '2026-10-06T09:12:45.000000Z'
+                        closedAt:
+                          type: string
+                          example: null
+                          nullable: true
                   links:
                     type: object
                     properties:
@@ -2278,6 +2311,8 @@ paths:
                       -
                         ref: 01JTAXN0DE0000000000000009
                         type: main_tastes
+                    createdAt: '2026-10-06T09:12:45.000000Z'
+                    closedAt: null
                   message: 'Evaluation created.'
                 properties:
                   data:
@@ -2502,6 +2537,13 @@ paths:
                             type:
                               type: string
                               example: defects
+                      createdAt:
+                        type: string
+                        example: '2026-10-06T09:12:45.000000Z'
+                      closedAt:
+                        type: string
+                        example: null
+                        nullable: true
                   message:
                     type: string
                     example: 'Evaluation created.'

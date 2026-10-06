@@ -134,7 +134,9 @@ endpoints:
                           "ref": "01JTAXN0DE0000000000000009",
                           "type": "main_tastes"
                       }
-                  ]
+                  ],
+                  "createdAt": "2026-10-06T09:12:45.000000Z",
+                  "closedAt": null
               }
           }
         headers: []
@@ -394,7 +396,9 @@ endpoints:
                               "ref": "01JTAXN0DE0000000000000009",
                               "type": "main_tastes"
                           }
-                      ]
+                      ],
+                      "createdAt": "2026-10-06T09:12:45.000000Z",
+                      "closedAt": null
                   },
                   {
                       "ulid": "01M35F5RX4ADGC3CSDXXYB08DA",
@@ -492,7 +496,9 @@ endpoints:
                               "ref": "01JTAXN0DE000000000000000C",
                               "type": "mouthfeel"
                           }
-                      ]
+                      ],
+                      "createdAt": "2026-10-01T16:40:00.000000Z",
+                      "closedAt": "2026-10-02T11:05:30.000000Z"
                   }
               ],
               "links": {
@@ -1432,7 +1438,9 @@ endpoints:
                           "ref": "01JTAXN0DE0000000000000009",
                           "type": "main_tastes"
                       }
-                  ]
+                  ],
+                  "createdAt": "2026-10-06T09:12:45.000000Z",
+                  "closedAt": null
               },
               "message": "Evaluation created."
           }
@@ -2375,7 +2383,9 @@ endpoints:
                           "ref": "01JTAXN0DE0000000000000009",
                           "type": "main_tastes"
                       }
-                  ]
+                  ],
+                  "createdAt": "2026-10-06T09:12:45.000000Z",
+                  "closedAt": null
               },
               "message": "Evaluation updated."
           }
