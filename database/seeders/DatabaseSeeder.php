@@ -33,5 +33,12 @@ class DatabaseSeeder extends Seeder
             $locations = mt_rand(1, 4);
             $this->callWith(LocationSeeder::class, ['locations' => $locations]);
         }
+
+        $this->call(
+            [
+                OfferingBaselineSeeder::class,
+                VerifiedOfferingSeeder::class,
+            ]
+        );
     }
 }
