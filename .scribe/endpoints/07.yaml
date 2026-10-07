@@ -1,26 +1,145 @@
-name: 'Coffee Inventory'
+name: Locations
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: coffeeInventory
+    uri: 'users/{user_ulid}/locations'
     metadata:
       custom: []
-      groupName: 'Coffee Inventory'
+      groupName: Locations
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List coffee inventory'
+      title: "List a user's locations"
       description: |-
-        Returns coffee inventory items, each with coffee details (including
-        currently valid certifications) and roastery. Used by coffeeshops to
-        retrieve available coffees when creating an offering. Supports filtering
-        via query parameters.
+        Returns the locations owned by the given user, each with its contact
+        details. Used by the coffeeshop's 'Manage locations' page.
 
-        Only non-expired certifications are included (those with no expiry, or an
-        expiry date in the future).
+        **Authorization:** requires the `profile:read` or `profile:write` scope
+        and the user must be the authenticated user (policy). Another user
+        receives `403 Forbidden`.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_ulid:
+        custom: []
+        name: user_ulid
+        description: 'The ULID of the authenticated user.'
+        required: true
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |
+          {
+              "data": [
+                  {
+                      "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PA",
+                      "name": "Nomad Coffee Born",
+                      "description": "Nomad Coffee al Born.",
+                      "latitud": "41.38610000",
+                      "longitud": "2.17940000",
+                      "contacts": [
+                          {
+                              "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4B9",
+                              "isPrimary": true,
+                              "phone": "+34 932 123 456",
+                              "email": "hola@cafeteria.example",
+                              "web": "https://cafeteria.example",
+                              "social": "@cafeteria.bcn",
+                              "address": "Carrer de la Riereta 1",
+                              "country": "España",
+                              "city": "Barcelona",
+                              "postalCode": "08001"
+                          }
+                      ]
+                  },
+                  {
+                      "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PB",
+                      "name": "Nomad Coffee Gràcia",
+                      "description": null,
+                      "latitud": null,
+                      "longitud": null,
+                      "contacts": [
+                          {
+                              "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4BB",
+                              "isPrimary": true,
+                              "phone": null,
+                              "email": null,
+                              "web": null,
+                              "social": null,
+                              "address": "Carrer de Verdi 12",
+                              "country": "España",
+                              "city": "Barcelona",
+                              "postalCode": "08012"
+                          }
+                      ]
+                  }
+              ]
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |
+          {
+              "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |
+          {
+              "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: locations
+    metadata:
+      custom: []
+      groupName: Locations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List my locations'
+      description: |-
+        Returns the locations owned by the authenticated user, each with its
+        contact details. Used by coffeeshops to retrieve their locations when
+        creating an offering.
 
         **Authorization:** requires the `coffeeshop` role and the `profile:read`
         or `profile:write` scope.
@@ -32,80 +151,8 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      coffeeName:
-        custom: []
-        name: coffeeName
-        description: 'Filter by coffee name (max 150 chars). Must not be greater than 150 characters.'
-        required: false
-        example: Geisha
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      originCountry:
-        custom: []
-        name: originCountry
-        description: 'Filter by country of origin (max 60 chars). Must not be greater than 60 characters.'
-        required: false
-        example: Colombia
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      originRegion:
-        custom: []
-        name: originRegion
-        description: 'Filter by region of origin (max 90 chars). Must not be greater than 90 characters.'
-        required: false
-        example: Huila
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      process:
-        custom: []
-        name: process
-        description: 'Filter by processing method (max 60 chars). Must not be greater than 60 characters.'
-        required: false
-        example: Washed
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      producer:
-        custom: []
-        name: producer
-        description: 'Filter by producer name (max 150 chars). Must not be greater than 150 characters.'
-        required: false
-        example: 'Finca La Esperanza'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      city:
-        custom: []
-        name: city
-        description: 'Filter by city (max 90 chars). Must not be greater than 90 characters.'
-        required: false
-        example: Barcelona
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanQueryParameters:
-      coffeeName: Geisha
-      originCountry: Colombia
-      originRegion: Huila
-      process: Washed
-      producer: 'Finca La Esperanza'
-      city: Barcelona
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -117,57 +164,327 @@ endpoints:
           {
               "data": [
                   {
-                      "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XC",
-                      "roastLot": "L-2026-014",
-                      "productionDate": "2026-09-19",
-                      "coffee": {
-                          "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZG",
-                          "name": "Huila El Mirador",
-                          "roastLevel": "medium",
-                          "process": "washed",
-                          "variety": "Caturra",
-                          "producer": null,
-                          "country": "Colombia",
-                          "region": "Huila",
-                          "altitude": 1800,
-                          "lot": "HM-07",
-                          "certifications": [
-                              {
-                                  "code": "organic",
-                                  "description": "Certified organic production."
-                              }
-                          ]
-                      },
-                      "roastery": {
-                          "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
-                          "name": "Nómada Roasters",
-                          "description": "Tostador de especialidad en Barcelona."
-                      }
+                      "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PA",
+                      "name": "Tazavera Gràcia",
+                      "description": "Barra de especialidad en Gràcia.",
+                      "latitud": "41.40290000",
+                      "longitud": "2.15650000",
+                      "contacts": [
+                          {
+                              "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4B9",
+                              "isPrimary": true,
+                              "phone": null,
+                              "email": null,
+                              "web": null,
+                              "social": null,
+                              "address": null,
+                              "country": null,
+                              "city": null,
+                              "postalCode": null
+                          },
+                          {
+                              "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4BA",
+                              "isPrimary": false,
+                              "phone": null,
+                              "email": "pedidos@tazavera.test",
+                              "web": null,
+                              "social": null,
+                              "address": "Carrer de Verdi 12",
+                              "country": "Spain",
+                              "city": "Barcelona",
+                              "postalCode": null
+                          }
+                      ]
                   },
                   {
-                      "ulid": "01K5Y4R7N2D9W6T3H8M1Q5V0XD",
-                      "roastLot": "L-2026-021",
-                      "productionDate": "2026-09-24",
-                      "coffee": {
-                          "ulid": "01K5X2B8P4F7J3N9R6T1W5Y0ZH",
-                          "name": "Sidama Bensa",
-                          "roastLevel": "light",
-                          "process": "natural",
-                          "variety": "Heirloom",
-                          "producer": "Bensa Cooperative",
-                          "country": "Ethiopia",
-                          "region": "Sidama",
-                          "altitude": 2100,
-                          "lot": "SB-12",
-                          "certifications": []
-                      },
-                      "roastery": {
-                          "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
-                          "name": "Nómada Roasters",
-                          "description": "Tostador de especialidad en Barcelona."
-                      }
+                      "ulid": "01K5Z9C2T6H8M3Q7V1X4B9N2PB",
+                      "name": "Tazavera Born",
+                      "description": "Tienda y barra en el Born.",
+                      "latitud": "41.38490000",
+                      "longitud": "2.18210000",
+                      "contacts": [
+                          {
+                              "ulid": "01K5ZC0NT4C7A1H8M3Q7V1X4BB",
+                              "isPrimary": true,
+                              "phone": "+34 932 765 432",
+                              "email": null,
+                              "web": "https://tazavera.test/born",
+                              "social": "@tazavera.born",
+                              "address": null,
+                              "country": null,
+                              "city": null,
+                              "postalCode": "08003"
+                          }
+                      ]
                   }
               ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: locations
+    metadata:
+      custom: []
+      groupName: Locations
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a location'
+      description: |-
+        Creates a location of the authenticated coffeeshop together with its
+        primary contact, in a single database transaction (all-or-nothing). The
+        owner is always the authenticated user, never a value from the body.
+        The coordinates are optional and computed by the client; when one is
+        sent, the other is required.
+
+        **Authorization:** requires the `coffeeshop` role and the `profile:write`
+        scope.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Location name (max 150 characters). Must not be greater than 150 characters.'
+        required: true
+        example: 'Cafeteria Gràcia'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: 'Optional. Short description (max 255 characters). Must not be greater than 255 characters.'
+        required: false
+        example: 'Barra de especialidad en Gràcia.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      latitud:
+        custom: []
+        name: latitud
+        description: 'Optional. Latitude (-90 to 90), computed by the client. Required when longitud is sent. This field is required when <code>longitud</code> is present. Must be between -90 and 90.'
+        required: false
+        example: 41.4029
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      longitud:
+        custom: []
+        name: longitud
+        description: 'Optional. Longitude (-180 to 180), computed by the client. Required when latitud is sent. This field is required when <code>latitud</code> is present. Must be between -180 and 180.'
+        required: false
+        example: 2.1565
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact:
+        custom: []
+        name: contact
+        description: 'Primary contact of the location. address and city are required.'
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      contact.phone:
+        custom: []
+        name: contact.phone
+        description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
+        required: false
+        example: '+34 932 123 456'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact.email:
+        custom: []
+        name: contact.email
+        description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
+        required: false
+        example: hola@cafeteria.example
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact.web:
+        custom: []
+        name: contact.web
+        description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
+        required: false
+        example: 'https://cafeteria.example'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact.social:
+        custom: []
+        name: contact.social
+        description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
+        required: false
+        example: '@cafeteria.bcn'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact.address:
+        custom: []
+        name: contact.address
+        description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
+        required: true
+        example: 'Carrer de Verdi 12'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      contact.country:
+        custom: []
+        name: contact.country
+        description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
+        required: false
+        example: España
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      contact.city:
+        custom: []
+        name: contact.city
+        description: 'City (max 90 characters). Must not be greater than 90 characters.'
+        required: true
+        example: Barcelona
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      contact.postal_code:
+        custom: []
+        name: contact.postal_code
+        description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
+        required: false
+        example: '08012'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Cafeteria Gràcia'
+      description: 'Barra de especialidad en Gràcia.'
+      latitud: 41.4029
+      longitud: 2.1565
+      contact:
+        phone: '+34 932 123 456'
+        email: hola@cafeteria.example
+        web: 'https://cafeteria.example'
+        social: '@cafeteria.bcn'
+        address: 'Carrer de Verdi 12'
+        country: España
+        city: Barcelona
+        postal_code: '08012'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |
+          {
+              "data": {
+                  "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NQ",
+                  "name": "Cafeteria Gràcia",
+                  "description": "Barra de especialidad en Gràcia.",
+                  "latitud": "41.40290000",
+                  "longitud": "2.15650000",
+                  "contacts": [
+                      {
+                          "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NR",
+                          "isPrimary": true,
+                          "phone": "+34 932 123 456",
+                          "email": "hola@cafeteria.example",
+                          "web": "https://cafeteria.example",
+                          "social": "@cafeteria.bcn",
+                          "address": "Carrer de Verdi 12",
+                          "country": "España",
+                          "city": "Barcelona",
+                          "postalCode": "08012"
+                      }
+                  ]
+              },
+              "message": "Location created."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |
+          {
+              "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |
+          {
+              "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The latitud field must be between -90 and 90. (and 2 more errors)",
+              "errors": {
+                  "latitud": [
+                      "The latitud field must be between -90 and 90."
+                  ],
+                  "contact.address": [
+                      "The contact.address field is required."
+                  ],
+                  "contact.city": [
+                      "The contact.city field is required."
+                  ]
+              }
           }
         headers: []
         description: ''

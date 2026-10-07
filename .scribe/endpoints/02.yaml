@@ -381,9 +381,9 @@ endpoints:
       coffeeshopUlid:
         custom: []
         name: coffeeshopUlid
-        description: 'Filter by coffeeshop (user) ULID. Must match an existing stored value.'
+        description: 'Filter by coffee shop: the `ulid` returned by GET /coffeeshops (the coffee shop user ULID). Returns the offerings of all its locations; used by the Offerings tab of the coffee shop detail. Must match an existing stored value.'
         required: false
-        example: 01J8ZK...
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -761,7 +761,7 @@ endpoints:
       producer: 'Finca La Esperanza'
       variety: Caturra
       city: Barcelona
-      coffeeshopUlid: 01J8ZK...
+      coffeeshopUlid: 01M35F5RX4ADGC3CSDXXYB08DA
       locationUlid: 01J8ZK...
       verified: true
       cuppingAvgMin: 80.0

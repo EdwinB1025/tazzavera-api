@@ -29,14 +29,11 @@ class DatabaseSeeder extends Seeder
         $this->callWith(RoasterySeeder::class, ['count' => 25]);
         $this->callWith(CoffeeSeeder::class, ['count' => 50]);
         $this->callWith(CoffeeInventorySeeder::class, ['count' => 30]);
-        for ($i = 1; $i <= 20; $i++) {
-            $locations = mt_rand(1, 4);
-            $this->callWith(LocationSeeder::class, ['locations' => $locations]);
-        }
+        $this->call(LocationSeeder::class); //EDB 10/06/26: the Barcelona coffee shops of the data file
 
         $this->call(
             [
-                OfferingBaselineSeeder::class,
+                CreateOfferingSeeder::class,
                 VerifiedOfferingSeeder::class,
             ]
         );

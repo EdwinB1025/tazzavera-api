@@ -1,0 +1,24 @@
+{
+    "data": {
+        "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NQ",
+        "name": "Cafeteria Gràcia",
+        "description": "Barra de especialidad en Gràcia.",
+        "latitud": "41.40290000",
+        "longitud": "2.15650000",
+        "contacts": [
+            {
+                "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NR",
+                "isPrimary": true,
+                "phone": "+34 932 123 456",
+                "email": "hola@cafeteria.example",
+                "web": "https://cafeteria.example",
+                "social": "@cafeteria.bcn",
+                "address": "Carrer de Verdi 12",
+                "country": "España",
+                "city": "Barcelona",
+                "postalCode": "08012"
+            }
+        ]
+    },
+    "message": "Location created."
+}

@@ -14,6 +14,9 @@ tags:
     name: Coffees
     description: ''
   -
+    name: 'Coffee shops'
+    description: ''
+  -
     name: Evaluations
     description: ''
   -
@@ -423,6 +426,572 @@ paths:
       tags:
         - Coffees
       security: []
+  /coffeeshops:
+    get:
+      summary: 'List coffee shops'
+      operationId: listCoffeeShops
+      description: "Returns a paginated list of coffee shops (businesses) that have at least\none location, each with its counters and all its locations (the map\nshows every location of the filtered coffee shops). Only business data\nis returned: never the owner's email, surname, personal contacts or\naccount data. Sorted by name ascending by default."
+      parameters:
+        -
+          in: query
+          name: name
+          description: 'Filter by the coffee shop (business) name. Partial, case-insensitive match. Must not be greater than 150 characters.'
+          example: nomad
+          required: false
+          schema:
+            type: string
+            description: 'Filter by the coffee shop (business) name. Partial, case-insensitive match. Must not be greater than 150 characters.'
+            example: nomad
+        -
+          in: query
+          name: city
+          description: 'Filter coffee shops with at least one location whose primary contact is in this city. Must not be greater than 90 characters.'
+          example: Barcelona
+          required: false
+          schema:
+            type: string
+            description: 'Filter coffee shops with at least one location whose primary contact is in this city. Must not be greater than 90 characters.'
+            example: Barcelona
+        -
+          in: query
+          name: postalCode
+          description: 'Filter coffee shops with at least one location whose primary contact has this postal code. Must not be greater than 12 characters.'
+          example: '08001'
+          required: false
+          schema:
+            type: string
+            description: 'Filter coffee shops with at least one location whose primary contact has this postal code. Must not be greater than 12 characters.'
+            example: '08001'
+        -
+          in: query
+          name: verified
+          description: 'Filter by verified offerings: 1 returns only coffee shops with at least one verified offering in any of their locations, 0 only those without any. Omit it to return both.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Filter by verified offerings: 1 returns only coffee shops with at least one verified offering in any of their locations, 0 only those without any. Omit it to return both.'
+            example: true
+        -
+          in: query
+          name: orderBy
+          description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
+          example: name
+          required: false
+          schema:
+            type: string
+            description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
+            example: name
+            enum:
+              - name
+        -
+          in: query
+          name: orderDirection
+          description: 'Sort direction. One of: asc, desc. Default: asc.'
+          example: asc
+          required: false
+          schema:
+            type: string
+            description: 'Sort direction. One of: asc, desc. Default: asc.'
+            example: asc
+            enum:
+              - asc
+              - desc
+        -
+          in: query
+          name: page
+          description: 'Page number. Default: 1. Must be at least 1.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Page number. Default: 1. Must be at least 1.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01K9C0FFEE0NMD000000000001
+                      name: 'Nomad Coffee'
+                      locationsCount: 2
+                      offeringsCount: 4
+                      verifiedOfferingsCount: 1
+                      locations:
+                        -
+                          ulid: 01K9C0FFEE0NMD0L0C00000001
+                          name: 'Nomad Coffee Born'
+                          description: 'Nomad Coffee al Born.'
+                          latitud: '41.38610000'
+                          longitud: '2.17940000'
+                          address: 'Passatge Sert 12'
+                          city: Barcelona
+                          postalCode: '08003'
+                          country: España
+                          phone: '+34 933 000 001'
+                          web: 'https://nomad.example'
+                          social: '@nomad.bcn'
+                        -
+                          ulid: 01K9C0FFEE0NMD0L0C00000002
+                          name: 'Nomad Coffee Raval'
+                          description: 'Nomad Coffee al Raval.'
+                          latitud: '41.37990000'
+                          longitud: '2.16770000'
+                          address: 'Carrer de la Riereta 13'
+                          city: Barcelona
+                          postalCode: '08001'
+                          country: España
+                          phone: null
+                          web: 'https://nomad.example'
+                          social: '@nomad.bcn'
+                    -
+                      ulid: 01K9C0FFEE0SYR000000000001
+                      name: 'Syra Coffee'
+                      locationsCount: 1
+                      offeringsCount: 2
+                      verifiedOfferingsCount: 0
+                      locations:
+                        -
+                          ulid: 01K9C0FFEE0SYR0L0C00000001
+                          name: 'Syra Coffee Gràcia'
+                          description: 'Syra Coffee a Gràcia.'
+                          latitud: '41.40210000'
+                          longitud: '2.15800000'
+                          address: 'Carrer de Sant Domènec 1'
+                          city: Barcelona
+                          postalCode: '08012'
+                          country: España
+                          phone: null
+                          web: null
+                          social: '@syra.coffee'
+                  links:
+                    first: 'http://localhost/coffeeshops?page=1'
+                    last: 'http://localhost/coffeeshops?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://localhost/coffeeshops?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    path: 'http://localhost/coffeeshops'
+                    per_page: 15
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01K9C0FFEE0NMD000000000001
+                        name: 'Nomad Coffee'
+                        locationsCount: 2
+                        offeringsCount: 4
+                        verifiedOfferingsCount: 1
+                        locations:
+                          -
+                            ulid: 01K9C0FFEE0NMD0L0C00000001
+                            name: 'Nomad Coffee Born'
+                            description: 'Nomad Coffee al Born.'
+                            latitud: '41.38610000'
+                            longitud: '2.17940000'
+                            address: 'Passatge Sert 12'
+                            city: Barcelona
+                            postalCode: '08003'
+                            country: España
+                            phone: '+34 933 000 001'
+                            web: 'https://nomad.example'
+                            social: '@nomad.bcn'
+                          -
+                            ulid: 01K9C0FFEE0NMD0L0C00000002
+                            name: 'Nomad Coffee Raval'
+                            description: 'Nomad Coffee al Raval.'
+                            latitud: '41.37990000'
+                            longitud: '2.16770000'
+                            address: 'Carrer de la Riereta 13'
+                            city: Barcelona
+                            postalCode: '08001'
+                            country: España
+                            phone: null
+                            web: 'https://nomad.example'
+                            social: '@nomad.bcn'
+                      -
+                        ulid: 01K9C0FFEE0SYR000000000001
+                        name: 'Syra Coffee'
+                        locationsCount: 1
+                        offeringsCount: 2
+                        verifiedOfferingsCount: 0
+                        locations:
+                          -
+                            ulid: 01K9C0FFEE0SYR0L0C00000001
+                            name: 'Syra Coffee Gràcia'
+                            description: 'Syra Coffee a Gràcia.'
+                            latitud: '41.40210000'
+                            longitud: '2.15800000'
+                            address: 'Carrer de Sant Domènec 1'
+                            city: Barcelona
+                            postalCode: '08012'
+                            country: España
+                            phone: null
+                            web: null
+                            social: '@syra.coffee'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01K9C0FFEE0NMD000000000001
+                        name:
+                          type: string
+                          example: 'Nomad Coffee'
+                        locationsCount:
+                          type: integer
+                          example: 2
+                        offeringsCount:
+                          type: integer
+                          example: 4
+                        verifiedOfferingsCount:
+                          type: integer
+                          example: 1
+                        locations:
+                          type: array
+                          example:
+                            -
+                              ulid: 01K9C0FFEE0NMD0L0C00000001
+                              name: 'Nomad Coffee Born'
+                              description: 'Nomad Coffee al Born.'
+                              latitud: '41.38610000'
+                              longitud: '2.17940000'
+                              address: 'Passatge Sert 12'
+                              city: Barcelona
+                              postalCode: '08003'
+                              country: España
+                              phone: '+34 933 000 001'
+                              web: 'https://nomad.example'
+                              social: '@nomad.bcn'
+                            -
+                              ulid: 01K9C0FFEE0NMD0L0C00000002
+                              name: 'Nomad Coffee Raval'
+                              description: 'Nomad Coffee al Raval.'
+                              latitud: '41.37990000'
+                              longitud: '2.16770000'
+                              address: 'Carrer de la Riereta 13'
+                              city: Barcelona
+                              postalCode: '08001'
+                              country: España
+                              phone: null
+                              web: 'https://nomad.example'
+                              social: '@nomad.bcn'
+                          items:
+                            type: object
+                            properties:
+                              ulid:
+                                type: string
+                                example: 01K9C0FFEE0NMD0L0C00000001
+                              name:
+                                type: string
+                                example: 'Nomad Coffee Born'
+                              description:
+                                type: string
+                                example: 'Nomad Coffee al Born.'
+                              latitud:
+                                type: string
+                                example: '41.38610000'
+                              longitud:
+                                type: string
+                                example: '2.17940000'
+                              address:
+                                type: string
+                                example: 'Passatge Sert 12'
+                              city:
+                                type: string
+                                example: Barcelona
+                              postalCode:
+                                type: string
+                                example: '08003'
+                              country:
+                                type: string
+                                example: España
+                              phone:
+                                type: string
+                                example: '+34 933 000 001'
+                              web:
+                                type: string
+                                example: 'https://nomad.example'
+                              social:
+                                type: string
+                                example: '@nomad.bcn'
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://localhost/coffeeshops?page=1'
+                      last:
+                        type: string
+                        example: 'http://localhost/coffeeshops?page=1'
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                      next:
+                        type: string
+                        example: null
+                        nullable: true
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            active: false
+                          -
+                            url: 'http://localhost/coffeeshops?page=1'
+                            label: '1'
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                              nullable: true
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://localhost/coffeeshops'
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected order by is invalid.'
+                  errors:
+                    orderBy:
+                      - 'The selected order by is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected order by is invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      orderBy:
+                        type: array
+                        example:
+                          - 'The selected order by is invalid.'
+                        items:
+                          type: string
+      tags:
+        - 'Coffee shops'
+      security: []
+  '/coffeeshops/{user_ulid}':
+    get:
+      summary: 'Get a coffee shop'
+      operationId: getACoffeeShop
+      description: "Returns one coffee shop (business) by its ULID, with its counters and\nlocations. The detail page shows two tabs: **Offerings**, read with\n`GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the\n`locations` array of this response. A ULID that does not exist, or that\nis not a coffee shop with at least one location, returns `404 Not Found`."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    ulid: 01K9C0FFEE0NMD000000000001
+                    name: 'Nomad Coffee'
+                    locationsCount: 2
+                    offeringsCount: 4
+                    verifiedOfferingsCount: 1
+                    locations:
+                      -
+                        ulid: 01K9C0FFEE0NMD0L0C00000001
+                        name: 'Nomad Coffee Born'
+                        description: 'Nomad Coffee al Born.'
+                        latitud: '41.38610000'
+                        longitud: '2.17940000'
+                        address: 'Passatge Sert 12'
+                        city: Barcelona
+                        postalCode: '08003'
+                        country: España
+                        phone: '+34 933 000 001'
+                        web: 'https://nomad.example'
+                        social: '@nomad.bcn'
+                      -
+                        ulid: 01K9C0FFEE0NMD0L0C00000002
+                        name: 'Nomad Coffee Raval'
+                        description: 'Nomad Coffee al Raval.'
+                        latitud: '41.37990000'
+                        longitud: '2.16770000'
+                        address: 'Carrer de la Riereta 13'
+                        city: Barcelona
+                        postalCode: '08001'
+                        country: España
+                        phone: null
+                        web: 'https://nomad.example'
+                        social: '@nomad.bcn'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ulid:
+                        type: string
+                        example: 01K9C0FFEE0NMD000000000001
+                      name:
+                        type: string
+                        example: 'Nomad Coffee'
+                      locationsCount:
+                        type: integer
+                        example: 2
+                      offeringsCount:
+                        type: integer
+                        example: 4
+                      verifiedOfferingsCount:
+                        type: integer
+                        example: 1
+                      locations:
+                        type: array
+                        example:
+                          -
+                            ulid: 01K9C0FFEE0NMD0L0C00000001
+                            name: 'Nomad Coffee Born'
+                            description: 'Nomad Coffee al Born.'
+                            latitud: '41.38610000'
+                            longitud: '2.17940000'
+                            address: 'Passatge Sert 12'
+                            city: Barcelona
+                            postalCode: '08003'
+                            country: España
+                            phone: '+34 933 000 001'
+                            web: 'https://nomad.example'
+                            social: '@nomad.bcn'
+                          -
+                            ulid: 01K9C0FFEE0NMD0L0C00000002
+                            name: 'Nomad Coffee Raval'
+                            description: 'Nomad Coffee al Raval.'
+                            latitud: '41.37990000'
+                            longitud: '2.16770000'
+                            address: 'Carrer de la Riereta 13'
+                            city: Barcelona
+                            postalCode: '08001'
+                            country: España
+                            phone: null
+                            web: 'https://nomad.example'
+                            social: '@nomad.bcn'
+                        items:
+                          type: object
+                          properties:
+                            ulid:
+                              type: string
+                              example: 01K9C0FFEE0NMD0L0C00000001
+                            name:
+                              type: string
+                              example: 'Nomad Coffee Born'
+                            description:
+                              type: string
+                              example: 'Nomad Coffee al Born.'
+                            latitud:
+                              type: string
+                              example: '41.38610000'
+                            longitud:
+                              type: string
+                              example: '2.17940000'
+                            address:
+                              type: string
+                              example: 'Passatge Sert 12'
+                            city:
+                              type: string
+                              example: Barcelona
+                            postalCode:
+                              type: string
+                              example: '08003'
+                            country:
+                              type: string
+                              example: España
+                            phone:
+                              type: string
+                              example: '+34 933 000 001'
+                            web:
+                              type: string
+                              example: 'https://nomad.example'
+                            social:
+                              type: string
+                              example: '@nomad.bcn'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\User] 01M35F5RX4ADGC3CSDXXYB08DA'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\User] 01M35F5RX4ADGC3CSDXXYB08DA'
+      tags:
+        - 'Coffee shops'
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_ulid
+        description: 'The ULID of the coffee shop (its user ULID).'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
   '/evaluations/{evaluation_ulid}':
     get:
       summary: 'Get an evaluation'
@@ -4061,7 +4630,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: architecto
+        example: 01M497E37SFA9YD2GSV2QNC60N
         required: true
         schema:
           type: string
@@ -4882,6 +5451,197 @@ paths:
         required: true
         schema:
           type: string
+  '/users/{user_ulid}/locations':
+    get:
+      summary: "List a user's locations"
+      operationId: listAUsersLocations
+      description: "Returns the locations owned by the given user, each with its contact\ndetails. Used by the coffeeshop's 'Manage locations' page.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope\nand the user must be the authenticated user (policy). Another user\nreceives `403 Forbidden`."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01K5Z9C2T6H8M3Q7V1X4B9N2PA
+                      name: 'Nomad Coffee Born'
+                      description: 'Nomad Coffee al Born.'
+                      latitud: '41.38610000'
+                      longitud: '2.17940000'
+                      contacts:
+                        -
+                          ulid: 01K5ZC0NT4C7A1H8M3Q7V1X4B9
+                          isPrimary: true
+                          phone: '+34 932 123 456'
+                          email: hola@cafeteria.example
+                          web: 'https://cafeteria.example'
+                          social: '@cafeteria.bcn'
+                          address: 'Carrer de la Riereta 1'
+                          country: España
+                          city: Barcelona
+                          postalCode: '08001'
+                    -
+                      ulid: 01K5Z9C2T6H8M3Q7V1X4B9N2PB
+                      name: 'Nomad Coffee Gràcia'
+                      description: null
+                      latitud: null
+                      longitud: null
+                      contacts:
+                        -
+                          ulid: 01K5ZC0NT4C7A1H8M3Q7V1X4BB
+                          isPrimary: true
+                          phone: null
+                          email: null
+                          web: null
+                          social: null
+                          address: 'Carrer de Verdi 12'
+                          country: España
+                          city: Barcelona
+                          postalCode: '08012'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01K5Z9C2T6H8M3Q7V1X4B9N2PA
+                        name: 'Nomad Coffee Born'
+                        description: 'Nomad Coffee al Born.'
+                        latitud: '41.38610000'
+                        longitud: '2.17940000'
+                        contacts:
+                          -
+                            ulid: 01K5ZC0NT4C7A1H8M3Q7V1X4B9
+                            isPrimary: true
+                            phone: '+34 932 123 456'
+                            email: hola@cafeteria.example
+                            web: 'https://cafeteria.example'
+                            social: '@cafeteria.bcn'
+                            address: 'Carrer de la Riereta 1'
+                            country: España
+                            city: Barcelona
+                            postalCode: '08001'
+                      -
+                        ulid: 01K5Z9C2T6H8M3Q7V1X4B9N2PB
+                        name: 'Nomad Coffee Gràcia'
+                        description: null
+                        latitud: null
+                        longitud: null
+                        contacts:
+                          -
+                            ulid: 01K5ZC0NT4C7A1H8M3Q7V1X4BB
+                            isPrimary: true
+                            phone: null
+                            email: null
+                            web: null
+                            social: null
+                            address: 'Carrer de Verdi 12'
+                            country: España
+                            city: Barcelona
+                            postalCode: '08012'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01K5Z9C2T6H8M3Q7V1X4B9N2PA
+                        name:
+                          type: string
+                          example: 'Nomad Coffee Born'
+                        description:
+                          type: string
+                          example: 'Nomad Coffee al Born.'
+                        latitud:
+                          type: string
+                          example: '41.38610000'
+                        longitud:
+                          type: string
+                          example: '2.17940000'
+                        contacts:
+                          type: array
+                          example:
+                            -
+                              ulid: 01K5ZC0NT4C7A1H8M3Q7V1X4B9
+                              isPrimary: true
+                              phone: '+34 932 123 456'
+                              email: hola@cafeteria.example
+                              web: 'https://cafeteria.example'
+                              social: '@cafeteria.bcn'
+                              address: 'Carrer de la Riereta 1'
+                              country: España
+                              city: Barcelona
+                              postalCode: '08001'
+                          items:
+                            type: object
+                            properties:
+                              ulid:
+                                type: string
+                                example: 01K5ZC0NT4C7A1H8M3Q7V1X4B9
+                              isPrimary:
+                                type: boolean
+                                example: true
+                              phone:
+                                type: string
+                                example: '+34 932 123 456'
+                              email:
+                                type: string
+                                example: hola@cafeteria.example
+                              web:
+                                type: string
+                                example: 'https://cafeteria.example'
+                              social:
+                                type: string
+                                example: '@cafeteria.bcn'
+                              address:
+                                type: string
+                                example: 'Carrer de la Riereta 1'
+                              country:
+                                type: string
+                                example: España
+                              city:
+                                type: string
+                                example: Barcelona
+                              postalCode:
+                                type: string
+                                example: '08001'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+      tags:
+        - Locations
+    parameters:
+      -
+        in: path
+        name: user_ulid
+        description: 'The ULID of the authenticated user.'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
   /locations:
     get:
       summary: 'List my locations'
@@ -5081,6 +5841,248 @@ paths:
                                 nullable: true
       tags:
         - Locations
+    post:
+      summary: 'Create a location'
+      operationId: createALocation
+      description: "Creates a location of the authenticated coffeeshop together with its\nprimary contact, in a single database transaction (all-or-nothing). The\nowner is always the authenticated user, never a value from the body.\nThe coordinates are optional and computed by the client; when one is\nsent, the other is required.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    ulid: 01K9B2C4D6E8F0G2H4J6K8M0NQ
+                    name: 'Cafeteria Gràcia'
+                    description: 'Barra de especialidad en Gràcia.'
+                    latitud: '41.40290000'
+                    longitud: '2.15650000'
+                    contacts:
+                      -
+                        ulid: 01K9B2C4D6E8F0G2H4J6K8M0NR
+                        isPrimary: true
+                        phone: '+34 932 123 456'
+                        email: hola@cafeteria.example
+                        web: 'https://cafeteria.example'
+                        social: '@cafeteria.bcn'
+                        address: 'Carrer de Verdi 12'
+                        country: España
+                        city: Barcelona
+                        postalCode: '08012'
+                  message: 'Location created.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ulid:
+                        type: string
+                        example: 01K9B2C4D6E8F0G2H4J6K8M0NQ
+                      name:
+                        type: string
+                        example: 'Cafeteria Gràcia'
+                      description:
+                        type: string
+                        example: 'Barra de especialidad en Gràcia.'
+                      latitud:
+                        type: string
+                        example: '41.40290000'
+                      longitud:
+                        type: string
+                        example: '2.15650000'
+                      contacts:
+                        type: array
+                        example:
+                          -
+                            ulid: 01K9B2C4D6E8F0G2H4J6K8M0NR
+                            isPrimary: true
+                            phone: '+34 932 123 456'
+                            email: hola@cafeteria.example
+                            web: 'https://cafeteria.example'
+                            social: '@cafeteria.bcn'
+                            address: 'Carrer de Verdi 12'
+                            country: España
+                            city: Barcelona
+                            postalCode: '08012'
+                        items:
+                          type: object
+                          properties:
+                            ulid:
+                              type: string
+                              example: 01K9B2C4D6E8F0G2H4J6K8M0NR
+                            isPrimary:
+                              type: boolean
+                              example: true
+                            phone:
+                              type: string
+                              example: '+34 932 123 456'
+                            email:
+                              type: string
+                              example: hola@cafeteria.example
+                            web:
+                              type: string
+                              example: 'https://cafeteria.example'
+                            social:
+                              type: string
+                              example: '@cafeteria.bcn'
+                            address:
+                              type: string
+                              example: 'Carrer de Verdi 12'
+                            country:
+                              type: string
+                              example: España
+                            city:
+                              type: string
+                              example: Barcelona
+                            postalCode:
+                              type: string
+                              example: '08012'
+                  message:
+                    type: string
+                    example: 'Location created.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The latitud field must be between -90 and 90. (and 2 more errors)'
+                  errors:
+                    latitud:
+                      - 'The latitud field must be between -90 and 90.'
+                    contact.address:
+                      - 'The contact.address field is required.'
+                    contact.city:
+                      - 'The contact.city field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The latitud field must be between -90 and 90. (and 2 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      latitud:
+                        type: array
+                        example:
+                          - 'The latitud field must be between -90 and 90.'
+                        items:
+                          type: string
+                      contact.address:
+                        type: array
+                        example:
+                          - 'The contact.address field is required.'
+                        items:
+                          type: string
+                      contact.city:
+                        type: array
+                        example:
+                          - 'The contact.city field is required.'
+                        items:
+                          type: string
+      tags:
+        - Locations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Location name (max 150 characters). Must not be greater than 150 characters.'
+                  example: 'Cafeteria Gràcia'
+                description:
+                  type: string
+                  description: 'Optional. Short description (max 255 characters). Must not be greater than 255 characters.'
+                  example: 'Barra de especialidad en Gràcia.'
+                  nullable: true
+                latitud:
+                  type: number
+                  description: 'Optional. Latitude (-90 to 90), computed by the client. Required when longitud is sent. This field is required when <code>longitud</code> is present. Must be between -90 and 90.'
+                  example: 41.4029
+                  nullable: true
+                longitud:
+                  type: number
+                  description: 'Optional. Longitude (-180 to 180), computed by the client. Required when latitud is sent. This field is required when <code>latitud</code> is present. Must be between -180 and 180.'
+                  example: 2.1565
+                  nullable: true
+                contact:
+                  type: object
+                  description: 'Primary contact of the location. address and city are required.'
+                  example: []
+                  properties:
+                    phone:
+                      type: string
+                      description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
+                      example: '+34 932 123 456'
+                      nullable: true
+                    email:
+                      type: string
+                      description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
+                      example: hola@cafeteria.example
+                      nullable: true
+                    web:
+                      type: string
+                      description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
+                      example: 'https://cafeteria.example'
+                      nullable: true
+                    social:
+                      type: string
+                      description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
+                      example: '@cafeteria.bcn'
+                      nullable: true
+                    address:
+                      type: string
+                      description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
+                      example: 'Carrer de Verdi 12'
+                    country:
+                      type: string
+                      description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
+                      example: España
+                      nullable: true
+                    city:
+                      type: string
+                      description: 'City (max 90 characters). Must not be greater than 90 characters.'
+                      example: Barcelona
+                    postal_code:
+                      type: string
+                      description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
+                      example: '08012'
+                      nullable: true
+                  required:
+                    - address
+                    - city
+              required:
+                - name
+                - contact
   '/offerings/{offering_ulid}':
     get:
       summary: 'Get an offering'
@@ -5766,13 +6768,13 @@ paths:
         -
           in: query
           name: coffeeshopUlid
-          description: 'Filter by coffeeshop (user) ULID. Must match an existing stored value.'
-          example: 01J8ZK...
+          description: 'Filter by coffee shop: the `ulid` returned by GET /coffeeshops (the coffee shop user ULID). Returns the offerings of all its locations; used by the Offerings tab of the coffee shop detail. Must match an existing stored value.'
+          example: 01M35F5RX4ADGC3CSDXXYB08DA
           required: false
           schema:
             type: string
-            description: 'Filter by coffeeshop (user) ULID. Must match an existing stored value.'
-            example: 01J8ZK...
+            description: 'Filter by coffee shop: the `ulid` returned by GET /coffeeshops (the coffee shop user ULID). Returns the offerings of all its locations; used by the Offerings tab of the coffee shop detail. Must match an existing stored value.'
+            example: 01M35F5RX4ADGC3CSDXXYB08DA
         -
           in: query
           name: locationUlid
@@ -7774,6 +8776,296 @@ paths:
                         example: specialist
       tags:
         - Users
+  '/users/{user_ulid}/contacts':
+    get:
+      summary: 'List my contacts'
+      operationId: listMyContacts
+      description: "Returns the contacts of the authenticated user (personal contact data,\nnot the contacts of their locations).\n\n**Authorization:** requires the `profile:read` or `profile:write` scope\nand the user must be the authenticated user (policy). Another user\nreceives `403 Forbidden`."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      ulid: 01K9B2C4D6E8F0G2H4J6K8M0NP
+                      isPrimary: true
+                      phone: '+34 600 123 456'
+                      email: augusto@example.com
+                      web: null
+                      social: '@augusto.cafe'
+                      address: 'Carrer de Verdi 12'
+                      country: España
+                      city: Barcelona
+                      postalCode: '08012'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        ulid: 01K9B2C4D6E8F0G2H4J6K8M0NP
+                        isPrimary: true
+                        phone: '+34 600 123 456'
+                        email: augusto@example.com
+                        web: null
+                        social: '@augusto.cafe'
+                        address: 'Carrer de Verdi 12'
+                        country: España
+                        city: Barcelona
+                        postalCode: '08012'
+                    items:
+                      type: object
+                      properties:
+                        ulid:
+                          type: string
+                          example: 01K9B2C4D6E8F0G2H4J6K8M0NP
+                        isPrimary:
+                          type: boolean
+                          example: true
+                        phone:
+                          type: string
+                          example: '+34 600 123 456'
+                        email:
+                          type: string
+                          example: augusto@example.com
+                        web:
+                          type: string
+                          example: null
+                          nullable: true
+                        social:
+                          type: string
+                          example: '@augusto.cafe'
+                        address:
+                          type: string
+                          example: 'Carrer de Verdi 12'
+                        country:
+                          type: string
+                          example: España
+                        city:
+                          type: string
+                          example: Barcelona
+                        postalCode:
+                          type: string
+                          example: '08012'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+      tags:
+        - Users
+    post:
+      summary: 'Create my primary contact'
+      operationId: createMyPrimaryContact
+      description: "Creates the primary contact of the authenticated user. A user has a\nsingle primary contact: if it already exists the request fails with\n`409 Conflict`. `isPrimary` is always set by the API, never taken from\nthe body.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). Another user receives `403 Forbidden`."
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    ulid: 01K9B2C4D6E8F0G2H4J6K8M0NP
+                    isPrimary: true
+                    phone: '+34 932 123 456'
+                    email: hola@cafeteria.example
+                    web: 'https://cafeteria.example'
+                    social: '@cafeteria.bcn'
+                    address: 'Carrer de Verdi 12'
+                    country: España
+                    city: Barcelona
+                    postalCode: '08012'
+                  message: 'Contact created.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ulid:
+                        type: string
+                        example: 01K9B2C4D6E8F0G2H4J6K8M0NP
+                      isPrimary:
+                        type: boolean
+                        example: true
+                      phone:
+                        type: string
+                        example: '+34 932 123 456'
+                      email:
+                        type: string
+                        example: hola@cafeteria.example
+                      web:
+                        type: string
+                        example: 'https://cafeteria.example'
+                      social:
+                        type: string
+                        example: '@cafeteria.bcn'
+                      address:
+                        type: string
+                        example: 'Carrer de Verdi 12'
+                      country:
+                        type: string
+                        example: España
+                      city:
+                        type: string
+                        example: Barcelona
+                      postalCode:
+                        type: string
+                        example: '08012'
+                  message:
+                    type: string
+                    example: 'Contact created.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'This action is unauthorized.'
+                properties:
+                  message:
+                    type: string
+                    example: 'This action is unauthorized.'
+        409:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The user already has a primary contact.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The user already has a primary contact.'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The address field is required. (and 1 more error)'
+                  errors:
+                    address:
+                      - 'The address field is required.'
+                    city:
+                      - 'The city field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The address field is required. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      address:
+                        type: array
+                        example:
+                          - 'The address field is required.'
+                        items:
+                          type: string
+                      city:
+                        type: array
+                        example:
+                          - 'The city field is required.'
+                        items:
+                          type: string
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
+                  example: '+34 932 123 456'
+                  nullable: true
+                email:
+                  type: string
+                  description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
+                  example: hola@cafeteria.example
+                  nullable: true
+                web:
+                  type: string
+                  description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
+                  example: 'https://cafeteria.example'
+                  nullable: true
+                social:
+                  type: string
+                  description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
+                  example: '@cafeteria.bcn'
+                  nullable: true
+                address:
+                  type: string
+                  description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
+                  example: 'Carrer de Verdi 12'
+                country:
+                  type: string
+                  description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
+                  example: España
+                  nullable: true
+                city:
+                  type: string
+                  description: 'City (max 90 characters). Must not be greater than 90 characters.'
+                  example: Barcelona
+                postal_code:
+                  type: string
+                  description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
+                  example: '08012'
+                  nullable: true
+              required:
+                - address
+                - city
+    parameters:
+      -
+        in: path
+        name: user_ulid
+        description: 'The ULID of the authenticated user.'
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        required: true
+        schema:
+          type: string
   '/users/{user_ulid}':
     put:
       summary: 'Update a user'

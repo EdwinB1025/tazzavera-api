@@ -1,0 +1,96 @@
+{
+    "data": [
+        {
+            "ulid": "01K9C0FFEE0NMD000000000001",
+            "name": "Nomad Coffee",
+            "locationsCount": 2,
+            "offeringsCount": 4,
+            "verifiedOfferingsCount": 1,
+            "locations": [
+                {
+                    "ulid": "01K9C0FFEE0NMD0L0C00000001",
+                    "name": "Nomad Coffee Born",
+                    "description": "Nomad Coffee al Born.",
+                    "latitud": "41.38610000",
+                    "longitud": "2.17940000",
+                    "address": "Passatge Sert 12",
+                    "city": "Barcelona",
+                    "postalCode": "08003",
+                    "country": "España",
+                    "phone": "+34 933 000 001",
+                    "web": "https://nomad.example",
+                    "social": "@nomad.bcn"
+                },
+                {
+                    "ulid": "01K9C0FFEE0NMD0L0C00000002",
+                    "name": "Nomad Coffee Raval",
+                    "description": "Nomad Coffee al Raval.",
+                    "latitud": "41.37990000",
+                    "longitud": "2.16770000",
+                    "address": "Carrer de la Riereta 13",
+                    "city": "Barcelona",
+                    "postalCode": "08001",
+                    "country": "España",
+                    "phone": null,
+                    "web": "https://nomad.example",
+                    "social": "@nomad.bcn"
+                }
+            ]
+        },
+        {
+            "ulid": "01K9C0FFEE0SYR000000000001",
+            "name": "Syra Coffee",
+            "locationsCount": 1,
+            "offeringsCount": 2,
+            "verifiedOfferingsCount": 0,
+            "locations": [
+                {
+                    "ulid": "01K9C0FFEE0SYR0L0C00000001",
+                    "name": "Syra Coffee Gràcia",
+                    "description": "Syra Coffee a Gràcia.",
+                    "latitud": "41.40210000",
+                    "longitud": "2.15800000",
+                    "address": "Carrer de Sant Domènec 1",
+                    "city": "Barcelona",
+                    "postalCode": "08012",
+                    "country": "España",
+                    "phone": null,
+                    "web": null,
+                    "social": "@syra.coffee"
+                }
+            ]
+        }
+    ],
+    "links": {
+        "first": "http://localhost/coffeeshops?page=1",
+        "last": "http://localhost/coffeeshops?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http://localhost/coffeeshops?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "http://localhost/coffeeshops",
+        "per_page": 15,
+        "to": 2,
+        "total": 2
+    }
+}

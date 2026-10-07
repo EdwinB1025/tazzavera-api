@@ -89,6 +89,19 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-coffee-shops" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="coffee-shops">
+                    <a href="#coffee-shops">Coffee shops</a>
+                </li>
+                                    <ul id="tocify-subheader-coffee-shops" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="coffee-shops-GETcoffeeshops">
+                                <a href="#coffee-shops-GETcoffeeshops">List coffee shops</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="coffee-shops-GETcoffeeshops--user_ulid-">
+                                <a href="#coffee-shops-GETcoffeeshops--user_ulid-">Get a coffee shop</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-evaluations" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="evaluations">
                     <a href="#evaluations">Evaluations</a>
@@ -128,8 +141,14 @@
                     <a href="#locations">Locations</a>
                 </li>
                                     <ul id="tocify-subheader-locations" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="locations-GETlocations">
+                                                    <li class="tocify-item level-2" data-unique="locations-GETusers--user_ulid--locations">
+                                <a href="#locations-GETusers--user_ulid--locations">List a user's locations</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="locations-GETlocations">
                                 <a href="#locations-GETlocations">List my locations</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="locations-POSTlocations">
+                                <a href="#locations-POSTlocations">Create a location</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -189,11 +208,17 @@
                                                                                 <li class="tocify-item level-2" data-unique="users-GETuser">
                                 <a href="#users-GETuser">Get the authenticated user</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="users-GETusers--user_ulid--contacts">
+                                <a href="#users-GETusers--user_ulid--contacts">List my contacts</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-PUTusers--user_ulid-">
                                 <a href="#users-PUTusers--user_ulid-">Update a user</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-PUTusers--user_ulid--password">
                                 <a href="#users-PUTusers--user_ulid--password">Update user password</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="users-POSTusers--user_ulid--contacts">
+                                <a href="#users-POSTusers--user_ulid--contacts">Create my primary contact</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-DELETEusers--user_ulid-">
                                 <a href="#users-DELETEusers--user_ulid-">Deactivate a user</a>
@@ -212,7 +237,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 6, 2026</li>
+        <li>Last updated: October 7, 2026</li>
     </ul>
 </div>
 
@@ -766,6 +791,575 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters. Example: <code>Huila</code></p>
             </div>
                 </form>
+
+                <h1 id="coffee-shops">Coffee shops</h1>
+
+    
+
+                                <h2 id="coffee-shops-GETcoffeeshops">List coffee shops</h2>
+
+<p>
+</p>
+
+<p>Returns a paginated list of coffee shops (businesses) that have at least
+one location, each with its counters and all its locations (the map
+shows every location of the filtered coffee shops). Only business data
+is returned: never the owner's email, surname, personal contacts or
+account data. Sorted by name ascending by default.</p>
+
+<span id="example-requests-GETcoffeeshops">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/coffeeshops?name=nomad&amp;city=Barcelona&amp;postalCode=08001&amp;verified=1&amp;orderBy=name&amp;orderDirection=asc&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/coffeeshops"
+);
+
+const params = {
+    "name": "nomad",
+    "city": "Barcelona",
+    "postalCode": "08001",
+    "verified": "1",
+    "orderBy": "name",
+    "orderDirection": "asc",
+    "page": "1",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/coffeeshops';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'name' =&gt; 'nomad',
+            'city' =&gt; 'Barcelona',
+            'postalCode' =&gt; '08001',
+            'verified' =&gt; '1',
+            'orderBy' =&gt; 'name',
+            'orderDirection' =&gt; 'asc',
+            'page' =&gt; '1',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETcoffeeshops">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K9C0FFEE0NMD000000000001&quot;,
+            &quot;name&quot;: &quot;Nomad Coffee&quot;,
+            &quot;locationsCount&quot;: 2,
+            &quot;offeringsCount&quot;: 4,
+            &quot;verifiedOfferingsCount&quot;: 1,
+            &quot;locations&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K9C0FFEE0NMD0L0C00000001&quot;,
+                    &quot;name&quot;: &quot;Nomad Coffee Born&quot;,
+                    &quot;description&quot;: &quot;Nomad Coffee al Born.&quot;,
+                    &quot;latitud&quot;: &quot;41.38610000&quot;,
+                    &quot;longitud&quot;: &quot;2.17940000&quot;,
+                    &quot;address&quot;: &quot;Passatge Sert 12&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: &quot;08003&quot;,
+                    &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                    &quot;phone&quot;: &quot;+34 933 000 001&quot;,
+                    &quot;web&quot;: &quot;https://nomad.example&quot;,
+                    &quot;social&quot;: &quot;@nomad.bcn&quot;
+                },
+                {
+                    &quot;ulid&quot;: &quot;01K9C0FFEE0NMD0L0C00000002&quot;,
+                    &quot;name&quot;: &quot;Nomad Coffee Raval&quot;,
+                    &quot;description&quot;: &quot;Nomad Coffee al Raval.&quot;,
+                    &quot;latitud&quot;: &quot;41.37990000&quot;,
+                    &quot;longitud&quot;: &quot;2.16770000&quot;,
+                    &quot;address&quot;: &quot;Carrer de la Riereta 13&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: &quot;08001&quot;,
+                    &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;web&quot;: &quot;https://nomad.example&quot;,
+                    &quot;social&quot;: &quot;@nomad.bcn&quot;
+                }
+            ]
+        },
+        {
+            &quot;ulid&quot;: &quot;01K9C0FFEE0SYR000000000001&quot;,
+            &quot;name&quot;: &quot;Syra Coffee&quot;,
+            &quot;locationsCount&quot;: 1,
+            &quot;offeringsCount&quot;: 2,
+            &quot;verifiedOfferingsCount&quot;: 0,
+            &quot;locations&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K9C0FFEE0SYR0L0C00000001&quot;,
+                    &quot;name&quot;: &quot;Syra Coffee Gr&agrave;cia&quot;,
+                    &quot;description&quot;: &quot;Syra Coffee a Gr&agrave;cia.&quot;,
+                    &quot;latitud&quot;: &quot;41.40210000&quot;,
+                    &quot;longitud&quot;: &quot;2.15800000&quot;,
+                    &quot;address&quot;: &quot;Carrer de Sant Dom&egrave;nec 1&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: &quot;08012&quot;,
+                    &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                    &quot;phone&quot;: null,
+                    &quot;web&quot;: null,
+                    &quot;social&quot;: &quot;@syra.coffee&quot;
+                }
+            ]
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://localhost/coffeeshops?page=1&quot;,
+        &quot;last&quot;: &quot;http://localhost/coffeeshops?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http://localhost/coffeeshops?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;path&quot;: &quot;http://localhost/coffeeshops&quot;,
+        &quot;per_page&quot;: 15,
+        &quot;to&quot;: 2,
+        &quot;total&quot;: 2
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The selected order by is invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;orderBy&quot;: [
+            &quot;The selected order by is invalid.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETcoffeeshops" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETcoffeeshops"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETcoffeeshops"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETcoffeeshops" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETcoffeeshops">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETcoffeeshops" data-method="GET"
+      data-path="coffeeshops"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETcoffeeshops', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETcoffeeshops"
+                    onclick="tryItOut('GETcoffeeshops');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETcoffeeshops"
+                    onclick="cancelTryOut('GETcoffeeshops');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETcoffeeshops"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>coffeeshops</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETcoffeeshops"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETcoffeeshops"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="GETcoffeeshops"
+               value="nomad"
+               data-component="query">
+    <br>
+<p>Filter by the coffee shop (business) name. Partial, case-insensitive match. Must not be greater than 150 characters. Example: <code>nomad</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="city"                data-endpoint="GETcoffeeshops"
+               value="Barcelona"
+               data-component="query">
+    <br>
+<p>Filter coffee shops with at least one location whose primary contact is in this city. Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>postalCode</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="postalCode"                data-endpoint="GETcoffeeshops"
+               value="08001"
+               data-component="query">
+    <br>
+<p>Filter coffee shops with at least one location whose primary contact has this postal code. Must not be greater than 12 characters. Example: <code>08001</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>verified</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETcoffeeshops" style="display: none">
+            <input type="radio" name="verified"
+                   value="1"
+                   data-endpoint="GETcoffeeshops"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETcoffeeshops" style="display: none">
+            <input type="radio" name="verified"
+                   value="0"
+                   data-endpoint="GETcoffeeshops"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Filter by verified offerings: 1 returns only coffee shops with at least one verified offering in any of their locations, 0 only those without any. Omit it to return both. Example: <code>true</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderBy</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderBy"                data-endpoint="GETcoffeeshops"
+               value="name"
+               data-component="query">
+    <br>
+<p>Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given). Example: <code>name</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>name</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderDirection</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="orderDirection"                data-endpoint="GETcoffeeshops"
+               value="asc"
+               data-component="query">
+    <br>
+<p>Sort direction. One of: asc, desc. Default: asc. Example: <code>asc</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETcoffeeshops"
+               value="1"
+               data-component="query">
+    <br>
+<p>Page number. Default: 1. Must be at least 1. Example: <code>1</code></p>
+            </div>
+                </form>
+
+                    <h2 id="coffee-shops-GETcoffeeshops--user_ulid-">Get a coffee shop</h2>
+
+<p>
+</p>
+
+<p>Returns one coffee shop (business) by its ULID, with its counters and
+locations. The detail page shows two tabs: <strong>Offerings</strong>, read with
+<code>GET /offerings?coffeeshopUlid={ulid}</code>, and <strong>Locations</strong>, the
+<code>locations</code> array of this response. A ULID that does not exist, or that
+is not a coffee shop with at least one location, returns <code>404 Not Found</code>.</p>
+
+<span id="example-requests-GETcoffeeshops--user_ulid-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETcoffeeshops--user_ulid-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01K9C0FFEE0NMD000000000001&quot;,
+        &quot;name&quot;: &quot;Nomad Coffee&quot;,
+        &quot;locationsCount&quot;: 2,
+        &quot;offeringsCount&quot;: 4,
+        &quot;verifiedOfferingsCount&quot;: 1,
+        &quot;locations&quot;: [
+            {
+                &quot;ulid&quot;: &quot;01K9C0FFEE0NMD0L0C00000001&quot;,
+                &quot;name&quot;: &quot;Nomad Coffee Born&quot;,
+                &quot;description&quot;: &quot;Nomad Coffee al Born.&quot;,
+                &quot;latitud&quot;: &quot;41.38610000&quot;,
+                &quot;longitud&quot;: &quot;2.17940000&quot;,
+                &quot;address&quot;: &quot;Passatge Sert 12&quot;,
+                &quot;city&quot;: &quot;Barcelona&quot;,
+                &quot;postalCode&quot;: &quot;08003&quot;,
+                &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                &quot;phone&quot;: &quot;+34 933 000 001&quot;,
+                &quot;web&quot;: &quot;https://nomad.example&quot;,
+                &quot;social&quot;: &quot;@nomad.bcn&quot;
+            },
+            {
+                &quot;ulid&quot;: &quot;01K9C0FFEE0NMD0L0C00000002&quot;,
+                &quot;name&quot;: &quot;Nomad Coffee Raval&quot;,
+                &quot;description&quot;: &quot;Nomad Coffee al Raval.&quot;,
+                &quot;latitud&quot;: &quot;41.37990000&quot;,
+                &quot;longitud&quot;: &quot;2.16770000&quot;,
+                &quot;address&quot;: &quot;Carrer de la Riereta 13&quot;,
+                &quot;city&quot;: &quot;Barcelona&quot;,
+                &quot;postalCode&quot;: &quot;08001&quot;,
+                &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                &quot;phone&quot;: null,
+                &quot;web&quot;: &quot;https://nomad.example&quot;,
+                &quot;social&quot;: &quot;@nomad.bcn&quot;
+            }
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [App\\Models\\User] 01M35F5RX4ADGC3CSDXXYB08DA&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETcoffeeshops--user_ulid-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETcoffeeshops--user_ulid-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETcoffeeshops--user_ulid-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETcoffeeshops--user_ulid-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETcoffeeshops--user_ulid-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETcoffeeshops--user_ulid-" data-method="GET"
+      data-path="coffeeshops/{user_ulid}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETcoffeeshops--user_ulid-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETcoffeeshops--user_ulid-"
+                    onclick="tryItOut('GETcoffeeshops--user_ulid-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETcoffeeshops--user_ulid-"
+                    onclick="cancelTryOut('GETcoffeeshops--user_ulid-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETcoffeeshops--user_ulid-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>coffeeshops/{user_ulid}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETcoffeeshops--user_ulid-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETcoffeeshops--user_ulid-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="GETcoffeeshops--user_ulid-"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the coffee shop (its user ULID). Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                    </form>
 
                 <h1 id="evaluations">Evaluations</h1>
 
@@ -2678,7 +3272,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations/architecto" \
+    --get "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2686,7 +3280,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/architecto"
+    "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N"
 );
 
 const headers = {
@@ -2704,7 +3298,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/architecto';
+$url = 'http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N';
 $response = $client-&gt;get(
     $url,
     [
@@ -2922,10 +3516,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
-               value="architecto"
+               value="01M497E37SFA9YD2GSV2QNC60N"
                data-component="url">
     <br>
-<p>The evaluation. Example: <code>architecto</code></p>
+<p>The evaluation. Example: <code>01M497E37SFA9YD2GSV2QNC60N</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;
@@ -5873,7 +6467,237 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     
 
-                                <h2 id="locations-GETlocations">List my locations</h2>
+                                <h2 id="locations-GETusers--user_ulid--locations">List a user&#039;s locations</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns the locations owned by the given user, each with its contact
+details. Used by the coffeeshop's 'Manage locations' page.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope
+and the user must be the authenticated user (policy). Another user
+receives <code>403 Forbidden</code>.</p>
+
+<span id="example-requests-GETusers--user_ulid--locations">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETusers--user_ulid--locations">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PA&quot;,
+            &quot;name&quot;: &quot;Nomad Coffee Born&quot;,
+            &quot;description&quot;: &quot;Nomad Coffee al Born.&quot;,
+            &quot;latitud&quot;: &quot;41.38610000&quot;,
+            &quot;longitud&quot;: &quot;2.17940000&quot;,
+            &quot;contacts&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K5ZC0NT4C7A1H8M3Q7V1X4B9&quot;,
+                    &quot;isPrimary&quot;: true,
+                    &quot;phone&quot;: &quot;+34 932 123 456&quot;,
+                    &quot;email&quot;: &quot;hola@cafeteria.example&quot;,
+                    &quot;web&quot;: &quot;https://cafeteria.example&quot;,
+                    &quot;social&quot;: &quot;@cafeteria.bcn&quot;,
+                    &quot;address&quot;: &quot;Carrer de la Riereta 1&quot;,
+                    &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: &quot;08001&quot;
+                }
+            ]
+        },
+        {
+            &quot;ulid&quot;: &quot;01K5Z9C2T6H8M3Q7V1X4B9N2PB&quot;,
+            &quot;name&quot;: &quot;Nomad Coffee Gr&agrave;cia&quot;,
+            &quot;description&quot;: null,
+            &quot;latitud&quot;: null,
+            &quot;longitud&quot;: null,
+            &quot;contacts&quot;: [
+                {
+                    &quot;ulid&quot;: &quot;01K5ZC0NT4C7A1H8M3Q7V1X4BB&quot;,
+                    &quot;isPrimary&quot;: true,
+                    &quot;phone&quot;: null,
+                    &quot;email&quot;: null,
+                    &quot;web&quot;: null,
+                    &quot;social&quot;: null,
+                    &quot;address&quot;: &quot;Carrer de Verdi 12&quot;,
+                    &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                    &quot;city&quot;: &quot;Barcelona&quot;,
+                    &quot;postalCode&quot;: &quot;08012&quot;
+                }
+            ]
+        }
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETusers--user_ulid--locations" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETusers--user_ulid--locations"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETusers--user_ulid--locations"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETusers--user_ulid--locations" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETusers--user_ulid--locations">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETusers--user_ulid--locations" data-method="GET"
+      data-path="users/{user_ulid}/locations"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETusers--user_ulid--locations', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETusers--user_ulid--locations"
+                    onclick="tryItOut('GETusers--user_ulid--locations');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETusers--user_ulid--locations"
+                    onclick="cancelTryOut('GETusers--user_ulid--locations');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETusers--user_ulid--locations"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>users/{user_ulid}/locations</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETusers--user_ulid--locations"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETusers--user_ulid--locations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETusers--user_ulid--locations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="GETusers--user_ulid--locations"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the authenticated user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="locations-GETlocations">List my locations</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -6083,6 +6907,421 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                    <h2 id="locations-POSTlocations">Create a location</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Creates a location of the authenticated coffeeshop together with its
+primary contact, in a single database transaction (all-or-nothing). The
+owner is always the authenticated user, never a value from the body.
+The coordinates are optional and computed by the client; when one is
+sent, the other is required.</p>
+<p><strong>Authorization:</strong> requires the <code>coffeeshop</code> role and the <code>profile:write</code>
+scope.</p>
+
+<span id="example-requests-POSTlocations">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/locations" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"name\": \"Cafeteria Gràcia\",
+    \"description\": \"Barra de especialidad en Gràcia.\",
+    \"latitud\": 41.4029,
+    \"longitud\": 2.1565,
+    \"contact\": {
+        \"phone\": \"+34 932 123 456\",
+        \"email\": \"hola@cafeteria.example\",
+        \"web\": \"https:\\/\\/cafeteria.example\",
+        \"social\": \"@cafeteria.bcn\",
+        \"address\": \"Carrer de Verdi 12\",
+        \"country\": \"España\",
+        \"city\": \"Barcelona\",
+        \"postal_code\": \"08012\"
+    }
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/locations"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "Cafeteria Gràcia",
+    "description": "Barra de especialidad en Gràcia.",
+    "latitud": 41.4029,
+    "longitud": 2.1565,
+    "contact": {
+        "phone": "+34 932 123 456",
+        "email": "hola@cafeteria.example",
+        "web": "https:\/\/cafeteria.example",
+        "social": "@cafeteria.bcn",
+        "address": "Carrer de Verdi 12",
+        "country": "España",
+        "city": "Barcelona",
+        "postal_code": "08012"
+    }
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/locations';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'name' =&gt; 'Cafeteria Gràcia',
+            'description' =&gt; 'Barra de especialidad en Gràcia.',
+            'latitud' =&gt; 41.4029,
+            'longitud' =&gt; 2.1565,
+            'contact' =&gt; ['phone' =&gt; '+34 932 123 456', 'email' =&gt; 'hola@cafeteria.example', 'web' =&gt; 'https://cafeteria.example', 'social' =&gt; '@cafeteria.bcn', 'address' =&gt; 'Carrer de Verdi 12', 'country' =&gt; 'España', 'city' =&gt; 'Barcelona', 'postal_code' =&gt; '08012'],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTlocations">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01K9B2C4D6E8F0G2H4J6K8M0NQ&quot;,
+        &quot;name&quot;: &quot;Cafeteria Gr&agrave;cia&quot;,
+        &quot;description&quot;: &quot;Barra de especialidad en Gr&agrave;cia.&quot;,
+        &quot;latitud&quot;: &quot;41.40290000&quot;,
+        &quot;longitud&quot;: &quot;2.15650000&quot;,
+        &quot;contacts&quot;: [
+            {
+                &quot;ulid&quot;: &quot;01K9B2C4D6E8F0G2H4J6K8M0NR&quot;,
+                &quot;isPrimary&quot;: true,
+                &quot;phone&quot;: &quot;+34 932 123 456&quot;,
+                &quot;email&quot;: &quot;hola@cafeteria.example&quot;,
+                &quot;web&quot;: &quot;https://cafeteria.example&quot;,
+                &quot;social&quot;: &quot;@cafeteria.bcn&quot;,
+                &quot;address&quot;: &quot;Carrer de Verdi 12&quot;,
+                &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+                &quot;city&quot;: &quot;Barcelona&quot;,
+                &quot;postalCode&quot;: &quot;08012&quot;
+            }
+        ]
+    },
+    &quot;message&quot;: &quot;Location created.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The latitud field must be between -90 and 90. (and 2 more errors)&quot;,
+    &quot;errors&quot;: {
+        &quot;latitud&quot;: [
+            &quot;The latitud field must be between -90 and 90.&quot;
+        ],
+        &quot;contact.address&quot;: [
+            &quot;The contact.address field is required.&quot;
+        ],
+        &quot;contact.city&quot;: [
+            &quot;The contact.city field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTlocations" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTlocations"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTlocations"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTlocations" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTlocations">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTlocations" data-method="POST"
+      data-path="locations"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTlocations', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTlocations"
+                    onclick="tryItOut('POSTlocations');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTlocations"
+                    onclick="cancelTryOut('POSTlocations');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTlocations"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>locations</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTlocations"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTlocations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTlocations"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="POSTlocations"
+               value="Cafeteria Gràcia"
+               data-component="body">
+    <br>
+<p>Location name (max 150 characters). Must not be greater than 150 characters. Example: <code>Cafeteria Gràcia</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="description"                data-endpoint="POSTlocations"
+               value="Barra de especialidad en Gràcia."
+               data-component="body">
+    <br>
+<p>Optional. Short description (max 255 characters). Must not be greater than 255 characters. Example: <code>Barra de especialidad en Gràcia.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>latitud</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="latitud"                data-endpoint="POSTlocations"
+               value="41.4029"
+               data-component="body">
+    <br>
+<p>Optional. Latitude (-90 to 90), computed by the client. Required when longitud is sent. This field is required when <code>longitud</code> is present. Must be between -90 and 90. Example: <code>41.4029</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>longitud</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="longitud"                data-endpoint="POSTlocations"
+               value="2.1565"
+               data-component="body">
+    <br>
+<p>Optional. Longitude (-180 to 180), computed by the client. Required when latitud is sent. This field is required when <code>latitud</code> is present. Must be between -180 and 180. Example: <code>2.1565</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>contact</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+ &nbsp;
+ &nbsp;
+<br>
+<p>Primary contact of the location. address and city are required.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.phone"                data-endpoint="POSTlocations"
+               value="+34 932 123 456"
+               data-component="body">
+    <br>
+<p>Optional. Phone number (max 25 characters). Must not be greater than 25 characters. Example: <code>+34 932 123 456</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.email"                data-endpoint="POSTlocations"
+               value="hola@cafeteria.example"
+               data-component="body">
+    <br>
+<p>Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters. Example: <code>hola@cafeteria.example</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>web</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.web"                data-endpoint="POSTlocations"
+               value="https://cafeteria.example"
+               data-component="body">
+    <br>
+<p>Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters. Example: <code>https://cafeteria.example</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>social</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.social"                data-endpoint="POSTlocations"
+               value="@cafeteria.bcn"
+               data-component="body">
+    <br>
+<p>Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters. Example: <code>@cafeteria.bcn</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.address"                data-endpoint="POSTlocations"
+               value="Carrer de Verdi 12"
+               data-component="body">
+    <br>
+<p>Street address (max 255 characters). Must not be greater than 255 characters. Example: <code>Carrer de Verdi 12</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.country"                data-endpoint="POSTlocations"
+               value="España"
+               data-component="body">
+    <br>
+<p>Optional. Country (max 60 characters). Must not be greater than 60 characters. Example: <code>España</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.city"                data-endpoint="POSTlocations"
+               value="Barcelona"
+               data-component="body">
+    <br>
+<p>City (max 90 characters). Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>postal_code</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contact.postal_code"                data-endpoint="POSTlocations"
+               value="08012"
+               data-component="body">
+    <br>
+<p>Optional. Postal code (max 12 characters). Must not be greater than 12 characters. Example: <code>08012</code></p>
+                    </div>
+                                    </details>
+        </div>
+        </form>
 
                 <h1 id="offerings">Offerings</h1>
 
@@ -6464,7 +7703,7 @@ parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;roasteryName=N%C3%B3mada&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01J8ZK...&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
+    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;roasteryName=N%C3%B3mada&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01M35F5RX4ADGC3CSDXXYB08DA&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6483,7 +7722,7 @@ const params = {
     "producer": "Finca La Esperanza",
     "variety": "Caturra",
     "city": "Barcelona",
-    "coffeeshopUlid": "01J8ZK...",
+    "coffeeshopUlid": "01M35F5RX4ADGC3CSDXXYB08DA",
     "locationUlid": "01J8ZK...",
     "verified": "1",
     "cuppingAvgMin": "80",
@@ -6551,7 +7790,7 @@ $response = $client-&gt;get(
             'producer' =&gt; 'Finca La Esperanza',
             'variety' =&gt; 'Caturra',
             'city' =&gt; 'Barcelona',
-            'coffeeshopUlid' =&gt; '01J8ZK...',
+            'coffeeshopUlid' =&gt; '01M35F5RX4ADGC3CSDXXYB08DA',
             'locationUlid' =&gt; '01J8ZK...',
             'verified' =&gt; '1',
             'cuppingAvgMin' =&gt; '80',
@@ -7058,10 +8297,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="coffeeshopUlid"                data-endpoint="GETofferings"
-               value="01J8ZK..."
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="query">
     <br>
-<p>Filter by coffeeshop (user) ULID. Must match an existing stored value. Example: <code>01J8ZK...</code></p>
+<p>Filter by coffee shop: the <code>ulid</code> returned by GET /coffeeshops (the coffee shop user ULID). Returns the offerings of all its locations; used by the Offerings tab of the coffee shop detail. Must match an existing stored value. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>locationUlid</code></b>&nbsp;&nbsp;
@@ -9043,6 +10282,206 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
+                    <h2 id="users-GETusers--user_ulid--contacts">List my contacts</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns the contacts of the authenticated user (personal contact data,
+not the contacts of their locations).</p>
+<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope
+and the user must be the authenticated user (policy). Another user
+receives <code>403 Forbidden</code>.</p>
+
+<span id="example-requests-GETusers--user_ulid--contacts">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETusers--user_ulid--contacts">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: [
+        {
+            &quot;ulid&quot;: &quot;01K9B2C4D6E8F0G2H4J6K8M0NP&quot;,
+            &quot;isPrimary&quot;: true,
+            &quot;phone&quot;: &quot;+34 600 123 456&quot;,
+            &quot;email&quot;: &quot;augusto@example.com&quot;,
+            &quot;web&quot;: null,
+            &quot;social&quot;: &quot;@augusto.cafe&quot;,
+            &quot;address&quot;: &quot;Carrer de Verdi 12&quot;,
+            &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+            &quot;city&quot;: &quot;Barcelona&quot;,
+            &quot;postalCode&quot;: &quot;08012&quot;
+        }
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETusers--user_ulid--contacts" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETusers--user_ulid--contacts"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETusers--user_ulid--contacts"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETusers--user_ulid--contacts" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETusers--user_ulid--contacts">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETusers--user_ulid--contacts" data-method="GET"
+      data-path="users/{user_ulid}/contacts"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETusers--user_ulid--contacts', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETusers--user_ulid--contacts"
+                    onclick="tryItOut('GETusers--user_ulid--contacts');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETusers--user_ulid--contacts"
+                    onclick="cancelTryOut('GETusers--user_ulid--contacts');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETusers--user_ulid--contacts"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>users/{user_ulid}/contacts</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETusers--user_ulid--contacts"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETusers--user_ulid--contacts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETusers--user_ulid--contacts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="GETusers--user_ulid--contacts"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the authenticated user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                    </form>
+
                     <h2 id="users-PUTusers--user_ulid-">Update a user</h2>
 
 <p>
@@ -9509,6 +10948,361 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation. Example: <code>NewStr0ng!</code></p>
+        </div>
+        </form>
+
+                    <h2 id="users-POSTusers--user_ulid--contacts">Create my primary contact</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Creates the primary contact of the authenticated user. A user has a
+single primary contact: if it already exists the request fails with
+<code>409 Conflict</code>. <code>isPrimary</code> is always set by the API, never taken from
+the body.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
+update this user (policy). Another user receives <code>403 Forbidden</code>.</p>
+
+<span id="example-requests-POSTusers--user_ulid--contacts">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"phone\": \"+34 932 123 456\",
+    \"email\": \"hola@cafeteria.example\",
+    \"web\": \"https:\\/\\/cafeteria.example\",
+    \"social\": \"@cafeteria.bcn\",
+    \"address\": \"Carrer de Verdi 12\",
+    \"country\": \"España\",
+    \"city\": \"Barcelona\",
+    \"postal_code\": \"08012\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "phone": "+34 932 123 456",
+    "email": "hola@cafeteria.example",
+    "web": "https:\/\/cafeteria.example",
+    "social": "@cafeteria.bcn",
+    "address": "Carrer de Verdi 12",
+    "country": "España",
+    "city": "Barcelona",
+    "postal_code": "08012"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'phone' =&gt; '+34 932 123 456',
+            'email' =&gt; 'hola@cafeteria.example',
+            'web' =&gt; 'https://cafeteria.example',
+            'social' =&gt; '@cafeteria.bcn',
+            'address' =&gt; 'Carrer de Verdi 12',
+            'country' =&gt; 'España',
+            'city' =&gt; 'Barcelona',
+            'postal_code' =&gt; '08012',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTusers--user_ulid--contacts">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01K9B2C4D6E8F0G2H4J6K8M0NP&quot;,
+        &quot;isPrimary&quot;: true,
+        &quot;phone&quot;: &quot;+34 932 123 456&quot;,
+        &quot;email&quot;: &quot;hola@cafeteria.example&quot;,
+        &quot;web&quot;: &quot;https://cafeteria.example&quot;,
+        &quot;social&quot;: &quot;@cafeteria.bcn&quot;,
+        &quot;address&quot;: &quot;Carrer de Verdi 12&quot;,
+        &quot;country&quot;: &quot;Espa&ntilde;a&quot;,
+        &quot;city&quot;: &quot;Barcelona&quot;,
+        &quot;postalCode&quot;: &quot;08012&quot;
+    },
+    &quot;message&quot;: &quot;Contact created.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (409):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The user already has a primary contact.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The address field is required. (and 1 more error)&quot;,
+    &quot;errors&quot;: {
+        &quot;address&quot;: [
+            &quot;The address field is required.&quot;
+        ],
+        &quot;city&quot;: [
+            &quot;The city field is required.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTusers--user_ulid--contacts" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTusers--user_ulid--contacts"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTusers--user_ulid--contacts"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTusers--user_ulid--contacts" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTusers--user_ulid--contacts">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTusers--user_ulid--contacts" data-method="POST"
+      data-path="users/{user_ulid}/contacts"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTusers--user_ulid--contacts', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTusers--user_ulid--contacts"
+                    onclick="tryItOut('POSTusers--user_ulid--contacts');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTusers--user_ulid--contacts"
+                    onclick="cancelTryOut('POSTusers--user_ulid--contacts');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTusers--user_ulid--contacts"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>users/{user_ulid}/contacts</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTusers--user_ulid--contacts"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the authenticated user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>phone</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="phone"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="+34 932 123 456"
+               data-component="body">
+    <br>
+<p>Optional. Phone number (max 25 characters). Must not be greater than 25 characters. Example: <code>+34 932 123 456</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="hola@cafeteria.example"
+               data-component="body">
+    <br>
+<p>Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters. Example: <code>hola@cafeteria.example</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>web</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="web"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="https://cafeteria.example"
+               data-component="body">
+    <br>
+<p>Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters. Example: <code>https://cafeteria.example</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>social</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="social"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="@cafeteria.bcn"
+               data-component="body">
+    <br>
+<p>Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters. Example: <code>@cafeteria.bcn</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="address"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="Carrer de Verdi 12"
+               data-component="body">
+    <br>
+<p>Street address (max 255 characters). Must not be greater than 255 characters. Example: <code>Carrer de Verdi 12</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>country</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="country"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="España"
+               data-component="body">
+    <br>
+<p>Optional. Country (max 60 characters). Must not be greater than 60 characters. Example: <code>España</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="city"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="Barcelona"
+               data-component="body">
+    <br>
+<p>City (max 90 characters). Must not be greater than 90 characters. Example: <code>Barcelona</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>postal_code</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="postal_code"                data-endpoint="POSTusers--user_ulid--contacts"
+               value="08012"
+               data-component="body">
+    <br>
+<p>Optional. Postal code (max 12 characters). Must not be greater than 12 characters. Example: <code>08012</code></p>
         </div>
         </form>
 

@@ -336,6 +336,7 @@ test('filter_evaluations_returns_multiple_locations', function () {
 
     $response = $this->getJson('/evaluations?' . http_build_query([
         'status' => 'closed',
+        'evaluationType' => 'specialist',
     ]));
 
     $response->assertOk()

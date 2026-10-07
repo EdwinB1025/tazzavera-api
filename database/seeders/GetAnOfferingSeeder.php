@@ -13,13 +13,13 @@ class GetAnOfferingSeeder extends Seeder
      */
     public function run(): void
     {
-        //**EDB 09/16/26: Creating i coffeeshops */
-        for ($i = 1; $i <= 20; $i++) {
-            $locations = mt_rand(1, 4);
-            $this->callWith(LocationSeeder::class, ['locations' => $locations]);
-        }
+        //**EDB 10/06/26: the Barcelona coffee shops of the data file */
+        $this->call(LocationSeeder::class);
         $this->call(CreateOfferingSeeder::class);
 
-        Offering::factory()->count(10)->create();
+        //EDB 10/06/26: one by one, so each factory definition sees the offerings already stored (count(10) builds all ten pairs first and could repeat one)
+        for ($i = 1; $i <= 10; $i++) {
+            Offering::factory()->create();
+        }
     }
 }

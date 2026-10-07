@@ -3,8 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\CoffeeInventory;
+use App\Models\Evaluation;
 use App\Models\Location;
 use App\Models\Offering;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,22 +21,15 @@ class OfferingFactory extends Factory
      */
     public function definition(): array
     {
-
-        $locationsId = null;
-        while (! $locationsId) {
-            $coffeeInventoryId = CoffeeInventory::inRandomOrder()->value('id');
-            $locationsId =  Location::whereDoesntHave(
-                'offerings',
-                function ($query) use ($coffeeInventoryId) {
-                    $query->where('coffee_inventory_id', $coffeeInventoryId);
-                }
-            )->inRandomOrder()->value('id');
-        }
+        $coffeeshop = User::role('coffeeshop')->whereHas('locations')->inRandomOrder()->first();
+        $location = $coffeeshop->locations->random();
+        $notAvailableIds = $location->offerings()->pluck('coffee_inventory_id');
+        $coffeeInventoryId = CoffeeInventory::whereNotIn('id', $notAvailableIds)->inRandomOrder()->value('id');
 
 
         return [
             'coffee_inventory_id' => $coffeeInventoryId,
-            'location_id' => $locationsId,
+            'location_id' => $location->id,
             'evaluation_count' => 0,
             'defective_evaluation_count' => 0,
             'cupping_avg' => null,
@@ -50,5 +45,22 @@ class OfferingFactory extends Factory
             'concordance_descriptive' => null,
             'verification_status' => 'provisional',
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function ($offering) {
+            $owner = $offering->location->user;
+
+            if (! $owner->hasRole('coffeeshop')) {
+                return;
+            }
+
+            $offering->evaluations()->save(Evaluation::factory()->make([
+                'offering_id'     => $offering->id,
+                'evaluator_id'    => $owner->id,
+                'evaluation_type' => 'baseline',
+            ]));
+        });
     }
 }

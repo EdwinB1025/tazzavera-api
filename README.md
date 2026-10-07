@@ -119,6 +119,7 @@ php artisan migrate --seed
 
 🌱 The seeder populates the olfactory taxonomy (from CSV, source WCR Sensory Lexicon), the coffee catalog, roasters, inventory, and base data to test the flow end to end:
 
+- `LocationSeeder` — a closed list of 20 real specialty coffee businesses in Barcelona (`database/seeders/data/coffeeshops-barcelona.json`, e.g. Nomad Coffee, Satan's Coffee Corner, Syra Coffee, Cafès El Magnífico, Cometa): one `coffeeshop` user per business, named after it, with 1 to 3 locations named after the business and its neighbourhood, each with its primary contact (real address, `080xx` postal code, Barcelona, España) and coordinates inside Barcelona. No network during seeding.
 - `OfferingBaselineSeeder` — 1 to 5 offerings per coffee shop, spread over its locations, each with the coffee shop's closed **baseline** evaluation (its provisional evaluation of the offering).
 - `VerifiedOfferingSeeder` — a sample of 15 offerings, each with 5 to 9 closed specialist evaluations from a pool of 10 specialists; it dispatches `EvaluationClosed` per offering, so the consensus runs and those offerings end up `verified`.
 
@@ -160,6 +161,20 @@ Login in three steps:
 
 The `access_token` authenticates the `auth:api` routes via `Authorization: Bearer`. Two scopes: `profile:read` (default) and `profile:write` (step-up for sensitive actions). Full detail in `endpoints.md`.
 
+## ☕ Public coffee shop directory
+
+A **coffee shop** is the business: a user with role `coffeeshop` that owns one or more locations. The directory is public (no token), like `GET /offerings`, and returns **business data only** — never the owner's email, surname, personal contacts or account data.
+
+- `GET /coffeeshops` — paginated (same `links`/`meta` as `GET /offerings`) list of the coffee shops with at least one location. Filters: `name` (partial, case-insensitive), `city` and `postalCode` (any of its locations' primary contacts), `verified` (1: at least one verified offering in any location; 0: none), `orderBy=name`, `orderDirection` (default `name asc`) and `page` (15 per page, as `GET /offerings`). Each item carries `locationsCount`, `offeringsCount`, `verifiedOfferingsCount` and **every** location (the map shows all the locations of the filtered coffee shops).
+- `GET /coffeeshops/{ulid}` — one coffee shop; `404` for an unknown ULID or a user that is not a coffee shop. The detail page has two tabs: **Offerings**, read with `GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the `locations` array.
+
+## 📍 Contacts, locations and coordinates
+
+- `GET /users/{user}/contacts` and `GET /users/{user}/locations` return the authenticated user's own contacts and locations (self only, `403` otherwise).
+- `POST /users/{user}/contacts` (`profile:write`) creates the user's single primary contact; a second one is a `409`.
+- `POST /locations` (role `coffeeshop`, `profile:write`) creates a location and its primary contact in one transaction; the owner is always the authenticated user.
+- **Coordinates are computed client-side**: the front geocodes the address and sends `latitud`/`longitud` (optional, each required with the other, -90..90 / -180..180). The API adds no geocoding dependency and stores them as received; `latitud`, `longitud` and `description` are nullable.
+
 ## 📊 Implementation status
 
 **API complete.** All MVP endpoints are built and covered by Pest tests:
@@ -179,6 +194,10 @@ The `access_token` authenticates the `auth:api` routes via `Authorization: Beare
 | `−4d` (defects) and `−2u` (non-uniformity) deductions in cupping | ✅ Implemented |
 | Consensus flavor tree (`offering_tastes`) | ✅ Populated (parents + leaves, count = distinct specialists) |
 | `verification_status` (provisional → verified) | ✅ Implemented |
+| Own contacts (list, single primary contact) and own locations (list, create with primary contact) | ✅ Implemented |
+| Client-side coordinates (`latitud`/`longitud` optional, validated, nullable columns) | ✅ Implemented |
+| Public coffee shop directory (`GET /coffeeshops` with filters + pagination, `GET /coffeeshops/{ulid}`) | ✅ Implemented |
+| Barcelona specialty coffee shops seeded from a fixed data file | ✅ Seeded |
 
 ## 🗺️ Backlog
 

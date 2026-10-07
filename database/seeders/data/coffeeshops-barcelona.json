@@ -1,0 +1,303 @@
+[
+    {
+        "name": "Nomad Coffee",
+        "web": "https://nomadcoffee.es",
+        "locations": [
+            {
+                "name": "Nomad Coffee Sant Pere",
+                "description": "Nomad Coffee Lab & Shop.",
+                "address": "Passatge Sert 12",
+                "postal_code": "08003",
+                "latitud": 41.3893,
+                "longitud": 2.1767
+            },
+            {
+                "name": "Nomad Coffee Poblenou",
+                "description": null,
+                "address": "Carrer de Pujades 95",
+                "postal_code": "08005",
+                "latitud": 41.3976,
+                "longitud": 2.1958
+            },
+            {
+                "name": "Nomad Coffee Raval",
+                "description": null,
+                "address": "Carrer de Joaquín Costa 26",
+                "postal_code": "08001",
+                "latitud": 41.3836,
+                "longitud": 2.1652
+            }
+        ]
+    },
+    {
+        "name": "Satan's Coffee Corner",
+        "locations": [
+            {
+                "name": "Satan's Coffee Corner Dreta de l'Eixample",
+                "description": "Inside Casa Bonay.",
+                "address": "Gran Via de les Corts Catalanes 700",
+                "postal_code": "08010",
+                "latitud": 41.3935,
+                "longitud": 2.1747
+            }
+        ]
+    },
+    {
+        "name": "Right Side Coffee",
+        "locations": [
+            {
+                "name": "Right Side Coffee Gòtic",
+                "description": null,
+                "address": "Carrer de l'Arc de Sant Ramon del Call 11",
+                "postal_code": "08002",
+                "latitud": 41.3824,
+                "longitud": 2.1756
+            }
+        ]
+    },
+    {
+        "name": "Syra Coffee",
+        "locations": [
+            {
+                "name": "Syra Coffee Gràcia",
+                "description": null,
+                "address": "Carrer de la Mare de Déu dels Desemparats 8",
+                "postal_code": "08012",
+                "latitud": 41.4019,
+                "longitud": 2.1565
+            },
+            {
+                "name": "Syra Coffee Fort Pienc",
+                "description": null,
+                "address": "Passatge del Pla 11",
+                "postal_code": "08009",
+                "latitud": 41.3953,
+                "longitud": 2.17
+            },
+            {
+                "name": "Syra Coffee Passeig de Gràcia",
+                "description": null,
+                "address": "Passeig de Gràcia 11",
+                "postal_code": "08007",
+                "latitud": 41.3885,
+                "longitud": 2.1675
+            }
+        ]
+    },
+    {
+        "name": "Hidden Coffee Roasters",
+        "locations": [
+            {
+                "name": "Hidden Coffee Roasters Born",
+                "description": null,
+                "address": "Carrer dels Canvis Vells 10",
+                "postal_code": "08003",
+                "latitud": 41.3829,
+                "longitud": 2.1817
+            }
+        ]
+    },
+    {
+        "name": "Onna Coffee",
+        "locations": [
+            {
+                "name": "Onna Coffee Gràcia",
+                "description": null,
+                "address": "Carrer de Santa Teresa 1",
+                "postal_code": "08012",
+                "latitud": 41.3985,
+                "longitud": 2.1593
+            }
+        ]
+    },
+    {
+        "name": "Three Marks Coffee",
+        "locations": [
+            {
+                "name": "Three Marks Coffee Fort Pienc",
+                "description": null,
+                "address": "Carrer d'Ausiàs Marc 151",
+                "postal_code": "08013",
+                "latitud": 41.3961,
+                "longitud": 2.1838
+            }
+        ]
+    },
+    {
+        "name": "SlowMov",
+        "locations": [
+            {
+                "name": "SlowMov Gràcia",
+                "description": null,
+                "address": "Carrer de Luis Antúnez 18",
+                "postal_code": "08006",
+                "latitud": 41.3978,
+                "longitud": 2.153
+            }
+        ]
+    },
+    {
+        "name": "Cafès El Magnífico",
+        "locations": [
+            {
+                "name": "Cafès El Magnífico Born",
+                "description": null,
+                "address": "Carrer de l'Argenteria 64",
+                "postal_code": "08003",
+                "latitud": 41.3839,
+                "longitud": 2.1813
+            }
+        ]
+    },
+    {
+        "name": "Cometa",
+        "locations": [
+            {
+                "name": "Cometa Sant Antoni",
+                "description": null,
+                "address": "Carrer del Parlament 20",
+                "postal_code": "08015",
+                "latitud": 41.3752,
+                "longitud": 2.1612
+            }
+        ]
+    },
+    {
+        "name": "Espai Joliu",
+        "locations": [
+            {
+                "name": "Espai Joliu Poblenou",
+                "description": null,
+                "address": "Carrer de Badajoz 95",
+                "postal_code": "08005",
+                "latitud": 41.4007,
+                "longitud": 2.1953
+            }
+        ]
+    },
+    {
+        "name": "Dalston Coffee",
+        "locations": [
+            {
+                "name": "Dalston Coffee Raval",
+                "description": null,
+                "address": "Carrer de les Ramelleres 16",
+                "postal_code": "08001",
+                "latitud": 41.3851,
+                "longitud": 2.1681
+            }
+        ]
+    },
+    {
+        "name": "Black Remedy",
+        "locations": [
+            {
+                "name": "Black Remedy Gòtic",
+                "description": null,
+                "address": "Carrer de la Ciutat 5",
+                "postal_code": "08002",
+                "latitud": 41.3824,
+                "longitud": 2.1773
+            }
+        ]
+    },
+    {
+        "name": "Granja Petitbo",
+        "locations": [
+            {
+                "name": "Granja Petitbo Dreta de l'Eixample",
+                "description": null,
+                "address": "Passeig de Sant Joan 82",
+                "postal_code": "08009",
+                "latitud": 41.3976,
+                "longitud": 2.172
+            }
+        ]
+    },
+    {
+        "name": "Cosmo",
+        "locations": [
+            {
+                "name": "Cosmo Esquerra de l'Eixample",
+                "description": null,
+                "address": "Carrer d'Enric Granados 3",
+                "postal_code": "08007",
+                "latitud": 41.3866,
+                "longitud": 2.1617
+            }
+        ]
+    },
+    {
+        "name": "Caravelle",
+        "locations": [
+            {
+                "name": "Caravelle Raval",
+                "description": null,
+                "address": "Carrer del Pintor Fortuny 31",
+                "postal_code": "08001",
+                "latitud": 41.3834,
+                "longitud": 2.168
+            }
+        ]
+    },
+    {
+        "name": "Federal Café",
+        "locations": [
+            {
+                "name": "Federal Café Sant Antoni",
+                "description": null,
+                "address": "Carrer del Parlament 39",
+                "postal_code": "08015",
+                "latitud": 41.3748,
+                "longitud": 2.1622
+            },
+            {
+                "name": "Federal Café Gòtic",
+                "description": null,
+                "address": "Passatge de la Pau 11",
+                "postal_code": "08002",
+                "latitud": 41.3778,
+                "longitud": 2.1777
+            }
+        ]
+    },
+    {
+        "name": "Skye Coffee",
+        "locations": [
+            {
+                "name": "Skye Coffee Poblenou",
+                "description": null,
+                "address": "Carrer dels Pellaires 30",
+                "postal_code": "08019",
+                "latitud": 41.4078,
+                "longitud": 2.204
+            }
+        ]
+    },
+    {
+        "name": "Departure Coffee Co.",
+        "locations": [
+            {
+                "name": "Departure Coffee Co. Raval",
+                "description": null,
+                "address": "Carrer de la Verge 1",
+                "postal_code": "08001",
+                "latitud": 41.3812,
+                "longitud": 2.166
+            }
+        ]
+    },
+    {
+        "name": "Sant Antoni Gloriós",
+        "locations": [
+            {
+                "name": "Sant Antoni Gloriós Sant Antoni",
+                "description": null,
+                "address": "Carrer de Manso 42",
+                "postal_code": "08015",
+                "latitud": 41.3765,
+                "longitud": 2.1601
+            }
+        ]
+    }
+]

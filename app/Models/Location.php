@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 #[Fillable('user_id', 'name', 'description', 'latitud', 'longitud')]
 class Location extends Model
@@ -25,6 +26,11 @@ class Location extends Model
     public function contacts(): MorphMany
     {
         return $this->morphMany(Contact::class, 'contactable');
+    }
+
+    public function primaryContact(): MorphOne
+    {
+        return $this->morphOne(Contact::class, 'contactable')->where('is_primary', true);
     }
 
     public function offerings(): HasMany

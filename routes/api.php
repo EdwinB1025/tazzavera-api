@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\CoffeeInventoryController;
+use App\Http\Controllers\CoffeeshopController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OfferingController;
@@ -23,6 +25,8 @@ Route::get('/evaluations', [EvaluationController::class, 'index']);
 Route::get('/users/{user}/evaluations', [EvaluationController::class, 'indexByUser']); //EDB 10/06/26: public evaluations of a given user (evaluator)
 Route::get('/coffees', [CoffeeController::class, 'index']);
 Route::get('/roasteries', [RoasteryController::class, 'index']);
+Route::get('/coffeeshops', [CoffeeshopController::class, 'index']); //EDB 10/06/26: public coffee shop directory (business data only)
+Route::get('/coffeeshops/{user}', [CoffeeshopController::class, 'show']);
 
 
 Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'profile:write')]) //EDB 09/16/26: adding the read general scope, RejectWildcardScope force client to request a valid scope.
@@ -33,9 +37,17 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
         Route::post('/logout', [UserController::class, 'logout']);
         Route::get('/user', [UserController::class, 'show']);
 
+        /**EDB 10/06/26: Routes for user to read their own contacts and locations (personal and management data) */
+        Route::middleware('can:view,user')->group(function () {
+            Route::get('/users/{user}/contacts', [ContactController::class, 'index']);
+            Route::get('/users/{user}/locations', [LocationController::class, 'indexByUser']);
+        });
+
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
+            Route::post('/locations', [LocationController::class, 'store'])
+                ->middleware(CheckTokenForAnyScope::using('profile:write')); //EDB 10/06/26: location + primary contact
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
             Route::post('/offerings', [OfferingController::class, 'store'])
                 ->middleware('owns.location:locations');
@@ -75,6 +87,8 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
                 ->middleware('can:update,user');
             Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
                 ->middleware('can:update,user');
+            Route::post('/users/{user}/contacts', [ContactController::class, 'store'])
+                ->middleware('can:update,user'); //EDB 10/06/26: the user's single primary contact
             Route::delete('/users/{user}', [UserController::class, 'destroy'])
                 ->middleware('can:delete,user');
             Route::delete('/users/{user}/force', [UserController::class, 'forceDestroy'])
