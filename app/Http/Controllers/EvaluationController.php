@@ -7,6 +7,7 @@ use App\Http\Requests\FilterUserEvaluationRequest;
 use App\Http\Resources\EvaluationResource;
 use App\Models\Evaluation;
 use App\Models\User;
+use Knuckles\Scribe\Attributes\ResponseField;
 
 /**EDB 10/06/26: Public reads only. The specialist's own reads and every write live in UserEvaluationController */
 class EvaluationController extends Controller
@@ -24,6 +25,7 @@ class EvaluationController extends Controller
      * @unauthenticated
      * @responseFile storage/scribe/responses/evaluations.index.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function index(FilterEvaluationRequest $request)
     {
         $evaluations = Evaluation::query()
@@ -51,6 +53,7 @@ class EvaluationController extends Controller
      *
      * @responseFile storage/scribe/responses/evaluations.index.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function indexByUser(FilterUserEvaluationRequest $request, User $user)
     {
         $evaluations = $user->evaluations()
@@ -74,6 +77,7 @@ class EvaluationController extends Controller
      *
      * @responseFile storage/scribe/responses/evaluations.show.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function show(Evaluation $evaluation)
     {
         $evaluation->load('tastes.taxonomy:id,ulid', 'offering:id,ulid');

@@ -139,7 +139,18 @@ endpoints:
           }
         headers: []
         description: ''
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth: []
     controller: null
     method: null
@@ -560,7 +571,18 @@ endpoints:
           }
         headers: []
         description: ''
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth: []
     controller: null
     method: null
@@ -983,7 +1005,18 @@ endpoints:
           }
         headers: []
         description: ''
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth: []
     controller: null
     method: null
@@ -1398,7 +1431,18 @@ endpoints:
           }
         headers: []
         description: ''
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth:
       - headers
       - Authorization
@@ -1570,7 +1614,18 @@ endpoints:
         content: '{"message": "No query results for model [App\\Models\\Evaluation]."}'
         headers: []
         description: 'Not found or not the owner'
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth:
       - headers
       - Authorization
@@ -2483,7 +2538,18 @@ endpoints:
           }
         headers: []
         description: ''
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth:
       - headers
       - Authorization
@@ -3440,7 +3506,18 @@ endpoints:
         content: '{"message": "Evaluation cannot be updated."}'
         headers: []
         description: 'Evaluation already closed'
-    responseFields: []
+    responseFields:
+      data.offeringId:
+        custom: []
+        name: data.offeringId
+        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
     auth:
       - headers
       - Authorization
