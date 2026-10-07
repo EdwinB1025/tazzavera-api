@@ -1086,6 +1086,8 @@ paths:
                       offeringId:
                         type: string
                         example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                        nullable: true
                       evaluationType:
                         type: string
                         example: specialist
@@ -1306,6 +1308,8 @@ paths:
                         type: string
                         example: null
                         nullable: true
+                    required:
+                      - offeringId
       tags:
         - Evaluations
       security: []
@@ -1797,6 +1801,8 @@ paths:
                         offeringId:
                           type: string
                           example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                          description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                          nullable: true
                         evaluationType:
                           type: string
                           example: specialist
@@ -2017,6 +2023,8 @@ paths:
                           type: string
                           example: null
                           nullable: true
+                      required:
+                        - offeringId
                   links:
                     type: object
                     properties:
@@ -2558,6 +2566,8 @@ paths:
                         offeringId:
                           type: string
                           example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                          description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                          nullable: true
                         evaluationType:
                           type: string
                           example: specialist
@@ -2778,6 +2788,8 @@ paths:
                           type: string
                           example: null
                           nullable: true
+                      required:
+                        - offeringId
                   links:
                     type: object
                     properties:
@@ -3328,6 +3340,8 @@ paths:
                         offeringId:
                           type: string
                           example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                          description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                          nullable: true
                         evaluationType:
                           type: string
                           example: specialist
@@ -3548,6 +3562,8 @@ paths:
                           type: string
                           example: null
                           nullable: true
+                      required:
+                        - offeringId
                   links:
                     type: object
                     properties:
@@ -3713,6 +3729,8 @@ paths:
                       offeringId:
                         type: string
                         example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                        nullable: true
                       evaluationType:
                         type: string
                         example: specialist
@@ -3933,6 +3951,8 @@ paths:
                         type: string
                         example: null
                         nullable: true
+                    required:
+                      - offeringId
                   message:
                     type: string
                     example: 'Evaluation created.'
@@ -4391,6 +4411,8 @@ paths:
                       offeringId:
                         type: string
                         example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                        nullable: true
                       evaluationType:
                         type: string
                         example: specialist
@@ -4611,6 +4633,8 @@ paths:
                         type: string
                         example: null
                         nullable: true
+                    required:
+                      - offeringId
         404:
           description: 'Not found or not the owner'
           content:
@@ -4737,6 +4761,8 @@ paths:
                       offeringId:
                         type: string
                         example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
+                        description: "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering."
+                        nullable: true
                       evaluationType:
                         type: string
                         example: specialist
@@ -4957,6 +4983,8 @@ paths:
                         type: string
                         example: null
                         nullable: true
+                    required:
+                      - offeringId
                   message:
                     type: string
                     example: 'Evaluation updated.'

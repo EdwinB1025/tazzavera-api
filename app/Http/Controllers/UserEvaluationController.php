@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEvaluationRequest;
 use App\Http\Resources\EvaluationResource;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
+use Knuckles\Scribe\Attributes\ResponseField;
 
 /**EDB 10/06/26: Evaluations of the authenticated specialist: own reads and every write. The public reads stay in EvaluationController */
 class UserEvaluationController extends Controller
@@ -34,6 +35,7 @@ class UserEvaluationController extends Controller
      *
      * @responseFile storage/scribe/responses/userevaluations.index.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function index(FilterUserEvaluationRequest $request)
     {
         $evaluations = $request->user()->evaluations()
@@ -65,6 +67,7 @@ class UserEvaluationController extends Controller
      *
      * @responseFile storage/scribe/responses/userevaluations.show.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function show(Request $request, string $evaluation)
     {
         //EDB 10/06/26: resolved through the user's relation, not route model binding, so another user's evaluation is a 404 with the same message as a missing one.
@@ -96,6 +99,7 @@ class UserEvaluationController extends Controller
      *
      * @responseFile 201 storage/scribe/responses/evaluations.store.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function store(StoreEvaluationRequest $request)
     {
         $this->service->parseEvaluation($request);
@@ -133,6 +137,7 @@ class UserEvaluationController extends Controller
      *
      * @responseFile storage/scribe/responses/evaluations.update.json
      */
+    #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
     {
         abort_if($evaluation->status === 'closed', 409, __('evaluations.status_closed'));
