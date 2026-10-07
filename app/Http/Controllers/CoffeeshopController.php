@@ -33,7 +33,7 @@ class CoffeeshopController extends Controller
             ->withCoffeeshopCounts()
             ->filter($request->validated())
             ->with('locations.primaryContact')
-            ->paginate();
+            ->paginate($request->perPage());
 
         return CoffeeshopResource::collection($coffeeshops);
     }

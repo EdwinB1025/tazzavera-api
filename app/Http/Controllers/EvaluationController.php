@@ -31,7 +31,7 @@ class EvaluationController extends Controller
         $evaluations = Evaluation::query()
             ->filter($request->validated())
             ->with('tastes.taxonomy:id,ulid', 'offering:id,ulid')
-            ->paginate();
+            ->paginate($request->perPage());
 
         return EvaluationResource::collection($evaluations);
     }
@@ -59,7 +59,7 @@ class EvaluationController extends Controller
         $evaluations = $user->evaluations()
             ->filter($request->validated())
             ->with('tastes.taxonomy:id,ulid', 'offering:id,ulid')
-            ->paginate();
+            ->paginate($request->perPage());
 
         return EvaluationResource::collection($evaluations);
     }

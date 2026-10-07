@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HasPagination;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterOfferingRequest extends FormRequest
 {
+    use HasPagination;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -75,6 +78,7 @@ class FilterOfferingRequest extends FormRequest
 
             'orderBy'        => ['sometimes', 'in:cupping_avg,evaluation_count,created_at'],
             'orderDirection' => ['sometimes', 'in:asc,desc'],
+            ...$this->paginationRules(),
         ];
     }
     /**

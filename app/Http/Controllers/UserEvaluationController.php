@@ -41,7 +41,7 @@ class UserEvaluationController extends Controller
         $evaluations = $request->user()->evaluations()
             ->filter($request->validated())
             ->with('tastes.taxonomy:id,ulid', 'offering:id,ulid')
-            ->paginate();
+            ->paginate($request->perPage());
 
         return EvaluationResource::collection($evaluations);
     }

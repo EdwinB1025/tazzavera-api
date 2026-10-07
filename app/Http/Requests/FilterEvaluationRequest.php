@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HasPagination;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterEvaluationRequest extends FormRequest
 {
+    use HasPagination;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -35,6 +38,7 @@ class FilterEvaluationRequest extends FormRequest
             'scoreMax'       => ['sometimes', 'numeric', 'min:0', 'max:100', 'gte:scoreMin'],
             'orderBy'        => ['sometimes', 'in:cupping_score,created_at,status'],
             'orderDirection' => ['sometimes', 'in:asc,desc'],
+            ...$this->paginationRules(),
         ];
     }
     public function queryParameters(): array
