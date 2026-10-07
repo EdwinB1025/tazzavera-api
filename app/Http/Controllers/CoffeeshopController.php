@@ -51,7 +51,7 @@ class CoffeeshopController extends Controller
      *
      * @unauthenticated
      *
-     * @urlParam user string required The ULID of the coffee shop (its user ULID). Example: 01M35F5RX4ADGC3CSDXXYB08DA
+     * @urlParam user_ulid string required The ULID of the coffee shop (its user ULID). Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @responseFile storage/scribe/responses/coffeeshops.show.json
      * @responseFile 404 storage/scribe/responses/coffeeshops.show.404.json

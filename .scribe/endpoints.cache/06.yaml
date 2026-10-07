@@ -76,7 +76,7 @@ endpoints:
       orderBy:
         custom: []
         name: orderBy
-        description: 'Sort field. One of: name. Default: name.'
+        description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
         required: false
         example: name
         type: string
@@ -98,17 +98,6 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      perPage:
-        custom: []
-        name: perPage
-        description: 'Results per page (1–100). Default: 15, as GET /offerings. Must be at least 1. Must not be greater than 100.'
-        required: false
-        example: 15
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
       page:
         custom: []
         name: page
@@ -127,7 +116,6 @@ endpoints:
       verified: true
       orderBy: name
       orderDirection: asc
-      perPage: 15
       page: 1
     bodyParameters: []
     cleanBodyParameters: []
@@ -258,7 +246,7 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'coffeeshops/{user}'
+    uri: 'coffeeshops/{user_ulid}'
     metadata:
       custom: []
       groupName: 'Coffee shops'
@@ -271,16 +259,16 @@ endpoints:
         locations. The detail page shows two tabs: **Offerings**, read with
         `GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the
         `locations` array of this response. A ULID that does not exist, or that
-        is not a coffee shop, returns `404 Not Found`.
+        is not a coffee shop with at least one location, returns `404 Not Found`.
       authenticated: false
       deprecated: false
     headers:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      user:
+      user_ulid:
         custom: []
-        name: user
+        name: user_ulid
         description: 'The ULID of the coffee shop (its user ULID).'
         required: true
         example: 01M35F5RX4ADGC3CSDXXYB08DA
@@ -290,7 +278,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      user: 01M35F5RX4ADGC3CSDXXYB08DA
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -347,7 +335,7 @@ endpoints:
         status: 404
         content: |-
           {
-              "message": "No query results for model [App\\Models\\User]."
+              "message": "No query results for model [App\\Models\\User] 01M35F5RX4ADGC3CSDXXYB08DA"
           }
         headers: []
         description: ''

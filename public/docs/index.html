@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Laravel API Documentation</title>
+    <title>tazavera_api API Documentation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -97,8 +97,8 @@
                                                     <li class="tocify-item level-2" data-unique="coffee-shops-GETcoffeeshops">
                                 <a href="#coffee-shops-GETcoffeeshops">List coffee shops</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="coffee-shops-GETcoffeeshops--user-">
-                                <a href="#coffee-shops-GETcoffeeshops--user-">Get a coffee shop</a>
+                                                                                <li class="tocify-item level-2" data-unique="coffee-shops-GETcoffeeshops--user_ulid-">
+                                <a href="#coffee-shops-GETcoffeeshops--user_ulid-">Get a coffee shop</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -237,7 +237,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 6, 2026</li>
+        <li>Last updated: October 7, 2026</li>
     </ul>
 </div>
 
@@ -813,7 +813,7 @@ account data. Sorted by name ascending by default.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/coffeeshops?name=nomad&amp;city=Barcelona&amp;postalCode=08001&amp;verified=1&amp;orderBy=name&amp;orderDirection=asc&amp;perPage=15&amp;page=1" \
+    --get "http://localhost:8000/coffeeshops?name=nomad&amp;city=Barcelona&amp;postalCode=08001&amp;verified=1&amp;orderBy=name&amp;orderDirection=asc&amp;page=1" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -830,7 +830,6 @@ const params = {
     "verified": "1",
     "orderBy": "name",
     "orderDirection": "asc",
-    "perPage": "15",
     "page": "1",
 };
 Object.keys(params)
@@ -865,7 +864,6 @@ $response = $client-&gt;get(
             'verified' =&gt; '1',
             'orderBy' =&gt; 'name',
             'orderDirection' =&gt; 'asc',
-            'perPage' =&gt; '15',
             'page' =&gt; '1',
         ],
     ]
@@ -1133,7 +1131,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="name"
                data-component="query">
     <br>
-<p>Sort field. One of: name. Default: name. Example: <code>name</code></p>
+<p>Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given). Example: <code>name</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>name</code></li></ul>
             </div>
@@ -1152,18 +1150,6 @@ Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="perPage"                data-endpoint="GETcoffeeshops"
-               value="15"
-               data-component="query">
-    <br>
-<p>Results per page (1–100). Default: 15, as GET /offerings. Must be at least 1. Must not be greater than 100. Example: <code>15</code></p>
-            </div>
-                                    <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
 <small>integer</small>&nbsp;
 <i>optional</i> &nbsp;
@@ -1177,7 +1163,7 @@ Must be one of:
             </div>
                 </form>
 
-                    <h2 id="coffee-shops-GETcoffeeshops--user-">Get a coffee shop</h2>
+                    <h2 id="coffee-shops-GETcoffeeshops--user_ulid-">Get a coffee shop</h2>
 
 <p>
 </p>
@@ -1186,9 +1172,9 @@ Must be one of:
 locations. The detail page shows two tabs: <strong>Offerings</strong>, read with
 <code>GET /offerings?coffeeshopUlid={ulid}</code>, and <strong>Locations</strong>, the
 <code>locations</code> array of this response. A ULID that does not exist, or that
-is not a coffee shop, returns <code>404 Not Found</code>.</p>
+is not a coffee shop with at least one location, returns <code>404 Not Found</code>.</p>
 
-<span id="example-requests-GETcoffeeshops--user-">
+<span id="example-requests-GETcoffeeshops--user_ulid-">
 <blockquote>Example request:</blockquote>
 
 
@@ -1233,7 +1219,7 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-GETcoffeeshops--user-">
+<span id="example-responses-GETcoffeeshops--user_ulid-">
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
@@ -1285,47 +1271,47 @@ print_r(json_decode((string) $body));</code></pre></div>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;No query results for model [App\\Models\\User].&quot;
+    &quot;message&quot;: &quot;No query results for model [App\\Models\\User] 01M35F5RX4ADGC3CSDXXYB08DA&quot;
 }</code>
  </pre>
     </span>
-<span id="execution-results-GETcoffeeshops--user-" hidden>
+<span id="execution-results-GETcoffeeshops--user_ulid-" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-GETcoffeeshops--user-"></span>:
+                id="execution-response-status-GETcoffeeshops--user_ulid-"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-GETcoffeeshops--user-"
+    <pre class="json"><code id="execution-response-content-GETcoffeeshops--user_ulid-"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-GETcoffeeshops--user-" hidden>
+<span id="execution-error-GETcoffeeshops--user_ulid-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETcoffeeshops--user-">
+    <pre><code id="execution-error-message-GETcoffeeshops--user_ulid-">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-GETcoffeeshops--user-" data-method="GET"
-      data-path="coffeeshops/{user}"
+<form id="form-GETcoffeeshops--user_ulid-" data-method="GET"
+      data-path="coffeeshops/{user_ulid}"
       data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETcoffeeshops--user-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('GETcoffeeshops--user_ulid-', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETcoffeeshops--user-"
-                    onclick="tryItOut('GETcoffeeshops--user-');">Try it out ⚡
+                    id="btn-tryout-GETcoffeeshops--user_ulid-"
+                    onclick="tryItOut('GETcoffeeshops--user_ulid-');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETcoffeeshops--user-"
-                    onclick="cancelTryOut('GETcoffeeshops--user-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-GETcoffeeshops--user_ulid-"
+                    onclick="cancelTryOut('GETcoffeeshops--user_ulid-');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETcoffeeshops--user-"
+                    id="btn-executetryout-GETcoffeeshops--user_ulid-"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -1333,7 +1319,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-green">GET</small>
-            <b><code>coffeeshops/{user}</code></b>
+            <b><code>coffeeshops/{user_ulid}</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -1342,7 +1328,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="GETcoffeeshops--user-"
+                              name="Content-Type"                data-endpoint="GETcoffeeshops--user_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -1354,7 +1340,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="GETcoffeeshops--user-"
+                              name="Accept"                data-endpoint="GETcoffeeshops--user_ulid-"
                value="application/json"
                data-component="header">
     <br>
@@ -1362,12 +1348,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user</code></b>&nbsp;&nbsp;
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="user"                data-endpoint="GETcoffeeshops--user-"
+                              name="user_ulid"                data-endpoint="GETcoffeeshops--user_ulid-"
                value="01M35F5RX4ADGC3CSDXXYB08DA"
                data-component="url">
     <br>
@@ -3286,7 +3272,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations/architecto" \
+    --get "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3294,7 +3280,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/architecto"
+    "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N"
 );
 
 const headers = {
@@ -3312,7 +3298,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/architecto';
+$url = 'http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N';
 $response = $client-&gt;get(
     $url,
     [
@@ -3530,10 +3516,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
-               value="architecto"
+               value="01M497E37SFA9YD2GSV2QNC60N"
                data-component="url">
     <br>
-<p>The evaluation. Example: <code>architecto</code></p>
+<p>The evaluation. Example: <code>01M497E37SFA9YD2GSV2QNC60N</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;

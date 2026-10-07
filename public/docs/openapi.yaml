@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: 'Laravel API Documentation'
+  title: 'tazavera_api API Documentation'
   description: 'REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.'
   version: 1.0.0
 servers:
@@ -475,12 +475,12 @@ paths:
         -
           in: query
           name: orderBy
-          description: 'Sort field. One of: name. Default: name.'
+          description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
           example: name
           required: false
           schema:
             type: string
-            description: 'Sort field. One of: name. Default: name.'
+            description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
             example: name
             enum:
               - name
@@ -497,16 +497,6 @@ paths:
             enum:
               - asc
               - desc
-        -
-          in: query
-          name: perPage
-          description: 'Results per page (1–100). Default: 15, as GET /offerings. Must be at least 1. Must not be greater than 100.'
-          example: 15
-          required: false
-          schema:
-            type: integer
-            description: 'Results per page (1–100). Default: 15, as GET /offerings. Must be at least 1. Must not be greater than 100.'
-            example: 15
         -
           in: query
           name: page
@@ -844,11 +834,11 @@ paths:
       tags:
         - 'Coffee shops'
       security: []
-  '/coffeeshops/{user}':
+  '/coffeeshops/{user_ulid}':
     get:
       summary: 'Get a coffee shop'
       operationId: getACoffeeShop
-      description: "Returns one coffee shop (business) by its ULID, with its counters and\nlocations. The detail page shows two tabs: **Offerings**, read with\n`GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the\n`locations` array of this response. A ULID that does not exist, or that\nis not a coffee shop, returns `404 Not Found`."
+      description: "Returns one coffee shop (business) by its ULID, with its counters and\nlocations. The detail page shows two tabs: **Offerings**, read with\n`GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the\n`locations` array of this response. A ULID that does not exist, or that\nis not a coffee shop with at least one location, returns `404 Not Found`."
       parameters: []
       responses:
         200:
@@ -985,18 +975,18 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\User].'
+                  message: 'No query results for model [App\Models\User] 01M35F5RX4ADGC3CSDXXYB08DA'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\User].'
+                    example: 'No query results for model [App\Models\User] 01M35F5RX4ADGC3CSDXXYB08DA'
       tags:
         - 'Coffee shops'
       security: []
     parameters:
       -
         in: path
-        name: user
+        name: user_ulid
         description: 'The ULID of the coffee shop (its user ULID).'
         example: 01M35F5RX4ADGC3CSDXXYB08DA
         required: true
@@ -4640,7 +4630,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: architecto
+        example: 01M497E37SFA9YD2GSV2QNC60N
         required: true
         schema:
           type: string

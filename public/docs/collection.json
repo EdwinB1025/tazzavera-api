@@ -9,8 +9,8 @@
         }
     ],
     "info": {
-        "name": "Laravel API Documentation",
-        "_postman_id": "f46a321d-6db5-4df0-af19-7cb7e9486247",
+        "name": "tazavera_api API Documentation",
+        "_postman_id": "8858135c-2c7e-4dfd-93d6-91200bf3b6d1",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -176,7 +176,7 @@
                                 {
                                     "key": "orderBy",
                                     "value": "name",
-                                    "description": "Sort field. One of: name. Default: name.",
+                                    "description": "Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).",
                                     "disabled": false
                                 },
                                 {
@@ -186,19 +186,13 @@
                                     "disabled": false
                                 },
                                 {
-                                    "key": "perPage",
-                                    "value": "15",
-                                    "description": "Results per page (1\u2013100). Default: 15, as GET \/offerings. Must be at least 1. Must not be greater than 100.",
-                                    "disabled": false
-                                },
-                                {
                                     "key": "page",
                                     "value": "1",
                                     "description": "Page number. Default: 1. Must be at least 1.",
                                     "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/coffeeshops?name=nomad&city=Barcelona&postalCode=08001&verified=1&orderBy=name&orderDirection=asc&perPage=15&page=1"
+                            "raw": "{{baseUrl}}\/coffeeshops?name=nomad&city=Barcelona&postalCode=08001&verified=1&orderBy=name&orderDirection=asc&page=1"
                         },
                         "method": "GET",
                         "header": [
@@ -237,13 +231,13 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "coffeeshops\/:user",
+                            "path": "coffeeshops\/:user_ulid",
                             "query": [],
-                            "raw": "{{baseUrl}}\/coffeeshops\/:user",
+                            "raw": "{{baseUrl}}\/coffeeshops\/:user_ulid",
                             "variable": [
                                 {
-                                    "id": "user",
-                                    "key": "user",
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
                                     "value": "01M35F5RX4ADGC3CSDXXYB08DA",
                                     "description": "The ULID of the coffee shop (its user ULID)."
                                 }
@@ -261,7 +255,7 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns one coffee shop (business) by its ULID, with its counters and\nlocations. The detail page shows two tabs: **Offerings**, read with\n`GET \/offerings?coffeeshopUlid={ulid}`, and **Locations**, the\n`locations` array of this response. A ULID that does not exist, or that\nis not a coffee shop, returns `404 Not Found`.",
+                        "description": "Returns one coffee shop (business) by its ULID, with its counters and\nlocations. The detail page shows two tabs: **Offerings**, read with\n`GET \/offerings?coffeeshopUlid={ulid}`, and **Locations**, the\n`locations` array of this response. A ULID that does not exist, or that\nis not a coffee shop with at least one location, returns `404 Not Found`.",
                         "auth": {
                             "type": "noauth"
                         }
@@ -276,7 +270,7 @@
                         {
                             "header": [],
                             "code": 404,
-                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\User].\"\n}",
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\User] 01M35F5RX4ADGC3CSDXXYB08DA\"\n}",
                             "name": ""
                         }
                     ]
@@ -659,7 +653,7 @@
                                 {
                                     "id": "evaluation",
                                     "key": "evaluation",
-                                    "value": "architecto",
+                                    "value": "01M497E37SFA9YD2GSV2QNC60N",
                                     "description": "The evaluation."
                                 },
                                 {
