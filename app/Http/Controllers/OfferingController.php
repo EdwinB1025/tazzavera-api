@@ -7,6 +7,7 @@ use App\Http\Requests\MassDeleteOfferingRequest;
 use App\Http\Requests\StoreOfferingRequest;
 use App\Http\Resources\OfferingResource;
 use App\Models\CoffeeInventory;
+use App\Models\Evaluation;
 use App\Models\Location;
 use App\Models\Offering;
 use Illuminate\Database\Eloquent\Collection;
@@ -131,6 +132,8 @@ class OfferingController extends Controller
      * Delete an offering
      *
      * Permanently deletes a single offering. This action cannot be undone.
+     * The offering's baseline (provisional) evaluation is deleted with it;
+     * specialists' evaluations are kept without an offering.
      *
      * **Authorization:** requires the `coffeeshop` role and the `profile:write`
      * scope. The authenticated user must own the offering (`owns.offering`).
@@ -144,7 +147,13 @@ class OfferingController extends Controller
      */
     public function destroy(Offering $offering)
     {
-        $offering->delete();
+        DB::transaction(
+            function () use ($offering) {
+                //EDB 10/07/26: the baseline belongs to the offering; specialists' evaluations keep a null offering.
+                $offering->evaluations()->where('evaluation_type', 'baseline')->delete();
+                $offering->delete();
+            }
+        );
 
         return response()->json(['message' => __('offerings.deleted')], 200);
     }
@@ -153,7 +162,9 @@ class OfferingController extends Controller
      * Delete multiple offerings
      *
      * Permanently deletes several offerings in one request, identified by their
-     * ULIDs (maximum 50). This action cannot be undone.
+     * ULIDs (maximum 50). This action cannot be undone. Each offering's
+     * baseline (provisional) evaluation is deleted with it; specialists'
+     * evaluations are kept without an offering.
      *
      * **Authorization:** requires the `coffeeshop` role and the `profile:write`
      * scope. The authenticated user must own all referenced offerings
@@ -167,9 +178,20 @@ class OfferingController extends Controller
      */
     public function massDestroy(MassDeleteOfferingRequest $request)
     {
-        Offering::whereIn('ulid', $request->offerings())
-            //->get() EDB 09/16/26: deleting from collection to enable the event generation for future notifications if needed.
-            ->delete();
+        DB::transaction(
+            function () use ($request) {
+                $offeringIds = Offering::whereIn('ulid', $request->offerings())->pluck('id');
+
+                //EDB 10/07/26: the baselines belong to the offerings; specialists' evaluations keep a null offering.
+                Evaluation::whereIn('offering_id', $offeringIds)
+                    ->where('evaluation_type', 'baseline')
+                    ->delete();
+
+                Offering::whereIn('id', $offeringIds)
+                    //->get() EDB 09/16/26: deleting from collection to enable the event generation for future notifications if needed.
+                    ->delete();
+            }
+        );
 
         return response()->json(['message' => __('offerings.deleted')], 200);
     }

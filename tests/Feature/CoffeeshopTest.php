@@ -4,6 +4,7 @@ use App\Models\CertificationType;
 use App\Models\Coffee;
 use App\Models\CoffeeInventory;
 use App\Models\Contact;
+use App\Models\Evaluation;
 use App\Models\Location;
 use App\Models\Offering;
 use App\Models\Roastery;
@@ -241,6 +242,54 @@ test('authenticated_coffeeshop_deletes_offerings', function () {
 
     foreach ($offerings as $offering) {
         $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+    }
+});
+
+test('authenticated_coffeeshop_deletes_offering_with_evaluations', function () {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+
+    $offering = createOfferingsForUser($user, 1, 1);
+
+    $baseline = Evaluation::factory()->create([
+        'offering_id' => $offering->id,
+        'evaluator_id' => $user->id,
+        'evaluation_type' => 'baseline',
+    ]);
+    $specialist = Evaluation::factory()->create(['offering_id' => $offering->id]);
+
+    $this->withToken($token)
+        ->deleteJson("/offerings/{$offering->ulid}")
+        ->assertOK();
+
+    $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+    $this->assertDatabaseMissing('evaluations', ['id' => $baseline->id]);
+    $this->assertDatabaseHas('evaluations', ['id' => $specialist->id, 'offering_id' => null]);
+});
+
+test('authenticated_coffeeshop_deletes_offerings_with_evaluations', function () {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+
+    $offerings = createOfferingsForUser($user, 2, 1);
+
+    $baselines = $offerings->map(fn($offering) => Evaluation::factory()->create([
+        'offering_id' => $offering->id,
+        'evaluator_id' => $user->id,
+        'evaluation_type' => 'baseline',
+    ]));
+    $specialists = $offerings->map(fn($offering) => Evaluation::factory()->create(['offering_id' => $offering->id]));
+
+    $this->withToken($token)
+        ->deleteJson("/offerings", ['offerings' => $offerings->pluck('ulid')->toArray()])
+        ->assertOK();
+
+    foreach ($offerings as $offering) {
+        $this->assertDatabaseMissing('offerings', ['id' => $offering->id]);
+    }
+    foreach ($baselines as $baseline) {
+        $this->assertDatabaseMissing('evaluations', ['id' => $baseline->id]);
+    }
+    foreach ($specialists as $specialist) {
+        $this->assertDatabaseHas('evaluations', ['id' => $specialist->id, 'offering_id' => null]);
     }
 });
 

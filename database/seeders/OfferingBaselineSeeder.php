@@ -26,24 +26,25 @@ class OfferingBaselineSeeder extends Seeder
             }
 
             $count = mt_rand(1, 5);
+            $unavailableInventory = $coffeeshop->offerings()->pluck('coffee_inventory_id');
+
             for ($i = 0; $i < $count; $i++) {
-                $location = $coffeeshop->locations->random();
-                $available = $inventoryIds->diff($location->offerings()->pluck('coffee_inventory_id'));
+                $available = $inventoryIds->diff($unavailableInventory);
 
                 if ($available->isEmpty()) {
-                    continue;
+                    break;
                 }
 
-                $offering = Offering::factory()->create([
-                    'location_id'         => $location->id,
-                    'coffee_inventory_id' => $available->random(),
-                ]);
+                $inventoryId = $available->random();
 
-                Evaluation::factory()->withTastes()->create([
-                    'offering_id'     => $offering->id,
-                    'evaluator_id'    => $coffeeshop->id,
-                    'evaluation_type' => 'baseline',
-                ]);
+                foreach ($coffeeshop->locations as $location) {
+                    Offering::factory()->create([
+                        'location_id'         => $location->id,
+                        'coffee_inventory_id' => $inventoryId,
+                    ]);
+                }
+
+                $unavailableInventory->push($inventoryId);
             }
         });
     }

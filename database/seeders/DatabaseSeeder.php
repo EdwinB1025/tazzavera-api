@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(
             [
-                OfferingBaselineSeeder::class,
+                CreateOfferingSeeder::class,
                 VerifiedOfferingSeeder::class,
             ]
         );

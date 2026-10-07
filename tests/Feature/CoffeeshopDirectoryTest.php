@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CoffeeInventory;
 use App\Models\Contact;
 use App\Models\Location;
 use App\Models\Offering;
@@ -34,7 +35,7 @@ function createCoffeeshop(string $name, array $locations = [[]]): User
 /** An offering in the given location, with the given verification status */
 function createOfferingAt(Location $location, string $status = 'provisional'): Offering
 {
-    $inventory = \App\Models\CoffeeInventory::whereNotIn('id', $location->offerings()->pluck('coffee_inventory_id'))->firstOrFail();
+    $inventory = CoffeeInventory::whereNotIn('id', $location->offerings()->pluck('coffee_inventory_id'))->firstOrFail();
 
     return Offering::factory()->create([
         'location_id' => $location->id,
@@ -54,7 +55,11 @@ test('anyone_lists_coffeeshops_without_token', function () {
         ->assertJsonCount(2, 'data.0.locations')
         ->assertJsonStructure([
             'data' => ['*' => [
-                'ulid', 'name', 'locationsCount', 'offeringsCount', 'verifiedOfferingsCount',
+                'ulid',
+                'name',
+                'locationsCount',
+                'offeringsCount',
+                'verifiedOfferingsCount',
                 'locations' => ['*' => ['ulid', 'name', 'description', 'latitud', 'longitud', 'address', 'city', 'postalCode', 'country', 'phone', 'web', 'social']],
             ]],
             'links' => ['first', 'last', 'prev', 'next'],
