@@ -333,6 +333,7 @@ test('filter_offerings_by_ranges_and_relations', function () {
     ]);
 
     $second = Offering::factory()->create([
+        'location_id' => Location::factory()->create(['user_id' => $owner->id])->id,
         'cupping_avg' => 82,
         'fragrance_avg' => 7,
         'evaluation_count' => 8,

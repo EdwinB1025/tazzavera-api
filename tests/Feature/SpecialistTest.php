@@ -308,6 +308,7 @@ test('filter_evaluations_by_query_parameters', function () {
         'coffeeId' => $coffee->ulid,
         'process' => $coffee->process,
         'status' => 'closed',
+        'evaluationType' => 'specialist',
         'scoreMin' => 80,
         'scoreMax' => 90,
         'orderBy' => 'cupping_score',
