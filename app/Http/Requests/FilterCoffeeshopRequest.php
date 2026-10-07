@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\HasPagination;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterCoffeeshopRequest extends FormRequest
 {
+    use HasPagination;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -37,7 +40,7 @@ class FilterCoffeeshopRequest extends FormRequest
             'verified'       => ['sometimes', 'boolean'],
             'orderBy'        => ['sometimes', 'in:name'],
             'orderDirection' => ['sometimes', 'in:asc,desc'],
-            'page'         => ['sometimes', 'integer', 'min:1'],
+            ...$this->paginationRules(),
         ];
     }
 

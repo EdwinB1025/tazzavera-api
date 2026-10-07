@@ -44,7 +44,7 @@ class OfferingController extends Controller
                 'cataTastes.children.taxonomy',
                 'cataTastes.children.children.taxonomy',
             ])
-            ->paginate();
+            ->paginate($request->perPage());
 
         return OfferingResource::collection($offerings);
     }
