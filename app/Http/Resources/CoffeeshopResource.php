@@ -21,20 +21,7 @@ class CoffeeshopResource extends JsonResource
             'locationsCount' => (int) $this->locations_count,
             'offeringsCount' => (int) $this->offerings_count,
             'verifiedOfferingsCount' => (int) $this->verified_offerings_count,
-            'locations' => $this->whenLoaded('locations', fn() => $this->locations->map(fn($location) => [
-                'ulid' => $location->ulid,
-                'name' => $location->name,
-                'description' => $location->description,
-                'latitud' => $location->latitud,
-                'longitud' => $location->longitud,
-                'address' => $location->primaryContact?->address,
-                'city' => $location->primaryContact?->city,
-                'postalCode' => $location->primaryContact?->postal_code,
-                'country' => $location->primaryContact?->country,
-                'phone' => $location->primaryContact?->phone,
-                'web' => $location->primaryContact?->web,
-                'social' => $location->primaryContact?->social,
-            ])),
+            'locations' => CoffeeshopLocationResource::collection($this->whenLoaded('locations')),
         ];
     }
 }

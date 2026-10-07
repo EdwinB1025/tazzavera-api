@@ -164,22 +164,18 @@ test('order_coffeeshops', function (array $query, array $expected) {
 ]);
 
 test('paginate_coffeeshops', function () {
-    foreach (['A Coffee', 'B Coffee', 'C Coffee', 'D Coffee', 'E Coffee'] as $name) {
-        createCoffeeshop($name);
+    foreach (range(1, 17) as $n) {
+        createCoffeeshop(sprintf('Coffee %02d', $n));
     }
 
-    $this->getJson('/coffeeshops?perPage=2&page=2')
+    $this->getJson('/coffeeshops?page=2')
         ->assertOk()
         ->assertJsonCount(2, 'data')
-        ->assertJsonPath('data.0.name', 'C Coffee')
+        ->assertJsonPath('data.0.name', 'Coffee 16')
         ->assertJsonPath('meta.current_page', 2)
-        ->assertJsonPath('meta.per_page', 2)
-        ->assertJsonPath('meta.last_page', 3)
-        ->assertJsonPath('meta.total', 5);
-
-    $this->getJson('/coffeeshops')
-        ->assertOk()
-        ->assertJsonPath('meta.per_page', 15);
+        ->assertJsonPath('meta.per_page', 15)
+        ->assertJsonPath('meta.last_page', 2)
+        ->assertJsonPath('meta.total', 17);
 });
 
 test('filter_coffeeshops_with_invalid_parameters', function (array $query, array $errors) {
@@ -190,7 +186,6 @@ test('filter_coffeeshops_with_invalid_parameters', function (array $query, array
     'order by unknown field' => [['orderBy' => 'email'], ['orderBy']],
     'order direction'        => [['orderDirection' => 'up'], ['orderDirection']],
     'verified not boolean'   => [['verified' => 'yes'], ['verified']],
-    'per page too big'       => [['perPage' => 101], ['perPage']],
     'page zero'              => [['page' => 0], ['page']],
 ]);
 

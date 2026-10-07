@@ -47,6 +47,41 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /** EDB 10/07/26: public coffee shop directory: coffeeshop users with at least one location */
+    #[Scope]
+    protected function coffeeshops(Builder $query): void
+    {
+        $query->role('coffeeshop')->has('locations');
+    }
+
+    /** EDB 10/07/26: public coffee shop directory counters */
+    #[Scope]
+    protected function withCoffeeshopCounts(Builder $query): void
+    {
+        $query->withCount($this->coffeeshopCounts());
+    }
+
+    /** Coffee shop directory counters on a loaded user, as the scope withCoffeeshopCounts */
+    public function loadCoffeeshopCounts(): static
+    {
+        return $this->loadCount($this->coffeeshopCounts());
+    }
+
+    /** Whether the user is listed in the public coffee shop directory (scope coffeeshops) */
+    public function isListedCoffeeshop(): bool
+    {
+        return static::query()->coffeeshops()->whereKey($this->getKey())->exists();
+    }
+
+    private function coffeeshopCounts(): array
+    {
+        return [
+            'locations',
+            'offerings',
+            'offerings as verified_offerings_count' => fn($q) => $q->where('verification_status', 'verified'),
+        ];
+    }
+
     /** EDB 10/06/26: public coffee shop directory filters (FilterCoffeeshopRequest) */
     #[Scope]
     protected function filter(Builder $query, array $validated): void
@@ -70,7 +105,7 @@ class User extends Authenticatable implements PasskeyUser
     {
         $query->when(
             $validated['name'] ?? null,
-            fn($q, $v) => $q->whereRaw('LOWER(name) LIKE ?', ['%' . mb_strtolower($v) . '%'])
+            fn($q, $v) => $q->where('name', 'like', "%{$v}%")
         );
     }
 
@@ -107,8 +142,10 @@ class User extends Authenticatable implements PasskeyUser
     #[Scope]
     protected function applyOrderBy(Builder $query, array $validated): void
     {
-        $query->orderBy($validated['orderBy'] ?? 'name', $validated['orderDirection'] ?? 'asc')
-            ->orderBy('id'); // stable pages when names repeat
+        $query->when(
+            $validated['orderBy'] ?? null, // default name: FilterCoffeeshopRequest::prepareForValidation
+            fn($q, $v) => $q->orderBy($v, $validated['orderDirection'] ?? 'asc')
+        );
     }
 
     /** Relationships */

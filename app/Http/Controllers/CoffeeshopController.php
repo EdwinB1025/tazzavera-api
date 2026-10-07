@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FilterCoffeeshopRequest;
 use App\Http\Resources\CoffeeshopResource;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**EDB 10/06/26: Public coffee shop directory. A coffee shop is the business (a user with role coffeeshop) that owns several locations */
 class CoffeeshopController extends Controller
@@ -28,12 +28,12 @@ class CoffeeshopController extends Controller
      */
     public function index(FilterCoffeeshopRequest $request)
     {
-        $validated = $request->validated();
-
-        $coffeeshops = $this->coffeeshops()
-            ->has('locations')
-            ->filter($validated)
-            ->paginate($validated['perPage'] ?? 15);
+        $coffeeshops = User::query()
+            ->coffeeshops()
+            ->withCoffeeshopCounts()
+            ->filter($request->validated())
+            ->with('locations.primaryContact')
+            ->paginate();
 
         return CoffeeshopResource::collection($coffeeshops);
     }
@@ -45,7 +45,7 @@ class CoffeeshopController extends Controller
      * locations. The detail page shows two tabs: **Offerings**, read with
      * `GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the
      * `locations` array of this response. A ULID that does not exist, or that
-     * is not a coffee shop, returns `404 Not Found`.
+     * is not a coffee shop with at least one location, returns `404 Not Found`.
      *
      * @group Coffee shops
      *
@@ -56,26 +56,13 @@ class CoffeeshopController extends Controller
      * @responseFile storage/scribe/responses/coffeeshops.show.json
      * @responseFile 404 storage/scribe/responses/coffeeshops.show.404.json
      */
-    public function show(string $user)
+    public function show(User $user)
     {
-        //EDB 10/06/26: resolved by query, not route model binding, so a user that is not a coffee shop is a 404 with the same message as a missing one.
-        $coffeeshop = $this->coffeeshops()
-            ->where('ulid', $user)
-            ->firstOrFail();
+        //EDB 10/07/26: a user outside the directory is a 404 with the same response as a missing ULID (route model binding).
+        throw_unless($user->isListedCoffeeshop(), (new ModelNotFoundException)->setModel(User::class, [$user->ulid]));
 
-        return new CoffeeshopResource($coffeeshop);
-    }
+        $user->loadCoffeeshopCounts()->load('locations.primaryContact');
 
-    /** Coffee shop users with their counters and locations (business fields only) */
-    private function coffeeshops(): Builder
-    {
-        return User::role('coffeeshop')
-            ->select(['users.id', 'users.ulid', 'users.name'])
-            ->withCount([
-                'locations',
-                'offerings',
-                'offerings as verified_offerings_count' => fn($q) => $q->where('verification_status', 'verified'),
-            ])
-            ->with('locations.primaryContact');
+        return new CoffeeshopResource($user);
     }
 }
