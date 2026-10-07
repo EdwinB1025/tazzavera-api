@@ -4630,7 +4630,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: 01M497E37SFA9YD2GSV2QNC60N
+        example: architecto
         required: true
         schema:
           type: string
@@ -6653,7 +6653,7 @@ paths:
     delete:
       summary: 'Delete an offering'
       operationId: deleteAnOffering
-      description: "Permanently deletes a single offering. This action cannot be undone.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own the offering (`owns.offering`)."
+      description: "Permanently deletes a single offering. This action cannot be undone.\nThe offering's baseline (provisional) evaluation is deleted with it;\nspecialists' evaluations are kept without an offering.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own the offering (`owns.offering`)."
       parameters: []
       responses:
         200:
@@ -8255,7 +8255,7 @@ paths:
     delete:
       summary: 'Delete multiple offerings'
       operationId: deleteMultipleOfferings
-      description: "Permanently deletes several offerings in one request, identified by their\nULIDs (maximum 50). This action cannot be undone.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own all referenced offerings\n(`owns.offering`)."
+      description: "Permanently deletes several offerings in one request, identified by their\nULIDs (maximum 50). This action cannot be undone. Each offering's\nbaseline (provisional) evaluation is deleted with it; specialists'\nevaluations are kept without an offering.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope. The authenticated user must own all referenced offerings\n(`owns.offering`)."
       parameters: []
       responses:
         200:

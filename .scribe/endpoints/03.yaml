@@ -1438,7 +1438,7 @@ endpoints:
         name: evaluation
         description: 'The evaluation.'
         required: true
-        example: 01M497E37SFA9YD2GSV2QNC60N
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1456,7 +1456,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation: 01M497E37SFA9YD2GSV2QNC60N
+      evaluation: architecto
       evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
