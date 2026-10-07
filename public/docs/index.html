@@ -3272,7 +3272,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N" \
+    --get "http://localhost:8000/user/evaluations/architecto" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3280,7 +3280,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N"
+    "http://localhost:8000/user/evaluations/architecto"
 );
 
 const headers = {
@@ -3298,7 +3298,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/01M497E37SFA9YD2GSV2QNC60N';
+$url = 'http://localhost:8000/user/evaluations/architecto';
 $response = $client-&gt;get(
     $url,
     [
@@ -3516,10 +3516,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
-               value="01M497E37SFA9YD2GSV2QNC60N"
+               value="architecto"
                data-component="url">
     <br>
-<p>The evaluation. Example: <code>01M497E37SFA9YD2GSV2QNC60N</code></p>
+<p>The evaluation. Example: <code>architecto</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;
@@ -8994,7 +8994,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Permanently deletes a single offering. This action cannot be undone.</p>
+<p>Permanently deletes a single offering. This action cannot be undone.
+The offering's baseline (provisional) evaluation is deleted with it;
+specialists' evaluations are kept without an offering.</p>
 <p><strong>Authorization:</strong> requires the <code>coffeeshop</code> role and the <code>profile:write</code>
 scope. The authenticated user must own the offering (<code>owns.offering</code>).</p>
 
@@ -9162,7 +9164,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </p>
 
 <p>Permanently deletes several offerings in one request, identified by their
-ULIDs (maximum 50). This action cannot be undone.</p>
+ULIDs (maximum 50). This action cannot be undone. Each offering's
+baseline (provisional) evaluation is deleted with it; specialists'
+evaluations are kept without an offering.</p>
 <p><strong>Authorization:</strong> requires the <code>coffeeshop</code> role and the <code>profile:write</code>
 scope. The authenticated user must own all referenced offerings
 (<code>owns.offering</code>).</p>

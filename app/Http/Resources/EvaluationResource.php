@@ -16,7 +16,7 @@ class EvaluationResource extends JsonResource
     {
         return [
             'ulid'             => $this->ulid,
-            'offeringId'       => $this->offering->ulid,
+            'offeringId'       => $this->offering->ulid ?? null,
             'evaluationType'   => $this->evaluation_type,
             'status'           => $this->status,
             'extractionMethod' => $this->extraction_method,
