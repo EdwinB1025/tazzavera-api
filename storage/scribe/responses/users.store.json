@@ -6,5 +6,11 @@
         "email": "laura@tazavera.test",
         "role": "coffeeshop"
     },
-    "message": "Profile created."
+    "message": "Profile created.",
+    "token": {
+        "token_type": "Bearer",
+        "expires_in": 1800,
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+        "refresh_token": "def50200a1b2c3..."
+    }
 }

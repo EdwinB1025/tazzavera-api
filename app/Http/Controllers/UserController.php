@@ -8,12 +8,17 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
+use App\Models\Passport\Client;
 use App\Models\User;
+use GuzzleHttp\Psr7\Response as Psr7Response;
+use GuzzleHttp\Psr7\ServerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Laravel\Passport\Exceptions\OAuthServerException;
 use Laravel\Passport\Guards\TokenGuard;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Laravel\Passport\Token;
 use Spatie\Permission\Models\Role;
 use Throwable;
@@ -27,6 +32,14 @@ class UserController extends Controller
      * registration endpoint. User creation and role assignment happen in a
      * single transaction; if role assignment fails, the whole operation is
      * rolled back.
+     *
+     * The new user is also signed in: the response carries a `token` block
+     * with the same fields as `POST /oauth/token` (`token_type`,
+     * `expires_in`, `access_token`, `refresh_token`), issued through the
+     * front client's password grant with the default scope (`profile:read`).
+     * The refresh token is refreshed with that same client. If the tokens
+     * cannot be issued, the user is still created and the response has no
+     * `token` block.
      *
      * @group Users
      *
@@ -55,7 +68,10 @@ class UserController extends Controller
         );
 
         return (new ResourcesUser($user))
-            ->additional(['message' => __('user.created')])
+            ->additional(array_filter([
+                'message' => __('user.created'),
+                'token' => $this->issueTokens($data),
+            ]))
             ->response()
             ->setStatusCode(201);
     }
@@ -223,5 +239,34 @@ class UserController extends Controller
         $apiGuard->getProvider()->updateRememberToken($user, Str::random(60));
 
         return response()->json(['message' => __('auth.logged_out')], 200);
+    }
+
+    /**
+     * EDB 10/08/26: signs the newly registered user in (AUT R44): Passport's token
+     * controller is called in process, as `POST /oauth/token` with the password grant
+     * of the front client, so the refresh token belongs to the client the front
+     * refreshes with. Returns null when the client lacks the grant or the grant fails.
+     */
+    private function issueTokens(array $data): ?array
+    {
+        $client = Client::front()->first();
+        if (! $client?->hasGrantType('password')) {
+            return null;
+        }
+
+        $psrRequest = (new ServerRequest('POST', '/oauth/token'))->withParsedBody([
+            'grant_type' => 'password',
+            'client_id' => $client->getKey(),
+            'username' => $data['email'],
+            'password' => $data['password'],
+        ]);
+
+        try {
+            $response = app(AccessTokenController::class)->issueToken($psrRequest, new Psr7Response());
+        } catch (OAuthServerException) {
+            return null;
+        }
+
+        return json_decode($response->getContent(), true);
     }
 }

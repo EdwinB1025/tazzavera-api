@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Passport\Client;
 use App\Models\User;
+use Database\Seeders\FrontClientSeeder;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,6 +19,37 @@ test('user_registers', function (?string $role = 'user') {
     //$response->dump();
     $response->assertStatus(201);
 })->with(['user', 'coffeeshop', 'specialist']);
+
+test('user_registers_and_is_signed_in', function () {
+    $this->seed(FrontClientSeeder::class);
+    $user = User::factory()->registrationPayload('user');
+
+    $response = $this->postJson('/register', $user);
+    $response->assertStatus(201)
+        ->assertJsonStructure(['data', 'message', 'token' => ['token_type', 'expires_in', 'access_token', 'refresh_token']]);
+
+    //The issued token signs the new user in with the default scope
+    $this->withToken($response->json('token.access_token'))
+        ->getJson('/user')
+        ->assertOk()
+        ->assertJsonPath('data.email', $user['email']);
+
+    //The refresh token belongs to the front client the front refreshes with
+    $this->post('/oauth/token', [
+        'grant_type' => 'refresh_token',
+        'client_id' => Client::front()->first()->getKey(),
+        'refresh_token' => $response->json('token.refresh_token'),
+    ])->assertOk();
+});
+
+test('user_registers_without_token_when_front_client_lacks_password_grant', function () {
+    app(ClientRepository::class)->createAuthorizationCodeGrantClient(Client::FRONT, ['http://localhost/callback'], false);
+    $user = User::factory()->registrationPayload('user');
+
+    $this->postJson('/register', $user)
+        ->assertStatus(201)
+        ->assertJsonMissingPath('token');
+});
 
 test('user_authenticates_with_pkce', function () {
 
