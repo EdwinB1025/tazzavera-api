@@ -5,12 +5,12 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "http:\/\/localhost:8000"
+            "value": "https:\/\/localhost:8443"
         }
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "34feb7a3-241f-4a5e-b5ff-dc18cd76e72a",
+        "_postman_id": "6bc88946-338a-497b-ae1a-30fdc5fd6040",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -190,9 +190,15 @@
                                     "value": "1",
                                     "description": "Page number. Default: 1. Must be at least 1.",
                                     "disabled": false
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "1",
+                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/coffeeshops?name=nomad&city=Barcelona&postalCode=08001&verified=1&orderBy=name&orderDirection=asc&page=1"
+                            "raw": "{{baseUrl}}\/coffeeshops?name=nomad&city=Barcelona&postalCode=08001&verified=1&orderBy=name&orderDirection=asc&page=1&perPage=1"
                         },
                         "method": "GET",
                         "header": [
@@ -402,9 +408,21 @@
                                     "value": "desc",
                                     "description": "Sort direction. One of: asc, desc.",
                                     "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "16",
+                                    "description": "Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "22",
+                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=baseline&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc"
+                            "raw": "{{baseUrl}}\/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=baseline&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc&page=16&perPage=22"
                         },
                         "method": "GET",
                         "header": [
@@ -504,9 +522,21 @@
                                     "value": "desc",
                                     "description": "Sort direction. One of: asc, desc.",
                                     "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "16",
+                                    "description": "Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "22",
+                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/users\/:user_ulid\/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=specialist&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc",
+                            "raw": "{{baseUrl}}\/users\/:user_ulid\/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=specialist&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc&page=16&perPage=22",
                             "variable": [
                                 {
                                     "id": "user_ulid",
@@ -614,9 +644,21 @@
                                     "value": "desc",
                                     "description": "Sort direction. One of: asc, desc.",
                                     "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "16",
+                                    "description": "Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "22",
+                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/user\/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=specialist&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc"
+                            "raw": "{{baseUrl}}\/user\/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&evaluationType=specialist&coffeeId=01M35F5JEZMS845TNPAEM1V8PF&locationId=01M35F5JDFXM13R1CA06FFWTNG&city=Barcelona&process=Washed&status=closed&scoreMin=80&scoreMax=95&orderBy=cupping_score&orderDirection=desc&page=16&perPage=22"
                         },
                         "method": "GET",
                         "header": [
@@ -653,7 +695,7 @@
                                 {
                                     "id": "evaluation",
                                     "key": "evaluation",
-                                    "value": "architecto",
+                                    "value": "01M4E1CZ8YNRJNN32PG9AKGMSH",
                                     "description": "The evaluation."
                                 },
                                 {
@@ -1001,7 +1043,7 @@
                             "mode": "raw",
                             "raw": "{\"name\":\"Cafeteria Gr\u00e0cia\",\"description\":\"Barra de especialidad en Gr\u00e0cia.\",\"latitud\":41.4029,\"longitud\":2.1565,\"contact\":{\"phone\":\"+34 932 123 456\",\"email\":\"hola@cafeteria.example\",\"web\":\"https:\\\/\\\/cafeteria.example\",\"social\":\"@cafeteria.bcn\",\"address\":\"Carrer de Verdi 12\",\"country\":\"Espa\u00f1a\",\"city\":\"Barcelona\",\"postal_code\":\"08012\"}}"
                         },
-                        "description": "Creates a location of the authenticated coffeeshop together with its\nprimary contact, in a single database transaction (all-or-nothing). The\nowner is always the authenticated user, never a value from the body.\nThe coordinates are optional and computed by the client; when one is\nsent, the other is required.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope."
+                        "description": "Creates a location of the authenticated coffeeshop together with its\nprimary contact, in a single database transaction (all-or-nothing). The\nowner is always the authenticated user, never a value from the body.\nThe coordinates are optional and computed by the client; when one is\nsent, the other is required.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:read`\nor `profile:write` scope (no step-up re-authentication)."
                     },
                     "response": [
                         {
@@ -1331,9 +1373,21 @@
                                     "value": "desc",
                                     "description": "Sort direction. One of: asc, desc.",
                                     "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "22",
+                                    "description": "Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "perPage",
+                                    "value": "7",
+                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "disabled": false
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/offerings?coffeeName=Geisha&roasteryName=N%C3%B3mada&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&variety=Caturra&city=Barcelona&coffeeshopUlid=01M35F5RX4ADGC3CSDXXYB08DA&locationUlid=01J8ZK...&verified=1&cuppingAvgMin=80&cuppingAvgMax=95&evaluationCountMin=1&evaluationCountMax=50&defectiveCountMin=0&defectiveCountMax=5&fragranceMin=6&fragranceMax=8&aromaMin=6&aromaMax=8&flavorMin=6&flavorMax=8&aftertasteMin=6&aftertasteMax=8&acidityMin=6&acidityMax=8&sweetnessMin=6&sweetnessMax=8&mouthfeelMin=6&mouthfeelMax=8&overallMin=6&overallMax=8&cataRef%5B0%5D=architecto&fragranceCata%5B0%5D=architecto&aromaCata%5B0%5D=architecto&flavorCata%5B0%5D=architecto&aftertasteCata%5B0%5D=architecto&mouthfeelCata%5B0%5D=architecto&orderBy=cupping_avg&orderDirection=desc"
+                            "raw": "{{baseUrl}}\/offerings?coffeeName=Geisha&roasteryName=N%C3%B3mada&originCountry=Colombia&originRegion=Huila&process=Washed&producer=Finca%20La%20Esperanza&variety=Caturra&city=Barcelona&coffeeshopUlid=01M35F5RX4ADGC3CSDXXYB08DA&locationUlid=01J8ZK...&verified=1&cuppingAvgMin=80&cuppingAvgMax=95&evaluationCountMin=1&evaluationCountMax=50&defectiveCountMin=0&defectiveCountMax=5&fragranceMin=6&fragranceMax=8&aromaMin=6&aromaMax=8&flavorMin=6&flavorMax=8&aftertasteMin=6&aftertasteMax=8&acidityMin=6&acidityMax=8&sweetnessMin=6&sweetnessMax=8&mouthfeelMin=6&mouthfeelMax=8&overallMin=6&overallMax=8&cataRef%5B0%5D=architecto&fragranceCata%5B0%5D=architecto&aromaCata%5B0%5D=architecto&flavorCata%5B0%5D=architecto&aftertasteCata%5B0%5D=architecto&mouthfeelCata%5B0%5D=architecto&orderBy=cupping_avg&orderDirection=desc&page=22&perPage=7"
                         },
                         "method": "GET",
                         "header": [
@@ -1622,7 +1676,7 @@
                             "mode": "raw",
                             "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\",\"password\":\"Str0ngP@ss!\",\"passwordConfirmation\":\"NewStr0ng!\",\"role\":\"coffeeshop\"}"
                         },
-                        "description": "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.",
+                        "description": "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.\n\nThe new user is also signed in: the response carries a `token` block\nwith the same fields as `POST \/oauth\/token` (`token_type`,\n`expires_in`, `access_token`, `refresh_token`), issued through the\nfront client's password grant with the default scope (`profile:read`).\nThe refresh token is refreshed with that same client. If the tokens\ncannot be issued, the user is still created and the response has no\n`token` block.",
                         "auth": {
                             "type": "noauth"
                         }
@@ -1631,7 +1685,7 @@
                         {
                             "header": [],
                             "code": 201,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"laura@tazavera.test\",\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\"\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"laura@tazavera.test\",\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\",\n    \"token\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 1800,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"refresh_token\": \"def50200a1b2c3...\"\n    }\n}",
                             "name": ""
                         }
                     ]
@@ -1716,6 +1770,73 @@
                             "header": [],
                             "code": 403,
                             "body": "{\n    \"message\": \"This action is unauthorized.\"\n}\n",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create my primary contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "users\/:user_ulid\/contacts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/users\/:user_ulid\/contacts",
+                            "variable": [
+                                {
+                                    "id": "user_ulid",
+                                    "key": "user_ulid",
+                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
+                                    "description": "The ULID of the authenticated user."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"phone\":\"+34 932 123 456\",\"email\":\"hola@cafeteria.example\",\"web\":\"https:\\\/\\\/cafeteria.example\",\"social\":\"@cafeteria.bcn\",\"address\":\"Carrer de Verdi 12\",\"country\":\"Espa\u00f1a\",\"city\":\"Barcelona\",\"postal_code\":\"08012\"}"
+                        },
+                        "description": "Creates the primary contact of the authenticated user. A user has a\nsingle primary contact: if it already exists the request fails with\n`409 Conflict`. `isPrimary` is always set by the API, never taken from\nthe body.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope\n(no step-up re-authentication) and permission to update this user\n(policy). Another user receives `403 Forbidden`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01K9B2C4D6E8F0G2H4J6K8M0NP\",\n        \"isPrimary\": true,\n        \"phone\": \"+34 932 123 456\",\n        \"email\": \"hola@cafeteria.example\",\n        \"web\": \"https:\/\/cafeteria.example\",\n        \"social\": \"@cafeteria.bcn\",\n        \"address\": \"Carrer de Verdi 12\",\n        \"country\": \"Espa\u00f1a\",\n        \"city\": \"Barcelona\",\n        \"postalCode\": \"08012\"\n    },\n    \"message\": \"Contact created.\"\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n    \"message\": \"Unauthenticated.\"\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n    \"message\": \"This action is unauthorized.\"\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 409,
+                            "body": "{\n    \"message\": \"The user already has a primary contact.\"\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The address field is required. (and 1 more error)\",\n    \"errors\": {\n        \"address\": [\n            \"The address field is required.\"\n        ],\n        \"city\": [\n            \"The city field is required.\"\n        ]\n    }\n}\n",
                             "name": ""
                         }
                     ]
@@ -1815,73 +1936,6 @@
                             "code": 403,
                             "body": "{\"message\": \"This action is unauthorized.\"}",
                             "name": "Forbidden"
-                        }
-                    ]
-                },
-                {
-                    "name": "Create my primary contact",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "users\/:user_ulid\/contacts",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/users\/:user_ulid\/contacts",
-                            "variable": [
-                                {
-                                    "id": "user_ulid",
-                                    "key": "user_ulid",
-                                    "value": "01M35F5RX4ADGC3CSDXXYB08DA",
-                                    "description": "The ULID of the authenticated user."
-                                }
-                            ]
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"phone\":\"+34 932 123 456\",\"email\":\"hola@cafeteria.example\",\"web\":\"https:\\\/\\\/cafeteria.example\",\"social\":\"@cafeteria.bcn\",\"address\":\"Carrer de Verdi 12\",\"country\":\"Espa\u00f1a\",\"city\":\"Barcelona\",\"postal_code\":\"08012\"}"
-                        },
-                        "description": "Creates the primary contact of the authenticated user. A user has a\nsingle primary contact: if it already exists the request fails with\n`409 Conflict`. `isPrimary` is always set by the API, never taken from\nthe body.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). Another user receives `403 Forbidden`."
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 201,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01K9B2C4D6E8F0G2H4J6K8M0NP\",\n        \"isPrimary\": true,\n        \"phone\": \"+34 932 123 456\",\n        \"email\": \"hola@cafeteria.example\",\n        \"web\": \"https:\/\/cafeteria.example\",\n        \"social\": \"@cafeteria.bcn\",\n        \"address\": \"Carrer de Verdi 12\",\n        \"country\": \"Espa\u00f1a\",\n        \"city\": \"Barcelona\",\n        \"postalCode\": \"08012\"\n    },\n    \"message\": \"Contact created.\"\n}\n",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 401,
-                            "body": "{\n    \"message\": \"Unauthenticated.\"\n}\n",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 403,
-                            "body": "{\n    \"message\": \"This action is unauthorized.\"\n}\n",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 409,
-                            "body": "{\n    \"message\": \"The user already has a primary contact.\"\n}\n",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 422,
-                            "body": "{\n    \"message\": \"The address field is required. (and 1 more error)\",\n    \"errors\": {\n        \"address\": [\n            \"The address field is required.\"\n        ],\n        \"city\": [\n            \"The city field is required.\"\n        ]\n    }\n}\n",
-                            "name": ""
                         }
                     ]
                 },

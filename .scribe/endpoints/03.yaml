@@ -320,6 +320,28 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'Must be at least 1.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      perPage:
+        custom: []
+        name: perPage
+        description: 'Must be at least 1. Must not be greater than 50.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       evaluatorId: 01M35F5RX4ADGC3CSDXXYB08DA
       offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
@@ -333,6 +355,8 @@ endpoints:
       scoreMax: 95.0
       orderBy: cupping_score
       orderDirection: desc
+      page: 16
+      perPage: 22
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -755,6 +779,28 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'Must be at least 1.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      perPage:
+        custom: []
+        name: perPage
+        description: 'Must be at least 1. Must not be greater than 50.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
       evaluationType: specialist
@@ -767,6 +813,8 @@ endpoints:
       scoreMax: 95.0
       orderBy: cupping_score
       orderDirection: desc
+      page: 16
+      perPage: 22
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -1181,6 +1229,28 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'Must be at least 1.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      perPage:
+        custom: []
+        name: perPage
+        description: 'Must be at least 1. Must not be greater than 50.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       offeringId: 01K6A3M8Q2V7XH4T9B5N1RCW0D
       evaluationType: specialist
@@ -1193,6 +1263,8 @@ endpoints:
       scoreMax: 95.0
       orderBy: cupping_score
       orderDirection: desc
+      page: 16
+      perPage: 22
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -1482,7 +1554,7 @@ endpoints:
         name: evaluation
         description: 'The evaluation.'
         required: true
-        example: architecto
+        example: 01M4E1CZ8YNRJNN32PG9AKGMSH
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1500,7 +1572,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation: architecto
+      evaluation: 01M4E1CZ8YNRJNN32PG9AKGMSH
       evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []

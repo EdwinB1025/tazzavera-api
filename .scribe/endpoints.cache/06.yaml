@@ -109,6 +109,17 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      perPage:
+        custom: []
+        name: perPage
+        description: 'Must be at least 1. Must not be greater than 50.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       name: nomad
       city: Barcelona
@@ -117,6 +128,7 @@ endpoints:
       orderBy: name
       orderDirection: asc
       page: 1
+      perPage: 1
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []

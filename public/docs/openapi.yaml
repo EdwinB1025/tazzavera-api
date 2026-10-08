@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost:8000'
+    url: 'https://localhost:8443'
 tags:
   -
     name: 'Coffee Inventory'
@@ -506,6 +506,16 @@ paths:
           schema:
             type: integer
             description: 'Page number. Default: 1. Must be at least 1.'
+            example: 1
+        -
+          in: query
+          name: perPage
+          description: 'Must be at least 1. Must not be greater than 50.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1. Must not be greater than 50.'
             example: 1
       responses:
         200:
@@ -1461,6 +1471,26 @@ paths:
             enum:
               - asc
               - desc
+        -
+          in: query
+          name: page
+          description: 'Must be at least 1.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1.'
+            example: 16
+        -
+          in: query
+          name: perPage
+          description: 'Must be at least 1. Must not be greater than 50.'
+          example: 22
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1. Must not be greater than 50.'
+            example: 22
       responses:
         200:
           description: ''
@@ -2226,6 +2256,26 @@ paths:
             enum:
               - asc
               - desc
+        -
+          in: query
+          name: page
+          description: 'Must be at least 1.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1.'
+            example: 16
+        -
+          in: query
+          name: perPage
+          description: 'Must be at least 1. Must not be greater than 50.'
+          example: 22
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1. Must not be greater than 50.'
+            example: 22
       responses:
         200:
           description: ''
@@ -3000,6 +3050,26 @@ paths:
             enum:
               - asc
               - desc
+        -
+          in: query
+          name: page
+          description: 'Must be at least 1.'
+          example: 16
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1.'
+            example: 16
+        -
+          in: query
+          name: perPage
+          description: 'Must be at least 1. Must not be greater than 50.'
+          example: 22
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1. Must not be greater than 50.'
+            example: 22
       responses:
         200:
           description: ''
@@ -4654,7 +4724,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: architecto
+        example: 01M4E1CZ8YNRJNN32PG9AKGMSH
         required: true
         schema:
           type: string
@@ -5872,7 +5942,7 @@ paths:
     post:
       summary: 'Create a location'
       operationId: createALocation
-      description: "Creates a location of the authenticated coffeeshop together with its\nprimary contact, in a single database transaction (all-or-nothing). The\nowner is always the authenticated user, never a value from the body.\nThe coordinates are optional and computed by the client; when one is\nsent, the other is required.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:write`\nscope."
+      description: "Creates a location of the authenticated coffeeshop together with its\nprimary contact, in a single database transaction (all-or-nothing). The\nowner is always the authenticated user, never a value from the body.\nThe coordinates are optional and computed by the client; when one is\nsent, the other is required.\n\n**Authorization:** requires the `coffeeshop` role and the `profile:read`\nor `profile:write` scope (no step-up re-authentication)."
       parameters: []
       responses:
         201:
@@ -7154,6 +7224,26 @@ paths:
             enum:
               - asc
               - desc
+        -
+          in: query
+          name: page
+          description: 'Must be at least 1.'
+          example: 22
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1.'
+            example: 22
+        -
+          in: query
+          name: perPage
+          description: 'Must be at least 1. Must not be greater than 50.'
+          example: 7
+          required: false
+          schema:
+            type: integer
+            description: 'Must be at least 1. Must not be greater than 50.'
+            example: 7
       responses:
         200:
           description: ''
@@ -8680,7 +8770,7 @@ paths:
     post:
       summary: 'Register a user'
       operationId: registerAUser
-      description: "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back."
+      description: "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.\n\nThe new user is also signed in: the response carries a `token` block\nwith the same fields as `POST /oauth/token` (`token_type`,\n`expires_in`, `access_token`, `refresh_token`), issued through the\nfront client's password grant with the default scope (`profile:read`).\nThe refresh token is refreshed with that same client. If the tokens\ncannot be issued, the user is still created and the response has no\n`token` block."
       parameters: []
       responses:
         201:
@@ -8697,6 +8787,11 @@ paths:
                     email: laura@tazavera.test
                     role: coffeeshop
                   message: 'Profile created.'
+                  token:
+                    token_type: Bearer
+                    expires_in: 1800
+                    access_token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+                    refresh_token: def50200a1b2c3...
                 properties:
                   data:
                     type: object
@@ -8719,6 +8814,21 @@ paths:
                   message:
                     type: string
                     example: 'Profile created.'
+                  token:
+                    type: object
+                    properties:
+                      token_type:
+                        type: string
+                        example: Bearer
+                      expires_in:
+                        type: integer
+                        example: 1800
+                      access_token:
+                        type: string
+                        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+                      refresh_token:
+                        type: string
+                        example: def50200a1b2c3...
       tags:
         - Users
       requestBody:
@@ -8908,7 +9018,7 @@ paths:
     post:
       summary: 'Create my primary contact'
       operationId: createMyPrimaryContact
-      description: "Creates the primary contact of the authenticated user. A user has a\nsingle primary contact: if it already exists the request fails with\n`409 Conflict`. `isPrimary` is always set by the API, never taken from\nthe body.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). Another user receives `403 Forbidden`."
+      description: "Creates the primary contact of the authenticated user. A user has a\nsingle primary contact: if it already exists the request fails with\n`409 Conflict`. `isPrimary` is always set by the API, never taken from\nthe body.\n\n**Authorization:** requires the `profile:read` or `profile:write` scope\n(no step-up re-authentication) and permission to update this user\n(policy). Another user receives `403 Forbidden`."
       parameters: []
       responses:
         201:

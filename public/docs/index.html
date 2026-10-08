@@ -27,7 +27,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://localhost:8000";
+        var tryItOutBaseUrl = "https://localhost:8443";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -211,14 +211,14 @@
                                                                                 <li class="tocify-item level-2" data-unique="users-GETusers--user_ulid--contacts">
                                 <a href="#users-GETusers--user_ulid--contacts">List my contacts</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="users-POSTusers--user_ulid--contacts">
+                                <a href="#users-POSTusers--user_ulid--contacts">Create my primary contact</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-PUTusers--user_ulid-">
                                 <a href="#users-PUTusers--user_ulid-">Update a user</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-PUTusers--user_ulid--password">
                                 <a href="#users-PUTusers--user_ulid--password">Update user password</a>
-                            </li>
-                                                                                <li class="tocify-item level-2" data-unique="users-POSTusers--user_ulid--contacts">
-                                <a href="#users-POSTusers--user_ulid--contacts">Create my primary contact</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="users-DELETEusers--user_ulid-">
                                 <a href="#users-DELETEusers--user_ulid-">Deactivate a user</a>
@@ -237,7 +237,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 7, 2026</li>
+        <li>Last updated: October 8, 2026</li>
     </ul>
 </div>
 
@@ -247,7 +247,7 @@
         <h1 id="introduction">Introduction</h1>
 <p>REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.</p>
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost:8000</code>
+    <strong>Base URL</strong>: <code>https://localhost:8443</code>
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
@@ -313,7 +313,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/coffeeInventory?coffeeName=Geisha&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;city=Barcelona" \
+    --get "https://localhost:8443/coffeeInventory?coffeeName=Geisha&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;city=Barcelona" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -321,7 +321,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/coffeeInventory"
+    "https://localhost:8443/coffeeInventory"
 );
 
 const params = {
@@ -350,7 +350,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/coffeeInventory';
+$url = 'https://localhost:8443/coffeeInventory';
 $response = $client-&gt;get(
     $url,
     [
@@ -615,14 +615,14 @@ expiry date in the future).</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/coffees?name=Huila" \
+    --get "https://localhost:8443/coffees?name=Huila" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/coffees"
+    "https://localhost:8443/coffees"
 );
 
 const params = {
@@ -645,7 +645,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/coffees';
+$url = 'https://localhost:8443/coffees';
 $response = $client-&gt;get(
     $url,
     [
@@ -813,14 +813,14 @@ account data. Sorted by name ascending by default.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/coffeeshops?name=nomad&amp;city=Barcelona&amp;postalCode=08001&amp;verified=1&amp;orderBy=name&amp;orderDirection=asc&amp;page=1" \
+    --get "https://localhost:8443/coffeeshops?name=nomad&amp;city=Barcelona&amp;postalCode=08001&amp;verified=1&amp;orderBy=name&amp;orderDirection=asc&amp;page=1&amp;perPage=1" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/coffeeshops"
+    "https://localhost:8443/coffeeshops"
 );
 
 const params = {
@@ -831,6 +831,7 @@ const params = {
     "orderBy": "name",
     "orderDirection": "asc",
     "page": "1",
+    "perPage": "1",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -849,7 +850,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/coffeeshops';
+$url = 'https://localhost:8443/coffeeshops';
 $response = $client-&gt;get(
     $url,
     [
@@ -865,6 +866,7 @@ $response = $client-&gt;get(
             'orderBy' =&gt; 'name',
             'orderDirection' =&gt; 'asc',
             'page' =&gt; '1',
+            'perPage' =&gt; '1',
         ],
     ]
 );
@@ -1161,6 +1163,18 @@ Must be one of:
     <br>
 <p>Page number. Default: 1. Must be at least 1. Example: <code>1</code></p>
             </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="perPage"                data-endpoint="GETcoffeeshops"
+               value="1"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>1</code></p>
+            </div>
                 </form>
 
                     <h2 id="coffee-shops-GETcoffeeshops--user_ulid-">Get a coffee shop</h2>
@@ -1180,14 +1194,14 @@ is not a coffee shop with at least one location, returns <code>404 Not Found</co
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA" \
+    --get "https://localhost:8443/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA"
+    "https://localhost:8443/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -1204,7 +1218,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'https://localhost:8443/coffeeshops/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;get(
     $url,
     [
@@ -1378,14 +1392,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
+    --get "https://localhost:8443/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
+    "https://localhost:8443/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -1402,7 +1416,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'https://localhost:8443/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;get(
     $url,
     [
@@ -1642,14 +1656,14 @@ Supports filtering and sorting via query parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&amp;offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=baseline&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "https://localhost:8443/evaluations?evaluatorId=01M35F5RX4ADGC3CSDXXYB08DA&amp;offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=baseline&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc&amp;page=16&amp;perPage=22" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/evaluations"
+    "https://localhost:8443/evaluations"
 );
 
 const params = {
@@ -1665,6 +1679,8 @@ const params = {
     "scoreMax": "95",
     "orderBy": "cupping_score",
     "orderDirection": "desc",
+    "page": "16",
+    "perPage": "22",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1683,7 +1699,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/evaluations';
+$url = 'https://localhost:8443/evaluations';
 $response = $client-&gt;get(
     $url,
     [
@@ -1704,6 +1720,8 @@ $response = $client-&gt;get(
             'scoreMax' =&gt; '95',
             'orderBy' =&gt; 'cupping_score',
             'orderDirection' =&gt; 'desc',
+            'page' =&gt; '16',
+            'perPage' =&gt; '22',
         ],
     ]
 );
@@ -2172,6 +2190,30 @@ Must be one of:
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
             </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETevaluations"
+               value="16"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Example: <code>16</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="perPage"                data-endpoint="GETevaluations"
+               value="22"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>22</code></p>
+            </div>
                 </form>
 
     <h3>Response</h3>
@@ -2213,14 +2255,14 @@ evaluator, which is the user in the path. An unknown user ULID returns
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc&amp;page=16&amp;perPage=22" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations"
 );
 
 const params = {
@@ -2235,6 +2277,8 @@ const params = {
     "scoreMax": "95",
     "orderBy": "cupping_score",
     "orderDirection": "desc",
+    "page": "16",
+    "perPage": "22",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -2253,7 +2297,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/evaluations';
 $response = $client-&gt;get(
     $url,
     [
@@ -2273,6 +2317,8 @@ $response = $client-&gt;get(
             'scoreMax' =&gt; '95',
             'orderBy' =&gt; 'cupping_score',
             'orderDirection' =&gt; 'desc',
+            'page' =&gt; '16',
+            'perPage' =&gt; '22',
         ],
     ]
 );
@@ -2742,6 +2788,30 @@ Must be one of:
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
             </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="16"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Example: <code>16</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="perPage"                data-endpoint="GETusers--user_ulid--evaluations"
+               value="22"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>22</code></p>
+            </div>
                 </form>
 
     <h3>Response</h3>
@@ -2786,7 +2856,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc" \
+    --get "https://localhost:8443/user/evaluations?offeringId=01K6A3M8Q2V7XH4T9B5N1RCW0D&amp;evaluationType=specialist&amp;coffeeId=01M35F5JEZMS845TNPAEM1V8PF&amp;locationId=01M35F5JDFXM13R1CA06FFWTNG&amp;city=Barcelona&amp;process=Washed&amp;status=closed&amp;scoreMin=80&amp;scoreMax=95&amp;orderBy=cupping_score&amp;orderDirection=desc&amp;page=16&amp;perPage=22" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2794,7 +2864,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations"
+    "https://localhost:8443/user/evaluations"
 );
 
 const params = {
@@ -2809,6 +2879,8 @@ const params = {
     "scoreMax": "95",
     "orderBy": "cupping_score",
     "orderDirection": "desc",
+    "page": "16",
+    "perPage": "22",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -2828,7 +2900,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations';
+$url = 'https://localhost:8443/user/evaluations';
 $response = $client-&gt;get(
     $url,
     [
@@ -2849,6 +2921,8 @@ $response = $client-&gt;get(
             'scoreMax' =&gt; '95',
             'orderBy' =&gt; 'cupping_score',
             'orderDirection' =&gt; 'desc',
+            'page' =&gt; '16',
+            'perPage' =&gt; '22',
         ],
     ]
 );
@@ -3317,6 +3391,30 @@ Must be one of:
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
             </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETuser-evaluations"
+               value="16"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Example: <code>16</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="perPage"                data-endpoint="GETuser-evaluations"
+               value="22"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>22</code></p>
+            </div>
                 </form>
 
     <h3>Response</h3>
@@ -3360,7 +3458,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user/evaluations/architecto" \
+    --get "https://localhost:8443/user/evaluations/01M4E1CZ8YNRJNN32PG9AKGMSH" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3368,7 +3466,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/architecto"
+    "https://localhost:8443/user/evaluations/01M4E1CZ8YNRJNN32PG9AKGMSH"
 );
 
 const headers = {
@@ -3386,7 +3484,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/architecto';
+$url = 'https://localhost:8443/user/evaluations/01M4E1CZ8YNRJNN32PG9AKGMSH';
 $response = $client-&gt;get(
     $url,
     [
@@ -3604,10 +3702,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
-               value="architecto"
+               value="01M4E1CZ8YNRJNN32PG9AKGMSH"
                data-component="url">
     <br>
-<p>The evaluation. Example: <code>architecto</code></p>
+<p>The evaluation. Example: <code>01M4E1CZ8YNRJNN32PG9AKGMSH</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;
@@ -3666,7 +3764,7 @@ below for the full nested structure.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/user/evaluations" \
+    "https://localhost:8443/user/evaluations" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3752,7 +3850,7 @@ below for the full nested structure.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations"
+    "https://localhost:8443/user/evaluations"
 );
 
 const headers = {
@@ -3848,7 +3946,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations';
+$url = 'https://localhost:8443/user/evaluations';
 $response = $client-&gt;post(
     $url,
     [
@@ -4923,7 +5021,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5029,7 +5127,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -5145,7 +5243,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;put(
     $url,
     [
@@ -6262,7 +6360,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close" \
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6270,7 +6368,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close"
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close"
 );
 
 const headers = {
@@ -6288,7 +6386,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close';
+$url = 'https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA/close';
 $response = $client-&gt;patch(
     $url,
     [
@@ -6457,7 +6555,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6465,7 +6563,7 @@ not own the evaluation receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
+    "https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -6483,7 +6581,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'https://localhost:8443/user/evaluations/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;delete(
     $url,
     [
@@ -6639,7 +6737,7 @@ receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations" \
+    --get "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/locations" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6647,7 +6745,7 @@ receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/locations"
 );
 
 const headers = {
@@ -6665,7 +6763,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/locations';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/locations';
 $response = $client-&gt;get(
     $url,
     [
@@ -6869,7 +6967,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/locations" \
+    --get "https://localhost:8443/locations" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6877,7 +6975,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/locations"
+    "https://localhost:8443/locations"
 );
 
 const headers = {
@@ -6895,7 +6993,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/locations';
+$url = 'https://localhost:8443/locations';
 $response = $client-&gt;get(
     $url,
     [
@@ -7073,8 +7171,8 @@ primary contact, in a single database transaction (all-or-nothing). The
 owner is always the authenticated user, never a value from the body.
 The coordinates are optional and computed by the client; when one is
 sent, the other is required.</p>
-<p><strong>Authorization:</strong> requires the <code>coffeeshop</code> role and the <code>profile:write</code>
-scope.</p>
+<p><strong>Authorization:</strong> requires the <code>coffeeshop</code> role and the <code>profile:read</code>
+or <code>profile:write</code> scope (no step-up re-authentication).</p>
 
 <span id="example-requests-POSTlocations">
 <blockquote>Example request:</blockquote>
@@ -7082,7 +7180,7 @@ scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/locations" \
+    "https://localhost:8443/locations" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -7107,7 +7205,7 @@ scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/locations"
+    "https://localhost:8443/locations"
 );
 
 const headers = {
@@ -7142,7 +7240,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/locations';
+$url = 'https://localhost:8443/locations';
 $response = $client-&gt;post(
     $url,
     [
@@ -7496,14 +7594,14 @@ alongside location, coffee, and roastery details.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
+    --get "https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
+    "https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
 );
 
 const headers = {
@@ -7520,7 +7618,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
+$url = 'https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
 $response = $client-&gt;get(
     $url,
     [
@@ -7857,14 +7955,14 @@ parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/offerings?coffeeName=Geisha&amp;roasteryName=N%C3%B3mada&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01M35F5RX4ADGC3CSDXXYB08DA&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc" \
+    --get "https://localhost:8443/offerings?coffeeName=Geisha&amp;roasteryName=N%C3%B3mada&amp;originCountry=Colombia&amp;originRegion=Huila&amp;process=Washed&amp;producer=Finca+La+Esperanza&amp;variety=Caturra&amp;city=Barcelona&amp;coffeeshopUlid=01M35F5RX4ADGC3CSDXXYB08DA&amp;locationUlid=01J8ZK...&amp;verified=1&amp;cuppingAvgMin=80&amp;cuppingAvgMax=95&amp;evaluationCountMin=1&amp;evaluationCountMax=50&amp;defectiveCountMin=0&amp;defectiveCountMax=5&amp;fragranceMin=6&amp;fragranceMax=8&amp;aromaMin=6&amp;aromaMax=8&amp;flavorMin=6&amp;flavorMax=8&amp;aftertasteMin=6&amp;aftertasteMax=8&amp;acidityMin=6&amp;acidityMax=8&amp;sweetnessMin=6&amp;sweetnessMax=8&amp;mouthfeelMin=6&amp;mouthfeelMax=8&amp;overallMin=6&amp;overallMax=8&amp;cataRef[]=architecto&amp;fragranceCata[]=architecto&amp;aromaCata[]=architecto&amp;flavorCata[]=architecto&amp;aftertasteCata[]=architecto&amp;mouthfeelCata[]=architecto&amp;orderBy=cupping_avg&amp;orderDirection=desc&amp;page=22&amp;perPage=7" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings"
+    "https://localhost:8443/offerings"
 );
 
 const params = {
@@ -7909,6 +8007,8 @@ const params = {
     "mouthfeelCata[0]": "architecto",
     "orderBy": "cupping_avg",
     "orderDirection": "desc",
+    "page": "22",
+    "perPage": "7",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -7927,7 +8027,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings';
+$url = 'https://localhost:8443/offerings';
 $response = $client-&gt;get(
     $url,
     [
@@ -7977,6 +8077,8 @@ $response = $client-&gt;get(
             'mouthfeelCata[0]' =&gt; 'architecto',
             'orderBy' =&gt; 'cupping_avg',
             'orderDirection' =&gt; 'desc',
+            'page' =&gt; '22',
+            'perPage' =&gt; '7',
         ],
     ]
 );
@@ -8866,6 +8968,30 @@ Must be one of:
 Must be one of:
 <ul style="list-style-type: square;"><li><code>asc</code></li> <li><code>desc</code></li></ul>
             </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETofferings"
+               value="22"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Example: <code>22</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>perPage</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="perPage"                data-endpoint="GETofferings"
+               value="7"
+               data-component="query">
+    <br>
+<p>Must be at least 1. Must not be greater than 50. Example: <code>7</code></p>
+            </div>
                 </form>
 
                     <h2 id="offerings-POSTofferings">Create offerings</h2>
@@ -8887,7 +9013,7 @@ scope. The authenticated user must own every location referenced
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/offerings" \
+    "https://localhost:8443/offerings" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -8902,7 +9028,7 @@ scope. The authenticated user must own every location referenced
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings"
+    "https://localhost:8443/offerings"
 );
 
 const headers = {
@@ -8927,7 +9053,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings';
+$url = 'https://localhost:8443/offerings';
 $response = $client-&gt;post(
     $url,
     [
@@ -9160,7 +9286,7 @@ scope. The authenticated user must own the offering (<code>owns.offering</code>)
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
+    "https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -9168,7 +9294,7 @@ scope. The authenticated user must own the offering (<code>owns.offering</code>)
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
+    "https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D"
 );
 
 const headers = {
@@ -9186,7 +9312,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
+$url = 'https://localhost:8443/offerings/01K6A3M8Q2V7XH4T9B5N1RCW0D';
 $response = $client-&gt;delete(
     $url,
     [
@@ -9331,7 +9457,7 @@ scope. The authenticated user must own all referenced offerings
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/offerings" \
+    "https://localhost:8443/offerings" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -9345,7 +9471,7 @@ scope. The authenticated user must own all referenced offerings
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/offerings"
+    "https://localhost:8443/offerings"
 );
 
 const headers = {
@@ -9369,7 +9495,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/offerings';
+$url = 'https://localhost:8443/offerings';
 $response = $client-&gt;delete(
     $url,
     [
@@ -9517,14 +9643,14 @@ parameters.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/roasteries?name=N%C3%B3mada" \
+    --get "https://localhost:8443/roasteries?name=N%C3%B3mada" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/roasteries"
+    "https://localhost:8443/roasteries"
 );
 
 const params = {
@@ -9547,7 +9673,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/roasteries';
+$url = 'https://localhost:8443/roasteries';
 $response = $client-&gt;get(
     $url,
     [
@@ -9688,14 +9814,14 @@ flavors. The tree is returned as a nested structure: top-level categories
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/taxonomies" \
+    --get "https://localhost:8443/taxonomies" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/taxonomies"
+    "https://localhost:8443/taxonomies"
 );
 
 const headers = {
@@ -9712,7 +9838,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/taxonomies';
+$url = 'https://localhost:8443/taxonomies';
 $response = $client-&gt;get(
     $url,
     [
@@ -9896,7 +10022,7 @@ asks for the login again.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/logout" \
+    "https://localhost:8443/logout" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -9904,7 +10030,7 @@ asks for the login again.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/logout"
+    "https://localhost:8443/logout"
 );
 
 const headers = {
@@ -9922,7 +10048,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/logout';
+$url = 'https://localhost:8443/logout';
 $response = $client-&gt;post(
     $url,
     [
@@ -10043,6 +10169,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
 registration endpoint. User creation and role assignment happen in a
 single transaction; if role assignment fails, the whole operation is
 rolled back.</p>
+<p>The new user is also signed in: the response carries a <code>token</code> block
+with the same fields as <code>POST /oauth/token</code> (<code>token_type</code>,
+<code>expires_in</code>, <code>access_token</code>, <code>refresh_token</code>), issued through the
+front client's password grant with the default scope (<code>profile:read</code>).
+The refresh token is refreshed with that same client. If the tokens
+cannot be issued, the user is still created and the response has no
+<code>token</code> block.</p>
 
 <span id="example-requests-POSTregister">
 <blockquote>Example request:</blockquote>
@@ -10050,7 +10183,7 @@ rolled back.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/register" \
+    "https://localhost:8443/register" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -10066,7 +10199,7 @@ rolled back.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/register"
+    "https://localhost:8443/register"
 );
 
 const headers = {
@@ -10092,7 +10225,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/register';
+$url = 'https://localhost:8443/register';
 $response = $client-&gt;post(
     $url,
     [
@@ -10129,7 +10262,13 @@ print_r(json_decode((string) $body));</code></pre></div>
         &quot;email&quot;: &quot;laura@tazavera.test&quot;,
         &quot;role&quot;: &quot;coffeeshop&quot;
     },
-    &quot;message&quot;: &quot;Profile created.&quot;
+    &quot;message&quot;: &quot;Profile created.&quot;,
+    &quot;token&quot;: {
+        &quot;token_type&quot;: &quot;Bearer&quot;,
+        &quot;expires_in&quot;: 1800,
+        &quot;access_token&quot;: &quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...&quot;,
+        &quot;refresh_token&quot;: &quot;def50200a1b2c3...&quot;
+    }
 }</code>
  </pre>
     </span>
@@ -10296,7 +10435,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/user" \
+    --get "https://localhost:8443/user" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -10304,7 +10443,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/user"
+    "https://localhost:8443/user"
 );
 
 const headers = {
@@ -10322,7 +10461,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/user';
+$url = 'https://localhost:8443/user';
 $response = $client-&gt;get(
     $url,
     [
@@ -10458,7 +10597,7 @@ receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
+    --get "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -10466,7 +10605,7 @@ receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
 );
 
 const headers = {
@@ -10484,7 +10623,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
 $response = $client-&gt;get(
     $url,
     [
@@ -10640,475 +10779,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="users-PUTusers--user_ulid-">Update a user</h2>
-
-<p>
-<small class="badge badge-darkred">requires authentication</small>
-</p>
-
-<p>Updates a user's profile data. Returns the updated user with a
-confirmation message.</p>
-<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
-update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
-
-<span id="example-requests-PUTusers--user_ulid-">
-<blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA" \
-    --header "Authorization: Bearer {ACCESS_TOKEN}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"name\": \"Augusto\",
-    \"surname\": \"Restrepo\",
-    \"email\": \"augusto@example.com\"
-}"
-</code></pre></div>
-
-
-<div class="javascript-example">
-    <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA"
-);
-
-const headers = {
-    "Authorization": "Bearer {ACCESS_TOKEN}",
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-let body = {
-    "name": "Augusto",
-    "surname": "Restrepo",
-    "email": "augusto@example.com"
-};
-
-fetch(url, {
-    method: "PUT",
-    headers,
-    body: JSON.stringify(body),
-}).then(response =&gt; response.json());</code></pre></div>
-
-
-<div class="php-example">
-    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA';
-$response = $client-&gt;put(
-    $url,
-    [
-        'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'json' =&gt; [
-            'name' =&gt; 'Augusto',
-            'surname' =&gt; 'Restrepo',
-            'email' =&gt; 'augusto@example.com',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre></div>
-
-</span>
-
-<span id="example-responses-PUTusers--user_ulid-">
-            <blockquote>
-            <p>Example response (200):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: {
-        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
-        &quot;name&quot;: &quot;Laura&quot;,
-        &quot;surname&quot;: &quot;G&oacute;mez Ruiz&quot;,
-        &quot;email&quot;: &quot;laura@tazavera.test&quot;,
-        &quot;role&quot;: &quot;coffeeshop&quot;
-    },
-    &quot;message&quot;: &quot;Profile updated.&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (403, Forbidden):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;This action is unauthorized.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-PUTusers--user_ulid-" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-PUTusers--user_ulid-"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTusers--user_ulid-"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-</span>
-<span id="execution-error-PUTusers--user_ulid-" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTusers--user_ulid-">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-</span>
-<form id="form-PUTusers--user_ulid-" data-method="PUT"
-      data-path="users/{user_ulid}"
-      data-authed="1"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTusers--user_ulid-', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTusers--user_ulid-"
-                    onclick="tryItOut('PUTusers--user_ulid-');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTusers--user_ulid-"
-                    onclick="cancelTryOut('PUTusers--user_ulid-');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTusers--user_ulid-"
-                    data-initial-text="Send Request 💥"
-                    data-loading-text="⏱ Sending..."
-                    hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-darkblue">PUT</small>
-            <b><code>users/{user_ulid}</code></b>
-        </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="PUTusers--user_ulid-"
-               value="Bearer {ACCESS_TOKEN}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTusers--user_ulid-"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTusers--user_ulid-"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user_ulid"                data-endpoint="PUTusers--user_ulid-"
-               value="01M35F5RX4ADGC3CSDXXYB08DA"
-               data-component="url">
-    <br>
-<p>The ULID of the user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
-            </div>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="name"                data-endpoint="PUTusers--user_ulid-"
-               value="Augusto"
-               data-component="body">
-    <br>
-<p>User first name. Example: <code>Augusto</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>surname</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="surname"                data-endpoint="PUTusers--user_ulid-"
-               value="Restrepo"
-               data-component="body">
-    <br>
-<p>User last name. Example: <code>Restrepo</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="email"                data-endpoint="PUTusers--user_ulid-"
-               value="augusto@example.com"
-               data-component="body">
-    <br>
-<p>Email address. Must be unique (excluding the current user). Must be a valid email address. Example: <code>augusto@example.com</code></p>
-        </div>
-        </form>
-
-                    <h2 id="users-PUTusers--user_ulid--password">Update user password</h2>
-
-<p>
-<small class="badge badge-darkred">requires authentication</small>
-</p>
-
-<p>Changes a user's password. The current password must be supplied and is
-verified before the change is applied.</p>
-<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
-update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
-
-<span id="example-requests-PUTusers--user_ulid--password">
-<blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password" \
-    --header "Authorization: Bearer {ACCESS_TOKEN}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"currentPassword\": \"OldP@ss123\",
-    \"password\": \"NewStr0ng!\",
-    \"passwordConfirmation\": \"NewStr0ng!\"
-}"
-</code></pre></div>
-
-
-<div class="javascript-example">
-    <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password"
-);
-
-const headers = {
-    "Authorization": "Bearer {ACCESS_TOKEN}",
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-let body = {
-    "currentPassword": "OldP@ss123",
-    "password": "NewStr0ng!",
-    "passwordConfirmation": "NewStr0ng!"
-};
-
-fetch(url, {
-    method: "PUT",
-    headers,
-    body: JSON.stringify(body),
-}).then(response =&gt; response.json());</code></pre></div>
-
-
-<div class="php-example">
-    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/password';
-$response = $client-&gt;put(
-    $url,
-    [
-        'headers' =&gt; [
-            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'json' =&gt; [
-            'currentPassword' =&gt; 'OldP@ss123',
-            'password' =&gt; 'NewStr0ng!',
-            'passwordConfirmation' =&gt; 'NewStr0ng!',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre></div>
-
-</span>
-
-<span id="example-responses-PUTusers--user_ulid--password">
-            <blockquote>
-            <p>Example response (200, Password updated):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Password updated successfully.&quot;
-}</code>
- </pre>
-            <blockquote>
-            <p>Example response (403, Forbidden):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;This action is unauthorized.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-PUTusers--user_ulid--password" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-PUTusers--user_ulid--password"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-PUTusers--user_ulid--password"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-</span>
-<span id="execution-error-PUTusers--user_ulid--password" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTusers--user_ulid--password">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-</span>
-<form id="form-PUTusers--user_ulid--password" data-method="PUT"
-      data-path="users/{user_ulid}/password"
-      data-authed="1"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('PUTusers--user_ulid--password', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-PUTusers--user_ulid--password"
-                    onclick="tryItOut('PUTusers--user_ulid--password');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-PUTusers--user_ulid--password"
-                    onclick="cancelTryOut('PUTusers--user_ulid--password');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-PUTusers--user_ulid--password"
-                    data-initial-text="Send Request 💥"
-                    data-loading-text="⏱ Sending..."
-                    hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-darkblue">PUT</small>
-            <b><code>users/{user_ulid}/password</code></b>
-        </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="PUTusers--user_ulid--password"
-               value="Bearer {ACCESS_TOKEN}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="PUTusers--user_ulid--password"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="PUTusers--user_ulid--password"
-               value="application/json"
-               data-component="header">
-    <br>
-<p>Example: <code>application/json</code></p>
-            </div>
-                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="user_ulid"                data-endpoint="PUTusers--user_ulid--password"
-               value="01M35F5RX4ADGC3CSDXXYB08DA"
-               data-component="url">
-    <br>
-<p>The ULID of the user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
-            </div>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>currentPassword</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="currentPassword"                data-endpoint="PUTusers--user_ulid--password"
-               value="OldP@ss123"
-               data-component="body">
-    <br>
-<p>The user's current password. Required for verification. Example: <code>OldP@ss123</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="password"                data-endpoint="PUTusers--user_ulid--password"
-               value="NewStr0ng!"
-               data-component="body">
-    <br>
-<p>The new password. Must meet default strength rules and match passwordConfirmation. The value and <code>passwordConfirmation</code> must match. Example: <code>NewStr0ng!</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>passwordConfirmation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="passwordConfirmation"                data-endpoint="PUTusers--user_ulid--password"
-               value="NewStr0ng!"
-               data-component="body">
-    <br>
-<p>Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation. Example: <code>NewStr0ng!</code></p>
-        </div>
-        </form>
-
                     <h2 id="users-POSTusers--user_ulid--contacts">Create my primary contact</h2>
 
 <p>
@@ -11119,8 +10789,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
 single primary contact: if it already exists the request fails with
 <code>409 Conflict</code>. <code>isPrimary</code> is always set by the API, never taken from
 the body.</p>
-<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
-update this user (policy). Another user receives <code>403 Forbidden</code>.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:read</code> or <code>profile:write</code> scope
+(no step-up re-authentication) and permission to update this user
+(policy). Another user receives <code>403 Forbidden</code>.</p>
 
 <span id="example-requests-POSTusers--user_ulid--contacts">
 <blockquote>Example request:</blockquote>
@@ -11128,7 +10799,7 @@ update this user (policy). Another user receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -11147,7 +10818,7 @@ update this user (policy). Another user receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts"
 );
 
 const headers = {
@@ -11176,7 +10847,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/contacts';
 $response = $client-&gt;post(
     $url,
     [
@@ -11464,6 +11135,475 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                    <h2 id="users-PUTusers--user_ulid-">Update a user</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Updates a user's profile data. Returns the updated user with a
+confirmation message.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
+update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
+
+<span id="example-requests-PUTusers--user_ulid-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"name\": \"Augusto\",
+    \"surname\": \"Restrepo\",
+    \"email\": \"augusto@example.com\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "Augusto",
+    "surname": "Restrepo",
+    "email": "augusto@example.com"
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA';
+$response = $client-&gt;put(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'name' =&gt; 'Augusto',
+            'surname' =&gt; 'Restrepo',
+            'email' =&gt; 'augusto@example.com',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTusers--user_ulid-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
+        &quot;name&quot;: &quot;Laura&quot;,
+        &quot;surname&quot;: &quot;G&oacute;mez Ruiz&quot;,
+        &quot;email&quot;: &quot;laura@tazavera.test&quot;,
+        &quot;role&quot;: &quot;coffeeshop&quot;
+    },
+    &quot;message&quot;: &quot;Profile updated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Forbidden):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTusers--user_ulid-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTusers--user_ulid-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTusers--user_ulid-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTusers--user_ulid-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTusers--user_ulid-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTusers--user_ulid-" data-method="PUT"
+      data-path="users/{user_ulid}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTusers--user_ulid-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTusers--user_ulid-"
+                    onclick="tryItOut('PUTusers--user_ulid-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTusers--user_ulid-"
+                    onclick="cancelTryOut('PUTusers--user_ulid-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTusers--user_ulid-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>users/{user_ulid}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTusers--user_ulid-"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTusers--user_ulid-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTusers--user_ulid-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="PUTusers--user_ulid-"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="PUTusers--user_ulid-"
+               value="Augusto"
+               data-component="body">
+    <br>
+<p>User first name. Example: <code>Augusto</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>surname</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="surname"                data-endpoint="PUTusers--user_ulid-"
+               value="Restrepo"
+               data-component="body">
+    <br>
+<p>User last name. Example: <code>Restrepo</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email"                data-endpoint="PUTusers--user_ulid-"
+               value="augusto@example.com"
+               data-component="body">
+    <br>
+<p>Email address. Must be unique (excluding the current user). Must be a valid email address. Example: <code>augusto@example.com</code></p>
+        </div>
+        </form>
+
+                    <h2 id="users-PUTusers--user_ulid--password">Update user password</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Changes a user's password. The current password must be supplied and is
+verified before the change is applied.</p>
+<p><strong>Authorization:</strong> requires the <code>profile:write</code> scope and permission to
+update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
+
+<span id="example-requests-PUTusers--user_ulid--password">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/password" \
+    --header "Authorization: Bearer {ACCESS_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"currentPassword\": \"OldP@ss123\",
+    \"password\": \"NewStr0ng!\",
+    \"passwordConfirmation\": \"NewStr0ng!\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/password"
+);
+
+const headers = {
+    "Authorization": "Bearer {ACCESS_TOKEN}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "currentPassword": "OldP@ss123",
+    "password": "NewStr0ng!",
+    "passwordConfirmation": "NewStr0ng!"
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/password';
+$response = $client-&gt;put(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {ACCESS_TOKEN}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'currentPassword' =&gt; 'OldP@ss123',
+            'password' =&gt; 'NewStr0ng!',
+            'passwordConfirmation' =&gt; 'NewStr0ng!',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTusers--user_ulid--password">
+            <blockquote>
+            <p>Example response (200, Password updated):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Password updated successfully.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Forbidden):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTusers--user_ulid--password" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTusers--user_ulid--password"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTusers--user_ulid--password"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTusers--user_ulid--password" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTusers--user_ulid--password">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTusers--user_ulid--password" data-method="PUT"
+      data-path="users/{user_ulid}/password"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTusers--user_ulid--password', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTusers--user_ulid--password"
+                    onclick="tryItOut('PUTusers--user_ulid--password');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTusers--user_ulid--password"
+                    onclick="cancelTryOut('PUTusers--user_ulid--password');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTusers--user_ulid--password"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>users/{user_ulid}/password</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="PUTusers--user_ulid--password"
+               value="Bearer {ACCESS_TOKEN}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {ACCESS_TOKEN}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTusers--user_ulid--password"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTusers--user_ulid--password"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>user_ulid</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="user_ulid"                data-endpoint="PUTusers--user_ulid--password"
+               value="01M35F5RX4ADGC3CSDXXYB08DA"
+               data-component="url">
+    <br>
+<p>The ULID of the user. Example: <code>01M35F5RX4ADGC3CSDXXYB08DA</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>currentPassword</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="currentPassword"                data-endpoint="PUTusers--user_ulid--password"
+               value="OldP@ss123"
+               data-component="body">
+    <br>
+<p>The user's current password. Required for verification. Example: <code>OldP@ss123</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="password"                data-endpoint="PUTusers--user_ulid--password"
+               value="NewStr0ng!"
+               data-component="body">
+    <br>
+<p>The new password. Must meet default strength rules and match passwordConfirmation. The value and <code>passwordConfirmation</code> must match. Example: <code>NewStr0ng!</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>passwordConfirmation</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="passwordConfirmation"                data-endpoint="PUTusers--user_ulid--password"
+               value="NewStr0ng!"
+               data-component="body">
+    <br>
+<p>Confirmation of the new password. Must match the password field. Note: camelCase, not the Laravel-default password_confirmation. Example: <code>NewStr0ng!</code></p>
+        </div>
+        </form>
+
                     <h2 id="users-DELETEusers--user_ulid-">Deactivate a user</h2>
 
 <p>
@@ -11481,7 +11621,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA" \
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -11489,7 +11629,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA"
 );
 
 const headers = {
@@ -11507,7 +11647,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA';
 $response = $client-&gt;delete(
     $url,
     [
@@ -11658,7 +11798,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force" \
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/force" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -11666,7 +11806,7 @@ delete this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force"
+    "https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/force"
 );
 
 const headers = {
@@ -11684,7 +11824,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/users/01M35F5RX4ADGC3CSDXXYB08DA/force';
+$url = 'https://localhost:8443/users/01M35F5RX4ADGC3CSDXXYB08DA/force';
 $response = $client-&gt;delete(
     $url,
     [
