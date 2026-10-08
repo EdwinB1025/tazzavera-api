@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Contracts\EvaluationServiceContract;
+use App\Contracts\RegistrationTokenServiceContract;
 use App\Models\Passport\Client;
 use App\Models\User;
+use App\Passport\RegistrationGrant;
 use App\Services\EvaluationService;
+use App\Services\RegistrationTokenService;
 use App\Session\WebGuardDatabaseSessionHandler;
 use Carbon\CarbonInterval;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -18,7 +21,10 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password as RulesPassword;
+use Laravel\Passport\Bridge;
 use Laravel\Passport\Passport;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\CryptKey;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +34,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(EvaluationServiceContract::class, EvaluationService::class);
+        $this->app->bind(RegistrationTokenServiceContract::class, RegistrationTokenService::class);
+
+        /** EDB 10/08/26: private authorization server with only the registration grant (AUT R44), as Passport's personal access server */
+        $this->app->when(RegistrationTokenService::class)
+            ->needs(AuthorizationServer::class)
+            ->give(fn () => $this->registrationAuthorizationServer());
     }
 
     /**
@@ -77,6 +89,35 @@ class AppServiceProvider extends ServiceProvider
                 'roastery' => \App\Models\Roastery::class,
             ]
         );
+    }
+
+    /**
+     * Authorization server built like Passport's own (same repositories, keys,
+     * default scope and refresh token rules) with RegistrationGrant as its only
+     * grant. It is not bound to AuthorizationServer::class, so POST /oauth/token
+     * never offers this grant.
+     */
+    private function registrationAuthorizationServer(): AuthorizationServer
+    {
+        $privateKey = str_replace('\\n', "\n", config('passport.private_key') ?? '')
+            ?: 'file://' . Passport::keyPath('oauth-private.key');
+
+        $server = new AuthorizationServer(
+            $this->app->make(Bridge\ClientRepository::class),
+            $this->app->make(Bridge\AccessTokenRepository::class),
+            $this->app->make(Bridge\ScopeRepository::class),
+            new CryptKey($privateKey, null, Passport::$validateKeyPermissions),
+            Passport::tokenEncryptionKey($this->app->make('encrypter')),
+        );
+        $server->setDefaultScope(Passport::$defaultScope);
+        $server->revokeRefreshTokens(Passport::$revokeRefreshTokenAfterUse);
+
+        $grant = new RegistrationGrant();
+        $grant->setRefreshTokenRepository($this->app->make(Bridge\RefreshTokenRepository::class));
+        $grant->setRefreshTokenTTL(Passport::refreshTokensExpireIn());
+        $server->enableGrantType($grant, Passport::tokensExpireIn());
+
+        return $server;
     }
 
     private function passwordDefaults(): void
