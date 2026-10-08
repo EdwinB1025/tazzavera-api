@@ -209,7 +209,9 @@ return [
 
         // Additional generators to use when generating the OpenAPI spec.
         // Should extend `Knuckles\Scribe\Writing\OpenApiSpecGenerators\OpenApiGenerator`.
-        'generators' => [],
+        'generators' => [
+            \App\Scribe\BracketArrayQueryParams::class, // EDB 10/08/26: array query params as name[] (AUT review, cataRef)
+        ],
     ],
 
     'groups' => [
