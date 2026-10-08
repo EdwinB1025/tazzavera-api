@@ -46,8 +46,7 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
         /**EDB 09/10/26: Routes for coffeeshops to retrive information to create an offering*/
         Route::middleware('role:coffeeshop')->group(function () {
             Route::get('/locations', [LocationController::class, 'index']);
-            Route::post('/locations', [LocationController::class, 'store'])
-                ->middleware(CheckTokenForAnyScope::using('profile:write')); //EDB 10/06/26: location + primary contact
+            Route::post('/locations', [LocationController::class, 'store']); //EDB 10/06/26: location + primary contact; EDB 10/08/26: no profile:write (AUT finding 27, option A)
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
             Route::post('/offerings', [OfferingController::class, 'store'])
                 ->middleware('owns.location:locations');
@@ -81,14 +80,16 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
                 ->middleware('can:delete,evaluation')->name('legacy.evaluations.destroy');
         });
 
+        /**EDB 10/08/26: Route for user to add their primary contact without profile:write (AUT finding 27, option A) */
+        Route::post('/users/{user}/contacts', [ContactController::class, 'store'])
+            ->middleware('can:update,user'); //EDB 10/06/26: the user's single primary contact
+
         /**EDB 09/10/26: Routes for user to administer theri own profile*/
         Route::middleware(CheckTokenForAnyScope::using('profile:write'))->group(function () {
             Route::put('/users/{user}', [UserController::class, 'update'])
                 ->middleware('can:update,user');
             Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])
                 ->middleware('can:update,user');
-            Route::post('/users/{user}/contacts', [ContactController::class, 'store'])
-                ->middleware('can:update,user'); //EDB 10/06/26: the user's single primary contact
             Route::delete('/users/{user}', [UserController::class, 'destroy'])
                 ->middleware('can:delete,user');
             Route::delete('/users/{user}/force', [UserController::class, 'forceDestroy'])

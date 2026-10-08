@@ -100,13 +100,16 @@ test('authenticated_user_cannot_create_contact_for_other_user', function () {
     expect($other->contacts()->count())->toBe(0);
 });
 
-test('authenticated_user_cannot_create_contact_without_write_scope', function () {
+test('authenticated_user_can_create_contact_without_write_scope', function () {
+    //EDB 10/08/26: profile:write no longer required (AUT finding 27, option A)
     [$user, $token] = authenticate();
     $user->contacts()->delete();
 
     $this->withToken($token)
         ->postJson("/users/{$user->ulid}/contacts", contactPayload())
-        ->assertForbidden();
+        ->assertCreated();
+
+    expect($user->contacts()->count())->toBe(1);
 });
 
 test('authenticated_user_creates_contact_with_invalid_data', function (array $payload, array $errors) {

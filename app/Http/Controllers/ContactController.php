@@ -42,8 +42,9 @@ class ContactController extends Controller
      * `409 Conflict`. `isPrimary` is always set by the API, never taken from
      * the body.
      *
-     * **Authorization:** requires the `profile:write` scope and permission to
-     * update this user (policy). Another user receives `403 Forbidden`.
+     * **Authorization:** requires the `profile:read` or `profile:write` scope
+     * (no step-up re-authentication) and permission to update this user
+     * (policy). Another user receives `403 Forbidden`.
      *
      * @group Users
      *
