@@ -17,11 +17,6 @@ class FrontClientSeeder extends Seeder
                 confidential: false,
             );
 
-        /** EDB 10/08/26: the front also signs a new user in right after registration (password grant, AUT R44) */
-        if (! $client->hasGrantType('password')) {
-            $client->forceFill(['grant_types' => [...$client->grant_types, 'password']])->save();
-        }
-
         $this->command->info("Front client ID: {$client->id}");
     }
 }

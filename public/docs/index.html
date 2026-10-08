@@ -10171,9 +10171,10 @@ single transaction; if role assignment fails, the whole operation is
 rolled back.</p>
 <p>The new user is also signed in: the response carries a <code>token</code> block
 with the same fields as <code>POST /oauth/token</code> (<code>token_type</code>,
-<code>expires_in</code>, <code>access_token</code>, <code>refresh_token</code>), issued through the
-front client's password grant with the default scope (<code>profile:read</code>).
-The refresh token is refreshed with that same client. If the tokens
+<code>expires_in</code>, <code>access_token</code>, <code>refresh_token</code>), issued on the front
+client with the default scope (<code>profile:read</code>) by an internal grant
+that <code>POST /oauth/token</code> does not offer. The refresh token is refreshed
+with the front client's usual <code>refresh_token</code> request. If the tokens
 cannot be issued, the user is still created and the response has no
 <code>token</code> block.</p>
 

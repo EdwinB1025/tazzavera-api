@@ -40,15 +40,29 @@ test('user_registers_and_is_signed_in', function () {
         'client_id' => Client::front()->first()->getKey(),
         'refresh_token' => $response->json('token.refresh_token'),
     ])->assertOk();
+
+    //The front client keeps only its PKCE and refresh grants
+    expect(Client::front()->first()->hasGrantType('password'))->toBeFalse();
 });
 
-test('user_registers_without_token_when_front_client_lacks_password_grant', function () {
-    app(ClientRepository::class)->createAuthorizationCodeGrantClient(Client::FRONT, ['http://localhost/callback'], false);
+test('user_registers_without_token_when_there_is_no_front_client', function () {
     $user = User::factory()->registrationPayload('user');
 
     $this->postJson('/register', $user)
         ->assertStatus(201)
         ->assertJsonMissingPath('token');
+});
+
+test('registration_grant_is_not_offered_by_the_token_endpoint', function () {
+    $this->seed(FrontClientSeeder::class);
+    $user = User::factory()->create();
+
+    $this->post('/oauth/token', [
+        'grant_type' => 'registration',
+        'client_id' => Client::front()->first()->getKey(),
+        'user_id' => $user->id,
+    ])->assertStatus(400)
+        ->assertJsonPath('error', 'unsupported_grant_type');
 });
 
 test('user_authenticates_with_pkce', function () {

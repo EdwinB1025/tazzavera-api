@@ -8770,7 +8770,7 @@ paths:
     post:
       summary: 'Register a user'
       operationId: registerAUser
-      description: "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.\n\nThe new user is also signed in: the response carries a `token` block\nwith the same fields as `POST /oauth/token` (`token_type`,\n`expires_in`, `access_token`, `refresh_token`), issued through the\nfront client's password grant with the default scope (`profile:read`).\nThe refresh token is refreshed with that same client. If the tokens\ncannot be issued, the user is still created and the response has no\n`token` block."
+      description: "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.\n\nThe new user is also signed in: the response carries a `token` block\nwith the same fields as `POST /oauth/token` (`token_type`,\n`expires_in`, `access_token`, `refresh_token`), issued on the front\nclient with the default scope (`profile:read`) by an internal grant\nthat `POST /oauth/token` does not offer. The refresh token is refreshed\nwith the front client's usual `refresh_token` request. If the tokens\ncannot be issued, the user is still created and the response has no\n`token` block."
       parameters: []
       responses:
         201:
