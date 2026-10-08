@@ -71,9 +71,10 @@ endpoints:
 
         The new user is also signed in: the response carries a `token` block
         with the same fields as `POST /oauth/token` (`token_type`,
-        `expires_in`, `access_token`, `refresh_token`), issued through the
-        front client's password grant with the default scope (`profile:read`).
-        The refresh token is refreshed with that same client. If the tokens
+        `expires_in`, `access_token`, `refresh_token`), issued on the front
+        client with the default scope (`profile:read`) by an internal grant
+        that `POST /oauth/token` does not offer. The refresh token is refreshed
+        with the front client's usual `refresh_token` request. If the tokens
         cannot be issued, the user is still created and the response has no
         `token` block.
       authenticated: false
