@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(
             [
                 CreateOfferingSeeder::class,
+                OfferingBaselineSeeder::class, //EDB 10/08/26: creates the offerings; CreateOfferingSeeder only adds inventory
                 VerifiedOfferingSeeder::class,
             ]
         );
