@@ -107,14 +107,15 @@ test('non_coffeeshop_cannot_create_location', function () {
     expect(Location::count())->toBe(0);
 });
 
-test('coffeeshop_cannot_create_location_without_write_scope', function () {
+test('coffeeshop_can_create_location_without_write_scope', function () {
+    //EDB 10/08/26: profile:write no longer required (AUT finding 27, option A)
     [, $token] = authenticate('coffeeshop');
 
     $this->withToken($token)
         ->postJson('/locations', locationPayload())
-        ->assertForbidden();
+        ->assertCreated();
 
-    expect(Location::count())->toBe(0);
+    expect(Location::count())->toBe(1);
 });
 
 test('coffeeshop_creates_location_with_invalid_data', function (array $payload, array $errors) {

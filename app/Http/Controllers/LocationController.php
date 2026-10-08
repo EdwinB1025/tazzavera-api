@@ -66,8 +66,8 @@ class LocationController extends Controller
      * The coordinates are optional and computed by the client; when one is
      * sent, the other is required.
      *
-     * **Authorization:** requires the `coffeeshop` role and the `profile:write`
-     * scope.
+     * **Authorization:** requires the `coffeeshop` role and the `profile:read`
+     * or `profile:write` scope (no step-up re-authentication).
      *
      * @group Locations
      *

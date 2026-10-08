@@ -68,6 +68,14 @@ endpoints:
         registration endpoint. User creation and role assignment happen in a
         single transaction; if role assignment fails, the whole operation is
         rolled back.
+
+        The new user is also signed in: the response carries a `token` block
+        with the same fields as `POST /oauth/token` (`token_type`,
+        `expires_in`, `access_token`, `refresh_token`), issued through the
+        front client's password grant with the default scope (`profile:read`).
+        The refresh token is refreshed with that same client. If the tokens
+        cannot be issued, the user is still created and the response has no
+        `token` block.
       authenticated: false
       deprecated: false
     headers:
@@ -168,7 +176,13 @@ endpoints:
                   "email": "laura@tazavera.test",
                   "role": "coffeeshop"
               },
-              "message": "Profile created."
+              "message": "Profile created.",
+              "token": {
+                  "token_type": "Bearer",
+                  "expires_in": 1800,
+                  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+                  "refresh_token": "def50200a1b2c3..."
+              }
           }
         headers: []
         description: ''
@@ -312,6 +326,222 @@ endpoints:
         content: |
           {
               "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'users/{user_ulid}/contacts'
+    metadata:
+      custom: []
+      groupName: Users
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create my primary contact'
+      description: |-
+        Creates the primary contact of the authenticated user. A user has a
+        single primary contact: if it already exists the request fails with
+        `409 Conflict`. `isPrimary` is always set by the API, never taken from
+        the body.
+
+        **Authorization:** requires the `profile:read` or `profile:write` scope
+        (no step-up re-authentication) and permission to update this user
+        (policy). Another user receives `403 Forbidden`.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_ulid:
+        custom: []
+        name: user_ulid
+        description: 'The ULID of the authenticated user.'
+        required: true
+        example: 01M35F5RX4ADGC3CSDXXYB08DA
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      phone:
+        custom: []
+        name: phone
+        description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
+        required: false
+        example: '+34 932 123 456'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
+        required: false
+        example: hola@cafeteria.example
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      web:
+        custom: []
+        name: web
+        description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
+        required: false
+        example: 'https://cafeteria.example'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      social:
+        custom: []
+        name: social
+        description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
+        required: false
+        example: '@cafeteria.bcn'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
+        required: true
+        example: 'Carrer de Verdi 12'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      country:
+        custom: []
+        name: country
+        description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
+        required: false
+        example: España
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: 'City (max 90 characters). Must not be greater than 90 characters.'
+        required: true
+        example: Barcelona
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      postal_code:
+        custom: []
+        name: postal_code
+        description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
+        required: false
+        example: '08012'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      phone: '+34 932 123 456'
+      email: hola@cafeteria.example
+      web: 'https://cafeteria.example'
+      social: '@cafeteria.bcn'
+      address: 'Carrer de Verdi 12'
+      country: España
+      city: Barcelona
+      postal_code: '08012'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |
+          {
+              "data": {
+                  "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NP",
+                  "isPrimary": true,
+                  "phone": "+34 932 123 456",
+                  "email": "hola@cafeteria.example",
+                  "web": "https://cafeteria.example",
+                  "social": "@cafeteria.bcn",
+                  "address": "Carrer de Verdi 12",
+                  "country": "España",
+                  "city": "Barcelona",
+                  "postalCode": "08012"
+              },
+              "message": "Contact created."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |
+          {
+              "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: |
+          {
+              "message": "This action is unauthorized."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 409
+        content: |
+          {
+              "message": "The user already has a primary contact."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The address field is required. (and 1 more error)",
+              "errors": {
+                  "address": [
+                      "The address field is required."
+                  ],
+                  "city": [
+                      "The city field is required."
+                  ]
+              }
           }
         headers: []
         description: ''
@@ -525,221 +755,6 @@ endpoints:
         content: '{"message": "This action is unauthorized."}'
         headers: []
         description: Forbidden
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'users/{user_ulid}/contacts'
-    metadata:
-      custom: []
-      groupName: Users
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create my primary contact'
-      description: |-
-        Creates the primary contact of the authenticated user. A user has a
-        single primary contact: if it already exists the request fails with
-        `409 Conflict`. `isPrimary` is always set by the API, never taken from
-        the body.
-
-        **Authorization:** requires the `profile:write` scope and permission to
-        update this user (policy). Another user receives `403 Forbidden`.
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {ACCESS_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      user_ulid:
-        custom: []
-        name: user_ulid
-        description: 'The ULID of the authenticated user.'
-        required: true
-        example: 01M35F5RX4ADGC3CSDXXYB08DA
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      phone:
-        custom: []
-        name: phone
-        description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
-        required: false
-        example: '+34 932 123 456'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      email:
-        custom: []
-        name: email
-        description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
-        required: false
-        example: hola@cafeteria.example
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      web:
-        custom: []
-        name: web
-        description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
-        required: false
-        example: 'https://cafeteria.example'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      social:
-        custom: []
-        name: social
-        description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
-        required: false
-        example: '@cafeteria.bcn'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      address:
-        custom: []
-        name: address
-        description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
-        required: true
-        example: 'Carrer de Verdi 12'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      country:
-        custom: []
-        name: country
-        description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
-        required: false
-        example: España
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      city:
-        custom: []
-        name: city
-        description: 'City (max 90 characters). Must not be greater than 90 characters.'
-        required: true
-        example: Barcelona
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      postal_code:
-        custom: []
-        name: postal_code
-        description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
-        required: false
-        example: '08012'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      phone: '+34 932 123 456'
-      email: hola@cafeteria.example
-      web: 'https://cafeteria.example'
-      social: '@cafeteria.bcn'
-      address: 'Carrer de Verdi 12'
-      country: España
-      city: Barcelona
-      postal_code: '08012'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |
-          {
-              "data": {
-                  "ulid": "01K9B2C4D6E8F0G2H4J6K8M0NP",
-                  "isPrimary": true,
-                  "phone": "+34 932 123 456",
-                  "email": "hola@cafeteria.example",
-                  "web": "https://cafeteria.example",
-                  "social": "@cafeteria.bcn",
-                  "address": "Carrer de Verdi 12",
-                  "country": "España",
-                  "city": "Barcelona",
-                  "postalCode": "08012"
-              },
-              "message": "Contact created."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 401
-        content: |
-          {
-              "message": "Unauthenticated."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 403
-        content: |
-          {
-              "message": "This action is unauthorized."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 409
-        content: |
-          {
-              "message": "The user already has a primary contact."
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |
-          {
-              "message": "The address field is required. (and 1 more error)",
-              "errors": {
-                  "address": [
-                      "The address field is required."
-                  ],
-                  "city": [
-                      "The city field is required."
-                  ]
-              }
-          }
-        headers: []
-        description: ''
     responseFields: []
     auth:
       - headers

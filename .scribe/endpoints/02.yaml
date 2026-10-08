@@ -752,6 +752,28 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      page:
+        custom: []
+        name: page
+        description: 'Must be at least 1.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      perPage:
+        custom: []
+        name: perPage
+        description: 'Must be at least 1. Must not be greater than 50.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanQueryParameters:
       coffeeName: Geisha
       roasteryName: Nómada
@@ -800,6 +822,8 @@ endpoints:
         - architecto
       orderBy: cupping_avg
       orderDirection: desc
+      page: 22
+      perPage: 7
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
