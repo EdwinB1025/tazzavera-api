@@ -7115,7 +7115,7 @@ paths:
             example: 8.0
         -
           in: query
-          name: cataRef
+          name: 'cataRef[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
@@ -7129,7 +7129,7 @@ paths:
               type: string
         -
           in: query
-          name: fragranceCata
+          name: 'fragranceCata[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
@@ -7143,7 +7143,7 @@ paths:
               type: string
         -
           in: query
-          name: aromaCata
+          name: 'aromaCata[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
@@ -7157,7 +7157,7 @@ paths:
               type: string
         -
           in: query
-          name: flavorCata
+          name: 'flavorCata[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
@@ -7171,7 +7171,7 @@ paths:
               type: string
         -
           in: query
-          name: aftertasteCata
+          name: 'aftertasteCata[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
@@ -7185,7 +7185,7 @@ paths:
               type: string
         -
           in: query
-          name: mouthfeelCata
+          name: 'mouthfeelCata[]'
           description: 'Must match an existing stored value.'
           example:
             - architecto
