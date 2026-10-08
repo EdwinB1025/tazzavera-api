@@ -23,7 +23,7 @@ Specialist and consumer are **not averaged against each other** — they are cro
 
 ### The consensus (this API's engine)
 
-When an offering reaches **≥5 closed specialist evaluations**, closing an evaluation triggers — via event and a **queue worker** — the recalculation of the consensus (`OfferingConsensusService::recompute`):
+When an offering reaches **≥5 closed specialist evaluations**, closing an evaluation triggers — via the `EvaluationClosed` event and its `RecalculateConsensus` listener, **synchronously, inside the same request** — the recalculation of the consensus (`OfferingConsensusService::recompute`). The listener is wired by Laravel's automatic event discovery (`app/Listeners`) and does not implement `ShouldQueue`, so no queue worker is involved; running it in the background with workers is in the backlog.
 
 - **Per-axis averages** (`*_avg`) and **aggregate cupping score** (CVA formula `0.65625·Σ + 52.75 − 2u − 4d`, rounded to 0.25).
 - **Inter-specialist concordance** for the descriptive/affective parts (normalized dispersion index, `1 − σ/σ_max`), with per-axis detail in `axis_concordances`.
@@ -46,7 +46,7 @@ The page includes example requests (bash, JavaScript), a Postman collection (`/d
 - 🔐 **Auth:** Laravel Passport 13 (OAuth2 + PKCE) + Fortify (web session for the authorization flow)
 - 🛡️ **Roles/permissions:** Spatie Laravel-Permission (guard `api`)
 - 🗄️ **Database:** MySQL 8 (dev/prod) · SQLite `:memory:` (tests)
-- ⚙️ **Queues:** `database` driver (consensus worker); `sync` in tests
+- ⚙️ **Queues:** `database` driver configured; no queued job or listener today (the consensus runs synchronously); `sync` in tests
 - 🧪 **Tests:** Pest (TDD)
 
 ## ✅ Prerequisites
@@ -133,15 +133,11 @@ php artisan serve
 
 The API is available at `http://localhost:8000`.
 
-### Consensus worker
+### Consensus recalculation
 
-In dev, to process the consensus recalculation in the background:
+No worker is needed: closing an evaluation dispatches `EvaluationClosed`, and Laravel runs the `RecalculateConsensus` listener inside the same request (automatic event discovery, no `implements ShouldQueue`), so the close response comes back once the consensus is computed. `php artisan event:list` shows the event → listener wiring.
 
-```bash
-php artisan queue:work
-```
-
-> Alternatively, `QUEUE_CONNECTION=sync` in `.env` runs jobs inline without a worker (simpler for development; you lose the decoupling). In production the worker is kept alive with Supervisor / Docker `restart: always` — see `deployment-notes.md`.
+> Running it in the background with a queue worker is in the backlog (see below).
 
 ### Tests
 
@@ -149,7 +145,7 @@ php artisan queue:work
 php artisan test
 ```
 
-They run against SQLite `:memory:` with `QUEUE_CONNECTION=sync`, so the consensus executes inline without needing a worker.
+They run against SQLite `:memory:` with `QUEUE_CONNECTION=sync`; the consensus executes inline, as it does in every environment today.
 
 ## 🔑 Authentication (OAuth2 / PKCE)
 
@@ -189,7 +185,7 @@ A **coffee shop** is the business: a user with role `coffeeshop` that owns one o
 | Evaluation filters by offering (`offeringId`) and type (`evaluationType`: specialist / baseline) on the public, per-user and own lists | ✅ Implemented |
 | Coffee shop baseline (provisional evaluation): seeded per offering, read through `GET /evaluations?offeringId=…&evaluationType=baseline` | ✅ Seeded and readable (creation endpoint in the backlog) |
 | Individual cupping score (0–100, 8 real axes) | ✅ Implemented |
-| Aggregate consensus (event-driven worker on **close**) | ✅ Implemented |
+| Aggregate consensus (event + synchronous listener on **close**) | ✅ Implemented (background workers in the backlog) |
 | Inter-specialist concordance (normalized dispersion) | ✅ Implemented (columns + `axis_concordances`) |
 | `−4d` (defects) and `−2u` (non-uniformity) deductions in cupping | ✅ Implemented |
 | Consensus flavor tree (`offering_tastes`) | ✅ Populated (parents + leaves, count = distinct specialists) |
@@ -206,7 +202,8 @@ What was **deliberately left out of the MVP** to keep the scope manageable — f
 - 👤 **Consumer evaluation** — the role exists in the ENUM, but its form, validation, and own structure (CATA restricted to the upper taxonomy levels) remain to be defined; likely a separate entity.
 - 🏪 **Coffee shop baseline — creation endpoint** — a dedicated endpoint for the coffee shop to create its provisional evaluation of its own offering (one per offering, with ownership and uniqueness). Today baselines are seeded and read through the evaluation filters; creating them through the API is designed, not built.
 - 🔀 **Consensus segregated by extraction method** — today the consensus mixes espresso, V60, French press, etc. Split the calculation by method once there's enough volume to avoid losing sample size.
-- ⏱️ **Automatic evaluation-close cron** — bulk-close evaluations left open beyond a certain time (Laravel scheduler), instead of relying on manual closing. Distinct from the reactive consensus worker.
+- ⚙️ **Consensus in the background (queue workers)** — make `RecalculateConsensus` implement `ShouldQueue`, so closing an evaluation writes a job to the `jobs` table and answers without waiting for the recalculation; a `php artisan queue:work` process (its own container in Docker) runs it. The event wiring (automatic discovery, `bootstrap/app.php`) does not change. Worth it when the recalculation slows the close response; with parallel workers, see the race-condition notes in the implementation notes.
+- ⏱️ **Automatic evaluation-close cron** — bulk-close evaluations left open beyond a certain time (Laravel scheduler), instead of relying on manual closing. Distinct from the consensus recalculation (a scheduled task, not an event listener).
 - 🎯 **Q calibration tag on acidity** — cross the tag with the evaluator's certification to detect whether Q-certified specialists agree more with each other on acidity descriptors.
 - 🧾 **Transactional marketplace** — orders, payments, and communication with the coffee shop. The MVP is a directory + verification, not sales.
 - 💸 **Automated payout** to coffee shops (scheduled settlement).
@@ -223,4 +220,4 @@ What was **deliberately left out of the MVP** to keep the scope manageable — f
 
 - 🔍 `php artisan tinker` to inspect data quickly (e.g. `Evaluation::first()->affective`).
 - 🩹 If something fails when migrating with a SQL syntax error, check that `.env` points to MySQL 8 and not `sqlite`.
-- 🔄 The worker caches code in memory: after editing the consensus service in dev, restart `queue:work` (or use `sync`).
+- 🔄 Once the consensus runs on a queue worker (backlog), remember that the worker caches code in memory: after editing the consensus service, restart `queue:work` (or recreate its container).
