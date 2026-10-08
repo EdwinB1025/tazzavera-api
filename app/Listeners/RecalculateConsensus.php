@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\EvaluationClosed;
+use App\Services\OfferingConsensusService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,6 @@ class RecalculateConsensus
      */
     public function handle(EvaluationClosed $event): void
     {
-        (new \App\Services\OfferingConsensusService())->recompute($event->offeringId);
+        (new OfferingConsensusService())->recompute($event->offeringId);
     }
 }

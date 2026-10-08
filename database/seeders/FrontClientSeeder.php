@@ -13,7 +13,7 @@ class FrontClientSeeder extends Seeder
         $client = Client::where('name', 'tazavera-front')->first()
             ?? $clients->createAuthorizationCodeGrantClient(
                 name: 'tazavera-front',
-                redirectUris: ['http://localhost:3000/callback'],
+                redirectUris: [env('FRONT_URL', 'https://localhost:3000') . '/callback'],
                 confidential: false,
             );
 

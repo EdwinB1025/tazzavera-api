@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\EvaluationServiceContract;
+use App\Events\EvaluationClosed;
 use App\Http\Requests\FilterUserEvaluationRequest;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
@@ -197,7 +198,7 @@ class UserEvaluationController extends Controller
 
         $evaluation->status = 'closed';
         $evaluation->save();
-        event(new \App\Events\EvaluationClosed($evaluation->offering_id));
+        event(new EvaluationClosed($evaluation->offering_id));
 
         return response()->json(['message' => __('evaluations.closed')], 200);
     }
