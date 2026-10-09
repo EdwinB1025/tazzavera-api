@@ -21,6 +21,7 @@ class User extends JsonResource
             'name'    => $this->name,
             'surname' => $this->surname,
             'email'   => $this->email,
+            'emailVerifiedAt' => $this->email_verified_at?->toIso8601String(),
             'role'    => $this->getRoleNames()->first(),
         ];
     }

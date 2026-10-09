@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "78a1a2b2-d556-4c78-a350-ef4cee73dd26",
+        "_postman_id": "e302e9b7-6d80-4f54-abc0-5e90b3596b9c",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -29,37 +29,37 @@
                                 {
                                     "key": "coffeeName",
                                     "value": "Geisha",
-                                    "description": "Filter by coffee name (max 150 chars). Must not be greater than 150 characters.",
+                                    "description": "Filter by coffee name (max 150 chars). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "originCountry",
                                     "value": "Colombia",
-                                    "description": "Filter by country of origin (max 60 chars). Must not be greater than 60 characters.",
+                                    "description": "Filter by country of origin (max 60 chars). El campo value no debe ser mayor que 60 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "originRegion",
                                     "value": "Huila",
-                                    "description": "Filter by region of origin (max 90 chars). Must not be greater than 90 characters.",
+                                    "description": "Filter by region of origin (max 90 chars). El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "process",
                                     "value": "Washed",
-                                    "description": "Filter by processing method (max 60 chars). Must not be greater than 60 characters.",
+                                    "description": "Filter by processing method (max 60 chars). El campo value no debe ser mayor que 60 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "producer",
                                     "value": "Finca La Esperanza",
-                                    "description": "Filter by producer name (max 150 chars). Must not be greater than 150 characters.",
+                                    "description": "Filter by producer name (max 150 chars). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter by city (max 90 chars). Must not be greater than 90 characters.",
+                                    "description": "Filter by city (max 90 chars). El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 }
                             ],
@@ -104,7 +104,7 @@
                                 {
                                     "key": "name",
                                     "value": "Huila",
-                                    "description": "Filter by coffee name (partial match, max 150 chars). Must not be greater than 150 characters.",
+                                    "description": "Filter by coffee name (partial match, max 150 chars). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 }
                             ],
@@ -152,19 +152,19 @@
                                 {
                                     "key": "name",
                                     "value": "nomad",
-                                    "description": "Filter by the coffee shop (business) name. Partial, case-insensitive match. Must not be greater than 150 characters.",
+                                    "description": "Filter by the coffee shop (business) name. Partial, case-insensitive match. El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter coffee shops with at least one location whose primary contact is in this city. Must not be greater than 90 characters.",
+                                    "description": "Filter coffee shops with at least one location whose primary contact is in this city. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "postalCode",
                                     "value": "08001",
-                                    "description": "Filter coffee shops with at least one location whose primary contact has this postal code. Must not be greater than 12 characters.",
+                                    "description": "Filter coffee shops with at least one location whose primary contact has this postal code. El campo value no debe ser mayor que 12 caracteres.",
                                     "disabled": false
                                 },
                                 {
@@ -188,13 +188,13 @@
                                 {
                                     "key": "page",
                                     "value": "1",
-                                    "description": "Page number. Default: 1. Must be at least 1.",
+                                    "description": "Page number. Default: 1. El tama\u00f1o de value debe ser de al menos 1.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "perPage",
                                     "value": "1",
-                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 50.",
                                     "disabled": false
                                 }
                             ],
@@ -280,6 +280,150 @@
                             "name": ""
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Display the email verification prompt.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "email\/verify",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/email\/verify"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "set-cookie",
+                                    "value": "XSRF-TOKEN=eyJpdiI6IjdFYVVrWlR2eHJBWnpjSStNRXUvTWc9PSIsInZhbHVlIjoiMHErb3NoRHRyMUM1dyt0L2t5bUN5TmdhZHV5QTVkK2x5Ykw5TXk5WXpSQkV1MlBpd1NSeHFuUlJNby9SaFhIT1JIV20vYnpYNVE3dzVhTjdmNVFQRFpzU2hNcXdCOVZ4cUgyWWhkY2J3TUF3VTRxajlsbHN4WklacDRZWDRiSjYiLCJtYWMiOiJiNjIzYTc0YzJhNjM5MGZlYWE4NzZkNWIyM2U4YmI4M2ZmNTU3NzYxODM2MmViZDkyNzRkMzZhNjQyMGZmMDk1IiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IkZ1R1VQYStLdHI2Q1R6ZldjU3B0dXc9PSIsInZhbHVlIjoiZzJpOUJEYm94VkFPc2lpRk15TmU0NFNNZHRjL2xFNUMvSkM1TUtiY3VvVklJUGE5N055V213RTB2SmpMVUFMdFI4Q3p1dVMxNndxbFpKejhyQWRSWXpGaWtzK2t0LzRLYWFLQlBoWjgrTGhFZ2lJZEtVd2lwdlA5K0hBTnVDY0IiLCJtYWMiOiI1YzdkOGZmY2NlOTkxMjA1MjhiNGVkZGY0NWFiMDI1MDA2M2NiZTBmYzJjOGE0ZGQ5YzBmMmRiMTU2OGRkNTQ5IiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Mark the authenticated user's email address as verified.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "email\/verify\/:id\/:hash",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/email\/verify\/:id\/:hash",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the verify."
+                                },
+                                {
+                                    "id": "hash",
+                                    "key": "hash",
+                                    "value": "architecto",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "set-cookie",
+                                    "value": "XSRF-TOKEN=eyJpdiI6Ikp1TmlGcFdXVVkyd1hXN3pRWlN4S1E9PSIsInZhbHVlIjoiWHp1TWRRT1IzdVF2WUQ3c21pTXdVVmlwa3BMcDAxd3NkUTlNelZHWVBkVDE2eTdDSXEvdkRib0gwSVorRm5Db3doeUl0NVlXS3cxcmdBWWxmRmZKcWVxRDhQbUhDLzExdHMyT3B5Z29UTmhaVURUeEVPcXhoVWloL3JML0hEQTYiLCJtYWMiOiJkNTFlODk1M2U5MDRmZTgyNTIzZDc3YjEwODMwNzBkZjgzN2E4ZjM2MzFhMmNiOWFlZWRkYThjY2Y5ZDQ2YWQyIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImQxeDN1M0d5UG1Tb1hKbnZWMEZucnc9PSIsInZhbHVlIjoiVTROK3NtTXgyRlpsQk1IVEx0dEQraFJGWisvbkdtRXo2blp0ai9YZEZKM1YzaG10VG5USXZZeWt0NFluTjZ2clpZTmcxWEkwRXBVd3RCN0NlQWo3VUR1cTdhNDNobjZPbmQ2a2pVczBLNjlmUnFBTHJleDQvQytUaHhLYUIvQ0EiLCJtYWMiOiJhNWRiODgzMThiMGY4NzY5Y2M0ZDAxZDJkZTdhZmQwNjA2N2VjYjE1YjEzNzg1YTU2ZjFjZjRiOTUxMjc1ZTAwIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Send a new email verification notification.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "email\/verification-notification",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/email\/verification-notification"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
                 }
             ]
         },
@@ -370,13 +514,13 @@
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "description": "Filter by the city of the evaluation location. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "process",
                                     "value": "Washed",
-                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "description": "Filter by coffee processing method. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
@@ -388,13 +532,13 @@
                                 {
                                     "key": "scoreMin",
                                     "value": "80",
-                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "description": "Minimum cupping score (0\u2013100). El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "scoreMax",
                                     "value": "95",
-                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
@@ -412,13 +556,13 @@
                                 {
                                     "key": "page",
                                     "value": "16",
-                                    "description": "Must be at least 1.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "perPage",
                                     "value": "22",
-                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 50.",
                                     "disabled": false
                                 }
                             ],
@@ -484,13 +628,13 @@
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "description": "Filter by the city of the evaluation location. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "process",
                                     "value": "Washed",
-                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "description": "Filter by coffee processing method. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
@@ -502,13 +646,13 @@
                                 {
                                     "key": "scoreMin",
                                     "value": "80",
-                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "description": "Minimum cupping score (0\u2013100). El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "scoreMax",
                                     "value": "95",
-                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
@@ -526,13 +670,13 @@
                                 {
                                     "key": "page",
                                     "value": "16",
-                                    "description": "Must be at least 1.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "perPage",
                                     "value": "22",
-                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 50.",
                                     "disabled": false
                                 }
                             ],
@@ -606,13 +750,13 @@
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter by the city of the evaluation location. Must not be greater than 90 characters.",
+                                    "description": "Filter by the city of the evaluation location. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "process",
                                     "value": "Washed",
-                                    "description": "Filter by coffee processing method. Must not be greater than 90 characters.",
+                                    "description": "Filter by coffee processing method. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
@@ -624,13 +768,13 @@
                                 {
                                     "key": "scoreMin",
                                     "value": "80",
-                                    "description": "Minimum cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "description": "Minimum cupping score (0\u2013100). El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "scoreMax",
                                     "value": "95",
-                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. Must be at least 0. Must not be greater than 100.",
+                                    "description": "Maximum cupping score (0\u2013100). Must be \u2265 scoreMin. El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
@@ -648,13 +792,13 @@
                                 {
                                     "key": "page",
                                     "value": "16",
-                                    "description": "Must be at least 1.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "perPage",
                                     "value": "22",
-                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 50.",
                                     "disabled": false
                                 }
                             ],
@@ -878,7 +1022,7 @@
                         {
                             "header": [],
                             "code": 409,
-                            "body": "{\"message\": \"Evaluation is incomplete, all scores need to be provided, and at least one cata attribute for each MainTastes, mouthfeel and the set of sensorial axis.\"}",
+                            "body": "{\"message\": \"The evaluation is incomplete: every score must be provided, with at least one CATA attribute for each axis: MainTastes, mouthfeel and the set of sensory axes.\"}",
                             "name": "Evaluation incomplete"
                         }
                     ]
@@ -1131,49 +1275,49 @@
                                 {
                                     "key": "coffeeName",
                                     "value": "Geisha",
-                                    "description": "Filter by coffee name (partial match). Must not be greater than 150 characters.",
+                                    "description": "Filter by coffee name (partial match). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "roasteryName",
                                     "value": "N\u00f3mada",
-                                    "description": "Filter by roastery name (partial match). Must not be greater than 150 characters.",
+                                    "description": "Filter by roastery name (partial match). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "originCountry",
                                     "value": "Colombia",
-                                    "description": "Filter by country of origin. Must not be greater than 90 characters.",
+                                    "description": "Filter by country of origin. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "originRegion",
                                     "value": "Huila",
-                                    "description": "Filter by region of origin. Must not be greater than 90 characters.",
+                                    "description": "Filter by region of origin. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "process",
                                     "value": "Washed",
-                                    "description": "Filter by processing method. Must not be greater than 90 characters.",
+                                    "description": "Filter by processing method. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "producer",
                                     "value": "Finca La Esperanza",
-                                    "description": "Filter by producer name. Must not be greater than 150 characters.",
+                                    "description": "Filter by producer name. El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "variety",
                                     "value": "Caturra",
-                                    "description": "Filter by coffee variety. Must not be greater than 90 characters.",
+                                    "description": "Filter by coffee variety. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "city",
                                     "value": "Barcelona",
-                                    "description": "Filter by the city of the offering location. Must not be greater than 90 characters.",
+                                    "description": "Filter by the city of the offering location. El campo value no debe ser mayor que 90 caracteres.",
                                     "disabled": false
                                 },
                                 {
@@ -1197,133 +1341,133 @@
                                 {
                                     "key": "cuppingAvgMin",
                                     "value": "80",
-                                    "description": "Minimum average cupping score (0\u2013100). Must be at least 0. Must not be greater than 100.",
+                                    "description": "Minimum average cupping score (0\u2013100). El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "cuppingAvgMax",
                                     "value": "95",
-                                    "description": "Maximum average cupping score (0\u2013100). Must be \u2265 cuppingAvgMin. Must be at least 0. Must not be greater than 100.",
+                                    "description": "Maximum average cupping score (0\u2013100). Must be \u2265 cuppingAvgMin. El tama\u00f1o de value debe ser de al menos 0. El campo value no debe ser mayor que 100.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "evaluationCountMin",
                                     "value": "1",
-                                    "description": "Minimum number of evaluations. Must be at least 0.",
+                                    "description": "Minimum number of evaluations. El tama\u00f1o de value debe ser de al menos 0.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "evaluationCountMax",
                                     "value": "50",
-                                    "description": "Maximum number of evaluations. Must be \u2265 evaluationCountMin. Must be at least 0.",
+                                    "description": "Maximum number of evaluations. Must be \u2265 evaluationCountMin. El tama\u00f1o de value debe ser de al menos 0.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "defectiveCountMin",
                                     "value": "0",
-                                    "description": "Minimum number of defective evaluations. Must be at least 0.",
+                                    "description": "Minimum number of defective evaluations. El tama\u00f1o de value debe ser de al menos 0.",
                                     "disabled": true
                                 },
                                 {
                                     "key": "defectiveCountMax",
                                     "value": "5",
-                                    "description": "Maximum number of defective evaluations. Must be \u2265 defectiveCountMin. Must be at least 0.",
+                                    "description": "Maximum number of defective evaluations. Must be \u2265 defectiveCountMin. El tama\u00f1o de value debe ser de al menos 0.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "fragranceMin",
                                     "value": "6",
-                                    "description": "Minimum fragrance score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum fragrance score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "fragranceMax",
                                     "value": "8",
-                                    "description": "Maximum fragrance score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum fragrance score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "aromaMin",
                                     "value": "6",
-                                    "description": "Minimum aroma score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum aroma score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "aromaMax",
                                     "value": "8",
-                                    "description": "Maximum aroma score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum aroma score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "flavorMin",
                                     "value": "6",
-                                    "description": "Minimum flavor score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum flavor score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "flavorMax",
                                     "value": "8",
-                                    "description": "Maximum flavor score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum flavor score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "aftertasteMin",
                                     "value": "6",
-                                    "description": "Minimum aftertaste score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum aftertaste score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "aftertasteMax",
                                     "value": "8",
-                                    "description": "Maximum aftertaste score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum aftertaste score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "acidityMin",
                                     "value": "6",
-                                    "description": "Minimum acidity score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum acidity score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "acidityMax",
                                     "value": "8",
-                                    "description": "Maximum acidity score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum acidity score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "sweetnessMin",
                                     "value": "6",
-                                    "description": "Minimum sweetness score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum sweetness score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "sweetnessMax",
                                     "value": "8",
-                                    "description": "Maximum sweetness score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum sweetness score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "mouthfeelMin",
                                     "value": "6",
-                                    "description": "Minimum mouthfeel score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum mouthfeel score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "mouthfeelMax",
                                     "value": "8",
-                                    "description": "Maximum mouthfeel score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum mouthfeel score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "overallMin",
                                     "value": "6",
-                                    "description": "Minimum overall score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Minimum overall score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "overallMax",
                                     "value": "8",
-                                    "description": "Maximum overall score (1\u20139). Must be at least 1. Must not be greater than 9.",
+                                    "description": "Maximum overall score (1\u20139). El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 9.",
                                     "disabled": false
                                 },
                                 {
@@ -1377,13 +1521,13 @@
                                 {
                                     "key": "page",
                                     "value": "22",
-                                    "description": "Must be at least 1.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1.",
                                     "disabled": false
                                 },
                                 {
                                     "key": "perPage",
                                     "value": "7",
-                                    "description": "Must be at least 1. Must not be greater than 50.",
+                                    "description": "El tama\u00f1o de value debe ser de al menos 1. El campo value no debe ser mayor que 50.",
                                     "disabled": false
                                 }
                             ],
@@ -1541,7 +1685,7 @@
                                 {
                                     "key": "name",
                                     "value": "N\u00f3mada",
-                                    "description": "Filter by roastery name (partial match, max 150 chars). Must not be greater than 150 characters.",
+                                    "description": "Filter by roastery name (partial match, max 150 chars). El campo value no debe ser mayor que 150 caracteres.",
                                     "disabled": false
                                 }
                             ],
@@ -1647,7 +1791,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"message\": \"logout successfully.\"}",
+                            "body": "{\"message\": \"Logged out successfully.\"}",
                             "name": "Logged out"
                         }
                     ]

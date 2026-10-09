@@ -17,4 +17,10 @@ return [
         'expire' => "Aquest enllaç caducarà d'aquí a :count minuts.",
         'outro' => 'Si no has demanat restablir la contrasenya, pots ignorar aquest correu.',
     ],
+    'verify_email' => [
+        'subject' => 'Verifica la teva adreça de correu electrònic de Tazavera',
+        'intro' => 'Si us plau, confirma la teva adreça de correu electrònic fent clic al botó de sota.',
+        'action' => 'Verificar correu electrònic',
+        'outro' => 'Si no has creat cap compte, pots ignorar aquest correu electrònic.',
+    ],
 ];

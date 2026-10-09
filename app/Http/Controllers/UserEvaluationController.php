@@ -182,7 +182,7 @@ class UserEvaluationController extends Controller
      * @response 200 scenario="Closed successfully" {"message": "Evaluation closed."}
      * @response 200 scenario="Already closed" {"message": "Evaluation closed."}
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}
-     * @response 409 scenario="Evaluation incomplete" {"message": "Evaluation is incomplete, all scores need to be provided, and at least one cata attribute for each MainTastes, mouthfeel and the set of sensorial axis."}
+     * @response 409 scenario="Evaluation incomplete" {"message": "The evaluation is incomplete: every score must be provided, with at least one CATA attribute for each axis: MainTastes, mouthfeel and the set of sensory axes."}
      */
     public function close(Request $request, Evaluation $evaluation)
     {

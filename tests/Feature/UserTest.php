@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Models\Passport\Client;
 use App\Models\User;
+use App\Services\RegistrationTokenService;
 use Database\Seeders\FrontClientSeeder;
 use Database\Seeders\RolesSeeder;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
@@ -26,7 +30,8 @@ test('user_registers_and_is_signed_in', function () {
 
     $response = $this->postJson('/register', $user);
     $response->assertStatus(201)
-        ->assertJsonStructure(['data', 'message', 'token' => ['token_type', 'expires_in', 'access_token', 'refresh_token']]);
+        ->assertJsonStructure(['data', 'message', 'token' => ['token_type', 'expires_in', 'access_token', 'refresh_token']])
+        ->assertJsonPath('data.emailVerifiedAt', null);
 
     //The issued token signs the new user in with the default scope
     $this->withToken($response->json('token.access_token'))
@@ -63,6 +68,55 @@ test('registration_grant_is_not_offered_by_the_token_endpoint', function () {
         'user_id' => $user->id,
     ])->assertStatus(400)
         ->assertJsonPath('error', 'unsupported_grant_type');
+});
+
+arch('registration_token_service_is_only_used_by_the_user_controller')
+    ->expect(RegistrationTokenService::class)
+    ->toOnlyBeUsedIn(UserController::class);
+
+test('user_registers_and_receives_the_verification_email', function () {
+    Notification::fake();
+    $payload = User::factory()->registrationPayload('user');
+
+    $this->postJson('/register', $payload)->assertStatus(201);
+
+    Notification::assertSentTo(User::where('email', $payload['email'])->first(), VerifyEmail::class);
+});
+
+test('user_verifies_email_with_the_signed_link', function () {
+    $user = User::factory()->unverified()->create();
+    $url = call_user_func(VerifyEmail::$createUrlCallback, $user);
+
+    //The link lands on the front's account page
+    $this->actingAs($user, 'web')
+        ->get($url)
+        ->assertRedirect(config('fortify.redirects.email-verification') . '?verified=1');
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+});
+
+test('verification_link_is_rejected_when_tampered_or_expired', function (string $case) {
+    $user = User::factory()->unverified()->create();
+    $url = call_user_func(VerifyEmail::$createUrlCallback, $user);
+
+    if ($case === 'tampered') {
+        $url .= '&lang=xx';
+    } else {
+        $this->travel(config('auth.verification.expire', 60) + 1)->minutes();
+    }
+
+    $this->actingAs($user, 'web')->get($url)->assertForbidden();
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+})->with(['tampered', 'expired']);
+
+test('authenticated_user_gets_the_email_verification_date', function () {
+    [$user, $token] = authenticate();
+
+    $this->withToken($token)
+        ->getJson('/user')
+        ->assertOk()
+        ->assertJsonPath('data.emailVerifiedAt', $user->email_verified_at->toIso8601String());
 });
 
 test('user_authenticates_with_pkce', function () {

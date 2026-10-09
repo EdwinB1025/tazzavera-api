@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Fortify\UpdateUserPassword;
 use App\Contracts\RegistrationTokenServiceContract;
 use App\Exceptions\RoleAssignmentExcpetion;
 use App\Http\Requests\StoreUserRequest;
@@ -10,17 +9,20 @@ use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\User;
+use App\Services\RegistrationTokenService;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Container\Attributes\Give;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Passport\Guards\TokenGuard;
 use Laravel\Passport\Token;
-use Spatie\Permission\Models\Role;
 use Throwable;
 
 class UserController extends Controller
 {
+
     /**
      * Register a user
      *
@@ -44,8 +46,10 @@ class UserController extends Controller
      *
      * @responseFile 201 storage/scribe/responses/users.store.json
      */
-    public function store(StoreUserRequest $request, RegistrationTokenServiceContract $tokens)
-    {
+    public function store(
+        StoreUserRequest $request,
+        #[Give(RegistrationTokenService::class)] RegistrationTokenServiceContract $tokens
+    ) {
         $data = $request->validated();
         $user = DB::transaction(
             function () use ($data) {
@@ -63,6 +67,8 @@ class UserController extends Controller
                 return $user;
             }
         );
+
+        event(new Registered($user));
 
         return (new ResourcesUser($user))
             ->additional(array_filter([
@@ -212,7 +218,7 @@ class UserController extends Controller
      *
      * @authenticated
      *
-     * @response 200 scenario="Logged out" {"message": "logout successfully."}
+     * @response 200 scenario="Logged out" {"message": "Logged out successfully."}
      */
     public function logout(Request $request)
     {
@@ -237,5 +243,4 @@ class UserController extends Controller
 
         return response()->json(['message' => __('auth.logged_out')], 200);
     }
-
 }

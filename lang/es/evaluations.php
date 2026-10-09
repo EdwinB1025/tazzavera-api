@@ -3,12 +3,11 @@
 declare(strict_types=1);
 
 return [
-    'created' => 'Evaluacion creada.',
-    'closed' => 'Evaluation cerrada.',
-    'deleted' => 'Se ha eliminado la(s) evaluacion(es) correctamente.',
-    'incomplete_evaluation' => 'La evaluacion esta incompleta, todo los puntajes tienen que estar compilados, y al menos uno atributo cata para cada eje: MainTastes, mouthfeel y el conjunto de ejes sensoriales.',
-    'not_owned' => 'Una o mas evaluaciones no pertenece o pertenecen al usuario.',
-    'status_closed' => 'Laevaluatiacion no se puede actualizar.',
-    'updated' => 'Evaluacion actualizada',
-
+    'created' => 'Evaluación creada.',
+    'closed' => 'Evaluación cerrada.',
+    'deleted' => 'Se han eliminado las evaluaciones correctamente.',
+    'incomplete_evaluation' => 'La evaluación está incompleta: todas las puntuaciones deben estar completadas y debe haber al menos un atributo CATA para cada eje: MainTastes, mouthfeel y el conjunto de ejes sensoriales.',
+    'not_owned' => 'Una o más evaluaciones no pertenecen al usuario.',
+    'status_closed' => 'La evaluación no se puede actualizar.',
+    'updated' => 'Evaluación actualizada.',
 ];

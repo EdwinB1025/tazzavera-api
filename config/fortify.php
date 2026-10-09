@@ -74,6 +74,9 @@ return [
     */
 
     'home' => '/home',
+    'redirects' => [
+        'email-verification' => env('FRONT_URL', 'https://localhost:3000') . '/es/account',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -163,7 +166,7 @@ return [
 
     'features' => [
         Features::resetPasswords(),
-        // Features::emailVerification(),
+        Features::emailVerification(),
         //Features::updateProfileInformation(),
         //Features::updatePasswords(),
         Features::twoFactorAuthentication([

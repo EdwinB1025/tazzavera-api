@@ -40,7 +40,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"message": "logout successfully."}'
+        content: '{"message": "Logged out successfully."}'
         headers: []
         description: 'Logged out'
     responseFields: []
@@ -112,7 +112,7 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Email address. Must be unique. Must be a valid email address.'
+        description: 'Email address. Must be unique. El campo value no es un correo válido.'
         required: true
         example: augusto@example.com
         type: string
@@ -385,7 +385,7 @@ endpoints:
       phone:
         custom: []
         name: phone
-        description: 'Optional. Phone number (max 25 characters). Must not be greater than 25 characters.'
+        description: 'Optional. Phone number (max 25 characters). El campo value no debe ser mayor que 25 caracteres.'
         required: false
         example: '+34 932 123 456'
         type: string
@@ -396,7 +396,7 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Optional. Contact email address (max 255 characters). Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'Optional. Contact email address (max 255 characters). El campo value no es un correo válido. El campo value no debe ser mayor que 255 caracteres.'
         required: false
         example: hola@cafeteria.example
         type: string
@@ -407,7 +407,7 @@ endpoints:
       web:
         custom: []
         name: web
-        description: 'Optional. Website URL (max 255 characters). Must be a valid URL. Must not be greater than 255 characters.'
+        description: 'Optional. Website URL (max 255 characters). Must be a valid URL. El campo value no debe ser mayor que 255 caracteres.'
         required: false
         example: 'https://cafeteria.example'
         type: string
@@ -418,7 +418,7 @@ endpoints:
       social:
         custom: []
         name: social
-        description: 'Optional. Social media handle or URL (max 255 characters). Must not be greater than 255 characters.'
+        description: 'Optional. Social media handle or URL (max 255 characters). El campo value no debe ser mayor que 255 caracteres.'
         required: false
         example: '@cafeteria.bcn'
         type: string
@@ -429,7 +429,7 @@ endpoints:
       address:
         custom: []
         name: address
-        description: 'Street address (max 255 characters). Must not be greater than 255 characters.'
+        description: 'Street address (max 255 characters). El campo value no debe ser mayor que 255 caracteres.'
         required: true
         example: 'Carrer de Verdi 12'
         type: string
@@ -440,7 +440,7 @@ endpoints:
       country:
         custom: []
         name: country
-        description: 'Optional. Country (max 60 characters). Must not be greater than 60 characters.'
+        description: 'Optional. Country (max 60 characters). El campo value no debe ser mayor que 60 caracteres.'
         required: false
         example: España
         type: string
@@ -451,7 +451,7 @@ endpoints:
       city:
         custom: []
         name: city
-        description: 'City (max 90 characters). Must not be greater than 90 characters.'
+        description: 'City (max 90 characters). El campo value no debe ser mayor que 90 caracteres.'
         required: true
         example: Barcelona
         type: string
@@ -462,7 +462,7 @@ endpoints:
       postal_code:
         custom: []
         name: postal_code
-        description: 'Optional. Postal code (max 12 characters). Must not be greater than 12 characters.'
+        description: 'Optional. Postal code (max 12 characters). El campo value no debe ser mayor que 12 caracteres.'
         required: false
         example: '08012'
         type: string
@@ -620,7 +620,7 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Email address. Must be unique (excluding the current user). Must be a valid email address.'
+        description: 'Email address. Must be unique (excluding the current user). El campo value no es un correo válido.'
         required: false
         example: augusto@example.com
         type: string

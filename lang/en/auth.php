@@ -6,8 +6,6 @@ return [
     'failed'   => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'logged_out' => 'logout successfully.',
-    'web_not_directed_request' => 'login is not directed from client app',
-    'password_updated' => 'Contraseña actualizada correctamente.',
-
+    'logged_out' => 'Logged out successfully.',
+    'web_not_directed_request' => 'The login request does not come from the client app.',
 ];

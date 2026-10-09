@@ -1,23 +1,19 @@
-name: Taxonomies
+name: Endpoints
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: taxonomies
+    uri: email/verify
     metadata:
       custom: []
-      groupName: Taxonomies
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List olfactory taxonomies'
-      description: |-
-        Returns the full olfactory taxonomy tree used to classify coffee aromas and
-        flavors. The tree is returned as a nested structure: top-level categories
-        (parent_id = null) with their children and grandchildren eager-loaded
-        (two levels deep).
+      title: 'Display the email verification prompt.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -33,75 +29,108 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-              "data": [
-                  {
-                      "ulid": "01JTAXN0DE0000000000000001",
-                      "level": 0,
-                      "nameEn": "Fruity",
-                      "nameEs": "Frutal",
-                      "nameCa": "Fruitat",
-                      "descriptionEn": "Aromas reminiscent of fresh, dried, or cooked fruit.",
-                      "descriptionEs": "Aromas que recuerdan a fruta fresca, seca o cocida.",
-                      "descriptionCa": "Aromes que recorden la fruita fresca, seca o cuita.",
-                      "color": "#D9345A",
-                      "categories": [
-                          "aromatics"
-                      ],
-                      "children": [
-                          {
-                              "ulid": "01JTAXN0DE0000000000000004",
-                              "level": 1,
-                              "nameEn": "Berry",
-                              "nameEs": "Baya",
-                              "nameCa": "Baia",
-                              "descriptionEn": "Notes of berry fruits.",
-                              "descriptionEs": "Notas de frutos del bosque.",
-                              "descriptionCa": "Notes de fruits del bosc.",
-                              "color": "#B02A4A",
-                              "categories": [
-                                  "aromatics"
-                              ],
-                              "children": [
-                                  {
-                                      "ulid": "01JTAXN0DE0000000000000005",
-                                      "level": 2,
-                                      "nameEn": "Blackberry",
-                                      "nameEs": "Mora",
-                                      "nameCa": "Móra",
-                                      "descriptionEn": "Specific note of blackberry.",
-                                      "descriptionEs": "Nota específica de mora.",
-                                      "descriptionCa": "Nota específica de móra.",
-                                      "color": "#7A1F35",
-                                      "categories": [
-                                          "aromatics"
-                                      ]
-                                  }
-                              ]
-                          },
-                          {
-                              "ulid": "01JTAXN0DE000000000000000D",
-                              "level": 1,
-                              "nameEn": "Dried fruit",
-                              "nameEs": "Fruta seca",
-                              "nameCa": "Fruita seca",
-                              "descriptionEn": "Notes of dried or dehydrated fruit.",
-                              "descriptionEs": "Notas de fruta seca o deshidratada.",
-                              "descriptionCa": "Notes de fruita seca o deshidratada.",
-                              "color": "#C4562F",
-                              "categories": [
-                                  "aromatics"
-                              ],
-                              "children": []
-                          }
-                      ]
-                  }
-              ]
-          }
-        headers: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6IjdFYVVrWlR2eHJBWnpjSStNRXUvTWc9PSIsInZhbHVlIjoiMHErb3NoRHRyMUM1dyt0L2t5bUN5TmdhZHV5QTVkK2x5Ykw5TXk5WXpSQkV1MlBpd1NSeHFuUlJNby9SaFhIT1JIV20vYnpYNVE3dzVhTjdmNVFQRFpzU2hNcXdCOVZ4cUgyWWhkY2J3TUF3VTRxajlsbHN4WklacDRZWDRiSjYiLCJtYWMiOiJiNjIzYTc0YzJhNjM5MGZlYWE4NzZkNWIyM2U4YmI4M2ZmNTU3NzYxODM2MmViZDkyNzRkMzZhNjQyMGZmMDk1IiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IkZ1R1VQYStLdHI2Q1R6ZldjU3B0dXc9PSIsInZhbHVlIjoiZzJpOUJEYm94VkFPc2lpRk15TmU0NFNNZHRjL2xFNUMvSkM1TUtiY3VvVklJUGE5N055V213RTB2SmpMVUFMdFI4Q3p1dVMxNndxbFpKejhyQWRSWXpGaWtzK2t0LzRLYWFLQlBoWjgrTGhFZ2lJZEtVd2lwdlA5K0hBTnVDY0IiLCJtYWMiOiI1YzdkOGZmY2NlOTkxMjA1MjhiNGVkZGY0NWFiMDI1MDA2M2NiZTBmYzJjOGE0ZGQ5YzBmMmRiMTU2OGRkNTQ5IiwidGFnIjoiIn0%3D; path=/; secure; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'email/verify/{id}/{hash}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Mark the authenticated user's email address as verified."
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the verify.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      hash:
+        custom: []
+        name: hash
         description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+      hash: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6Ikp1TmlGcFdXVVkyd1hXN3pRWlN4S1E9PSIsInZhbHVlIjoiWHp1TWRRT1IzdVF2WUQ3c21pTXdVVmlwa3BMcDAxd3NkUTlNelZHWVBkVDE2eTdDSXEvdkRib0gwSVorRm5Db3doeUl0NVlXS3cxcmdBWWxmRmZKcWVxRDhQbUhDLzExdHMyT3B5Z29UTmhaVURUeEVPcXhoVWloL3JML0hEQTYiLCJtYWMiOiJkNTFlODk1M2U5MDRmZTgyNTIzZDc3YjEwODMwNzBkZjgzN2E4ZjM2MzFhMmNiOWFlZWRkYThjY2Y5ZDQ2YWQyIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImQxeDN1M0d5UG1Tb1hKbnZWMEZucnc9PSIsInZhbHVlIjoiVTROK3NtTXgyRlpsQk1IVEx0dEQraFJGWisvbkdtRXo2blp0ai9YZEZKM1YzaG10VG5USXZZeWt0NFluTjZ2clpZTmcxWEkwRXBVd3RCN0NlQWo3VUR1cTdhNDNobjZPbmQ2a2pVczBLNjlmUnFBTHJleDQvQytUaHhLYUIvQ0EiLCJtYWMiOiJhNWRiODgzMThiMGY4NzY5Y2M0ZDAxZDJkZTdhZmQwNjA2N2VjYjE1YjEzNzg1YTU2ZjFjZjRiOTUxMjc1ZTAwIiwidGFnIjoiIn0%3D; path=/; secure; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: email/verification-notification
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send a new email verification notification.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
     responseFields: []
     auth: []
     controller: null

@@ -17,4 +17,10 @@ return [
         'expire' => 'Este enlace caducará en :count minutos.',
         'outro' => 'Si no has solicitado restablecer la contraseña, puedes ignorar este correo.',
     ],
+    'verify_email' => [
+        'subject' => 'Verifica tu dirección de correo electrónico de Tazavera',
+        'intro' => 'Por favor, confirma tu dirección de correo electrónico haciendo clic en el botón de abajo.',
+        'action' => 'Verificar correo electrónico',
+        'outro' => 'Si no creaste una cuenta, puedes ignorar este correo electrónico.',
+    ],
 ];

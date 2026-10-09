@@ -1,29 +1,23 @@
-<x-layouts::auth :title="__('Verificación de email')">
-    <div class="mt-4 flex flex-col gap-6 p-2">
-        <flux:text class="text-center">
-            {{ __('Por favor verifica tu dirección de email haciendo clic en el enlace que acabamos de enviarte.') }}
-        </flux:text>
+<x-layouts::auth :title="__('auth_ui.verify_email.title')">
+    <div class="flex flex-col gap-6">
+        <x-auth.header :title="__('auth_ui.verify_email.title')" :description="__('auth_ui.verify_email.description')" />
 
-        @if (session('status') == 'verification-link-sent')
-        <flux:text class="text-center font-medium !dark:text-green-400 !text-green-600">
-            {{ __('Se ha enviado un nuevo enlace de verificación a la dirección de email que proporcionaste durante el registro.') }}
-        </flux:text>
-        @endif
+        <!-- Session Status -->
+        <x-auth.session-status
+            class="text-center"
+            :status="session('status') === 'verification-link-sent' ? __('auth_ui.verify_email.sent') : null" />
 
-        <div class="flex flex-col items-center justify-between space-y-3">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Reenviar email de verificación') }}
-                </flux:button>
-            </form>
+        <form method="POST" action="{{ route('verification.send') }}" class="flex flex-col gap-6">
+            @csrf
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <flux:button variant="ghost" type="submit" class="text-sm cursor-pointer" data-test="logout-button">
-                    {{ __('Cerrar sesión') }}
-                </flux:button>
-            </form>
-        </div>
+            <x-ui.button variant="primary" type="submit" class="w-full">
+                {{ __('auth_ui.verify_email.resend') }}
+            </x-ui.button>
+        </form>
+
+        <p class="type-body text-center">
+            {{ __('auth_ui.verify_email.back') }}
+            <x-ui.link :href="config('app.front_url')">{{ __('auth_ui.verify_email.back_link') }}</x-ui.link>
+        </p>
     </div>
 </x-layouts::auth>

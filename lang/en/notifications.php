@@ -17,4 +17,10 @@ return [
         'expire' => 'This link will expire in :count minutes.',
         'outro' => 'If you did not request a password reset, you can ignore this email.',
     ],
+    'verify_email' => [
+        'subject' => 'Verify your Tazavera email address',
+        'intro' => 'Please confirm your email address by clicking the button below.',
+        'action' => 'Verify email',
+        'outro' => 'If you did not create an account, you can ignore this email.',
+    ],
 ];

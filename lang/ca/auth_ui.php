@@ -73,6 +73,15 @@ return [
         'use_code' => 'iniciar la sessió amb un codi d\'autenticació',
     ],
 
+    'verify_email' => [
+        'title' => 'Verifica el teu correu',
+        'description' => "Verifica la teva adreça de correu fent clic a l'enllaç que t'acabem d'enviar.",
+        'sent' => "S'ha enviat un nou enllaç de verificació a la teva adreça de correu.",
+        'resend' => 'Torna a enviar el correu de verificació',
+        'back' => 'O torna a',
+        'back_link' => 'Tazavera',
+    ],
+
     'security' => [
         'title' => 'Seguretat',
         'description' => 'Gestiona l\'autenticació en dos passos i les teves claus d\'accés.',

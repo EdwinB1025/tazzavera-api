@@ -73,6 +73,15 @@ return [
         'use_code' => 'iniciar sesión con un código de autenticación',
     ],
 
+    'verify_email' => [
+        'title' => 'Verifica tu email',
+        'description' => 'Verifica tu dirección de email haciendo clic en el enlace que acabamos de enviarte.',
+        'sent' => 'Se ha enviado un nuevo enlace de verificación a tu dirección de email.',
+        'resend' => 'Reenviar el email de verificación',
+        'back' => 'O vuelve a',
+        'back_link' => 'Tazavera',
+    ],
+
     'security' => [
         'title' => 'Seguridad',
         'description' => 'Gestiona la autenticación de dos factores y tus passkeys.',

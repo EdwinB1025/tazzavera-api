@@ -214,6 +214,7 @@ What was **deliberately left out of the MVP** to keep the scope manageable — f
 - 🚚 **Third-party logistics integration** — delivery APIs.
 - 🌱 **Green coffee physical assessment** — evaluation of the unroasted bean; the SCA standard for this is in alpha.
 - 📖 **Usage guide + FAQ** — deferred until the evaluation decisions are settled.
+- 🎭 **Several roles for the same user** — let one account hold both `specialist` and `coffeeshop` and choose which one it acts as. To design first: whether the API restricts actions to the chosen role (an `active_role` on the user, changed through its own endpoint and validated against the roles the user has; policies check the active role instead of `hasRole`) or only exposes the roles and leaves the choice to the client; and whether the choice belongs to the user (every device) or to the session/token. The user resource would expose `roles` as a JSON array (today `role` is a single string), which changes the contract.
 - 🧮 **Statistical refinement of the consensus** — revisit `σ_max` (theoretical vs. realistic) and evaluate ICC / Fleiss as a concordance index once there's enough multi-offering volume.
 
 ## 📝 Notes

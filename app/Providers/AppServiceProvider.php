@@ -3,28 +3,23 @@
 namespace App\Providers;
 
 use App\Contracts\EvaluationServiceContract;
-use App\Contracts\RegistrationTokenServiceContract;
 use App\Models\Passport\Client;
 use App\Models\User;
-use App\Passport\RegistrationGrant;
 use App\Services\EvaluationService;
-use App\Services\RegistrationTokenService;
 use App\Session\WebGuardDatabaseSessionHandler;
 use Carbon\CarbonInterval;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password as RulesPassword;
-use Laravel\Passport\Bridge;
 use Laravel\Passport\Passport;
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\CryptKey;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,12 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(EvaluationServiceContract::class, EvaluationService::class);
-        $this->app->bind(RegistrationTokenServiceContract::class, RegistrationTokenService::class);
-
-        /** EDB 10/08/26: private authorization server with only the registration grant (AUT R44), as Passport's personal access server */
-        $this->app->when(RegistrationTokenService::class)
-            ->needs(AuthorizationServer::class)
-            ->give(fn () => $this->registrationAuthorizationServer());
     }
 
     /**
@@ -50,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
         $this->passwordDefaults();
         $this->webGuardSessions();
         $this->resetPasswordMail();
+        //EDB 10/09/26: enabling verify email.
+        $this->verifyEmailMail();
         //FormRequest::failOnUnknownFields(); EDB 09/01/2026: This fields fails request with _token and _method fields embeded, discarded, not usefull.
 
         Blade::anonymousComponentNamespace('layouts', 'layouts');
@@ -89,35 +80,6 @@ class AppServiceProvider extends ServiceProvider
                 'roastery' => \App\Models\Roastery::class,
             ]
         );
-    }
-
-    /**
-     * Authorization server built like Passport's own (same repositories, keys,
-     * default scope and refresh token rules) with RegistrationGrant as its only
-     * grant. It is not bound to AuthorizationServer::class, so POST /oauth/token
-     * never offers this grant.
-     */
-    private function registrationAuthorizationServer(): AuthorizationServer
-    {
-        $privateKey = str_replace('\\n', "\n", config('passport.private_key') ?? '')
-            ?: 'file://' . Passport::keyPath('oauth-private.key');
-
-        $server = new AuthorizationServer(
-            $this->app->make(Bridge\ClientRepository::class),
-            $this->app->make(Bridge\AccessTokenRepository::class),
-            $this->app->make(Bridge\ScopeRepository::class),
-            new CryptKey($privateKey, null, Passport::$validateKeyPermissions),
-            Passport::tokenEncryptionKey($this->app->make('encrypter')),
-        );
-        $server->setDefaultScope(Passport::$defaultScope);
-        $server->revokeRefreshTokens(Passport::$revokeRefreshTokenAfterUse);
-
-        $grant = new RegistrationGrant();
-        $grant->setRefreshTokenRepository($this->app->make(Bridge\RefreshTokenRepository::class));
-        $grant->setRefreshTokenTTL(Passport::refreshTokensExpireIn());
-        $server->enableGrantType($grant, Passport::tokensExpireIn());
-
-        return $server;
     }
 
     private function passwordDefaults(): void
@@ -169,7 +131,7 @@ class AppServiceProvider extends ServiceProvider
 
         ResetPassword::toMailUsing(function ($notifiable, string $token) {
             $url = call_user_func(ResetPassword::$createUrlCallback, $notifiable, $token);
-            $expire = config('auth.passwords.'.config('auth.defaults.passwords').'.expire');
+            $expire = config('auth.passwords.' . config('auth.defaults.passwords') . '.expire');
 
             return (new MailMessage)
                 ->subject(__('notifications.reset_password.subject'))
@@ -177,6 +139,34 @@ class AppServiceProvider extends ServiceProvider
                 ->action(__('notifications.reset_password.action'), $url)
                 ->line(__('notifications.reset_password.expire', ['count' => $expire]))
                 ->line(__('notifications.reset_password.outro'));
+        });
+    }
+
+    /**
+     * Verification e-mail: texts from lang/{locale}/notifications.php in the
+     * locale of the request, and a signed link that keeps locale and theme.
+     */
+    private function verifyEmailMail(): void
+    {
+        VerifyEmail::createUrlUsing(function ($notifiable) {
+            return URL::temporarySignedRoute(
+                'verification.verify',
+                Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
+                [
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                    'lang' => App::getLocale(),
+                    'theme' => session('ui.theme'),
+                ]
+            );
+        });
+
+        VerifyEmail::toMailUsing(function ($notifiable, string $url) {
+            return (new MailMessage)
+                ->subject(__('notifications.verify_email.subject'))
+                ->line(__('notifications.verify_email.intro'))
+                ->action(__('notifications.verify_email.action'), $url)
+                ->line(__('notifications.verify_email.outro'));
         });
     }
 }

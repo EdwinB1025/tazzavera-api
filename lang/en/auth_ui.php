@@ -73,6 +73,15 @@ return [
         'use_code' => 'log in with an authentication code',
     ],
 
+    'verify_email' => [
+        'title' => 'Verify your email',
+        'description' => 'Verify your email address by clicking the link we have just sent you.',
+        'sent' => 'A new verification link has been sent to your email address.',
+        'resend' => 'Resend verification email',
+        'back' => 'Or go back to',
+        'back_link' => 'Tazavera',
+    ],
+
     'security' => [
         'title' => 'Security',
         'description' => 'Manage two-factor authentication and your passkeys.',

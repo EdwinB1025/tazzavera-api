@@ -1,24 +1,21 @@
-name: 'Coffee shops'
+name: Roasteries
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: coffeeshops
+    uri: roasteries
     metadata:
       custom: []
-      groupName: 'Coffee shops'
+      groupName: Roasteries
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List coffee shops'
+      title: 'List roasteries'
       description: |-
-        Returns a paginated list of coffee shops (businesses) that have at least
-        one location, each with its counters and all its locations (the map
-        shows every location of the filtered coffee shops). Only business data
-        is returned: never the owner's email, surname, personal contacts or
-        account data. Sorted by name ascending by default.
+        Returns the roastery catalog. Supports filtering by name via query
+        parameters.
       authenticated: false
       deprecated: false
     headers:
@@ -30,103 +27,16 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Filter by the coffee shop (business) name. Partial, case-insensitive match. Must not be greater than 150 characters.'
+        description: 'Filter by roastery name (partial match, max 150 chars). El campo value no debe ser mayor que 150 caracteres.'
         required: false
-        example: nomad
+        example: Nómada
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      city:
-        custom: []
-        name: city
-        description: 'Filter coffee shops with at least one location whose primary contact is in this city. Must not be greater than 90 characters.'
-        required: false
-        example: Barcelona
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      postalCode:
-        custom: []
-        name: postalCode
-        description: 'Filter coffee shops with at least one location whose primary contact has this postal code. Must not be greater than 12 characters.'
-        required: false
-        example: '08001'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      verified:
-        custom: []
-        name: verified
-        description: 'Filter by verified offerings: 1 returns only coffee shops with at least one verified offering in any of their locations, 0 only those without any. Omit it to return both.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      orderBy:
-        custom: []
-        name: orderBy
-        description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
-        required: false
-        example: name
-        type: string
-        enumValues:
-          - name
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      orderDirection:
-        custom: []
-        name: orderDirection
-        description: 'Sort direction. One of: asc, desc. Default: asc.'
-        required: false
-        example: asc
-        type: string
-        enumValues:
-          - asc
-          - desc
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      page:
-        custom: []
-        name: page
-        description: 'Page number. Default: 1. Must be at least 1.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      perPage:
-        custom: []
-        name: perPage
-        description: 'Must be at least 1. Must not be greater than 50.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
+        nullable: true
         deprecated: false
     cleanQueryParameters:
-      name: nomad
-      city: Barcelona
-      postalCode: '08001'
-      verified: true
-      orderBy: name
-      orderDirection: asc
-      page: 1
-      perPage: 1
+      name: Nómada
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -138,214 +48,11 @@ endpoints:
           {
               "data": [
                   {
-                      "ulid": "01K9C0FFEE0NMD000000000001",
-                      "name": "Nomad Coffee",
-                      "locationsCount": 2,
-                      "offeringsCount": 4,
-                      "verifiedOfferingsCount": 1,
-                      "locations": [
-                          {
-                              "ulid": "01K9C0FFEE0NMD0L0C00000001",
-                              "name": "Nomad Coffee Born",
-                              "description": "Nomad Coffee al Born.",
-                              "latitud": "41.38610000",
-                              "longitud": "2.17940000",
-                              "address": "Passatge Sert 12",
-                              "city": "Barcelona",
-                              "postalCode": "08003",
-                              "country": "España",
-                              "phone": "+34 933 000 001",
-                              "web": "https://nomad.example",
-                              "social": "@nomad.bcn"
-                          },
-                          {
-                              "ulid": "01K9C0FFEE0NMD0L0C00000002",
-                              "name": "Nomad Coffee Raval",
-                              "description": "Nomad Coffee al Raval.",
-                              "latitud": "41.37990000",
-                              "longitud": "2.16770000",
-                              "address": "Carrer de la Riereta 13",
-                              "city": "Barcelona",
-                              "postalCode": "08001",
-                              "country": "España",
-                              "phone": null,
-                              "web": "https://nomad.example",
-                              "social": "@nomad.bcn"
-                          }
-                      ]
-                  },
-                  {
-                      "ulid": "01K9C0FFEE0SYR000000000001",
-                      "name": "Syra Coffee",
-                      "locationsCount": 1,
-                      "offeringsCount": 2,
-                      "verifiedOfferingsCount": 0,
-                      "locations": [
-                          {
-                              "ulid": "01K9C0FFEE0SYR0L0C00000001",
-                              "name": "Syra Coffee Gràcia",
-                              "description": "Syra Coffee a Gràcia.",
-                              "latitud": "41.40210000",
-                              "longitud": "2.15800000",
-                              "address": "Carrer de Sant Domènec 1",
-                              "city": "Barcelona",
-                              "postalCode": "08012",
-                              "country": "España",
-                              "phone": null,
-                              "web": null,
-                              "social": "@syra.coffee"
-                          }
-                      ]
+                      "ulid": "01K5W7H3M9Q2T6X4B8N1R5V0CE",
+                      "name": "Nómada Roasters",
+                      "description": "Tostador de especialidad en Barcelona."
                   }
-              ],
-              "links": {
-                  "first": "http://localhost/coffeeshops?page=1",
-                  "last": "http://localhost/coffeeshops?page=1",
-                  "prev": null,
-                  "next": null
-              },
-              "meta": {
-                  "current_page": 1,
-                  "from": 1,
-                  "last_page": 1,
-                  "links": [
-                      {
-                          "url": null,
-                          "label": "&laquo; Previous",
-                          "active": false
-                      },
-                      {
-                          "url": "http://localhost/coffeeshops?page=1",
-                          "label": "1",
-                          "active": true
-                      },
-                      {
-                          "url": null,
-                          "label": "Next &raquo;",
-                          "active": false
-                      }
-                  ],
-                  "path": "http://localhost/coffeeshops",
-                  "per_page": 15,
-                  "to": 2,
-                  "total": 2
-              }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 422
-        content: |-
-          {
-              "message": "The selected order by is invalid.",
-              "errors": {
-                  "orderBy": [
-                      "The selected order by is invalid."
-                  ]
-              }
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'coffeeshops/{user_ulid}'
-    metadata:
-      custom: []
-      groupName: 'Coffee shops'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a coffee shop'
-      description: |-
-        Returns one coffee shop (business) by its ULID, with its counters and
-        locations. The detail page shows two tabs: **Offerings**, read with
-        `GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the
-        `locations` array of this response. A ULID that does not exist, or that
-        is not a coffee shop with at least one location, returns `404 Not Found`.
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      user_ulid:
-        custom: []
-        name: user_ulid
-        description: 'The ULID of the coffee shop (its user ULID).'
-        required: true
-        example: 01M35F5RX4ADGC3CSDXXYB08DA
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      user_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-              "data": {
-                  "ulid": "01K9C0FFEE0NMD000000000001",
-                  "name": "Nomad Coffee",
-                  "locationsCount": 2,
-                  "offeringsCount": 4,
-                  "verifiedOfferingsCount": 1,
-                  "locations": [
-                      {
-                          "ulid": "01K9C0FFEE0NMD0L0C00000001",
-                          "name": "Nomad Coffee Born",
-                          "description": "Nomad Coffee al Born.",
-                          "latitud": "41.38610000",
-                          "longitud": "2.17940000",
-                          "address": "Passatge Sert 12",
-                          "city": "Barcelona",
-                          "postalCode": "08003",
-                          "country": "España",
-                          "phone": "+34 933 000 001",
-                          "web": "https://nomad.example",
-                          "social": "@nomad.bcn"
-                      },
-                      {
-                          "ulid": "01K9C0FFEE0NMD0L0C00000002",
-                          "name": "Nomad Coffee Raval",
-                          "description": "Nomad Coffee al Raval.",
-                          "latitud": "41.37990000",
-                          "longitud": "2.16770000",
-                          "address": "Carrer de la Riereta 13",
-                          "city": "Barcelona",
-                          "postalCode": "08001",
-                          "country": "España",
-                          "phone": null,
-                          "web": "https://nomad.example",
-                          "social": "@nomad.bcn"
-                      }
-                  ]
-              }
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-              "message": "No query results for model [App\\Models\\User] 01M35F5RX4ADGC3CSDXXYB08DA"
+              ]
           }
         headers: []
         description: ''

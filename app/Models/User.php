@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasPublicUlid;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -27,7 +28,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'surname', 'email', 'password'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret', 'two_factor_recovery_codes'])]
-class User extends Authenticatable implements PasskeyUser
+class User extends Authenticatable implements PasskeyUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, HasPublicUlid, Notifiable, PasskeyAuthenticatable, SoftDeletes, Prunable, TwoFactorAuthenticatable;
