@@ -28,7 +28,7 @@ class EvaluationFactory extends Factory
                 'processing' => null,
                 'trading' => null,
                 'certifications' => null,
-                'general_observation' => null,
+                'generalObservation' => null,
             ],
         ];
     }
