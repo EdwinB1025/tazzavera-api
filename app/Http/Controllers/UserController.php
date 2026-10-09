@@ -22,7 +22,6 @@ use Throwable;
 
 class UserController extends Controller
 {
-
     /**
      * Register a user
      *

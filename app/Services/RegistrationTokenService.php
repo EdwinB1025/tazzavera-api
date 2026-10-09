@@ -21,10 +21,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 /**
  * EDB 10/08/26: signs a newly registered user in (AUT R44).
  *
- * The authorization server injected here is private to this service (bound in
- * AppServiceProvider) and only has RegistrationGrant enabled, as Passport does
- * for personal access tokens; the server behind POST /oauth/token never knows
- * this grant. Tokens are issued on the front client, which keeps its PKCE and
+ * Tokens are issued on the front client, which keeps its PKCE and
  * refresh_token grants unchanged.
  */
 class RegistrationTokenService implements RegistrationTokenServiceContract

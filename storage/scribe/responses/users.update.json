@@ -4,6 +4,7 @@
         "name": "Laura",
         "surname": "Gómez Ruiz",
         "email": "laura@tazavera.test",
+        "emailVerifiedAt": null,
         "role": "coffeeshop"
     },
     "message": "Profile updated."

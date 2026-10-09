@@ -4,6 +4,7 @@
         "name": "Andrés",
         "surname": "Gómez",
         "email": "andres@tazavera.test",
+        "emailVerifiedAt": null,
         "role": "specialist"
     }
 }

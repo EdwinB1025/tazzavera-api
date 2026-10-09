@@ -75,7 +75,7 @@ return [
 
     'home' => '/home',
     'redirects' => [
-        'email-verification' => env('FRONT_URL', 'https://localhost:3000') . '/es/account',
+        'email-verification' => env('FRONT_URL', 'http://localhost:3000') . '/es/account',
     ],
 
     /*
