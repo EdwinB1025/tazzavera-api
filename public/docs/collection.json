@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "a1b564aa-e1dd-47e8-b290-0bd92837021b",
+        "_postman_id": "b74e8e98-7457-44fb-82bb-eb4b01c45b73",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -326,7 +326,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IlBzRXkweW0xcUx5bmoxbXFNWjdySEE9PSIsInZhbHVlIjoicFpWTTI3Tkg0VXRuVEhSRGV5blZOa3ltcFQrV0JZZTBpeEVzZHBOSGFkOWRBME1JTzEyYkVCaTJ3UHluUVYzQnp4MS9aOElFWkZDQ0Y5UUYwVjcyRWRRT0ZzZEhOcDFDcGFvd1ZWTHFKcXFGOGd4NFI1RlVCQzk1UXcvMHdVSFoiLCJtYWMiOiIzNjA3NzQxZDUyYmZhYTExYjdhMmM3MjgzZGNmZWNkNDgzNWQ5MmMzODFkZDNhZDNhNGY5MDc0NTM4YzI0ZDNjIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 16:37:26 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6InduTlNETlpYaWIwZ1E1OVNTS09BbGc9PSIsInZhbHVlIjoicFVKR0VnU2xiQlJoRTkyczh1VnNScFQvYkhOV3NNbllLM1R2SUtVQTZ3Q3lFQll5UVpHeExsVXBUZ2owaFpQR2VhSW5CeUFycnEwRVBaN2pJeTZHOGtWalZQa212cjF4SnJsN25wWmFJaGl5NWpOTnN0Rktpbm53aEZpS3pPNmwiLCJtYWMiOiI2YTQxZTNhMjgwOWMxNjM3Y2ZkZjllNDQxMWFjZTkyMWNjMmZkYzBlY2Y1MWUzNTBmNDQxNzQ3MDQ4MmNmZGEyIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IlFkcGdaSGxSN2VOL0ZnckpkRXVHdXc9PSIsInZhbHVlIjoiak5ORDA5TmdBaXBZWURXNHRoQ01mYzliZEtOMTJzWUtZUHZoOHNzNmNPVEcwSzc2N3RVRjlRcDNlUFU0VXMwMG9DZ2tTQ2dsT0xqc0E0OUZuR3E1ODFxY2VhSlNkSjY2Z2E4aU5obUVZMWZHWmRDalZXbjFTMVZkTmc4VmJ5SEoiLCJtYWMiOiIyYmNjYWQ1OTVmODRkMTE3MzEyZDU4YzBmNzY4YjdlNDU5ZDk5MjU1MjJiNmI1ZjRhNjFjZjI1Y2NjZWNiODc4IiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 16:42:39 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImIwcG9tMksxb2NTcVJFUE9lVmdzMFE9PSIsInZhbHVlIjoidENyNU1aREoyNURPS2FKaE9pNkpuVCtGUVJka3dYTWcwRGl5cDN6aWdKOEtBWWYzMmU0RGxScWQ4Z0ZmWjJkeXViVWsxQUcxc3JzY0hwNW9YcUdCS1UzUlo5MmEvL3E2RUpPTFIwTlZXNUVMSmJ3VmpNT0FTUWhIWHdEaSs0YWYiLCJtYWMiOiI0ZjQyMDkyYWVlZTAxNGE5NmQ2YWI5ZjU2ODZlZWMzYTQ2NzljZTY2ZTdjNDg5NzQ4NzAwNmY0YzJjOGEyMjhiIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
@@ -388,7 +388,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IlF2RXdxZjRtckRTZlZjWmVTb0hVL3c9PSIsInZhbHVlIjoiOEVaYWNUUmdMOENqMUxOVjJIRlh4Z3NEOWt4Y2R5MDhLRWNlZ2cwOVpJSHNHSi9MWXYxcTNZYjI4L2x6SzE0VEYyTy9PQ1diQXFZbHdralkyT2xEMUkrcUZXUmM2ek1XZU85VE14RXpWMldoTGRtZlhQV3FUZU0xQzVqU2UzMysiLCJtYWMiOiIzYzFhYzdkMDZjNWY0YWIxOGQzMzllMzAzMzdlYzc3YWUyNDRhOGE2YWE4N2NhMWYwNTU5MzRjMGNlY2Q3ODQwIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 16:37:26 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImVhWGZENkNkU2RYbndtUEFibHdEQ2c9PSIsInZhbHVlIjoiKzlTaXVNUHVKOXR1dGtCeVkrTUprM3dFZUh3ZzhldWZXVGMweXF0RDJMSGRGRHBrTGpFSWtmZm5mbGpMYTdPcmhSbGFsNlUwbVZMUHJSOFNwM0pXQWVLNUxEVVRja3VrSlZPbHlDYVMrbVJyakpvTzBxblJ3YUdsdTg1STNxUlciLCJtYWMiOiI5ODE0YWQ3MmM5YzZjZmJiZDU0YjMxZjJkN2RkYjRmM2IzOWRkNmIyYjRiZjJlODhjN2ZjOWIzNWU0M2YwNjdkIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6ImhXT1JTS0dHaFlrSG0vbW9qcXoyaGc9PSIsInZhbHVlIjoic2diZXpndVU2cWNhV0Q0UldnLzl6Z2VZTjM3NFdITFROd1pKUyt1azFTbFkwbWRrWDlwQjBMdDE3WUVHQWhCckhobkZyWXRBc0tFRnZZYks4MmhYait1TXRlRTNmODUybTRPemtPQ1JtQ2hTKzZkandLN05RYVZBcHlQeVVGaVgiLCJtYWMiOiI4YWFjZWIxYmNhYjcwZjVmYzhiYzU5Y2I2ZWFjZTZmZjNlYjU0ZTNjNDk3NmJmODMwOGIzYjZhODQ5ZTUzNjFmIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 16:42:39 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IlM4Q083V1NXaitrMkR5aTVHczhTTmc9PSIsInZhbHVlIjoidGlUa1haY01WbURmaDNkT05XM0hhbHlhVnlsaWNVZjIzRmxGQ3d2dVJKVXRGWVRsZEIxVUZIYXp4ZDViaGRrRkFKMi9MSzJmUUQ3Y3Z5ZW8yY1pBNXVxdUFwa0dJd05GNnVSS0NKbk1EVEIvOXhJWWplWUVJMm1Zemo3TVRjWVUiLCJtYWMiOiI5NThiN2MxNDRmNTY3NGYyNTUzNjA1NDc4YTg2Y2M1MGQ2ZTU2M2FlOWNlOWVmNTRjNzg0OTAwYTUxMmQ1ODFhIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
