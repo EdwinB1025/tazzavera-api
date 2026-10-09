@@ -262,6 +262,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found'
     responseFields: []
     auth: []
     controller: null
@@ -1119,6 +1128,23 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The city field must not be greater than 90 characters. (and 1 more error)",
+              "errors": {
+                  "city": [
+                      "The city field must not be greater than 90 characters."
+                  ],
+                  "verified": [
+                      "The verified field must be true or false."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Invalid filters'
     responseFields: []
     auth: []
     controller: null
@@ -1265,6 +1291,23 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected coffee inventory id is invalid. (and 1 more error)",
+              "errors": {
+                  "coffeeInventoryId": [
+                      "The selected coffee inventory id is invalid."
+                  ],
+                  "locations": [
+                      "The locations field is required."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields: []
     auth:
       - headers
@@ -1324,6 +1367,15 @@ endpoints:
         content: '{"message": "Offering(s) deleted."}'
         headers: []
         description: Deleted
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found'
     responseFields: []
     auth:
       - headers
@@ -1387,6 +1439,20 @@ endpoints:
         content: '{"message": "Offering(s) deleted."}'
         headers: []
         description: Deleted
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected offerings.0 is invalid.",
+              "errors": {
+                  "offerings.0": [
+                      "The selected offerings.0 is invalid."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields: []
     auth:
       - headers

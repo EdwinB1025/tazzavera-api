@@ -1394,6 +1394,18 @@ paths:
                         nullable: true
                     required:
                       - offeringId
+        404:
+          description: 'Not found or not closed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Evaluations
       security: []
@@ -2198,6 +2210,38 @@ paths:
                       total:
                         type: integer
                         example: 2
+        422:
+          description: 'Invalid filters'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    status:
+                      - 'The selected status is invalid.'
+                    scoreMax:
+                      - 'The score max field must be greater than or equal to 90.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      status:
+                        type: array
+                        example:
+                          - 'The selected status is invalid.'
+                        items:
+                          type: string
+                      scoreMax:
+                        type: array
+                        example:
+                          - 'The score max field must be greater than or equal to 90.'
+                        items:
+                          type: string
       tags:
         - Evaluations
       security: []
@@ -2983,6 +3027,50 @@ paths:
                       total:
                         type: integer
                         example: 2
+        404:
+          description: 'Unknown user'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
+        422:
+          description: 'Invalid filters'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    status:
+                      - 'The selected status is invalid.'
+                    scoreMin:
+                      - 'The score min field must not be greater than 100.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      status:
+                        type: array
+                        example:
+                          - 'The selected status is invalid.'
+                        items:
+                          type: string
+                      scoreMin:
+                        type: array
+                        example:
+                          - 'The score min field must not be greater than 100.'
+                        items:
+                          type: string
       tags:
         - Evaluations
       security: []
@@ -3777,6 +3865,38 @@ paths:
                       total:
                         type: integer
                         example: 2
+        422:
+          description: 'Invalid filters'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    status:
+                      - 'The selected status is invalid.'
+                    scoreMin:
+                      - 'The score min field must not be greater than 100.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected status is invalid. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      status:
+                        type: array
+                        example:
+                          - 'The selected status is invalid.'
+                        items:
+                          type: string
+                      scoreMin:
+                        type: array
+                        example:
+                          - 'The score min field must not be greater than 100.'
+                        items:
+                          type: string
       tags:
         - Evaluations
     post:
@@ -4100,6 +4220,54 @@ paths:
                   message:
                     type: string
                     example: 'Evaluation created.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected offering id is invalid. (and 3 more errors)'
+                  errors:
+                    offeringId:
+                      - 'The selected offering id is invalid.'
+                    descriptive.roastLevel:
+                      - 'The descriptive.roast level field is required.'
+                    descriptive.fragrance.score:
+                      - 'The descriptive.fragrance.score field must be between 0 and 15.'
+                    affective.overall.score:
+                      - 'The affective.overall.score field must be between 1 and 9.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected offering id is invalid. (and 3 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      offeringId:
+                        type: array
+                        example:
+                          - 'The selected offering id is invalid.'
+                        items:
+                          type: string
+                      descriptive.roastLevel:
+                        type: array
+                        example:
+                          - 'The descriptive.roast level field is required.'
+                        items:
+                          type: string
+                      descriptive.fragrance.score:
+                        type: array
+                        example:
+                          - 'The descriptive.fragrance.score field must be between 0 and 15.'
+                        items:
+                          type: string
+                      affective.overall.score:
+                        type: array
+                        example:
+                          - 'The affective.overall.score field must be between 1 and 9.'
+                        items:
+                          type: string
       tags:
         - Evaluations
       requestBody:
@@ -4781,11 +4949,11 @@ paths:
               schema:
                 type: object
                 example:
-                  message: 'No query results for model [App\Models\Evaluation].'
+                  message: 'The requested resource was not found.'
                 properties:
                   message:
                     type: string
-                    example: 'No query results for model [App\Models\Evaluation].'
+                    example: 'The requested resource was not found.'
       tags:
         - Evaluations
     parameters:
@@ -5139,6 +5307,18 @@ paths:
                   message:
                     type: string
                     example: 'One or more evaluations do not belong to the user.'
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
         409:
           description: 'Evaluation already closed'
           content:
@@ -5151,6 +5331,46 @@ paths:
                   message:
                     type: string
                     example: 'Evaluation cannot be updated.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected descriptive.roast level is invalid. (and 2 more errors)'
+                  errors:
+                    descriptive.roastLevel:
+                      - 'The selected descriptive.roast level is invalid.'
+                    descriptive.aroma.score:
+                      - 'The descriptive.aroma.score field must be between 0 and 15.'
+                    affective.flavor.score:
+                      - 'The affective.flavor.score field must be between 1 and 9.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected descriptive.roast level is invalid. (and 2 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      descriptive.roastLevel:
+                        type: array
+                        example:
+                          - 'The selected descriptive.roast level is invalid.'
+                        items:
+                          type: string
+                      descriptive.aroma.score:
+                        type: array
+                        example:
+                          - 'The descriptive.aroma.score field must be between 0 and 15.'
+                        items:
+                          type: string
+                      affective.flavor.score:
+                        type: array
+                        example:
+                          - 'The affective.flavor.score field must be between 1 and 9.'
+                        items:
+                          type: string
       tags:
         - Evaluations
       requestBody:
@@ -5536,6 +5756,18 @@ paths:
                   message:
                     type: string
                     example: 'One or more evaluations do not belong to the user.'
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Evaluations
     parameters:
@@ -5590,6 +5822,18 @@ paths:
                   message:
                     type: string
                     example: 'One or more evaluations do not belong to the user.'
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
         409:
           description: 'Evaluation incomplete'
           content:
@@ -5793,6 +6037,18 @@ paths:
                   message:
                     type: string
                     example: 'This action is unauthorized.'
+        404:
+          description: 'Unknown user'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Locations
     parameters:
@@ -6809,6 +7065,18 @@ paths:
                                     items:
                                       type: object
                                       properties: { ref: { type: string, example: 01JTAXN0DE0000000000000003 }, type: { type: string, example: aromatics }, level: { type: integer, example: 2 }, count: { type: integer, example: 4 } }
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Offerings
       security: []
@@ -6830,6 +7098,18 @@ paths:
                   message:
                     type: string
                     example: 'Offering(s) deleted.'
+        404:
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Offerings
     parameters:
@@ -8176,6 +8456,38 @@ paths:
                       total:
                         type: integer
                         example: 2
+        422:
+          description: 'Invalid filters'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The city field must not be greater than 90 characters. (and 1 more error)'
+                  errors:
+                    city:
+                      - 'The city field must not be greater than 90 characters.'
+                    verified:
+                      - 'The verified field must be true or false.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The city field must not be greater than 90 characters. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      city:
+                        type: array
+                        example:
+                          - 'The city field must not be greater than 90 characters.'
+                        items:
+                          type: string
+                      verified:
+                        type: array
+                        example:
+                          - 'The verified field must be true or false.'
+                        items:
+                          type: string
       tags:
         - Offerings
       security: []
@@ -8412,6 +8724,38 @@ paths:
                   message:
                     type: string
                     example: 'Offering(s) created.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected coffee inventory id is invalid. (and 1 more error)'
+                  errors:
+                    coffeeInventoryId:
+                      - 'The selected coffee inventory id is invalid.'
+                    locations:
+                      - 'The locations field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected coffee inventory id is invalid. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      coffeeInventoryId:
+                        type: array
+                        example:
+                          - 'The selected coffee inventory id is invalid.'
+                        items:
+                          type: string
+                      locations:
+                        type: array
+                        example:
+                          - 'The locations field is required.'
+                        items:
+                          type: string
       tags:
         - Offerings
       requestBody:
@@ -8452,6 +8796,30 @@ paths:
                   message:
                     type: string
                     example: 'Offering(s) deleted.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The selected offerings.0 is invalid.'
+                  errors:
+                    offerings.0:
+                      - 'The selected offerings.0 is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The selected offerings.0 is invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      offerings.0:
+                        type: array
+                        example:
+                          - 'The selected offerings.0 is invalid.'
+                        items:
+                          type: string
       tags:
         - Offerings
       requestBody:
@@ -8898,6 +9266,68 @@ paths:
                       refresh_token:
                         type: string
                         example: def50200a1b2c3...
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The name field is required. (and 7 more errors)'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                    surname:
+                      - 'The surname field is required.'
+                    email:
+                      - 'The email field must be a valid email address.'
+                    password:
+                      - 'The password field must match password confirmation.'
+                      - 'The password field must be at least 8 characters.'
+                      - 'The password field must contain at least one uppercase and one lowercase letter.'
+                      - 'The password field must contain at least one number.'
+                    role:
+                      - 'The selected role is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The name field is required. (and 7 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
+                      surname:
+                        type: array
+                        example:
+                          - 'The surname field is required.'
+                        items:
+                          type: string
+                      email:
+                        type: array
+                        example:
+                          - 'The email field must be a valid email address.'
+                        items:
+                          type: string
+                      password:
+                        type: array
+                        example:
+                          - 'The password field must match password confirmation.'
+                          - 'The password field must be at least 8 characters.'
+                          - 'The password field must contain at least one uppercase and one lowercase letter.'
+                          - 'The password field must contain at least one number.'
+                        items:
+                          type: string
+                      role:
+                        type: array
+                        example:
+                          - 'The selected role is invalid.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -9087,6 +9517,18 @@ paths:
                   message:
                     type: string
                     example: 'This action is unauthorized.'
+        404:
+          description: 'Unknown user'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The requested resource was not found.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The requested resource was not found.'
       tags:
         - Users
     post:
@@ -9338,6 +9780,30 @@ paths:
                   message:
                     type: string
                     example: 'This action is unauthorized.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The email field must be a valid email address.'
+                  errors:
+                    email:
+                      - 'The email field must be a valid email address.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The email field must be a valid email address.'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'The email field must be a valid email address.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:
@@ -9431,6 +9897,44 @@ paths:
                   message:
                     type: string
                     example: 'This action is unauthorized.'
+        422:
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The current password field is required. (and 4 more errors)'
+                  errors:
+                    currentPassword:
+                      - 'The current password field is required.'
+                    password:
+                      - 'The password field must match password confirmation.'
+                      - 'The password field must be at least 8 characters.'
+                      - 'The password field must contain at least one uppercase and one lowercase letter.'
+                      - 'The password field must contain at least one number.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The current password field is required. (and 4 more errors)'
+                  errors:
+                    type: object
+                    properties:
+                      currentPassword:
+                        type: array
+                        example:
+                          - 'The current password field is required.'
+                        items:
+                          type: string
+                      password:
+                        type: array
+                        example:
+                          - 'The password field must match password confirmation.'
+                          - 'The password field must be at least 8 characters.'
+                          - 'The password field must contain at least one uppercase and one lowercase letter.'
+                          - 'The password field must contain at least one number.'
+                        items:
+                          type: string
       tags:
         - Users
       requestBody:

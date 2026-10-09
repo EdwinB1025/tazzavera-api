@@ -139,6 +139,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found or not closed'
     responseFields:
       data.offeringId:
         custom: []
@@ -595,6 +604,23 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected status is invalid. (and 1 more error)",
+              "errors": {
+                  "status": [
+                      "The selected status is invalid."
+                  ],
+                  "scoreMax": [
+                      "The score max field must be greater than or equal to 90."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Invalid filters'
     responseFields:
       data.offeringId:
         custom: []
@@ -1053,6 +1079,32 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Unknown user'
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected status is invalid. (and 1 more error)",
+              "errors": {
+                  "status": [
+                      "The selected status is invalid."
+                  ],
+                  "scoreMin": [
+                      "The score min field must not be greater than 100."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Invalid filters'
     responseFields:
       data.offeringId:
         custom: []
@@ -1503,6 +1555,23 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected status is invalid. (and 1 more error)",
+              "errors": {
+                  "status": [
+                      "The selected status is invalid."
+                  ],
+                  "scoreMin": [
+                      "The score min field must not be greater than 100."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Invalid filters'
     responseFields:
       data.offeringId:
         custom: []
@@ -1683,7 +1752,10 @@ endpoints:
       -
         custom: []
         status: 404
-        content: '{"message": "No query results for model [App\\Models\\Evaluation]."}'
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
         headers: []
         description: 'Not found or not the owner'
     responseFields:
@@ -2598,6 +2670,29 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected offering id is invalid. (and 3 more errors)",
+              "errors": {
+                  "offeringId": [
+                      "The selected offering id is invalid."
+                  ],
+                  "descriptive.roastLevel": [
+                      "The descriptive.roast level field is required."
+                  ],
+                  "descriptive.fragrance.score": [
+                      "The descriptive.fragrance.score field must be between 0 and 15."
+                  ],
+                  "affective.overall.score": [
+                      "The affective.overall.score field must be between 1 and 9."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields:
       data.offeringId:
         custom: []
@@ -3550,10 +3645,39 @@ endpoints:
         description: 'Not the owner'
       -
         custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found'
+      -
+        custom: []
         status: 409
         content: '{"message": "Evaluation cannot be updated."}'
         headers: []
         description: 'Evaluation already closed'
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The selected descriptive.roast level is invalid. (and 2 more errors)",
+              "errors": {
+                  "descriptive.roastLevel": [
+                      "The selected descriptive.roast level is invalid."
+                  ],
+                  "descriptive.aroma.score": [
+                      "The descriptive.aroma.score field must be between 0 and 15."
+                  ],
+                  "affective.flavor.score": [
+                      "The affective.flavor.score field must be between 1 and 9."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields:
       data.offeringId:
         custom: []
@@ -3651,6 +3775,15 @@ endpoints:
         description: 'Not the owner'
       -
         custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found'
+      -
+        custom: []
         status: 409
         content: '{"message": "The evaluation is incomplete: every score must be provided, with at least one CATA attribute for each axis: MainTastes, mouthfeel and the set of sensory axes."}'
         headers: []
@@ -3719,6 +3852,15 @@ endpoints:
         content: '{"message": "One or more evaluations do not belong to the user."}'
         headers: []
         description: 'Not the owner'
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Not found'
     responseFields: []
     auth:
       - headers

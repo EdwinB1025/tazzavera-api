@@ -188,6 +188,35 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The name field is required. (and 7 more errors)",
+              "errors": {
+                  "name": [
+                      "The name field is required."
+                  ],
+                  "surname": [
+                      "The surname field is required."
+                  ],
+                  "email": [
+                      "The email field must be a valid email address."
+                  ],
+                  "password": [
+                      "The password field must match password confirmation.",
+                      "The password field must be at least 8 characters.",
+                      "The password field must contain at least one uppercase and one lowercase letter.",
+                      "The password field must contain at least one number."
+                  ],
+                  "role": [
+                      "The selected role is invalid."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields: []
     auth: []
     controller: null
@@ -332,6 +361,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Unknown user'
     responseFields: []
     auth:
       - headers
@@ -659,6 +697,20 @@ endpoints:
         content: '{"message": "This action is unauthorized."}'
         headers: []
         description: Forbidden
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The email field must be a valid email address.",
+              "errors": {
+                  "email": [
+                      "The email field must be a valid email address."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields: []
     auth:
       - headers
@@ -759,6 +811,26 @@ endpoints:
         content: '{"message": "This action is unauthorized."}'
         headers: []
         description: Forbidden
+      -
+        custom: []
+        status: 422
+        content: |
+          {
+              "message": "The current password field is required. (and 4 more errors)",
+              "errors": {
+                  "currentPassword": [
+                      "The current password field is required."
+                  ],
+                  "password": [
+                      "The password field must match password confirmation.",
+                      "The password field must be at least 8 characters.",
+                      "The password field must contain at least one uppercase and one lowercase letter.",
+                      "The password field must contain at least one number."
+                  ]
+              }
+          }
+        headers: []
+        description: 'Validation error'
     responseFields: []
     auth:
       - headers

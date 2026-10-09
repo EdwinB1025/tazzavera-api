@@ -116,6 +116,15 @@ endpoints:
           }
         headers: []
         description: ''
+      -
+        custom: []
+        status: 404
+        content: |
+          {
+              "message": "The requested resource was not found."
+          }
+        headers: []
+        description: 'Unknown user'
     responseFields: []
     auth:
       - headers
