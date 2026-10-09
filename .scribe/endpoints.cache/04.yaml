@@ -1556,7 +1556,7 @@ endpoints:
         name: evaluation
         description: 'The evaluation.'
         required: true
-        example: 01M4E1CZ8YNRJNN32PG9AKGMSH
+        example: 01M4GDD84946WPV8JQ87V6419V
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1574,7 +1574,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      evaluation: 01M4E1CZ8YNRJNN32PG9AKGMSH
+      evaluation: 01M4GDD84946WPV8JQ87V6419V
       evaluation_ulid: 01M35F5RX4ADGC3CSDXXYB08DA
     queryParameters: []
     cleanQueryParameters: []
@@ -1751,17 +1751,6 @@ endpoints:
         enumValues: []
         exampleWasSpecified: false
         nullable: false
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
         deprecated: false
       extractionMethod:
         custom: []
@@ -2459,7 +2448,6 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       offeringId: 01M35F5RX4ADGC3CSDXXYB08DA
-      status: architecto
       extractionMethod: v60
       descriptive:
         roastLevel: medium

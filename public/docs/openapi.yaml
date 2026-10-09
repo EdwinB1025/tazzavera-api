@@ -4113,11 +4113,6 @@ paths:
                   type: string
                   description: 'ULID of the offering being evaluated. Must match an existing stored value.'
                   example: 01M35F5RX4ADGC3CSDXXYB08DA
-                status:
-                  type: string
-                  description: ''
-                  example: architecto
-                  nullable: true
                 extractionMethod:
                   type: string
                   description: 'Brewing/extraction method used (max 60 chars). El campo value no debe ser mayor que 60 caracteres.'
@@ -4798,7 +4793,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: 01M4E1CZ8YNRJNN32PG9AKGMSH
+        example: 01M4GDD84946WPV8JQ87V6419V
         required: true
         schema:
           type: string
