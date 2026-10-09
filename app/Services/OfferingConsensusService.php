@@ -140,11 +140,15 @@ class OfferingConsensusService
             ->keyBy('id');
 
         $aggregated = [];
+        // EDB 10/09/26: every node met while climbing, ancestors included, so an
+        // unmarked intermediate note still finds its own parent (R50).
+        $treeNodes = [];
         foreach ($marks as $mark) {
             $type = $mark['type'];
             $node = $nodes[$mark['taxonomy_ref']] ?? null;
 
             while ($node !== null) {
+                $treeNodes[$node->id] = $node;
                 $key = $node->id . '|' . $type;
                 if (! isset($aggregated[$key])) {
                     $aggregated[$key] = [
@@ -167,7 +171,7 @@ class OfferingConsensusService
         foreach (['0', '1', '2'] as $level) {
             foreach ($byLevel->get($level, []) as $row) {
                 $parentId = $this->resolveParentOfferingTasteId(
-                    $nodes,
+                    $treeNodes,
                     $row['taxonomy_ref'],
                     $row['type'],
                     $createdIds
