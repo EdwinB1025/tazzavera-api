@@ -175,6 +175,7 @@ endpoints:
                   "name": "Laura",
                   "surname": "Gómez",
                   "email": "laura@tazavera.test",
+                  "emailVerifiedAt": null,
                   "role": "coffeeshop"
               },
               "message": "Profile created.",
@@ -232,6 +233,7 @@ endpoints:
                   "name": "Andrés",
                   "surname": "Gómez",
                   "email": "andres@tazavera.test",
+                  "emailVerifiedAt": null,
                   "role": "specialist"
               }
           }
@@ -644,6 +646,7 @@ endpoints:
                   "name": "Laura",
                   "surname": "Gómez Ruiz",
                   "email": "laura@tazavera.test",
+                  "emailVerifiedAt": null,
                   "role": "coffeeshop"
               },
               "message": "Profile updated."

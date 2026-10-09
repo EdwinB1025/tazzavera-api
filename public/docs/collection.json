@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "e302e9b7-6d80-4f54-abc0-5e90b3596b9c",
+        "_postman_id": "4d474edf-c2aa-4d28-af2e-6f4361f6873f",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -326,7 +326,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IjdFYVVrWlR2eHJBWnpjSStNRXUvTWc9PSIsInZhbHVlIjoiMHErb3NoRHRyMUM1dyt0L2t5bUN5TmdhZHV5QTVkK2x5Ykw5TXk5WXpSQkV1MlBpd1NSeHFuUlJNby9SaFhIT1JIV20vYnpYNVE3dzVhTjdmNVFQRFpzU2hNcXdCOVZ4cUgyWWhkY2J3TUF3VTRxajlsbHN4WklacDRZWDRiSjYiLCJtYWMiOiJiNjIzYTc0YzJhNjM5MGZlYWE4NzZkNWIyM2U4YmI4M2ZmNTU3NzYxODM2MmViZDkyNzRkMzZhNjQyMGZmMDk1IiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IkZ1R1VQYStLdHI2Q1R6ZldjU3B0dXc9PSIsInZhbHVlIjoiZzJpOUJEYm94VkFPc2lpRk15TmU0NFNNZHRjL2xFNUMvSkM1TUtiY3VvVklJUGE5N055V213RTB2SmpMVUFMdFI4Q3p1dVMxNndxbFpKejhyQWRSWXpGaWtzK2t0LzRLYWFLQlBoWjgrTGhFZ2lJZEtVd2lwdlA5K0hBTnVDY0IiLCJtYWMiOiI1YzdkOGZmY2NlOTkxMjA1MjhiNGVkZGY0NWFiMDI1MDA2M2NiZTBmYzJjOGE0ZGQ5YzBmMmRiMTU2OGRkNTQ5IiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IldwcGlKTWFVMHNMcGlYbzJPMVhoT1E9PSIsInZhbHVlIjoiSXUwajdNaVhiejlHZU1BTHQxMG1EdEE1SVNBYVlKWlpDS005eTVXK0Z5WmNpTlZMTG9hK0NxbFRrZmo4Y1ZQVjlZZkNFcHh1bXcySFpiN3o0enRIUE5lWkJ0NmZKSGJmazVJSHQ0YWVqWGtUWHpURHpsc1dIV2pQSmhuUUdtbjkiLCJtYWMiOiJmMmM4MTc5YWU4YmViNGIzNDhiNWUzM2UzMTNhNzlkYjQwODJlN2JkNjM3NzhhZTkzMjhjYTI1MjljNmRjM2NiIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:52:43 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImRpdmxTY3FFeGpVYTk1VnZCbHB5WkE9PSIsInZhbHVlIjoiUnpWUnhnVHFDemI1VUR1QlpkUzl1Ulg5bmtsMzhDL1V4NGp3cUVjQklPaVB6bGxsUmZZQUZBZDFTNE10NmZBM2RzaDdEa2VqT3dMVE0zZTMrdndBNmxTYVppWlAxaU9sbEkvLzJuR0NUclVUWEJNdzJvc29nS1Ezb1FGRDEzSEYiLCJtYWMiOiI4OWQ3ZDI4MTY3Y2VjZDk0MWVjYWJhN2Q2ODhhZTc4ZGQ3NGQzYTg4ZmI3NzIxMjMwYzUxYWQ3NjJlYjljMDBiIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
@@ -388,7 +388,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6Ikp1TmlGcFdXVVkyd1hXN3pRWlN4S1E9PSIsInZhbHVlIjoiWHp1TWRRT1IzdVF2WUQ3c21pTXdVVmlwa3BMcDAxd3NkUTlNelZHWVBkVDE2eTdDSXEvdkRib0gwSVorRm5Db3doeUl0NVlXS3cxcmdBWWxmRmZKcWVxRDhQbUhDLzExdHMyT3B5Z29UTmhaVURUeEVPcXhoVWloL3JML0hEQTYiLCJtYWMiOiJkNTFlODk1M2U5MDRmZTgyNTIzZDc3YjEwODMwNzBkZjgzN2E4ZjM2MzFhMmNiOWFlZWRkYThjY2Y5ZDQ2YWQyIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:41:08 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImQxeDN1M0d5UG1Tb1hKbnZWMEZucnc9PSIsInZhbHVlIjoiVTROK3NtTXgyRlpsQk1IVEx0dEQraFJGWisvbkdtRXo2blp0ai9YZEZKM1YzaG10VG5USXZZeWt0NFluTjZ2clpZTmcxWEkwRXBVd3RCN0NlQWo3VUR1cTdhNDNobjZPbmQ2a2pVczBLNjlmUnFBTHJleDQvQytUaHhLYUIvQ0EiLCJtYWMiOiJhNWRiODgzMThiMGY4NzY5Y2M0ZDAxZDJkZTdhZmQwNjA2N2VjYjE1YjEzNzg1YTU2ZjFjZjRiOTUxMjc1ZTAwIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6ImxSTnBwQ2JFL01sT3JwejV4M3czNUE9PSIsInZhbHVlIjoiY0ZVYUtTSXJvQmUvQThJL1QzRzhGM1VzOEFtbVFWTm1keC9EcFhXQ3dHS1NSeW4xbUozZVhsN2FDMUNNZnowZ242b1NMNDZoL1JQNzBZdTFXSjBmRkR2R3c2STJhbTVtNVBJek5LZHpTRGt6NXI5K016aEc0OXJnK0ZDV1ZnKzIiLCJtYWMiOiIzNGUyZTg3YTVhN2E1ODUyMzBjNjg5MDZjZmU1YzExM2JiNmU2MjZlNzllYzgzNDcyYjFkZDQ2ZTZjNzZiZTBkIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 12:52:43 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IlNpTzlOQVl0ZEVMTVlHMjExUUhnQnc9PSIsInZhbHVlIjoibkRrM3IwY2liamdzSklld0IydlV3NXM4NWE3UHRHQllLeXEyZTM3N1BvUzZ6SVRxcXEwZjFXc3FzOVRCRWhIeG5OZjc1WXd5NVBwR2IwUG5VODRzYllCa3owNkhnUUVyWmE3dGxEbFFyTHBIYzV3TExLWWhwc1Ftb0ExRzdqaGUiLCJtYWMiOiI1OTEzZmQzMDRjMjIwY2JmOTAzNDAxNzc1N2EyOWQ0YzE4NmM4ZTkxZTZkYWEzZWVmYTM4NzFmOGFkN2NiMWY2IiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
@@ -1829,7 +1829,7 @@
                         {
                             "header": [],
                             "code": 201,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"laura@tazavera.test\",\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\",\n    \"token\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 1800,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"refresh_token\": \"def50200a1b2c3...\"\n    }\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\",\n    \"token\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 1800,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"refresh_token\": \"def50200a1b2c3...\"\n    }\n}",
                             "name": ""
                         }
                     ]
@@ -1861,7 +1861,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DD\",\n        \"name\": \"Andr\u00e9s\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"andres@tazavera.test\",\n        \"role\": \"specialist\"\n    }\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DD\",\n        \"name\": \"Andr\u00e9s\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"andres@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"specialist\"\n    }\n}",
                             "name": ""
                         }
                     ]
@@ -2023,7 +2023,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez Ruiz\",\n        \"email\": \"laura@tazavera.test\",\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile updated.\"\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez Ruiz\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile updated.\"\n}",
                             "name": ""
                         },
                         {

@@ -8859,6 +8859,7 @@ paths:
                     name: Laura
                     surname: Gómez
                     email: laura@tazavera.test
+                    emailVerifiedAt: null
                     role: coffeeshop
                   message: 'Profile created.'
                   token:
@@ -8882,6 +8883,10 @@ paths:
                       email:
                         type: string
                         example: laura@tazavera.test
+                      emailVerifiedAt:
+                        type: string
+                        example: null
+                        nullable: true
                       role:
                         type: string
                         example: coffeeshop
@@ -8966,6 +8971,7 @@ paths:
                     name: Andrés
                     surname: Gómez
                     email: andres@tazavera.test
+                    emailVerifiedAt: null
                     role: specialist
                 properties:
                   data:
@@ -8983,6 +8989,10 @@ paths:
                       email:
                         type: string
                         example: andres@tazavera.test
+                      emailVerifiedAt:
+                        type: string
+                        example: null
+                        nullable: true
                       role:
                         type: string
                         example: specialist
@@ -9297,6 +9307,7 @@ paths:
                     name: Laura
                     surname: 'Gómez Ruiz'
                     email: laura@tazavera.test
+                    emailVerifiedAt: null
                     role: coffeeshop
                   message: 'Profile updated.'
                 properties:
@@ -9315,6 +9326,10 @@ paths:
                       email:
                         type: string
                         example: laura@tazavera.test
+                      emailVerifiedAt:
+                        type: string
+                        example: null
+                        nullable: true
                       role:
                         type: string
                         example: coffeeshop
