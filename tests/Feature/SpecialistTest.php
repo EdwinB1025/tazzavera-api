@@ -240,6 +240,27 @@ test('specialist_triggers_consensus_calculation', function () {
     $this->assertTrue($offering->offeringTastes()->exists());
 });
 
+test('consensus_keeps_every_note_under_its_parent', function () {
+    //EDB 10/09/26: an unmarked intermediate note keeps its parent in the consensus tree (R50)
+    [$owner] = authenticate('specialist');
+    $offering = createOfferingsForUser($owner, 1, 1)->first();
+
+    Evaluation::factory()
+        ->count(5)
+        ->withTastes()
+        ->create(['offering_id' => $offering->id]);
+
+    (new \App\Services\OfferingConsensusService())->recompute($offering->id);
+
+    $orphans = $offering->offeringTastes()
+        ->where('level', '>', 0)
+        ->whereNull('parent_id')
+        ->count();
+
+    $this->assertGreaterThan(0, $offering->offeringTastes()->where('level', '>', 0)->count());
+    $this->assertSame(0, $orphans);
+});
+
 test('specialist_deletes_evaluation', function () {
     [$user, $token] = authenticateWithWriteScope('specialist');
 
