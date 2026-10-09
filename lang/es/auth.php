@@ -8,4 +8,5 @@ return [
     'throttle' => 'Demasiados intentos de acceso. Por favor, inténtalo de nuevo en :seconds segundos.',
     'logged_out' => 'Sesión cerrada correctamente.',
     'web_not_directed_request' => 'El inicio de sesión no proviene de la aplicación cliente.',
+    'step_up_other_user' => 'La identidad se confirmó con otra cuenta.',
 ];

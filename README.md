@@ -157,6 +157,8 @@ Login in three steps:
 
 The `access_token` authenticates the `auth:api` routes via `Authorization: Bearer`. Two scopes: `profile:read` (default) and `profile:write` (step-up for sensitive actions). Full detail in `endpoints.md`.
 
+A `profile:write` request always forces a fresh login. When the client sends `login_hint` (the ULID of the user it expects), the code is issued only to that user: another user who signs in is signed out and the client receives `error=access_denied` (with its `state`) on its registered redirect URI (`RequireHintedUserForStepUp`).
+
 ## ☕ Public coffee shop directory
 
 A **coffee shop** is the business: a user with role `coffeeshop` that owns one or more locations. The directory is public (no token), like `GET /offerings`, and returns **business data only** — never the owner's email, surname, personal contacts or account data.
@@ -215,7 +217,6 @@ What was **deliberately left out of the MVP** to keep the scope manageable — f
 - 🌱 **Green coffee physical assessment** — evaluation of the unroasted bean; the SCA standard for this is in alpha.
 - 📖 **Usage guide + FAQ** — deferred until the evaluation decisions are settled.
 - 🎭 **Several roles for the same user** — let one account hold both `specialist` and `coffeeshop` and choose which one it acts as. To design first: whether the API restricts actions to the chosen role (an `active_role` on the user, changed through its own endpoint and validated against the roles the user has; policies check the active role instead of `hasRole`) or only exposes the roles and leaves the choice to the client; and whether the choice belongs to the user (every device) or to the session/token. The user resource would expose `roles` as a JSON array (today `role` is a single string), which changes the contract.
-- 🔐 **Step-up bound to the expected user** — a `profile:write` authorization request always forces a fresh login (`RequireLoginForWriteScope` adds `prompt=login`), and any valid user can sign in there; the API issues the code to whoever authenticates, because it does not know which user the client expected. Today the client checks it: after the exchange it compares the new token's user (`GET /user`) with the session's and, on a mismatch, discards the tokens and calls `POST /logout` with them. As a second defence, the client would send the expected user (a `login_hint` with its ULID) and the API would refuse, at the login of the authorization request, a user other than the hinted one, so the wrong user never gets a code. Same idea as OpenID Connect's `id_token_hint`, which Passport does not implement. To design: the parameter name, where the check runs (the login view or a middleware on `oauth/authorize`), and the error answered to the client (`access_denied` to the redirect URI).
 - 🧮 **Statistical refinement of the consensus** — revisit `σ_max` (theoretical vs. realistic) and evaluate ICC / Fleiss as a concordance index once there's enough multi-offering volume.
 
 ## 📝 Notes

@@ -8,4 +8,5 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'logged_out' => 'Logged out successfully.',
     'web_not_directed_request' => 'The login request does not come from the client app.',
+    'step_up_other_user' => 'The identity was confirmed with a different account.',
 ];
