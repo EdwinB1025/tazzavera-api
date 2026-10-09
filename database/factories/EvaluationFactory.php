@@ -38,20 +38,29 @@ class EvaluationFactory extends Factory
         return $this->state(fn() => ['status' => 'open']);
     }
 
-    public function withTastes(): static
+    private const CATA_AXES = ['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'];
+
+    /**
+     * Marks the evaluation's tastes: 2 notes per sensory axis, 1 main taste and 1 defect,
+     * chosen from a taste profile. Evaluations of one offering share its profile (see
+     * tasteProfile), so their marks overlap as real cuppers' do; without one, each
+     * evaluation draws its own.
+     */
+    public function withTastes(?array $profile = null): static
     {
-        return $this->afterCreating(function ($evaluation) {
+        return $this->afterCreating(function ($evaluation) use ($profile) {
+            $profile ??= self::tasteProfile();
             $rows = [];
 
-            foreach (['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'] as $axis) {
-                foreach ($this->taxonomyRefs('aromatics', 2) as $ref) {
+            foreach (self::CATA_AXES as $axis) {
+                foreach (collect($profile['aromatics'])->shuffle()->take(2) as $ref) {
                     $rows[] = ['taxonomy_ref' => $ref, 'type' => $axis];
                 }
             }
-            foreach ($this->taxonomyRefs('main_tastes', 1) as $ref) {
+            foreach (collect($profile['main_tastes'])->shuffle()->take(1) as $ref) {
                 $rows[] = ['taxonomy_ref' => $ref, 'type' => 'main_tastes'];
             }
-            foreach ($this->taxonomyRefs('defects', 1) as $ref) {
+            foreach ($profile['defects'] as $ref) {
                 $rows[] = ['taxonomy_ref' => $ref, 'type' => 'defects'];
             }
 
@@ -81,7 +90,20 @@ class EvaluationFactory extends Factory
         return $block;
     }
 
-    private function taxonomyRefs(string $category, int $count): array
+    /**
+     * One offering's taste profile: 4 aromatic leaves shared by every sensory axis, 2 main
+     * tastes and 1 defect. The seeder draws one per offering and passes it to withTastes.
+     */
+    public static function tasteProfile(): array
+    {
+        return [
+            'aromatics'   => self::taxonomyRefs('aromatics', 4),
+            'main_tastes' => self::taxonomyRefs('main_tastes', 2),
+            'defects'     => self::taxonomyRefs('defects', 1),
+        ];
+    }
+
+    private static function taxonomyRefs(string $category, int $count): array
     {
         $query = match ($category) {
             'mouthfeel' => OlfactoryTaxonomy::where('level', 1)->whereJsonContains('categories', 'mouthfeel'),
