@@ -1,0 +1,11 @@
+{
+    "message": "The city field must not be greater than 90 characters. (and 1 more error)",
+    "errors": {
+        "city": [
+            "The city field must not be greater than 90 characters."
+        ],
+        "verified": [
+            "The verified field must be true or false."
+        ]
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "message": "The selected offerings.0 is invalid.",
+    "errors": {
+        "offerings.0": [
+            "The selected offerings.0 is invalid."
+        ]
+    }
+}

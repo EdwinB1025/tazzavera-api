@@ -1,0 +1,17 @@
+{
+    "message": "The selected offering id is invalid. (and 3 more errors)",
+    "errors": {
+        "offeringId": [
+            "The selected offering id is invalid."
+        ],
+        "descriptive.roastLevel": [
+            "The descriptive.roast level field is required."
+        ],
+        "descriptive.fragrance.score": [
+            "The descriptive.fragrance.score field must be between 0 and 15."
+        ],
+        "affective.overall.score": [
+            "The affective.overall.score field must be between 1 and 9."
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "message": "The selected coffee inventory id is invalid. (and 1 more error)",
+    "errors": {
+        "coffeeInventoryId": [
+            "The selected coffee inventory id is invalid."
+        ],
+        "locations": [
+            "The locations field is required."
+        ]
+    }
+}

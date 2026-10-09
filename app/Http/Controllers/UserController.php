@@ -44,6 +44,7 @@ class UserController extends Controller
      * @unauthenticated
      *
      * @responseFile 201 storage/scribe/responses/users.store.json
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/users.store.422.json
      */
     public function store(
         StoreUserRequest $request,
@@ -114,6 +115,7 @@ class UserController extends Controller
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
      * 
      * @responseFile storage/scribe/responses/users.update.json
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/users.update.422.json
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -141,6 +143,7 @@ class UserController extends Controller
      *
      * @response 200 scenario="Password updated" {"message": "Password updated successfully."}
      * @response 403 scenario="Forbidden" {"message": "This action is unauthorized."}
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/users.password.422.json
      */
     public function updatePassword(UpdatePasswordRequest $request, User $user)
     {

@@ -28,6 +28,7 @@ class OfferingController extends Controller
      *
      * @unauthenticated
      * @responseFile storage/scribe/responses/offerings.index.json
+     * @responseFile 422 scenario="Invalid filters" storage/scribe/responses/offerings.index.422.json
      */
     public function index(FilterOfferingRequest $request)
     {
@@ -64,6 +65,7 @@ class OfferingController extends Controller
      *
      * @authenticated
      * @responseFile 201 storage/scribe/responses/offerings.store.json
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/offerings.store.422.json
      */
     public function store(StoreOfferingRequest $request)
     {
@@ -110,6 +112,7 @@ class OfferingController extends Controller
      *
      * @urlParam offering_ulid string required The ULID of the offering. Example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
      * @responseFile storage/scribe/responses/offerings.show.json
+     * @responseFile 404 scenario="Not found" storage/scribe/responses/errors.404.json
      */
     public function show(Offering $offering)
     {
@@ -144,6 +147,7 @@ class OfferingController extends Controller
      * @urlParam offering_ulid string required The ULID of the offering. Example: 01K6A3M8Q2V7XH4T9B5N1RCW0D
      * 
      * @response 200 scenario="Deleted" {"message": "Offering(s) deleted."}
+     * @responseFile 404 scenario="Not found" storage/scribe/responses/errors.404.json
      */
     public function destroy(Offering $offering)
     {
@@ -175,6 +179,7 @@ class OfferingController extends Controller
      * @authenticated
      * 
      * @response 200 scenario="Deleted" {"message": "Offering(s) deleted."}
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/offerings.massdestroy.422.json
      */
     public function massDestroy(MassDeleteOfferingRequest $request)
     {

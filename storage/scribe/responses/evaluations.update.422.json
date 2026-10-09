@@ -1,0 +1,14 @@
+{
+    "message": "The selected descriptive.roast level is invalid. (and 2 more errors)",
+    "errors": {
+        "descriptive.roastLevel": [
+            "The selected descriptive.roast level is invalid."
+        ],
+        "descriptive.aroma.score": [
+            "The descriptive.aroma.score field must be between 0 and 15."
+        ],
+        "affective.flavor.score": [
+            "The affective.flavor.score field must be between 1 and 9."
+        ]
+    }
+}

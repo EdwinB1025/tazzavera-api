@@ -24,6 +24,7 @@ class EvaluationController extends Controller
      *
      * @unauthenticated
      * @responseFile storage/scribe/responses/evaluations.index.json
+     * @responseFile 422 scenario="Invalid filters" storage/scribe/responses/evaluations.index.422.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function index(FilterEvaluationRequest $request)
@@ -52,6 +53,8 @@ class EvaluationController extends Controller
      * @urlParam user_ulid string required The ULID of the user (evaluator). Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @responseFile storage/scribe/responses/evaluations.index.json
+     * @responseFile 404 scenario="Unknown user" storage/scribe/responses/errors.404.json
+     * @responseFile 422 scenario="Invalid filters" storage/scribe/responses/userevaluations.index.422.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function indexByUser(FilterUserEvaluationRequest $request, User $user)
@@ -76,6 +79,7 @@ class EvaluationController extends Controller
      * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
      * @responseFile storage/scribe/responses/evaluations.show.json
+     * @responseFile 404 scenario="Not found or not closed" storage/scribe/responses/errors.404.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function show(Evaluation $evaluation)

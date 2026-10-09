@@ -28,6 +28,7 @@ class ContactController extends Controller
      * @responseFile storage/scribe/responses/contacts.index.json
      * @responseFile 401 storage/scribe/responses/errors.401.json
      * @responseFile 403 storage/scribe/responses/errors.403.json
+     * @responseFile 404 scenario="Unknown user" storage/scribe/responses/errors.404.json
      */
     public function index(User $user)
     {

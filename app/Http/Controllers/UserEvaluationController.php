@@ -35,6 +35,7 @@ class UserEvaluationController extends Controller
      * @authenticated
      *
      * @responseFile storage/scribe/responses/userevaluations.index.json
+     * @responseFile 422 scenario="Invalid filters" storage/scribe/responses/userevaluations.index.422.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function index(FilterUserEvaluationRequest $request)
@@ -64,7 +65,7 @@ class UserEvaluationController extends Controller
      *
      * @urlParam evaluation_ulid string required The ULID of the evaluation. Example: 01M35F5RX4ADGC3CSDXXYB08DA
      *
-     * @response 404 scenario="Not found or not the owner" {"message": "No query results for model [App\\Models\\Evaluation]."}
+     * @responseFile 404 scenario="Not found or not the owner" storage/scribe/responses/errors.404.json
      *
      * @responseFile storage/scribe/responses/userevaluations.show.json
      */
@@ -99,6 +100,7 @@ class UserEvaluationController extends Controller
      * @authenticated
      *
      * @responseFile 201 storage/scribe/responses/evaluations.store.json
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/evaluations.store.422.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function store(StoreEvaluationRequest $request)
@@ -137,6 +139,8 @@ class UserEvaluationController extends Controller
      * @response 409 scenario="Evaluation already closed" {"message": "Evaluation cannot be updated."}
      *
      * @responseFile storage/scribe/responses/evaluations.update.json
+     * @responseFile 404 scenario="Not found" storage/scribe/responses/errors.404.json
+     * @responseFile 422 scenario="Validation error" storage/scribe/responses/evaluations.update.422.json
      */
     #[ResponseField('data.offeringId', 'string', "The ULID of the evaluated offering. `null` when the offering was deleted: specialists' evaluations are kept without an offering.", nullable: true)]
     public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
@@ -183,6 +187,7 @@ class UserEvaluationController extends Controller
      * @response 200 scenario="Already closed" {"message": "Evaluation closed."}
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}
      * @response 409 scenario="Evaluation incomplete" {"message": "The evaluation is incomplete: every score must be provided, with at least one CATA attribute for each axis: MainTastes, mouthfeel and the set of sensory axes."}
+     * @responseFile 404 scenario="Not found" storage/scribe/responses/errors.404.json
      */
     public function close(Request $request, Evaluation $evaluation)
     {
@@ -219,6 +224,7 @@ class UserEvaluationController extends Controller
      *
      * @response 200 scenario="Deleted" {"message": "Evaluation(s) deleted."}
      * @response 403 scenario="Not the owner" {"message": "One or more evaluations do not belong to the user."}
+     * @responseFile 404 scenario="Not found" storage/scribe/responses/errors.404.json
      */
     public function destroy(Evaluation $evaluation)
     {

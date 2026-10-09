@@ -1,0 +1,11 @@
+{
+    "message": "The selected status is invalid. (and 1 more error)",
+    "errors": {
+        "status": [
+            "The selected status is invalid."
+        ],
+        "scoreMin": [
+            "The score min field must not be greater than 100."
+        ]
+    }
+}
