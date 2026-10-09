@@ -27,7 +27,6 @@ class StoreEvaluationRequest extends FormRequest
         return [
             // --- Headers ---
             'offeringId'        => ['required', 'string', 'exists:offerings,ulid'],
-            'status'            => ['nullable', 'string'],
             'extractionMethod'  => ['nullable', 'string', 'max:60'],
 
             // --- descriptive ---
