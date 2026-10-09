@@ -308,6 +308,7 @@ test('authenticated_coffeeshop_deletes_offerings_without_ownership', function ()
 });
 
 test('authenticated_coffeeshop_deletes_offering_without_scope', function () {
+    //EDB 10/09/26: profile:write no longer required; only the account's own actions need it (Product owner)
     [$user, $token] = authenticate('coffeeshop');
 
     $this->seed(GetAnOfferingSeeder::class);
@@ -316,7 +317,7 @@ test('authenticated_coffeeshop_deletes_offering_without_scope', function () {
 
     $this->withToken($token)
         ->deleteJson("/offerings/{$offering->ulid}")
-        ->assertForbidden();
+        ->assertOk();
 });
 
 test('filter_offerings_by_ranges_and_relations', function () {

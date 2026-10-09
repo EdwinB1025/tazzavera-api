@@ -50,10 +50,11 @@ Route::middleware(['auth:api', CheckTokenForAnyScope::using('profile:read', 'pro
             Route::get('/coffeeInventory', [CoffeeInventoryController::class, 'index']);
             Route::post('/offerings', [OfferingController::class, 'store'])
                 ->middleware('owns.location:locations');
+            //EDB 10/09/26: no profile:write; only the account's own actions require it (Product owner)
             Route::delete('/offerings/{offering}', [OfferingController::class, 'destroy'])
-                ->middleware(['owns.offering', CheckTokenForAnyScope::using('profile:write')]);
+                ->middleware('owns.offering');
             Route::delete('/offerings', [OfferingController::class, 'massDestroy'])
-                ->middleware(['owns.offering:offerings', CheckTokenForAnyScope::using('profile:write')]);
+                ->middleware('owns.offering:offerings');
         });
 
         /**EDB 09/17/26: Routes for specialist to manage evaluations */
