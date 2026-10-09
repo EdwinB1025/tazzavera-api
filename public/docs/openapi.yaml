@@ -5164,11 +5164,6 @@ paths:
                   type: string
                   description: 'Prohibited on update — an evaluation cannot be reassigned to another offering. Sending this field returns 422.'
                   example: null
-                status:
-                  type: string
-                  description: ''
-                  example: architecto
-                  nullable: true
                 extractionMethod:
                   type: string
                   description: 'Brewing/extraction method used (max 60 chars). El campo value no debe ser mayor que 60 caracteres.'

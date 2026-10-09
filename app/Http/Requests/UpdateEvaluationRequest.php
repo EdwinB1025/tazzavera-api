@@ -27,7 +27,6 @@ class UpdateEvaluationRequest extends FormRequest
         return [
             // --- Headers ---
             'offeringId'        => ['prohibited'],
-            'status'            => ['nullable', 'string'],
             'extractionMethod'  => ['nullable', 'string', 'max:60'],
 
             // --- descriptive ---

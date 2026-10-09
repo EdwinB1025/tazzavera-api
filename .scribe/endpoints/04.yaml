@@ -2675,17 +2675,6 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
       extractionMethod:
         custom: []
         name: extractionMethod
@@ -3381,7 +3370,6 @@ endpoints:
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      status: architecto
       extractionMethod: v60
       descriptive:
         roastLevel: medium
