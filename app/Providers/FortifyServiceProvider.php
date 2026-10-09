@@ -49,9 +49,13 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(
             function () {
                 $intended = session('url.intended', '');
+                $path = (string) parse_url($intended, PHP_URL_PATH);
 
+                //EDB 10/09/26: the client also sends the user to the email verification page and link
                 if (! str_contains($intended, 'oauth/authorize')
-                    && parse_url($intended, PHP_URL_PATH) !== '/user/security') {
+                    && $path !== '/user/security'
+                    && $path !== '/email/verify'
+                    && ! str_starts_with($path, '/email/verify/')) {
                     abort(403, __('auth.web_not_directed_request'));
                 }
                 return view('livewire.auth.login');
