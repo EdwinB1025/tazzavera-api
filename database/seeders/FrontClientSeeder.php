@@ -10,7 +10,7 @@ class FrontClientSeeder extends Seeder
 {
     public function run(ClientRepository $clients): void
     {
-        $client = Client::front()->first()
+        $client = Client::query()->front()->first()
             ?? $clients->createAuthorizationCodeGrantClient(
                 name: Client::FRONT,
                 redirectUris: [env('FRONT_URL', 'https://localhost:3000') . '/callback'],
