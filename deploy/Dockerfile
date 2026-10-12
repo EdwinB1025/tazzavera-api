@@ -6,7 +6,8 @@ RUN npm ci
 COPY vite.config.js ./
 # Tailwind reads the Blade views (@source '../views')
 COPY resources ./resources
-RUN npm run build                     # → /app/public/build
+# Output: /app/public/build
+RUN npm run build
 
 # ─── Stage 2: the application ───
 FROM php:8.5-apache AS app
@@ -15,7 +16,7 @@ FROM php:8.5-apache AS app
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libicu-dev libzip-dev unzip \
-    && docker-php-ext-install pdo_mysql intl zip bcmath opcache \
+    && docker-php-ext-install pdo_mysql intl zip bcmath \
     && rm -rf /var/lib/apt/lists/* \
     && cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -ri 's/^expose_php\s*=.*/expose_php = Off/' "$PHP_INI_DIR/php.ini"
