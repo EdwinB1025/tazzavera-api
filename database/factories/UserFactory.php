@@ -68,6 +68,8 @@ class UserFactory extends Factory
             'password' => $password,
             'passwordConfirmation' => $password,
             'role' => $role,
+            //EDB 10/12/26: the business name is required for a coffee shop and not accepted for other roles
+            ...($role === 'coffeeshop' ? ['businessName' => fake()->company()] : []),
         ];
     }
 

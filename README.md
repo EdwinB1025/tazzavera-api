@@ -119,7 +119,7 @@ php artisan migrate --seed
 
 🌱 The seeder populates the olfactory taxonomy (from CSV, source WCR Sensory Lexicon), the coffee catalog, roasters, inventory, and base data to test the flow end to end:
 
-- `LocationSeeder` — a closed list of 20 real specialty coffee businesses in Barcelona (`database/seeders/data/coffeeshops-barcelona.json`, e.g. Nomad Coffee, Satan's Coffee Corner, Syra Coffee, Cafès El Magnífico, Cometa): one `coffeeshop` user per business, named after it, with 1 to 3 locations named after the business and its neighbourhood, each with its primary contact (real address, `080xx` postal code, Barcelona, España) and coordinates inside Barcelona. No network during seeding.
+- `LocationSeeder` — a closed list of 20 real specialty coffee businesses in Barcelona (`database/seeders/data/coffeeshops-barcelona.json`, e.g. Nomad Coffee, Satan's Coffee Corner, Syra Coffee, Cafès El Magnífico, Cometa): one `coffeeshop` user per business, named after it (`name` and `business_name`), with 1 to 3 locations named after the business and its neighbourhood, each with its primary contact (real address, `080xx` postal code, Barcelona, España) and coordinates inside Barcelona. No network during seeding.
 - `OfferingBaselineSeeder` — 1 to 5 offerings per coffee shop, spread over its locations, each with the coffee shop's closed **baseline** evaluation (its provisional evaluation of the offering).
 - `VerifiedOfferingSeeder` — a sample of 15 offerings, each with 5 to 9 closed specialist evaluations from a pool of 10 specialists; it dispatches `EvaluationClosed` per offering, so the consensus runs and those offerings end up `verified`.
 
@@ -162,6 +162,8 @@ A `profile:write` request always forces a fresh login. When the client sends `lo
 ## ☕ Public coffee shop directory
 
 A **coffee shop** is the business: a user with role `coffeeshop` that owns one or more locations. The directory is public (no token), like `GET /offerings`, and returns **business data only** — never the owner's email, surname, personal contacts or account data.
+
+Its public `name` is the **business name** (`users.business_name`), not the owner's first name (`users.name`); it falls back to `name` only when the business name is empty. The business name is sent as `businessName` on `POST /register` (required for role `coffeeshop`, `422` for any other role) and on `PUT /users/{ulid}` (coffee shop only, cannot be emptied), and `GET /user` returns it (`null` for other roles). The directory's `name` filter and `name` sort use it.
 
 - `GET /coffeeshops` — paginated (same `links`/`meta` as `GET /offerings`) list of the coffee shops with at least one location. Filters: `name` (partial, case-insensitive), `city` and `postalCode` (any of its locations' primary contacts), `verified` (1: at least one verified offering in any location; 0: none), `orderBy=name`, `orderDirection` (default `name asc`) and `page` (15 per page, as `GET /offerings`). Each item carries `locationsCount`, `offeringsCount`, `verifiedOfferingsCount` and **every** location (the map shows all the locations of the filtered coffee shops).
 - `GET /coffeeshops/{ulid}` — one coffee shop; `404` for an unknown ULID or a user that is not a coffee shop. The detail page has two tabs: **Offerings**, read with `GET /offerings?coffeeshopUlid={ulid}`, and **Locations**, the `locations` array.

@@ -3,6 +3,7 @@
         "ulid": "01M35F5RX4ADGC3CSDXXYB08DD",
         "name": "Andrés",
         "surname": "Gómez",
+        "businessName": null,
         "email": "andres@tazavera.test",
         "emailVerifiedAt": null,
         "role": "specialist"

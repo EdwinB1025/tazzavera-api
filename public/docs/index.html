@@ -253,7 +253,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 9, 2026</li>
+        <li>Last updated: October 12, 2026</li>
     </ul>
 </div>
 
@@ -821,7 +821,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 one location, each with its counters and all its locations (the map
 shows every location of the filtered coffee shops). Only business data
 is returned: never the owner's email, surname, personal contacts or
-account data. Sorted by name ascending by default.</p>
+account data. A coffee shop's <code>name</code> is its business name (the owner's
+first name only when it has none). Sorted by name ascending by default.</p>
 
 <span id="example-requests-GETcoffeeshops">
 <blockquote>Example request:</blockquote>
@@ -1149,7 +1150,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="name"
                data-component="query">
     <br>
-<p>Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given). Example: <code>name</code></p>
+<p>Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given). Example: <code>name</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>name</code></li></ul>
             </div>
@@ -1457,7 +1458,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             </summary>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
-set-cookie: XSRF-TOKEN=eyJpdiI6IjZYR1ZudUcrUklBUkozSjFkUzVQMWc9PSIsInZhbHVlIjoiQzZldkpyMVQxR3BEcTNzcVVha21wbjlaa2Z6ZmYwN1p2V0p1QndiZ1pNYklmMWZpd2lPYTdCMVVDRUltMnJ2RysvdEgxeUhWVFBER2JwNC96M1Q1a1JDeVVmZ2hSQlJ2emJIaVVtd0ZaeDh5ZmZSeE9WdVNhTzZ5ZERSVlBUNEQiLCJtYWMiOiIyZWM4NjYxYmNhYTE5YTlkMjk1MTg1MGU0ODFkN2JiYTUwZWY0MmQ5MWRiNjFmNzRjMDFhYTYzYmVjODUyNjQxIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 18:26:54 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImliQUI2KzUxSDdreUhiY1lmdWJFZVE9PSIsInZhbHVlIjoidnhXVjF4aUNuanJ4OEEyNlVMSkxsQTVOQmhpRDNUWWhVejBwTUZjTXJMUlM5THgxSWJtd1dBQ1JkWkZtOWI3V3gyOXI0MThFSkgwempubUkzVVM3MENkeDNJNzlpTzI2Qk1CN1VlOWtCcDFSaFpsWTJsTzRYd1QzOFYvYTFMTDciLCJtYWMiOiJkZjkwNzZmZTgxNTI2MzcxNzQ2YWI5YzViMWJhNzc5NDMwYWRmMWRkMDM0MGNmMWVmODk2Yzc5YjVlYzg2ZWFjIiwidGFnIjoiIn0%3D; path=/; secure; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6IkgrcUtBbVR1R05nZnBlVEdGVEw3MWc9PSIsInZhbHVlIjoiTlE0TDkxdnZsaGNQT3ByanZZMmFoZUg4NkdaV1E3LzY4UTVkYWp4ejFmSlR5ZlFicGhsaVZJZ2g3RlpsZXVHbjYyZ2J3c1ZEOGkwN3JVT1lra3ppY3NIMXRoNzEzRlduZ2NjQ09zSXlFbmFiaStiMEEwUkd6cXRTZWFzb1FseFAiLCJtYWMiOiIyMTYzZTJjYTY0YzcwNTg3MGMxZDJmM2M4NDMxZmQ0NzBlM2ViNmVlYTRjYWY2ZGJmZjcwMDFjYjIyNzIwYzVkIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IjU1V2VqdDgwRGVJNTVTTTcvaWd2Z3c9PSIsInZhbHVlIjoiSHRZQmVUS3JIbmVZLzRVNzlxMjBaM3RZbHRkeG5oNFdialVCYnhwd2JnQi9LdVRDVnpjREtmODNHOEpEKytlcGpIRU5lNXYrQjdveUZUWXlLWlo0VmdYUGtSQ0hEeS9QeUNybnZFbklxamp2UFVQK2hmSzJucDBoYlIxY3pINDQiLCJtYWMiOiI1M2JmMWJjYmUzMWRmZjFmMmMwNjg0OTk3OTg2Y2FhYTM0Y2FiZjc5ZWIxNTVkNzkzZmUwZGM1YjJlNzA0MGY4IiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
@@ -1600,7 +1601,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             </summary>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
-set-cookie: XSRF-TOKEN=eyJpdiI6IkUzVExqMzFjUWFROEpTY0NaMktzY1E9PSIsInZhbHVlIjoiLytxQTl0anBQbzl1elp4YU5GZVpXSmVHZ0huZGJBS1NKamRvNStJMWI0RWV6WjVnSnpqODNpRXcrYW0vMkdYeG5lUHVVOWg3aHZ3SnlWbGExdWFlYWV0R1dMSisyTlYyOVQ2cFVDU2puMmxuQXF1ZUpINzl2ZkJpalRNUnVXUDQiLCJtYWMiOiIzOGMzMTM3OTkzYzczNDFmMTIzMzU4ZDI3NmM2M2ZhMGExMWRiOWFhYTYwYjcyODE2NjIyZDg4MzAyYjE2YzlhIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 18:26:54 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImMybGdpaHpZRldGcjRmdVZYRDViSHc9PSIsInZhbHVlIjoiTERFeVlRME1GY2Z0eXMycW5FQnB3aSs3MEtvVEpDTTZ0ZWdyMmEvd0xiY05SUVB1ZmpiV1E2T1ArUnFOelBaMEN1WDJaVVZSSkJBUG1rekhXcmlEOVBkZ3g1NGYvbnR1R1FTYUFENFlDYXJFRWZIQnZxcEdJSVM0ZEhjZWc0Mk8iLCJtYWMiOiI3YjYyMTgzM2UwZGRmNzRmOTk2YzFjYzM2NzNkNmE0ODhhOTgwNjI1NmZiNmJjMDc1NmYxNjU4OGE5ZGJlYmE0IiwidGFnIjoiIn0%3D; path=/; secure; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6Ik04Mk5WUS9CMkpKQnlUSHF1eW9iWFE9PSIsInZhbHVlIjoiVjg0WjhsVVRLeTJ5NmVjcnp4UHdXb05SeG9qWU13Zm5vN3JqRXY3dFJtT0pqVFN5Y1VBSGx2ZnpIQ0J2SEd5Y3gySTJScHNJdE0xcWR2OHFCYzJUZENwL1lRR05JMmdkZjZjdDBkWCtKd0d5N0lmbjF2cDV2K3d0aEpLMFVFNFoiLCJtYWMiOiI2YzRmMzQ2ZWRjOTNhMjBiZTU4MGY2Mzk2MTIxNGUzYzcwZDQ5MTYwMDU2MjhlMDU1YTkzYzhiMDdlMjk3NzBlIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IklhR2xIZ05vV0V4N3pLQ1dLYlBRbUE9PSIsInZhbHVlIjoiTHFWSXVsZXdqV1U0aXJGdEVZMFpJVlFFdHJlRnhLRU5aR1hUb0hEcEpnVVdZNjd3WUhNWSs2QWlKUGRFbG96M1UzR0FjNmRQc0VUbUhKSExmWTZjTlhyYTVOZCtkeUZjNk8va0I2ZzhZcUFlTDJlVXhWV21uaDdDQmhFdTNXR1UiLCJtYWMiOiIzODFiY2E2ZjkyODYwMmM4MjE2NDk2NTU4OGY3NDRjMDQ1ZDE1M2ZmNDQwMmVkMjdkNDQxMDQ4MTBhODU3ZDJiIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
@@ -3985,7 +3986,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://localhost:8443/user/evaluations/01M4GDD84946WPV8JQ87V6419V" \
+    --get "https://localhost:8443/user/evaluations/01M4RPY6V2SVFSPPA3DWRWVG6D" \
     --header "Authorization: Bearer {ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3993,7 +3994,7 @@ or <code>profile:write</code> scope.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://localhost:8443/user/evaluations/01M4GDD84946WPV8JQ87V6419V"
+    "https://localhost:8443/user/evaluations/01M4RPY6V2SVFSPPA3DWRWVG6D"
 );
 
 const headers = {
@@ -4011,7 +4012,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'https://localhost:8443/user/evaluations/01M4GDD84946WPV8JQ87V6419V';
+$url = 'https://localhost:8443/user/evaluations/01M4RPY6V2SVFSPPA3DWRWVG6D';
 $response = $client-&gt;get(
     $url,
     [
@@ -4229,10 +4230,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="evaluation"                data-endpoint="GETuser-evaluations--evaluation-"
-               value="01M4GDD84946WPV8JQ87V6419V"
+               value="01M4RPY6V2SVFSPPA3DWRWVG6D"
                data-component="url">
     <br>
-<p>The evaluation. Example: <code>01M4GDD84946WPV8JQ87V6419V</code></p>
+<p>The evaluation. Example: <code>01M4RPY6V2SVFSPPA3DWRWVG6D</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>evaluation_ulid</code></b>&nbsp;&nbsp;
@@ -10835,7 +10836,8 @@ cannot be issued, the user is still created and the response has no
     \"email\": \"augusto@example.com\",
     \"password\": \"Str0ngP@ss!\",
     \"passwordConfirmation\": \"NewStr0ng!\",
-    \"role\": \"coffeeshop\"
+    \"role\": \"coffeeshop\",
+    \"businessName\": \"Nomad Coffee\"
 }"
 </code></pre></div>
 
@@ -10856,7 +10858,8 @@ let body = {
     "email": "augusto@example.com",
     "password": "Str0ngP@ss!",
     "passwordConfirmation": "NewStr0ng!",
-    "role": "coffeeshop"
+    "role": "coffeeshop",
+    "businessName": "Nomad Coffee"
 };
 
 fetch(url, {
@@ -10883,6 +10886,7 @@ $response = $client-&gt;post(
             'password' =&gt; 'Str0ngP@ss!',
             'passwordConfirmation' =&gt; 'NewStr0ng!',
             'role' =&gt; 'coffeeshop',
+            'businessName' =&gt; 'Nomad Coffee',
         ],
     ]
 );
@@ -10902,6 +10906,7 @@ print_r(json_decode((string) $body));</code></pre></div>
         &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
         &quot;name&quot;: &quot;Laura&quot;,
         &quot;surname&quot;: &quot;G&oacute;mez&quot;,
+        &quot;businessName&quot;: &quot;Nomad Coffee&quot;,
         &quot;email&quot;: &quot;laura@tazavera.test&quot;,
         &quot;emailVerifiedAt&quot;: null,
         &quot;role&quot;: &quot;coffeeshop&quot;
@@ -11091,6 +11096,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>coffeeshop</code></li> <li><code>specialist</code></li> <li><code>user</code></li></ul>
         </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>businessName</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="businessName"                data-endpoint="POSTregister"
+               value="Nomad Coffee"
+               data-component="body">
+    <br>
+<p>The coffee shop's business name, its public name in the coffee shop directory (max 150 characters). Required when role is coffeeshop; any other role sending it receives 422. name and surname stay the person's own. This field is required when <code>role</code> is <code>coffeeshop</code>. El campo value no debe ser mayor que 150 caracteres. Example: <code>Nomad Coffee</code></p>
+        </div>
         </form>
 
                     <h2 id="users-GETuser">Get the authenticated user</h2>
@@ -11161,6 +11178,7 @@ print_r(json_decode((string) $body));</code></pre></div>
         &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DD&quot;,
         &quot;name&quot;: &quot;Andr&eacute;s&quot;,
         &quot;surname&quot;: &quot;G&oacute;mez&quot;,
+        &quot;businessName&quot;: null,
         &quot;email&quot;: &quot;andres@tazavera.test&quot;,
         &quot;emailVerifiedAt&quot;: null,
         &quot;role&quot;: &quot;specialist&quot;
@@ -11842,7 +11860,8 @@ update this user (policy). A non-owner receives <code>403 Forbidden</code>.</p>
     --data "{
     \"name\": \"Augusto\",
     \"surname\": \"Restrepo\",
-    \"email\": \"augusto@example.com\"
+    \"email\": \"augusto@example.com\",
+    \"businessName\": \"Nomad Coffee\"
 }"
 </code></pre></div>
 
@@ -11861,7 +11880,8 @@ const headers = {
 let body = {
     "name": "Augusto",
     "surname": "Restrepo",
-    "email": "augusto@example.com"
+    "email": "augusto@example.com",
+    "businessName": "Nomad Coffee"
 };
 
 fetch(url, {
@@ -11886,6 +11906,7 @@ $response = $client-&gt;put(
             'name' =&gt; 'Augusto',
             'surname' =&gt; 'Restrepo',
             'email' =&gt; 'augusto@example.com',
+            'businessName' =&gt; 'Nomad Coffee',
         ],
     ]
 );
@@ -11905,6 +11926,7 @@ print_r(json_decode((string) $body));</code></pre></div>
         &quot;ulid&quot;: &quot;01M35F5RX4ADGC3CSDXXYB08DC&quot;,
         &quot;name&quot;: &quot;Laura&quot;,
         &quot;surname&quot;: &quot;G&oacute;mez Ruiz&quot;,
+        &quot;businessName&quot;: &quot;Nomad Coffee&quot;,
         &quot;email&quot;: &quot;laura@tazavera.test&quot;,
         &quot;emailVerifiedAt&quot;: null,
         &quot;role&quot;: &quot;coffeeshop&quot;
@@ -12068,6 +12090,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>Email address. Must be unique (excluding the current user). El campo value no es un correo válido. Example: <code>augusto@example.com</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>businessName</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="businessName"                data-endpoint="PUTusers--user_ulid-"
+               value="Nomad Coffee"
+               data-component="body">
+    <br>
+<p>Coffee shop only. The business name, its public name in the coffee shop directory (max 150 characters). It cannot be emptied. Any other role sending it receives 422. Example: <code>Nomad Coffee</code></p>
         </div>
         </form>
 

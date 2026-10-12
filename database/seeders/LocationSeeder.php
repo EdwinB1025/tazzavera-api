@@ -27,6 +27,7 @@ class LocationSeeder extends Seeder
             $user = User::factory()->assignRole('coffeeshop')->create([
                 'name' => $coffeeshop['name'],
                 'surname' => 'Coffeeshop',
+                'business_name' => $coffeeshop['name'], //EDB 10/12/26: the public name of the coffee shop
                 'email' => Str::slug($coffeeshop['name']) . '@tazavera.test',
             ]);
 
