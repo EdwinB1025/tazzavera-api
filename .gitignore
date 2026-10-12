@@ -27,3 +27,6 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 /.claude/
+
+# Caddy (local HTTPS test only)
+/deploy/Caddy/
