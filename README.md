@@ -157,7 +157,9 @@ Login in three steps:
 
 The `access_token` authenticates the `auth:api` routes via `Authorization: Bearer`. Two scopes: `profile:read` (default) and `profile:write` (step-up for sensitive actions). Full detail in `endpoints.md`.
 
-A `profile:write` request always forces a fresh login. When the client sends `login_hint` (the ULID of the user it expects), the code is issued only to that user: another user who signs in is signed out and the client receives `error=access_denied` (with its `state`) on its registered redirect URI (`RequireHintedUserForStepUp`).
+A `profile:write` request always forces a fresh login. When the client sends `login_hint` (the ULID of the user it expects), the code is issued only to that user: another user who signs in is signed out and the client receives `error=access_denied` (with its `state`) on its registered redirect URI (`RequireHintedUser`).
+
+The web pages the client opens — `GET /user/security`, `GET /email/verify` and the verification link `GET /email/verify/{id}/{hash}` — are bound the same way: opened with `?login_hint=<ULID>` while the browser holds another user's web session, that session is signed out and the browser goes to the login page with the page as its destination; the page opens only for the hinted user. Without `login_hint` they behave as before.
 
 ## ☕ Public coffee shop directory
 
