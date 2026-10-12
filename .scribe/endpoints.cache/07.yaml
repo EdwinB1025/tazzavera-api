@@ -20,7 +20,8 @@ endpoints:
         one location, each with its counters and all its locations (the map
         shows every location of the filtered coffee shops). Only business data
         is returned: never the owner's email, surname, personal contacts or
-        account data. Sorted by name ascending by default.
+        account data. A coffee shop's `name` is its business name (the owner's
+        first name only when it has none). Sorted by name ascending by default.
       authenticated: false
       deprecated: false
     headers:
@@ -76,7 +77,7 @@ endpoints:
       orderBy:
         custom: []
         name: orderBy
-        description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
+        description: 'Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given).'
         required: false
         example: name
         type: string
