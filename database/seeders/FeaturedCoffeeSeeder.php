@@ -10,6 +10,7 @@ use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
 use App\Models\Roastery;
 use App\Models\User;
+use Database\Factories\EvaluationFactory;
 use Illuminate\Database\Seeder;
 
 class FeaturedCoffeeSeeder extends Seeder
@@ -77,6 +78,7 @@ class FeaturedCoffeeSeeder extends Seeder
 
             $profile = [
                 'aromatics'   => $this->taxonomyRefs($featured['aromatics']),
+                'mouthfeel'   => EvaluationFactory::tasteProfile()['mouthfeel'], // no body notes given: 2 drawn ones
                 'main_tastes' => $this->taxonomyRefs($featured['main_tastes'], 0),
                 'defects'     => [],
             ];
