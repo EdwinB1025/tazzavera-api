@@ -38,13 +38,13 @@ class EvaluationFactory extends Factory
         return $this->state(fn() => ['status' => 'open']);
     }
 
-    private const CATA_AXES = ['fragrance', 'aroma', 'flavor', 'aftertaste', 'mouthfeel'];
+    private const CATA_AXES = ['fragrance', 'aroma', 'flavor', 'aftertaste'];
 
     /**
-     * Marks the evaluation's tastes: 2 notes per sensory axis, 1 main taste and 1 defect,
-     * chosen from a taste profile. Evaluations of one offering share its profile (see
-     * tasteProfile), so their marks overlap as real cuppers' do; without one, each
-     * evaluation draws its own.
+     * Marks the evaluation's tastes: 2 aromatic notes per sensory axis, 1 or 2 mouthfeel
+     * descriptors, 1 main taste and 1 defect, chosen from a taste profile. Evaluations of one
+     * offering share its profile (see tasteProfile), so their marks overlap as real cuppers'
+     * do; without one, each evaluation draws its own.
      */
     public function withTastes(?array $profile = null): static
     {
@@ -56,6 +56,10 @@ class EvaluationFactory extends Factory
                 foreach (collect($profile['aromatics'])->shuffle()->take(2) as $ref) {
                     $rows[] = ['taxonomy_ref' => $ref, 'type' => $axis];
                 }
+            }
+            //EDB 10/13/26: the body axis takes only mouthfeel descriptors, never aromatics
+            foreach (collect($profile['mouthfeel'])->shuffle()->take(mt_rand(1, 2)) as $ref) {
+                $rows[] = ['taxonomy_ref' => $ref, 'type' => 'mouthfeel'];
             }
             foreach (collect($profile['main_tastes'])->shuffle()->take(1) as $ref) {
                 $rows[] = ['taxonomy_ref' => $ref, 'type' => 'main_tastes'];
@@ -91,13 +95,15 @@ class EvaluationFactory extends Factory
     }
 
     /**
-     * One offering's taste profile: 4 aromatic leaves shared by every sensory axis, 2 main
-     * tastes and 1 defect. The seeder draws one per offering and passes it to withTastes.
+     * One offering's taste profile: 4 aromatic leaves shared by every sensory axis, 2 mouthfeel
+     * descriptors, 2 main tastes and 1 defect. The seeder draws one per offering and passes it
+     * to withTastes.
      */
     public static function tasteProfile(): array
     {
         return [
             'aromatics'   => self::taxonomyRefs('aromatics', 4),
+            'mouthfeel'   => self::taxonomyRefs('mouthfeel', 2),
             'main_tastes' => self::taxonomyRefs('main_tastes', 2),
             'defects'     => self::taxonomyRefs('defects', 1),
         ];

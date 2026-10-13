@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Coffee;
+use App\Models\CoffeeInventory;
+use App\Models\Evaluation;
 use App\Models\Location;
 use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
@@ -33,6 +35,18 @@ test('featured_coffee_seeder_creates_the_verified_coffees_with_their_notes', fun
         ->and(Offering::where('verification_status', 'verified')->count())->toBe(2)
         ->and($names($notes('Enlu')))->toBe(['Honey', 'Pineapple', 'Winey'])
         ->and($names($notes('Opita Café')))->toBe(['Caramelized', 'Peach']);
+});
+
+/** EDB 10/13/26: the body axis of a seeded evaluation holds 1 or 2 mouthfeel descriptors and nothing else */
+test('evaluation_factory_marks_only_mouthfeel_descriptors_on_the_body_axis', function () {
+    Coffee::factory()->create();
+    CoffeeInventory::factory()->create();
+
+    $evaluation = Evaluation::factory()->withTastes()->create();
+    $refs = $evaluation->tastes()->where('type', 'mouthfeel')->pluck('taxonomy_ref');
+
+    expect($refs->count())->toBeBetween(1, 2)
+        ->and(OlfactoryTaxonomy::whereIn('id', $refs)->whereJsonContains('categories', 'mouthfeel')->count())->toBe($refs->count());
 });
 
 /** EDB 10/13/26: generated coffees are named like a label: region, variety and process */
