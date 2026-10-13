@@ -18,7 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Passkeys\Contracts\PasskeyUser;
@@ -26,7 +28,7 @@ use Laravel\Passkeys\PasskeyAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'surname', 'email', 'password'])]
+#[Fillable(['name', 'surname', 'business_name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret', 'two_factor_recovery_codes'])]
 class User extends Authenticatable implements PasskeyUser, MustVerifyEmail
 {
@@ -101,12 +103,13 @@ class User extends Authenticatable implements PasskeyUser, MustVerifyEmail
         $query->applyOrderBy($validated);
     }
 
+    /** EDB 10/12/26: the directory filters by the business name (the person's name when it has none, as CoffeeshopResource) */
     #[Scope]
     protected function name(Builder $query, array $validated): void
     {
         $query->when(
             $validated['name'] ?? null,
-            fn($q, $v) => $q->where('name', 'like', "%{$v}%")
+            fn($q, $v) => $q->where(static::publicNameColumn(), 'like', "%{$v}%")
         );
     }
 
@@ -145,8 +148,19 @@ class User extends Authenticatable implements PasskeyUser, MustVerifyEmail
     {
         $query->when(
             $validated['orderBy'] ?? null, // default name: FilterCoffeeshopRequest::prepareForValidation
-            fn($q, $v) => $q->orderBy($v, $validated['orderDirection'] ?? 'asc')
+            fn($q, $v) => $q->orderBy($v === 'name' ? static::publicNameColumn() : $v, $validated['orderDirection'] ?? 'asc')
         );
+    }
+
+    /** EDB 10/12/26: a coffee shop's public name: its business name, or the person's name when it has none */
+    public function publicName(): string
+    {
+        return $this->business_name ?? $this->name;
+    }
+
+    private static function publicNameColumn(): Expression
+    {
+        return DB::raw('coalesce(users.business_name, users.name)');
     }
 
     /** Relationships */

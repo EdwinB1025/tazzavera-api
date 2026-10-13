@@ -14,10 +14,10 @@ beforeEach(
     }
 );
 
-/** A coffee shop (business) with the given locations, each with its primary contact */
-function createCoffeeshop(string $name, array $locations = [[]]): User
+/** A coffee shop (business) with the given locations, each with its primary contact. EDB 10/12/26: $name is the business name; the owner's own name stays private */
+function createCoffeeshop(string $name, array $locations = [[]], string $ownerName = 'Owner-Name'): User
 {
-    $user = User::factory()->assignRole('coffeeshop')->create(['name' => $name, 'surname' => 'Owner-Surname']);
+    $user = User::factory()->assignRole('coffeeshop')->create(['name' => $ownerName, 'surname' => 'Owner-Surname', 'business_name' => $name]);
 
     foreach ($locations as $contact) {
         $location = Location::factory()->create(['user_id' => $user->id]);
@@ -93,6 +93,39 @@ test('filter_coffeeshops_by_name', function (string $name, array $expected) {
     'no match'         => ['Cometa', []],
 ]);
 
+test('coffeeshops_show_the_business_name_not_the_owner_name', function () {
+    $coffeeshop = createCoffeeshop('Nomad Coffee', ownerName: 'Laura');
+
+    $this->getJson('/coffeeshops')
+        ->assertOk()
+        ->assertJsonPath('data.0.name', 'Nomad Coffee');
+
+    $this->getJson("/coffeeshops/{$coffeeshop->ulid}")
+        ->assertOk()
+        ->assertJsonPath('data.name', 'Nomad Coffee');
+
+    //The name filter matches the business name only
+    $this->getJson('/coffeeshops?name=laura')
+        ->assertOk()
+        ->assertJsonCount(0, 'data');
+});
+
+test('coffeeshop_without_business_name_falls_back_to_its_name', function () {
+    $coffeeshop = createCoffeeshop('ignored', ownerName: 'Cometa');
+    $coffeeshop->forceFill(['business_name' => null])->save();
+    createCoffeeshop('Bar Nomad');
+
+    $this->getJson("/coffeeshops/{$coffeeshop->ulid}")
+        ->assertOk()
+        ->assertJsonPath('data.name', 'Cometa');
+
+    $response = $this->getJson('/coffeeshops?name=com')->assertOk();
+    expect(collect($response->json('data'))->pluck('name')->all())->toBe(['Cometa']);
+
+    $response = $this->getJson('/coffeeshops')->assertOk();
+    expect(collect($response->json('data'))->pluck('name')->all())->toBe(['Bar Nomad', 'Cometa']);
+});
+
 test('filter_coffeeshops_by_city_and_postal_code', function (array $filters, array $expected) {
     createCoffeeshop('Nomad Coffee', [['postal_code' => '08001'], ['postal_code' => '08003']]);
     createCoffeeshop('Syra Coffee', [['postal_code' => '08012']]);
@@ -155,9 +188,10 @@ test('coffeeshop_counters', function () {
 });
 
 test('order_coffeeshops', function (array $query, array $expected) {
-    createCoffeeshop('Syra Coffee');
-    createCoffeeshop('Cometa');
-    createCoffeeshop('Nomad Coffee');
+    //EDB 10/12/26: owners' names in the opposite order, so the sort is by business name
+    createCoffeeshop('Syra Coffee', ownerName: 'Ana');
+    createCoffeeshop('Cometa', ownerName: 'Carla');
+    createCoffeeshop('Nomad Coffee', ownerName: 'Berta');
 
     $response = $this->getJson('/coffeeshops?' . http_build_query($query))->assertOk();
 
@@ -238,6 +272,7 @@ test('coffeeshop_responses_expose_no_personal_data', function () {
 
         expect($body)
             ->not->toContain($coffeeshop->email)
+            ->not->toContain('Owner-Name')
             ->not->toContain('Owner-Surname')
             ->not->toContain('owner.personal@example.com')
             ->not->toContain('+34 600 000 999')

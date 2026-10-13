@@ -58,6 +58,59 @@ test('user_registers_without_token_when_there_is_no_front_client', function () {
         ->assertJsonMissingPath('token');
 });
 
+test('coffeeshop_registers_with_its_business_name', function () {
+    $payload = [...User::factory()->registrationPayload('coffeeshop'), 'name' => 'Laura', 'businessName' => 'Nomad Coffee'];
+
+    $this->postJson('/register', $payload)
+        ->assertStatus(201)
+        ->assertJsonPath('data.name', 'Laura')
+        ->assertJsonPath('data.businessName', 'Nomad Coffee');
+
+    //The person's name stays as it is; the business name has its own column
+    $this->assertDatabaseHas('users', [
+        'email' => $payload['email'],
+        'name' => 'Laura',
+        'surname' => $payload['surname'],
+        'business_name' => 'Nomad Coffee',
+    ]);
+});
+
+test('coffeeshop_registration_requires_a_valid_business_name', function (array $businessName) {
+    $payload = User::factory()->registrationPayload('coffeeshop');
+    unset($payload['businessName']);
+
+    $this->postJson('/register', [...$payload, ...$businessName])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['businessName']);
+
+    $this->assertDatabaseMissing('users', ['email' => $payload['email']]);
+})->with([
+    'missing'  => [[]],
+    'empty'    => [['businessName' => '']],
+    'not text' => [['businessName' => ['Nomad Coffee']]],
+    'too long' => [['businessName' => str_repeat('a', 151)]],
+]);
+
+test('registration_rejects_a_business_name_for_other_roles', function (string $role) {
+    $payload = [...User::factory()->registrationPayload($role), 'businessName' => 'Nomad Coffee'];
+
+    $this->postJson('/register', $payload)
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['businessName']);
+
+    $this->assertDatabaseMissing('users', ['email' => $payload['email']]);
+})->with(['specialist', 'user']);
+
+test('specialist_registers_without_a_business_name', function () {
+    $payload = User::factory()->registrationPayload('specialist');
+
+    $this->postJson('/register', $payload)
+        ->assertStatus(201)
+        ->assertJsonPath('data.businessName', null);
+
+    $this->assertDatabaseHas('users', ['email' => $payload['email'], 'business_name' => null]);
+});
+
 test('registration_grant_is_not_offered_by_the_token_endpoint', function () {
     $this->seed(FrontClientSeeder::class);
     $user = User::factory()->create();
@@ -221,6 +274,50 @@ test('authenticated_user_updates_field', function (string $field, string $value)
     'email'   => ['email', 'nuevo@example.com'],
 ]);
 
+test('coffeeshop_updates_its_business_name', function () {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+    $user->forceFill(['business_name' => 'Nomad Coffee'])->save();
+
+    $this->withToken($token)
+        ->putJson("/users/{$user->ulid}", ['businessName' => 'Nomad Coffee Roasters'])
+        ->assertOk()
+        ->assertJsonPath('data.businessName', 'Nomad Coffee Roasters')
+        ->assertJsonPath('data.name', $user->name);
+
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'name' => $user->name,
+        'business_name' => 'Nomad Coffee Roasters',
+    ]);
+});
+
+test('coffeeshop_cannot_empty_or_overflow_its_business_name', function (mixed $value) {
+    [$user, $token] = authenticateWithWriteScope('coffeeshop');
+    $user->forceFill(['business_name' => 'Nomad Coffee'])->save();
+
+    $this->withToken($token)
+        ->putJson("/users/{$user->ulid}", ['businessName' => $value])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['businessName']);
+
+    $this->assertDatabaseHas('users', ['id' => $user->id, 'business_name' => 'Nomad Coffee']);
+})->with([
+    'empty'    => [''],
+    'null'     => [null],
+    'too long' => [str_repeat('a', 151)],
+]);
+
+test('profile_update_rejects_a_business_name_for_other_roles', function (string $role) {
+    [$user, $token] = authenticateWithWriteScope($role);
+
+    $this->withToken($token)
+        ->putJson("/users/{$user->ulid}", ['businessName' => 'Nomad Coffee'])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['businessName']);
+
+    $this->assertDatabaseHas('users', ['id' => $user->id, 'business_name' => null]);
+})->with(['specialist', 'user']);
+
 test('authenticated_user_updates_password', function () {
 
     [$user, $token, $password] = authenticateWithWriteScope();
@@ -246,6 +343,20 @@ test('authenticated_user_gets_profile_data', function () {
         ->assertOk()
         ->assertJsonPath('data.ulid', $user->ulid);
 });
+
+test('authenticated_user_gets_the_business_name', function (string $role, ?string $businessName) {
+    [$user, $token] = authenticate($role);
+    $user->forceFill(['business_name' => $businessName])->save();
+
+    $this->withToken($token)
+        ->getJson('/user')
+        ->assertOk()
+        ->assertJsonPath('data.name', $user->name)
+        ->assertJsonPath('data.businessName', $businessName);
+})->with([
+    'coffeeshop' => ['coffeeshop', 'Nomad Coffee'],
+    'specialist' => ['specialist', null],
+]);
 
 test('authenticated_user_deactivates_profile', function () {
     [$user, $token] = authenticateWithWriteScope();

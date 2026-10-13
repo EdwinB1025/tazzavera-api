@@ -17,7 +17,7 @@ class CoffeeshopResource extends JsonResource
     {
         return [
             'ulid' => $this->ulid,
-            'name' => $this->name,
+            'name' => $this->publicName(), //EDB 10/12/26: the business name, never the owner's first name
             'locationsCount' => (int) $this->locations_count,
             'offeringsCount' => (int) $this->offerings_count,
             'verifiedOfferingsCount' => (int) $this->verified_offerings_count,

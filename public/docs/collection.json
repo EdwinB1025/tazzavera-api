@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "tazavera_api API Documentation",
-        "_postman_id": "dec73a7c-1524-42a6-9c4b-f0e694e99bca",
+        "_postman_id": "334372a0-34b9-43e4-9fb3-c4ee2f908a1b",
         "description": "REST API for the Tazavera specialty coffee platform. Provides endpoints for managing coffee offerings, sensory evaluations (cupping), user profiles, and supporting taxonomies. Authentication is handled via Laravel Passport (OAuth 2.0) using the Authorization Code flow with PKCE for first-party clients and the Password grant for trusted clients.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -176,7 +176,7 @@
                                 {
                                     "key": "orderBy",
                                     "value": "name",
-                                    "description": "Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).",
+                                    "description": "Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given).",
                                     "disabled": false
                                 },
                                 {
@@ -212,7 +212,7 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns a paginated list of coffee shops (businesses) that have at least\none location, each with its counters and all its locations (the map\nshows every location of the filtered coffee shops). Only business data\nis returned: never the owner's email, surname, personal contacts or\naccount data. Sorted by name ascending by default.",
+                        "description": "Returns a paginated list of coffee shops (businesses) that have at least\none location, each with its counters and all its locations (the map\nshows every location of the filtered coffee shops). Only business data\nis returned: never the owner's email, surname, personal contacts or\naccount data. A coffee shop's `name` is its business name (the owner's\nfirst name only when it has none). Sorted by name ascending by default.",
                         "auth": {
                             "type": "noauth"
                         }
@@ -326,7 +326,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IjZYR1ZudUcrUklBUkozSjFkUzVQMWc9PSIsInZhbHVlIjoiQzZldkpyMVQxR3BEcTNzcVVha21wbjlaa2Z6ZmYwN1p2V0p1QndiZ1pNYklmMWZpd2lPYTdCMVVDRUltMnJ2RysvdEgxeUhWVFBER2JwNC96M1Q1a1JDeVVmZ2hSQlJ2emJIaVVtd0ZaeDh5ZmZSeE9WdVNhTzZ5ZERSVlBUNEQiLCJtYWMiOiIyZWM4NjYxYmNhYTE5YTlkMjk1MTg1MGU0ODFkN2JiYTUwZWY0MmQ5MWRiNjFmNzRjMDFhYTYzYmVjODUyNjQxIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 18:26:54 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImliQUI2KzUxSDdreUhiY1lmdWJFZVE9PSIsInZhbHVlIjoidnhXVjF4aUNuanJ4OEEyNlVMSkxsQTVOQmhpRDNUWWhVejBwTUZjTXJMUlM5THgxSWJtd1dBQ1JkWkZtOWI3V3gyOXI0MThFSkgwempubUkzVVM3MENkeDNJNzlpTzI2Qk1CN1VlOWtCcDFSaFpsWTJsTzRYd1QzOFYvYTFMTDciLCJtYWMiOiJkZjkwNzZmZTgxNTI2MzcxNzQ2YWI5YzViMWJhNzc5NDMwYWRmMWRkMDM0MGNmMWVmODk2Yzc5YjVlYzg2ZWFjIiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IkgrcUtBbVR1R05nZnBlVEdGVEw3MWc9PSIsInZhbHVlIjoiTlE0TDkxdnZsaGNQT3ByanZZMmFoZUg4NkdaV1E3LzY4UTVkYWp4ejFmSlR5ZlFicGhsaVZJZ2g3RlpsZXVHbjYyZ2J3c1ZEOGkwN3JVT1lra3ppY3NIMXRoNzEzRlduZ2NjQ09zSXlFbmFiaStiMEEwUkd6cXRTZWFzb1FseFAiLCJtYWMiOiIyMTYzZTJjYTY0YzcwNTg3MGMxZDJmM2M4NDMxZmQ0NzBlM2ViNmVlYTRjYWY2ZGJmZjcwMDFjYjIyNzIwYzVkIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IjU1V2VqdDgwRGVJNTVTTTcvaWd2Z3c9PSIsInZhbHVlIjoiSHRZQmVUS3JIbmVZLzRVNzlxMjBaM3RZbHRkeG5oNFdialVCYnhwd2JnQi9LdVRDVnpjREtmODNHOEpEKytlcGpIRU5lNXYrQjdveUZUWXlLWlo0VmdYUGtSQ0hEeS9QeUNybnZFbklxamp2UFVQK2hmSzJucDBoYlIxY3pINDQiLCJtYWMiOiI1M2JmMWJjYmUzMWRmZjFmMmMwNjg0OTk3OTg2Y2FhYTM0Y2FiZjc5ZWIxNTVkNzkzZmUwZGM1YjJlNzA0MGY4IiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
@@ -388,7 +388,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IkUzVExqMzFjUWFROEpTY0NaMktzY1E9PSIsInZhbHVlIjoiLytxQTl0anBQbzl1elp4YU5GZVpXSmVHZ0huZGJBS1NKamRvNStJMWI0RWV6WjVnSnpqODNpRXcrYW0vMkdYeG5lUHVVOWg3aHZ3SnlWbGExdWFlYWV0R1dMSisyTlYyOVQ2cFVDU2puMmxuQXF1ZUpINzl2ZkJpalRNUnVXUDQiLCJtYWMiOiIzOGMzMTM3OTkzYzczNDFmMTIzMzU4ZDI3NmM2M2ZhMGExMWRiOWFhYTYwYjcyODE2NjIyZDg4MzAyYjE2YzlhIiwidGFnIjoiIn0%3D; expires=Fri, 09 Oct 2026 18:26:54 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6ImMybGdpaHpZRldGcjRmdVZYRDViSHc9PSIsInZhbHVlIjoiTERFeVlRME1GY2Z0eXMycW5FQnB3aSs3MEtvVEpDTTZ0ZWdyMmEvd0xiY05SUVB1ZmpiV1E2T1ArUnFOelBaMEN1WDJaVVZSSkJBUG1rekhXcmlEOVBkZ3g1NGYvbnR1R1FTYUFENFlDYXJFRWZIQnZxcEdJSVM0ZEhjZWc0Mk8iLCJtYWMiOiI3YjYyMTgzM2UwZGRmNzRmOTk2YzFjYzM2NzNkNmE0ODhhOTgwNjI1NmZiNmJjMDc1NmYxNjU4OGE5ZGJlYmE0IiwidGFnIjoiIn0%3D; path=\/; secure; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6Ik04Mk5WUS9CMkpKQnlUSHF1eW9iWFE9PSIsInZhbHVlIjoiVjg0WjhsVVRLeTJ5NmVjcnp4UHdXb05SeG9qWU13Zm5vN3JqRXY3dFJtT0pqVFN5Y1VBSGx2ZnpIQ0J2SEd5Y3gySTJScHNJdE0xcWR2OHFCYzJUZENwL1lRR05JMmdkZjZjdDBkWCtKd0d5N0lmbjF2cDV2K3d0aEpLMFVFNFoiLCJtYWMiOiI2YzRmMzQ2ZWRjOTNhMjBiZTU4MGY2Mzk2MTIxNGUzYzcwZDQ5MTYwMDU2MjhlMDU1YTkzYzhiMDdlMjk3NzBlIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=\/; secure; samesite=lax; tazavera-api-session=eyJpdiI6IklhR2xIZ05vV0V4N3pLQ1dLYlBRbUE9PSIsInZhbHVlIjoiTHFWSXVsZXdqV1U0aXJGdEVZMFpJVlFFdHJlRnhLRU5aR1hUb0hEcEpnVVdZNjd3WUhNWSs2QWlKUGRFbG96M1UzR0FjNmRQc0VUbUhKSExmWTZjTlhyYTVOZCtkeUZjNk8va0I2ZzhZcUFlTDJlVXhWV21uaDdDQmhFdTNXR1UiLCJtYWMiOiIzODFiY2E2ZjkyODYwMmM4MjE2NDk2NTU4OGY3NDRjMDQ1ZDE1M2ZmNDQwMmVkMjdkNDQxMDQ4MTBhODU3ZDJiIiwidGFnIjoiIn0%3D; expires=Mon, 12 Oct 2026 20:45:34 GMT; Max-Age=7200; path=\/; secure; httponly; samesite=lax"
                                 }
                             ],
                             "code": 401,
@@ -869,7 +869,7 @@
                                 {
                                     "id": "evaluation",
                                     "key": "evaluation",
-                                    "value": "01M4GDD84946WPV8JQ87V6419V",
+                                    "value": "01M4RPY6V2SVFSPPA3DWRWVG6D",
                                     "description": "The evaluation."
                                 },
                                 {
@@ -1914,7 +1914,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\",\"password\":\"Str0ngP@ss!\",\"passwordConfirmation\":\"NewStr0ng!\",\"role\":\"coffeeshop\"}"
+                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\",\"password\":\"Str0ngP@ss!\",\"passwordConfirmation\":\"NewStr0ng!\",\"role\":\"coffeeshop\",\"businessName\":\"Nomad Coffee\"}"
                         },
                         "description": "Creates a new user account and assigns the requested role. Public\nregistration endpoint. User creation and role assignment happen in a\nsingle transaction; if role assignment fails, the whole operation is\nrolled back.\n\nThe new user is also signed in: the response carries a `token` block\nwith the same fields as `POST \/oauth\/token` (`token_type`,\n`expires_in`, `access_token`, `refresh_token`), issued on the front\nclient with the default scope (`profile:read`) by an internal grant\nthat `POST \/oauth\/token` does not offer. The refresh token is refreshed\nwith the front client's usual `refresh_token` request. If the tokens\ncannot be issued, the user is still created and the response has no\n`token` block.",
                         "auth": {
@@ -1925,7 +1925,7 @@
                         {
                             "header": [],
                             "code": 201,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\",\n    \"token\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 1800,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"refresh_token\": \"def50200a1b2c3...\"\n    }\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez\",\n        \"businessName\": \"Nomad Coffee\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile created.\",\n    \"token\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 1800,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"refresh_token\": \"def50200a1b2c3...\"\n    }\n}",
                             "name": ""
                         },
                         {
@@ -1963,7 +1963,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DD\",\n        \"name\": \"Andr\u00e9s\",\n        \"surname\": \"G\u00f3mez\",\n        \"email\": \"andres@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"specialist\"\n    }\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DD\",\n        \"name\": \"Andr\u00e9s\",\n        \"surname\": \"G\u00f3mez\",\n        \"businessName\": null,\n        \"email\": \"andres@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"specialist\"\n    }\n}",
                             "name": ""
                         }
                     ]
@@ -2123,7 +2123,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\"}"
+                            "raw": "{\"name\":\"Augusto\",\"surname\":\"Restrepo\",\"email\":\"augusto@example.com\",\"businessName\":\"Nomad Coffee\"}"
                         },
                         "description": "Updates a user's profile data. Returns the updated user with a\nconfirmation message.\n\n**Authorization:** requires the `profile:write` scope and permission to\nupdate this user (policy). A non-owner receives `403 Forbidden`."
                     },
@@ -2131,7 +2131,7 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez Ruiz\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile updated.\"\n}",
+                            "body": "{\n    \"data\": {\n        \"ulid\": \"01M35F5RX4ADGC3CSDXXYB08DC\",\n        \"name\": \"Laura\",\n        \"surname\": \"G\u00f3mez Ruiz\",\n        \"businessName\": \"Nomad Coffee\",\n        \"email\": \"laura@tazavera.test\",\n        \"emailVerifiedAt\": null,\n        \"role\": \"coffeeshop\"\n    },\n    \"message\": \"Profile updated.\"\n}",
                             "name": ""
                         },
                         {

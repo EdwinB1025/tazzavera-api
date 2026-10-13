@@ -29,16 +29,25 @@ class CoffeeFactory extends Factory
             'Panamá'      => ['Boquete', 'Volcán', 'Chiriquí', 'Renacimiento'],
         ];
 
+        //EDB 10/13/26: the name reads like a specialty coffee label: region, variety and process
+        $processNames = [
+            'washed'     => 'Lavado',
+            'natural'    => 'Natural',
+            'honey'      => 'Honey',
+            'anaerobic'  => 'Anaeróbico',
+            'wet_hulled' => 'Giling Basah',
+        ];
+
         return [
-            'name' => fake()->words(2, true),
             'roast_level' => fake()->randomElement(RoastLevel::cases()),
-            'process' => fake()->randomElement(['washed', 'natural', 'honey', 'anaerobic', 'wet_hulled']),
+            'process' => fake()->randomElement(array_keys($processNames)),
             'variety' => fake()->randomElement(['Caturra', 'Bourbon', 'Typica', 'Geisha', 'Catuai', 'SL28', 'Pacamara']),
             'country' => fake()->randomElement(array_keys($regions)),
             'region' => fn($attributes) => fake()->randomElement($regions[$attributes['country']]),
             'producer' => fake()->optional()->name(),
             'altitude' => fake()->numberBetween(1000, 2200),
             'lot' => fake()->year() . '-' . str_pad(fake()->numberBetween(1, 12), 2, '0', STR_PAD_LEFT),
+            'name' => fn($attributes) => "{$attributes['region']} {$attributes['variety']} " . ($processNames[$attributes['process']] ?? $attributes['process']),
         ];
     }
 
