@@ -10,6 +10,14 @@ Pending API changes. Each one is done locally from `deploy`, merged back into `d
 - **Asked by:** Product owner, 2026-10-13
 - **Status:** proposed
 
+## A3 — Roastery origin filters: country and city
+
+- **Today:** `GET /coffeeInventory` filters the roastery only by `city` (`roastery.contacts.city`); there is no roastery country filter, so the front cannot offer a Country → City cascade for the roastery.
+- **Change:** a `roasteryCountry` filter (`roastery.contacts.country`, max 60) on `GET /coffeeInventory` and on the offering filters, next to `city` (consider naming the pair `roasteryCountry` / `roasteryCity`, keeping `city` as an alias while the front moves); Scribe docs, Pest tests, docs regenerated.
+- **Front after it:** the inventory and offering facets gain the roastery cascade Country → City (front backlog R90).
+- **Asked by:** Product owner, 2026-10-13
+- **Status:** proposed
+
 ## A2 — Each sensory axis accepts only its own descriptors
 
 - **Today:** `StoreEvaluationRequest` and `UpdateEvaluationRequest` check each `descriptive.<axis>.cata.*` only with `exists:olfactory_taxonomies,ulid`, so the mouthfeel axis accepts aromatic notes, and the aromatic axes, main tastes and defects accept descriptors of other categories.
