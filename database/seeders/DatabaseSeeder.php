@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
                 CreateOfferingSeeder::class,
                 OfferingBaselineSeeder::class, //EDB 10/08/26: creates the offerings; CreateOfferingSeeder only adds inventory
                 VerifiedOfferingSeeder::class,
+                FeaturedCoffeeSeeder::class, //EDB 10/13/26: Enlu and Opita Café with their real notes
             ]
         );
     }
