@@ -17,7 +17,8 @@ class CoffeeshopController extends Controller
      * one location, each with its counters and all its locations (the map
      * shows every location of the filtered coffee shops). Only business data
      * is returned: never the owner's email, surname, personal contacts or
-     * account data. Sorted by name ascending by default.
+     * account data. A coffee shop's `name` is its business name (the owner's
+     * first name only when it has none). Sorted by name ascending by default.
      *
      * @group Coffee shops
      *

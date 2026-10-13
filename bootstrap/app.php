@@ -4,7 +4,7 @@ use App\Exceptions\ApiCustomException;
 use App\Http\Middleware\OwnLocation;
 use App\Http\Middleware\OwnsOffering;
 use App\Http\Middleware\RejectWildcardScope;
-use App\Http\Middleware\RequireHintedUserForStepUp;
+use App\Http\Middleware\RequireHintedUser;
 use App\Http\Middleware\RequireLoginForWriteScope;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\SetWebThemeAndLocale;
@@ -44,7 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             RejectWildcardScope::class,
             RequireLoginForWriteScope::class,
-            RequireHintedUserForStepUp::class,
+            RequireHintedUser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

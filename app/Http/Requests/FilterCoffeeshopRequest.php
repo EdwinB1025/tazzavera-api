@@ -56,7 +56,7 @@ class FilterCoffeeshopRequest extends FormRequest
             'city'           => ['description' => 'Filter coffee shops with at least one location whose primary contact is in this city.', 'example' => 'Barcelona'],
             'postalCode'     => ['description' => 'Filter coffee shops with at least one location whose primary contact has this postal code.', 'example' => '08001'],
             'verified'       => ['description' => 'Filter by verified offerings: 1 returns only coffee shops with at least one verified offering in any of their locations, 0 only those without any. Omit it to return both.', 'example' => 1],
-            'orderBy'        => ['description' => 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).', 'example' => 'name'],
+            'orderBy'        => ['description' => 'Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given).', 'example' => 'name'],
             'orderDirection' => ['description' => 'Sort direction. One of: asc, desc. Default: asc.', 'example' => 'asc'],
             'page'           => ['description' => 'Page number. Default: 1.', 'example' => 1],
         ];

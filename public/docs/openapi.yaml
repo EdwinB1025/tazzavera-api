@@ -433,7 +433,7 @@ paths:
     get:
       summary: 'List coffee shops'
       operationId: listCoffeeShops
-      description: "Returns a paginated list of coffee shops (businesses) that have at least\none location, each with its counters and all its locations (the map\nshows every location of the filtered coffee shops). Only business data\nis returned: never the owner's email, surname, personal contacts or\naccount data. Sorted by name ascending by default."
+      description: "Returns a paginated list of coffee shops (businesses) that have at least\none location, each with its counters and all its locations (the map\nshows every location of the filtered coffee shops). Only business data\nis returned: never the owner's email, surname, personal contacts or\naccount data. A coffee shop's `name` is its business name (the owner's\nfirst name only when it has none). Sorted by name ascending by default."
       parameters:
         -
           in: query
@@ -478,12 +478,12 @@ paths:
         -
           in: query
           name: orderBy
-          description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
+          description: 'Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given).'
           example: name
           required: false
           schema:
             type: string
-            description: 'Sort field. One of: name. Default: name (applied when omitted, with orderDirection asc unless given).'
+            description: 'Sort field. One of: name (the business name). Default: name (applied when omitted, with orderDirection asc unless given).'
             example: name
             enum:
               - name
@@ -4961,7 +4961,7 @@ paths:
         in: path
         name: evaluation
         description: 'The evaluation.'
-        example: 01M4GDD84946WPV8JQ87V6419V
+        example: 01M4RPY6V2SVFSPPA3DWRWVG6D
         required: true
         schema:
           type: string
@@ -9216,6 +9216,7 @@ paths:
                     ulid: 01M35F5RX4ADGC3CSDXXYB08DC
                     name: Laura
                     surname: Gómez
+                    businessName: 'Nomad Coffee'
                     email: laura@tazavera.test
                     emailVerifiedAt: null
                     role: coffeeshop
@@ -9238,6 +9239,9 @@ paths:
                       surname:
                         type: string
                         example: Gómez
+                      businessName:
+                        type: string
+                        example: 'Nomad Coffee'
                       email:
                         type: string
                         example: laura@tazavera.test
@@ -9365,6 +9369,10 @@ paths:
                     - coffeeshop
                     - specialist
                     - user
+                businessName:
+                  type: string
+                  description: "The coffee shop's business name, its public name in the coffee shop directory (max 150 characters). Required when role is coffeeshop; any other role sending it receives 422. name and surname stay the person's own. This field is required when <code>role</code> is <code>coffeeshop</code>. El campo value no debe ser mayor que 150 caracteres."
+                  example: 'Nomad Coffee'
               required:
                 - name
                 - surname
@@ -9390,6 +9398,7 @@ paths:
                     ulid: 01M35F5RX4ADGC3CSDXXYB08DD
                     name: Andrés
                     surname: Gómez
+                    businessName: null
                     email: andres@tazavera.test
                     emailVerifiedAt: null
                     role: specialist
@@ -9406,6 +9415,10 @@ paths:
                       surname:
                         type: string
                         example: Gómez
+                      businessName:
+                        type: string
+                        example: null
+                        nullable: true
                       email:
                         type: string
                         example: andres@tazavera.test
@@ -9738,6 +9751,7 @@ paths:
                     ulid: 01M35F5RX4ADGC3CSDXXYB08DC
                     name: Laura
                     surname: 'Gómez Ruiz'
+                    businessName: 'Nomad Coffee'
                     email: laura@tazavera.test
                     emailVerifiedAt: null
                     role: coffeeshop
@@ -9755,6 +9769,9 @@ paths:
                       surname:
                         type: string
                         example: 'Gómez Ruiz'
+                      businessName:
+                        type: string
+                        example: 'Nomad Coffee'
                       email:
                         type: string
                         example: laura@tazavera.test
@@ -9825,6 +9842,10 @@ paths:
                   type: string
                   description: 'Email address. Must be unique (excluding the current user). El campo value no es un correo válido.'
                   example: augusto@example.com
+                businessName:
+                  type: string
+                  description: 'Coffee shop only. The business name, its public name in the coffee shop directory (max 150 characters). It cannot be emptied. Any other role sending it receives 422.'
+                  example: 'Nomad Coffee'
     delete:
       summary: 'Deactivate a user'
       operationId: deactivateAUser

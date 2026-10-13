@@ -52,8 +52,8 @@ class UserController extends Controller
     ) {
         $data = $request->validated();
         $user = DB::transaction(
-            function () use ($data) {
-                $user = User::create($data);
+            function () use ($data, $request) {
+                $user = User::create($request->userData()); //EDB 10/12/26: businessName stored as business_name
                 try {
                     $user->assignRole($data['role']);
                 } catch (Throwable $e) {
@@ -119,7 +119,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $user->update($request->userData());
         return (new ResourcesUser($user))
             ->additional(['message' => __('user.updated')])
             ->response()
